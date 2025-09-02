@@ -64,6 +64,7 @@ model Animal {
   photoURL  String?
   ongId     Int
   ong       Ong      @relation("OngAnimals", fields: [ongId], references: [id])
+  denuncias Denuncia[] @relation("AnimalDenuncias")
   
   @@map("animals")
 }
@@ -72,4 +73,25 @@ enum StatusAdocao {
   DISPONIVEL
   ADOTADO
   SOBRE_TRATAMENTO
+}
+
+model Denuncia {
+  id         Int      @id @default(autoincrement())
+  descricao  String
+  localizacao String
+  anonimo   Boolean  @default(false)
+  contato    String
+  animalId   Int
+  animal     Animal   @relation("AnimalDenuncias", fields: [animalId], references: [id])
+  createdAt  DateTime @default(now())
+  
+  @@map("denuncias")
+}
+
+/// Estados possíveis para denúncias
+enum StatusDenuncia {
+  PENDENTE
+  EM_ANALISE
+  RESOLVIDA
+  REJEITADA
 }
