@@ -1,12 +1,12 @@
-import style from "../style/ongsProximas.module.css";
+import styles from "../style/ongsProximas.module.css";
 
 export default function OngsProximas() {
   return (
-    <div className={style.pageOngsProximas}>
-      <section className={style.listaOngs}>
-        <h2 className={style.titulo}>ONGs próximas a você</h2>
+    <div className={styles.pageOngsProximas}>
+      <section className={styles.listaOngs}>
+        <h2 className={styles.titulo}>ONGs próximas a você</h2>
 
-        <div className={style.card}>
+        <div className={styles.card}>
           <img src="/ong1.png" alt="ONG 1" />
           <div>
             <h3>ONG 1</h3>
@@ -15,7 +15,7 @@ export default function OngsProximas() {
           </div>
         </div>
 
-        <div className={style.card}>
+        <div className={styles.card}>
           <img src="/ong2.png" alt="ONG 2" />
           <div>
             <h3>ONG 2</h3>
@@ -24,7 +24,7 @@ export default function OngsProximas() {
           </div>
         </div>
 
-        <div className={style.card}>
+        <div className={styles.card}>
           <img src="/ong3.png" alt="ONG 3" />
           <div>
             <h3>ONG 3</h3>
@@ -34,7 +34,7 @@ export default function OngsProximas() {
         </div>
       </section>
 
-      <section className={style.mapa}>
+      <section className={styles.mapa}>
         {/* Aqui você pode integrar um mapa real depois */}
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18..."

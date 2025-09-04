@@ -1,10 +1,38 @@
-.container {
+.pagCadastro {
+  display: flex;
+  height: 100vh;
+  width: 200vh;
+}
+
+.containerForms {
+  width: 50%;
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #f0f6ff, #dceeff);
+  background: url('/cadastroBanner.png') no-repeat center center;
   padding: 2rem;
+  background-size: cover;
+  position: relative;
+}
+
+.bannerSessao {
+  width: 50%;
+  background: #F0F9FF;
+}
+
+.logoHeader a {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #286699;
+  font-family: 'More Sugar', cursive;
+  z-index: 10;
+  -webkit-text-stroke: 2px #286699;
+;
 }
 
 .form {
@@ -16,46 +44,57 @@
   max-width: 480px;
 }
 
-.title {
+.titulo {
   font-size: 2rem;
   font-weight: bold;
-  color: #1e40af;
+  color: #286699;
   text-align: center;
 }
 
-.subtitle {
+.subTitulo {
   text-align: center;
-  color: #555;
+  color: #286699;
   margin-bottom: 2rem;
+  font-weight: 500;
 }
 
-.socialButtons {
+.botoesRedes {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.socialBtn {
-  padding: 0.75rem;
-  border-radius: 0.75rem;
-  font-weight: 500;
-  border: 1px solid #ccc;
+.botaoRedes {
+  display: flex;
+  align-items: center; /* centraliza verticalmente */
+  justify-content: center; /* centraliza horizontalmente */
+  gap: 0.5rem; /* espaço entre ícone e texto */
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
+  border: none;
+  width: 100%;
 }
 
+
 .google {
-  background: white;
+  background-color: #fff;
+  color: #286699;
+  border: 1px solid #286699;
 }
 
 .apple {
-  background: black;
-  color: white;
+  background-color: #fff;
+  color: #286699;
+  border: 1px solid #286699;
 }
 
-.divider {
+.divisoria {
   text-align: center;
   margin: 1.5rem 0;
-  color: #888;
+  color: #286699;
 }
 
 label {
@@ -76,9 +115,9 @@ input {
   border: 1px solid #ccc;
 }
 
-.nextBtn {
+.botaoProx {
   width: 100%;
-  background: #2563eb;
+  background: #286699;
   color: white;
   padding: 1rem;
   border-radius: 0.75rem;
@@ -87,20 +126,35 @@ input {
   cursor: pointer;
 }
 
-.nextBtn:hover {
-  background: #1e40af;
+.botaoProx:hover {
+  background: #fff;
+  color: #286699;
 }
 
 .loginLink {
   text-align: center;
   margin-top: 1rem;
+  color: #545454;
 }
 
 .loginLink a {
-  color: #2563eb;
+  color: #286699;
   text-decoration: none;
 }
 
 .loginLink a:hover {
   text-decoration: underline;
+}
+
+.grupoInput {
+  margin-bottom: 1.5rem;
+  color: #286699;
+}
+
+.inputLogin {
+  border: 1px solid #286699;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 100%;
+  background-color: #fff;
 }
