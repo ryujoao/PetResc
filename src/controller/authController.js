@@ -1,36 +1,79 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-async function login(req, res) {
+
+const JWT_SECRET = process.env.JWT_SECRET || 'pet123';
+
+// Função  registrar 
+exports.register = async (req, res) => {
+  const { email, password, role, nome, cnpj, descricao, endereco } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const novaConta = await prisma.account.create({
+      data: {
+        email,
+        password: hashedPassword,
+        role,
+        ...(role === 'ADMIN' && { admin: { create: { nome } } }),
+        ...(role === 'ONG' && { ong: { create: { nome, cnpj, descricao, endereco } } }),
+        ...(role === 'PUBLICO' && { publico: { create: { nome } } }),
+      },
+      include: { admin: true, ong: true, publico: true },
+    });
+
+    res.status(201).json(novaConta);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao criar conta.' });
+  }
+};
+
+// Função login
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await prisma.account.findUnique({ where: { email } });
-  if (!user) return res.status(401).json({ message: 'Credenciais inválidas' });
+  try {
+    const usuario = await prisma.account.findUnique({
+      where: { email },
+      include: { admin: true, ong: true, publico: true },
+    });
 
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(401).json({ message: 'Credenciais inválidas' });
+    if (!usuario) {
+      return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
+    }
 
-  const token = jwt.sign(
-    { id: user.id, type: user.type },
-    process.env.JWT_SECRET,
-    { expiresIn: '1h' }
-  );
+    const passwordMatch = await bcrypt.compare(password, usuario.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
+    }
 
-  res.json({ token });
-}
+    const token = jwt.sign({ id: usuario.id, role: usuario.role }, JWT_SECRET, { expiresIn: '1h' });
 
-async function register(req, res) {
-  const { email, password, type } = req.body;
+    res.json({ token, usuario });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao fazer login.' });
+  }
+};
 
-  const hashed = await bcrypt.hash(password, 10);
+// Função retornar dado logado
+exports.me = async (req, res) => {
+  try {
+    const usuario = await prisma.account.findUnique({
+      where: { id: req.user.id },
+      include: { admin: true, ong: true, publico: true },
+    });
 
-  const newUser = await prisma.account.create({
-    data: { email, password: hashed, type }
-  });
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
 
-  res.status(201).json({ id: newUser.id, email: newUser.email, type: newUser.type });
-}
-
-module.exports = { login, register };
+    res.json(usuario);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao buscar dados do usuário.' });
+  }
+};
