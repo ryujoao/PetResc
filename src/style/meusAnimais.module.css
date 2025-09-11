@@ -1,0 +1,95 @@
+.containerPrincipal {
+  background: #fff;
+  min-height: 70vh;
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem 2rem 2rem;
+  justify-content: space-between; /* ← troque isso */
+  width: 100%;
+}
+
+.containerMeusAnimais,
+.adocaoProcesso {
+  width: 49%;
+  background-color: #F0F9FF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  margin-top: 1rem;
+}
+
+.titulo{
+    color: #000;
+    font-size: 22px;
+    background-color: #B5D2E9;
+    border-radius: 7px;
+    width: 80%;
+    text-align: center;
+    margin: 1.5rem;
+    padding: 0.2rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 3rem; /* Espaço entre imagem e descrição */
+  background-color: #B5D2E9;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  width: 80%;
+}
+
+.imgCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  padding: 1rem 0 1rem 2rem;
+  background: transparent;
+}
+
+.imgCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cardNome h1 {
+  font-size: 22px;
+  margin-bottom: 0.7rem;
+  color: #000;
+}
+
+.descricaoCard {
+  font-size: 14px;
+  color: #000;
+}
+
+.card {
+  position: relative; /* necessário para posicionar os elementos filhos */
+}
+
+/* canto superior direito */
+.statusSuperior {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* canto inferior direito */
+.statusInferior {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
