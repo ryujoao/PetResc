@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'pet123';
 
 //  REGISTER 
 exports.register = async (req, res) => {
-  const { email, password, role, nome, cnpj, descricao, endereco } = req.body;
+  const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
   try {
     // Verifica se email já existe
@@ -21,9 +21,9 @@ exports.register = async (req, res) => {
         email,
         password: hashedPassword,
         role,
-        ...(role === 'ADMIN' && { admin: { create: { nome } } }),
-        ...(role === 'ONG' && { ong: { create: { nome, cnpj, descricao, endereco } } }),
-        ...(role === 'PUBLICO' && { publico: { create: { nome } } }),
+        ...(role === 'ADMIN' && { admin: { create: { name } } }),
+        ...(role === 'ONG' && { ong: { create: { name, cnpj, descricao, endereco } } }),
+        ...(role === 'PUBLICO' && { publico: { create: { name } } }),
       },
       include: { admin: true, ong: true, publico: true },
     });
@@ -53,9 +53,9 @@ exports.login = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, usuario.password);
     if (!passwordMatch) return res.status(401).json({ error: 'E-mail ou senha inválidos.' });
 
-    // Gera token com id, role e opcionalmente nome
+    // Gera token com id, role e opcionalmente name
     const token = jwt.sign(
-      { id: usuario.id, role: usuario.role, nome: usuario.nome },
+      { id: usuario.id, role: usuario.role, name: usuario.name },
       JWT_SECRET,
       { expiresIn: '1h' }
     );

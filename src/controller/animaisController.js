@@ -100,16 +100,16 @@ router.get('/:id', async (req, res) => {
 
 // POST
 router.post('/', async (req, res) => {
-  const { nome, especie, raca, idade, status, porte, sexo, descricao, photoURL, ongId } = req.body;
+  const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL, ongId } = req.body;
 
-  if (!nome || !especie || !ongId) {
+  if (!name || !especie || !ongId) {
     return res.status(400).json({ error: 'Nome, espécie e ONG são obrigatórios' });
   }
 
   try {
     const novoAnimal = await prisma.animal.create({
       data: {
-        nome,
+        name,
         especie,
         raca: raca || null,
         idade: idade ? parseInt(idade) : null,
@@ -137,13 +137,13 @@ router.post('/', async (req, res) => {
 // PUT 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, especie, raca, idade, status, porte, sexo, descricao, photoURL } = req.body;
+  const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL } = req.body;
 
   try {
     const animalAtualizado = await prisma.animal.update({
       where: { id: parseInt(id) },
       data: {
-        nome,
+        name,
         especie,
         raca,
         idade: idade ? parseInt(idade) : null,

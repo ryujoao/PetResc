@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Relatório de Animais
+// Relatório dos animais Animais
 const relatorioAnimais = async (req, res) => {
   try {
     const total = await prisma.animal.count();

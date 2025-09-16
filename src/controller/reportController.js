@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// Criar denúncia
+// CREATE
 const criarReport = async (req, res) => {
   const { animalId, usuarioId, descricao } = req.body;
 

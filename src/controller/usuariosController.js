@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 
 // POST 
 router.post('/', async (req, res) => {
-  const { email, password, role, nome, cnpj, descricao, endereco } = req.body;
+  const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
   try {
     const novaConta = await prisma.account.create({
@@ -29,9 +29,9 @@ router.post('/', async (req, res) => {
         email,
         password,
         role,
-        ...(role === 'ADMIN' && { admin: { create: { nome } } }),
-        ...(role === 'ONG' && { ong: { create: { nome, cnpj, descricao, endereco } } }),
-        ...(role === 'PUBLICO' && { publico: { create: { nome } } }),
+        ...(role === 'ADMIN' && { admin: { create: { name } } }),
+        ...(role === 'ONG' && { ong: { create: { name, cnpj, descricao, endereco } } }),
+        ...(role === 'PUBLICO' && { publico: { create: { name } } }),
       },
       include: { admin: true, ong: true, publico: true },
     });
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
 // PUT 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { email, password, role, nome, cnpj, descricao, endereco } = req.body;
+  const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
   try {
     const usuarioId = parseInt(id);
@@ -64,7 +64,7 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado.' });
     }
 
-    // Atualiza conta principal
+    // Atualiza conta do usuario atual
     const contaAtualizada = await prisma.account.update({
       where: { id: usuarioId },
       data: {
@@ -75,11 +75,11 @@ router.put('/:id', async (req, res) => {
       include: { admin: true, ong: true, publico: true },
     });
 
-    // Atualiza dados específicos conforme o role
+    // Atualiza dados específicos baseado no role
     if (contaAtualizada.role === 'ADMIN' && usuario.admin) {
       await prisma.admin.update({
         where: { id: usuario.admin.id },
-        data: { nome: nome || usuario.admin.nome },
+        data: { name: name || usuario.admin.name },
       });
     }
 
@@ -87,7 +87,7 @@ router.put('/:id', async (req, res) => {
       await prisma.ong.update({
         where: { id: usuario.ong.id },
         data: {
-          nome: nome || usuario.ong.nome,
+          name: name || usuario.ong.name,
           cnpj: cnpj || usuario.ong.cnpj,
           descricao: descricao || usuario.ong.descricao,
           endereco: endereco || usuario.ong.endereco,
@@ -98,7 +98,7 @@ router.put('/:id', async (req, res) => {
     if (contaAtualizada.role === 'PUBLICO' && usuario.publico) {
       await prisma.publico.update({
         where: { id: usuario.publico.id },
-        data: { nome: nome || usuario.publico.nome },
+        data: { name: name || usuario.publico.name },
       });
     }
 
