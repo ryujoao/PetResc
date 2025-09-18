@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const larTemporarioController = require('../controllers/larTemporarioController');
+const larTemporarioController = require('../controller/larTemporarioController');
 
 
 router.get('/', larTemporarioController.getAll);

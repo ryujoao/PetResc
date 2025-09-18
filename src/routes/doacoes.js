@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const doacoesController = require('../controllers/doacoesController');
+const doacoesController = require('../controller/doacaoController');
 
 
 router.get('/', doacoesController.getAll);

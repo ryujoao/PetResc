@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const adocoesController = require('../controllers/adocoesController');
+const adocoesController = require('../controller/adocoesController');
 
 
 router.get('/', adocoesController.listarTodos);

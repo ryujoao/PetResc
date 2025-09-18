@@ -1,10 +1,8 @@
-const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const router = express.Router();
-const prisma = new PrismaClient(); 
+const prisma = new PrismaClient();
 
-// GET 
-router.get('/', async (req, res) => {
+// GET - Função para listar todas as contas
+const listarUsuarios = async (req, res) => {
   try {
     const contas = await prisma.account.findMany({
       include: {
@@ -17,10 +15,10 @@ router.get('/', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Erro ao listar contas' });
   }
-});
+};
 
-// POST 
-router.post('/', async (req, res) => {
+// POST - Função para criar uma nova conta
+const criarUsuario = async (req, res) => {
   const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
   try {
@@ -35,22 +33,20 @@ router.post('/', async (req, res) => {
       },
       include: { admin: true, ong: true, publico: true },
     });
-
     res.status(201).json(novaConta);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao criar conta' });
   }
-});
+};
 
-// PUT 
-router.put('/:id', async (req, res) => {
+// PUT - Função para atualizar uma conta
+const atualizarUsuario = async (req, res) => {
   const { id } = req.params;
   const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
   try {
     const usuarioId = parseInt(id);
-
     if (isNaN(usuarioId)) {
       return res.status(400).json({ error: 'ID de usuário inválido.' });
     }
@@ -64,7 +60,6 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado.' });
     }
 
-    // Atualiza conta do usuario atual
     const contaAtualizada = await prisma.account.update({
       where: { id: usuarioId },
       data: {
@@ -75,7 +70,6 @@ router.put('/:id', async (req, res) => {
       include: { admin: true, ong: true, publico: true },
     });
 
-    // Atualiza dados específicos baseado no role
     if (contaAtualizada.role === 'ADMIN' && usuario.admin) {
       await prisma.admin.update({
         where: { id: usuario.admin.id },
@@ -108,20 +102,18 @@ router.put('/:id', async (req, res) => {
     });
 
     res.json(usuarioFinal);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao atualizar usuário.' });
   }
-});
+};
 
-// DELETE 
-router.delete('/:id', async (req, res) => {
+// DELETE - Função para deletar uma conta
+const deletarUsuario = async (req, res) => {
   const { id } = req.params;
 
   try {
     const usuarioId = parseInt(id);
-
     if (isNaN(usuarioId)) {
       return res.status(400).json({ error: 'ID de usuário inválido.' });
     }
@@ -157,11 +149,16 @@ router.delete('/:id', async (req, res) => {
     await prisma.account.delete({ where: { id: usuarioId } });
 
     res.json({ message: 'Usuário e dados relacionados removidos com sucesso!' });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao tentar remover usuário.' });
   }
-});
+};
 
-module.exports = router;
+// Exporte todas as funções para que possam ser usadas no arquivo de rotas
+module.exports = {
+  listarUsuarios,
+  criarUsuario,
+  atualizarUsuario,
+  deletarUsuario,
+};

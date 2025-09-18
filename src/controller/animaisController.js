@@ -1,12 +1,9 @@
-const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const router = express.Router();
 const prisma = new PrismaClient();
 
-// GET - Buscar animais com filtros 
-router.get('/search', async (req, res) => {
+// Função para buscar animais com filtros
+const buscarAnimaisComFiltros = async (req, res) => {
   const { especie, porte, status, sexo } = req.query;
-
   try {
     const animais = await prisma.animal.findMany({
       where: {
@@ -23,18 +20,16 @@ router.get('/search', async (req, res) => {
         }
       }
     });
-
     res.json(animais);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao buscar animais com filtros' });
   }
-});
+};
 
-// GET 
-router.get('/ong/:ongId', async (req, res) => {
+// Função para buscar animais por ONG
+const buscarAnimaisPorOng = async (req, res) => {
   const { ongId } = req.params;
-
   try {
     const animais = await prisma.animal.findMany({
       where: { ongId: parseInt(ongId) },
@@ -44,20 +39,18 @@ router.get('/ong/:ongId', async (req, res) => {
         }
       }
     });
-
     if (animais.length === 0) {
       return res.status(404).json({ error: 'Nenhum animal encontrado para essa ONG' });
     }
-
     res.json(animais);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao buscar animais da ONG' });
   }
-});
+};
 
-// GET 
-router.get('/', async (req, res) => {
+// Função para listar todos os animais
+const listarAnimais = async (req, res) => {
   try {
     const animais = await prisma.animal.findMany({
       include: { 
@@ -71,12 +64,11 @@ router.get('/', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Erro ao buscar animais' });
   }
-});
+};
 
-// GET 
-router.get('/:id', async (req, res) => {
+// Função para buscar um animal específico
+const buscarAnimalPorId = async (req, res) => {
   const { id } = req.params;
-  
   try {
     const animal = await prisma.animal.findUnique({
       where: { id: parseInt(id) },
@@ -86,26 +78,22 @@ router.get('/:id', async (req, res) => {
         } 
       },
     });
-    
     if (!animal) {
       return res.status(404).json({ error: 'Animal não encontrado' });
     }
-    
     res.json(animal);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao buscar animal' });
   }
-});
+};
 
-// POST
-router.post('/', async (req, res) => {
+// Função para criar um animal
+const criarAnimal = async (req, res) => {
   const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL, ongId } = req.body;
-
   if (!name || !especie || !ongId) {
     return res.status(400).json({ error: 'Nome, espécie e ONG são obrigatórios' });
   }
-
   try {
     const novoAnimal = await prisma.animal.create({
       data: {
@@ -126,19 +114,17 @@ router.post('/', async (req, res) => {
         }
       }
     });
-
     res.status(201).json(novoAnimal);
   } catch (err) {
     console.error('Erro detalhado:', err);
     res.status(500).json({ error: 'Erro ao cadastrar animal' });
   }
-});
+};
 
-// PUT 
-router.put('/:id', async (req, res) => {
+// Função para atualizar um animal
+const atualizarAnimal = async (req, res) => {
   const { id } = req.params;
   const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL } = req.body;
-
   try {
     const animalAtualizado = await prisma.animal.update({
       where: { id: parseInt(id) },
@@ -159,28 +145,34 @@ router.put('/:id', async (req, res) => {
         }
       },
     });
-
     res.json(animalAtualizado);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao atualizar animal' });
   }
-});
+};
 
-// DELETE 
-router.delete('/:id', async (req, res) => {
+// Função para deletar um animal
+const deletarAnimal = async (req, res) => {
   const { id } = req.params;
-
   try {
     await prisma.animal.delete({
       where: { id: parseInt(id) },
     });
-
     res.status(204).send();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro ao deletar animal' });
   }
-});
+};
 
-module.exports = router;
+// Exporte todas as funções para que possam ser usadas no arquivo de rotas
+module.exports = {
+  buscarAnimaisComFiltros,
+  buscarAnimaisPorOng,
+  listarAnimais,
+  buscarAnimalPorId,
+  criarAnimal,
+  atualizarAnimal,
+  deletarAnimal
+};
