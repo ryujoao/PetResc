@@ -1,6 +1,8 @@
 .navbar {
   display: flex;
   width: 100%;
+  display: flex;
+  width: 100%;
   position: fixed;
   top: 40px;
   background-color: white;
@@ -33,6 +35,8 @@
 .navCategorias {
   /* display: flex;
   gap: 5rem;
+  /* display: flex;
+  gap: 5rem;
   margin: 0;
   padding: 0;
   width: auto;
@@ -49,6 +53,7 @@
   font-weight: 500;
 }
 
+.botoesCadastro {
 .botoesCadastro {
   display: flex;
 
