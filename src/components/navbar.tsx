@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import style from "../style/navbar.module.css";
-import SearchBar from "../components/searchBar";
 
 export default function Nav() {
-  function handleSearch(term: string) {
-    console.log("Buscando por:", term);
-  }
+  // function handleSearch(term: string) {
+    // console.log("Buscando por:", term);
+
 
   return (
     <>
@@ -20,16 +19,18 @@ export default function Nav() {
 
         <ul className={style.navCategorias}>
           <li><a href="/adotar">Adotar</a></li>
-          <li><a href="/voluntarios">Voluntarios</a></li>
+          <li><a href="/voluntarios">Voluntários</a></li>
           <li><a href="/doar">Doar</a></li>
           <li><a href="/denuncie">Denuncie</a></li>
+          <li><a href="">Registra Animal</a></li>
 
-          <SearchBar onSearch={handleSearch} />
         </ul>
 
-        <ul className={style.botaoCadastro}>
-          <li><button className={style.cadastroONG}>Cadastre sua ONG</button></li>
-          <li><button className={style.cadastro}>Cadastre-se</button></li>
+        <ul className={style.botoesCadastro}>
+          <button className={style.cadastroONG}>Cadastre sua ONG</button>
+          <Link to={"/cadastro"} style={{ textDecoration: 'none' }} >
+          <button className={style.cadastro}>Cadastre-se</button>
+          </Link>
         </ul>
       </div>
    </>

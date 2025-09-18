@@ -1,0 +1,47 @@
+.pageOngsProximas {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  padding: 2rem;
+  margin: 0 auto;
+  height: 80vh;
+  background-color: #fff;
+  color: #000;
+}
+
+.listaOngs {
+  background-color: #f0f9ff;
+  border-radius: 15px;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.titulo{
+    font-size: 22px;
+    background-color: #B5D2E9;
+    border-radius: 7px;
+    text-align: center;
+    margin: 1.5rem;
+    padding: 0.2rem;
+}
+
+.card {
+  display: flex;
+  gap: 1rem;
+  background-color: #b5d2e9;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.mapa {
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+}
