@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Listar todos os pedidos
+// Listart pedidos
 exports.listarTodos = async (req, res) => {
   try {
     const adocoes = await prisma.adocao.findMany({
@@ -13,7 +13,7 @@ exports.listarTodos = async (req, res) => {
   }
 };
 
-// Buscar pedido por ID
+// Buscar pedido id
 exports.listarPorId = async (req, res) => {
   const { id } = req.params;
   try {
@@ -32,7 +32,7 @@ exports.listarPorId = async (req, res) => {
   }
 };
 
-// Criar pedido de adoção
+// Criar adocao
 exports.criar = async (req, res) => {
   const { usuarioId, animalId } = req.body;
 

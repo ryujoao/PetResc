@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// GET /larTemporario
+// GET padrao
 const getAll = async (req, res) => {
   try {
     const lares = await prisma.larTemporario.findMany({
@@ -13,7 +13,7 @@ const getAll = async (req, res) => {
   }
 };
 
-// GET /larTemporario/:id
+// GET larTemporario id
 const getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -30,7 +30,7 @@ const getById = async (req, res) => {
   }
 };
 
-// POST /larTemporario
+// POST 
 const create = async (req, res) => {
   const {
     usuarioId, ongId, animalId, nomeCompleto, cpf, dataNascimento,
@@ -68,7 +68,7 @@ const create = async (req, res) => {
   }
 };
 
-// PUT /larTemporario/:id
+// PUT por id
 const updateStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -83,7 +83,7 @@ const updateStatus = async (req, res) => {
   }
 };
 
-// DELETE /larTemporario/:id
+// DELETE por id
 const remove = async (req, res) => {
   const { id } = req.params;
   try {
@@ -96,7 +96,6 @@ const remove = async (req, res) => {
   }
 };
 
-// Exporta todas as funções em um objeto
 module.exports = {
   getAll,
   getById,

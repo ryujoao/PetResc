@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'pet123';
 
-//  REGISTER 
+//  cadastro
 exports.register = async (req, res) => {
   const { email, password, role, name, cnpj, descricao, endereco } = req.body;
 
@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
       include: { admin: true, ong: true, publico: true },
     });
 
-    // Remove senha antes de enviar
+    
     const { password: _, ...usuarioSemSenha } = novaConta;
 
     res.status(201).json(usuarioSemSenha);
@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // Remove senha 
+    
     const { password: _, ...usuarioSemSenha } = usuario;
 
     res.json({ token, usuario: usuarioSemSenha });

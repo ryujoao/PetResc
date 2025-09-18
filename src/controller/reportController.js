@@ -20,7 +20,7 @@ const criarReport = async (req, res) => {
   }
 };
 
-// Listar todas denúncias
+// Listardenuncias
 const listarReports = async (req, res) => {
   try {
     const reports = await prisma.report.findMany({
@@ -33,7 +33,7 @@ const listarReports = async (req, res) => {
   }
 };
 
-// Atualizar denúncia
+// PUT
 const atualizarReport = async (req, res) => {
   const { id } = req.params;
   const { descricao } = req.body;
@@ -52,7 +52,7 @@ const atualizarReport = async (req, res) => {
   }
 };
 
-// Apagar denúncia
+// DELETE
 const apagarReport = async (req, res) => {
   const { id } = req.params;
 

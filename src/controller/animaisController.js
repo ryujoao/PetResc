@@ -27,7 +27,7 @@ const buscarAnimaisComFiltros = async (req, res) => {
   }
 };
 
-// Função para buscar animais por ONG
+//  buscar animais por ONG
 const buscarAnimaisPorOng = async (req, res) => {
   const { ongId } = req.params;
   try {
@@ -49,7 +49,7 @@ const buscarAnimaisPorOng = async (req, res) => {
   }
 };
 
-// Função para listar todos os animais
+// listar todos os animais
 const listarAnimais = async (req, res) => {
   try {
     const animais = await prisma.animal.findMany({
@@ -66,7 +66,7 @@ const listarAnimais = async (req, res) => {
   }
 };
 
-// Função para buscar um animal específico
+//  buscar um animal específico
 const buscarAnimalPorId = async (req, res) => {
   const { id } = req.params;
   try {
@@ -88,7 +88,7 @@ const buscarAnimalPorId = async (req, res) => {
   }
 };
 
-// Função para criar um animal
+//  criar animal
 const criarAnimal = async (req, res) => {
   const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL, ongId } = req.body;
   if (!name || !especie || !ongId) {
@@ -121,7 +121,7 @@ const criarAnimal = async (req, res) => {
   }
 };
 
-// Função para atualizar um animal
+// atualizar um animal
 const atualizarAnimal = async (req, res) => {
   const { id } = req.params;
   const { name, especie, raca, idade, status, porte, sexo, descricao, photoURL } = req.body;
@@ -152,7 +152,7 @@ const atualizarAnimal = async (req, res) => {
   }
 };
 
-// Função para deletar um animal
+//  deletar um animal
 const deletarAnimal = async (req, res) => {
   const { id } = req.params;
   try {
@@ -166,7 +166,7 @@ const deletarAnimal = async (req, res) => {
   }
 };
 
-// Exporte todas as funções para que possam ser usadas no arquivo de rotas
+
 module.exports = {
   buscarAnimaisComFiltros,
   buscarAnimaisPorOng,

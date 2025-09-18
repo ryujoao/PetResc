@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// login usuário
+/// login usuario
 model Account {
   id       Int      @id @default(autoincrement())
   email    String   @unique
@@ -17,19 +17,19 @@ model Account {
   ong      Ong?
   publico  Publico?
 
-  // Relações inversas
+  // Relaçoes inversas
   doacoes        Doacao[]
   larTemporarios LarTemporario[]
 }
 
-/// papéis possíveis
+/// papeis possíveis
 enum Role {
   ADMIN
   ONG
   PUBLICO
 }
 
-/// Perfil de administrador — usa o mesmo ID da account
+/// Perfil administrador — usa o mesmo ID da account
 model Admin {
   id      Int     @id
   nome    String
@@ -132,7 +132,7 @@ model Ficha {
   peso           Float?
   status         StatusAdocao @default(DISPONIVEL)
 
-  // Saúde
+  // Saude
   saude          String?
   vacinas        String?
   vermifugos     String?
@@ -160,7 +160,7 @@ model Ficha {
   @@map("fichas")
 }
 
-/// Estados possíveis para adoção
+/// Estados possiveis para adoçao
 enum StatusAdocao {
   DISPONIVEL
   ADOTADO
@@ -182,7 +182,7 @@ model Denuncia {
   @@map("denuncias")
 }
 
-/// Estados possíveis para denúncias
+/// Estados possiveis para denuncias
 enum StatusDenuncia {
   PENDENTE
   EM_ANALISE

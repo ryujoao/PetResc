@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const doacoesController = require('../controller/doacaoController');
-const { authenticateToken } = require('../middleware/authMiddleware');
-
-
+const { authenticateToken } = require('../middlewares/authMiddleware');
 
 router.get('/', authenticateToken, doacoesController.getAll);
 router.get('/:id',authenticateToken, doacoesController.getById);

@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// Relatório dos animais Animais
+// Relatório animais 
 const relatorioAnimais = async (req, res) => {
   try {
     const total = await prisma.animal.count();
@@ -15,7 +15,7 @@ const relatorioAnimais = async (req, res) => {
   }
 };
 
-// Relatório de Doações
+// Relatório doacoes
 const relatorioDoacoes = async (req, res) => {
   try {
     const total = await prisma.doacao.count();
@@ -35,7 +35,7 @@ const relatorioDoacoes = async (req, res) => {
   }
 };
 
-// Relatório de Usuários
+// Relatório usuarios
 const relatorioUsuarios = async (req, res) => {
   try {
     const total = await prisma.usuario.count();

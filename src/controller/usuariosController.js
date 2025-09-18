@@ -1,10 +1,9 @@
-// src/controller/usuariosController.js
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const bcrypt = require('bcrypt'); // Adicionando o bcrypt para criptografia de senhas
+const bcrypt = require('bcrypt');
 
-// GET - Função para listar todos os usuários
+// GET 
 const listarUsuarios = async (req, res) => {
   try {
     const contas = await prisma.account.findMany({
@@ -20,11 +19,10 @@ const listarUsuarios = async (req, res) => {
   }
 };
 
-// POST - Função para criar um novo usuário
+// POST 
 const criarUsuario = async (req, res) => {
   const { email, password, role, name, cnpj, descricao, endereco } = req.body;
   try {
-    // Lógica para criptografar a senha, se necessário
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const novaConta = await prisma.account.create({
@@ -45,7 +43,7 @@ const criarUsuario = async (req, res) => {
   }
 };
 
-// DELETE - Função para deletar um usuário
+// DELETE
 const deletarUsuario = async (req, res) => {
   const { id } = req.params;
   try {
@@ -85,7 +83,6 @@ const deletarUsuario = async (req, res) => {
   }
 };
 
-// Exporta todas as funções em um único objeto
 module.exports = {
   listarUsuarios,
   criarUsuario,

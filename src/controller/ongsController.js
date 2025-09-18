@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 
-// Registrar ONG
+// cadastro
 const registerOng = async (req, res) => {
   const { email, password, name, cnpj, descricao, endereco } = req.body;
 
@@ -32,7 +32,7 @@ const registerOng = async (req, res) => {
   }
 };
 
-// Login da ONG
+// Login 
 const loginOng = async (req, res) => {
   const { email, password } = req.body;
 
@@ -55,7 +55,7 @@ const loginOng = async (req, res) => {
   }
 };
 
-// Listar todas ONGs
+// PUT
 const getAllOngs = async (req, res) => {
   try {
     const ongs = await prisma.ong.findMany({ include: { account: true } });
@@ -82,7 +82,7 @@ const getOngById = async (req, res) => {
   }
 };
 
-// Buscar animais de uma ONG
+// Buscar animais ONG
 const getAnimaisByOng = async (req, res) => {
   const { id } = req.params;
 

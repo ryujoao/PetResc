@@ -16,7 +16,7 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// GET 
+// GET por id
 exports.getById = async (req, res) => {
   const { id } = req.params;
 
@@ -60,7 +60,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// GET /doacoes/ong/:id 
+// GET /doacoes por ong id 
 exports.getByOng = async (req, res) => {
   const { id } = req.params;
 

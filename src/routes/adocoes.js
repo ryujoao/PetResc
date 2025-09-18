@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adocoesController = require('../controller/adocoesController');
-const { authenticateToken } = require('../middleware/authMiddleware');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 
 
 
