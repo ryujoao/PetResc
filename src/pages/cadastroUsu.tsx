@@ -1,6 +1,7 @@
 import styles from "../style/cadastroUsu.module.css";
 import * as Icon from "react-bootstrap-icons";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { Link } from "react-router-dom";
 
 export default function CadastroUsu() {
   return (
@@ -21,7 +22,6 @@ export default function CadastroUsu() {
               <img className={styles.google} src="google.png" alt="Google" />
               Cadastre-se com o Google
             </button>
-
 
             <button type="button" className={styles.botaoRede}>
               <img className={styles.apple} src="apple.png" alt="Apple" />
@@ -62,10 +62,9 @@ export default function CadastroUsu() {
             />
           </label>
 
-          <button type="submit" className={styles.botaoProx}>
-            Próximo
-          </button>
-
+          <Link  to={"/home"} style={{ textDecoration: 'none' }}>
+            <button type="submit" className={styles.botaoProx}>Cadastrar</button>
+          </Link>
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
           </p>

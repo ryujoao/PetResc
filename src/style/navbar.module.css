@@ -187,3 +187,19 @@ button:focus-visible {
     gap: 1rem;
   }
 }
+
+.perfilUsuario {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-left: auto;
+  margin-right: 5rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 1.2rem;
+}
+ 
+.perfilUsuario svg {
+  font-size: 2rem;
+  color: black;
+}
