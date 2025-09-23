@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
 
+
 // Import de rotas
 const authRoutes = require("./routes/auth");
 const usuariosRoutes = require("./routes/usuarios");

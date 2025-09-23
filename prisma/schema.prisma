@@ -71,6 +71,9 @@ model Animal {
   photoURL        String?
   corPredominante String?
 
+  createdAt       DateTime      @default(now())   
+  updatedAt       DateTime      @updatedAt       
+
   ficha Ficha? @relation("AnimalFicha")
   ongId Int
   ong   Ong    @relation("AnimalOng", fields: [ongId], references: [id])
