@@ -2,12 +2,19 @@ const express = require('express');
 const router = express.Router();
 const animaisController = require('../controller/animaisController');
 const { authenticateToken } = require('../middlewares/authMiddleware');
+const authorizeRole = require('../middlewares/roleMiddleware');
 
-router.get('/search', authenticateToken, animaisController.buscarAnimaisComFiltros);
-router.get('/ong/:ongId', authenticateToken, animaisController.buscarAnimaisPorOng);
-router.get('/', authenticateToken, animaisController.listarAnimais);
-router.get('/:id', authenticateToken, animaisController.buscarAnimalPorId);
-router.post('/', authenticateToken, animaisController.criarAnimal);
-router.put('/:id', authenticateToken, animaisController.atualizarAnimal);
-router.delete('/:id', authenticateToken, animaisController.deletarAnimal);
+router.get('/', animaisController.listarAnimais);
+
+router.get('/:id', animaisController.buscarAnimalPorId);
+
+
+router.use(authenticateToken);
+
+router.post('/', authorizeRole('ONG'), animaisController.criarAnimal);
+
+router.put('/:id', animaisController.atualizarAnimal);
+ 
+router.delete('/:id', animaisController.deletarAnimal);
+
 module.exports = router;
