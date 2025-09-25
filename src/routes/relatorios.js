@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const relatorioController = require('../controller/relatoriosController');
 const { authenticateToken } = require('../middlewares/authMiddleware');
+const authorizeRole = require('../middlewares/roleMiddleware'); 
+
 
 
 router.get('/animais',authenticateToken, authorizeRole("ADMIN"), relatorioController.relatorioAnimais);
