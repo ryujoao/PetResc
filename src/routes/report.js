@@ -1,9 +1,11 @@
-// report.js
+
 
 const express = require("express");
 const router = express.Router();
 const reportController = require("../controller/reportController");
 const { authenticateToken } = require("../middlewares/authMiddleware");
+const authorizeRole = require("../middlewares/roleMiddleware"); 
+
 
 router.post("/", authenticateToken, reportController.criarReport);
 
