@@ -1,0 +1,142 @@
+.pageRegistroAnimal {
+  margin-top: 130px; /* empurra o conteúdo abaixo das barras */
+  display: flex;
+  width: 100vw;
+  min-height: calc(100vh - 130px);
+  background-color: #fff;
+  color: #0f4979;
+}
+
+/* Coluna da imagem e campos */
+.colunaUm {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente */
+  text-align: center; /* centraliza textos e labels */
+}
+
+.imagemContainer {
+  width: 60%;
+  min-height: 300px;        /* altura mínima para o container */
+  max-height: 400px;        /* altura máxima para o container */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;         /* evita que a imagem ultrapasse os limites */
+}
+
+.imagem {
+  width: 100%;              /* ocupa toda a largura do container */
+  height: 100%;             /* ocupa toda a altura do container */
+  object-fit: cover;        /* garante que a imagem preencha sem distorcer */
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.textoImagem {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #286699;
+  text-align: center;
+  width: 75%;
+}
+
+/* Efeito hover igual ao exemplo */
+.imagem:hover {
+  border-color: #0f4979;
+}
+
+/* Ícone dentro da área */
+.imagem img {
+  width: 48px; /* tamanho do ícone */
+  height: 48px;
+  object-fit: contain;
+  opacity: 0.7; /* leve transparência */
+}
+
+/* Texto de instrução */
+.imagem span {
+  max-width: 80%;
+  line-height: 1.4;
+}
+
+.barraInfos {
+  width: 80%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: 1px solid #6487a3;
+  border-radius: 5px;
+  background-color: white;
+  color: #0f4979;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: left;
+  margin-top: 1rem;
+  width: 80%;
+}
+
+/* Coluna do formulário */
+.colunaDois {
+  flex: 1;
+  padding: 2rem;
+}
+
+.titulo {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.subtitulo {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.botao {
+  background: #286699;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 7px;
+  width: 250px;
+  font-size: 1.1rem;
+  align-self: center;
+}
+
+/* Responsividade: no mobile, vira uma coluna só */
+@media (max-width: 768px) {
+  .pageRegistroAnimal {
+    flex-direction: column;
+    padding-top: 80px; /* mantém espaço da navbar */
+  }
+
+  .colunaUm,
+  .colunaDois {
+    padding: 1rem;
+  }
+}
+
+select {
+  color: #666;
+}
