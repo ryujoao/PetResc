@@ -7,8 +7,8 @@ export default function Footer() {
         <div className={style.rowFooter}>
           
           <div className={style.footerCol}>
-            <h4 className={style.petcoFooter}>Anima</h4>
-            <p className={style.petcoDescricao}>
+            <h4 className={style.animaFooter}>Anima</h4>
+            <p className={style.animaDescricao}>
               Anima conecta ONGs, protetores e a comunidade para facilitar resgates, adoções e cuidados com animais.
             </p>
           </div>

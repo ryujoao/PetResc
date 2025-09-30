@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
-html, body {
+body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  overflow-x: hidden;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff; /* ou a cor que você quiser */
+  display: block; /* garante que o body ocupe 100% */
+  overflow-x: hidden; /* impede rolagem horizontal */
 }
+
 
 /* Banner com imagem de fundo */
 .bannerUm {

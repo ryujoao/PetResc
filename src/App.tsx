@@ -9,6 +9,7 @@ import CadastroUsu from "./pages/cadastroUsu";
 import Index from "./pages";
 import RegistrarAnimal from "./pages/registrarAnimal";
 import CentralAdocao from "./pages/centralAdocao";
+import Perfil from "./pages/perfil";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/cadastro" element={<CadastroUsu />} />
         <Route path="/registrarAnimal" element={<RegistrarAnimal />} />
         <Route path="/centralAdocao" element={<CentralAdocao />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
     </BrowserRouter>
   );
