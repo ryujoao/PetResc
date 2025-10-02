@@ -1,68 +1,198 @@
 .pageCentralAdocao {
-  margin-top: 130px; /* ou calculado dinamicamente */
-  min-height: calc(100vh - 130px); /* garante que ocupe a tela toda */
   padding: 2rem;
-  background-color: #fff;
   color: #0f4979;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
 }
 
-
 .titulo {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 
 .subtitulo {
   text-align: center;
-  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 
-.container {
+.containerFiltrosPets {
   display: flex;
   gap: 2rem;
+  align-items: flex-start;
+}
+
+.tituloFiltro {
+  display: flex;
+  justify-content: center;
+  font-size: 23px;
 }
 
 .filtros {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  max-width: 250px;
+  gap: 2rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #004080;
+  max-width: 300px;
+  margin: 0 4rem 0 5rem;
 }
 
-.filtros label {
-  font-weight: 600;
+.filtroGrupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 2rem;
 }
 
-.filtros select {
+.filtroGrupo h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #004080;
+}
+
+.filtroGrupo label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.filtroGrupo select {
   padding: 0.5rem;
-  border: 1px solid #6487a3;
-  border-radius: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   background-color: white;
-  color: #666;
+  font-size: 0.9rem;
 }
+
+.checkboxCustomizado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  position: relative;
+}
+
+.checkboxCustomizado input {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #004080;
+  border-radius: 4px;
+}
+
+/* Ícone de check */
+.checkboxCustomizado input:checked + .checkmark::after {
+  content: "✔";
+  color: #282828;
+  font-size: 0.8rem;
+  position: absolute;
+  left: 3px;
+  top: 0px;
+}
+
+.gradeCores {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
+}
+
+.itemCor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Esconde o checkbox nativo */
+.itemCor input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Caixa personalizada com borda */
+.caixaCheckbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #004080;
+  border-radius: 4px;
+  background-color: white;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+/* Ícone de check quando marcado */
+.itemCor input:checked + .caixaCheckbox::after {
+  content: "✔";
+  color: #004080;
+  font-size: 0.8rem;
+  position: absolute;
+  left: 2px;
+  top: -1px;
+}
+
+/* Bolinha de cor */
+.bolinhaCor {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+/* Cores específicas */
+.preto { background-color: black; }
+.branco { background-color: white; border: 1px solid #999; }
+.marrom { background-color: #8B4513; }
+.cinza { background-color: gray; }
+.caramelo { background-color: #d2a679; }
+.azul { background-color: blue; }
+.vermelho { background-color: red; }
+.verde { background-color: green; }
+.laranja { background-color: orange; }
+.amarelo { background-color: yellow; }
+
+.cardPet {
+  border-radius: 8px;
+  padding: 1rem;
+  height: 300px;
+  width: 300px;
+  gap: 5rem;
+}
+
+.cardPet img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.cardPet h3 {
+  font-size: 17px;
+}
+
+.cardPet p {
+  font-size: 14px;
+}
+
 
 .listaPets {
   flex: 3;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
-}
-
-.cardPet {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;
-  background-color: #f9f9f9;
-}
-
-.cardPet img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
+  gap: 8rem;
+  margin-left: 5rem;
+  max-width: 1009px;
 }

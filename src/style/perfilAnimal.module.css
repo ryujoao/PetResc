@@ -1,0 +1,93 @@
+/* Container principal */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Nome do pet */
+.nome {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+/* Status de adoção */
+.status {
+  font-size: 1.2rem;
+  color: #4caf50;
+  margin-bottom: 2rem;
+}
+
+/* Imagem do pet */
+.imagem {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.imagem img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Seções de dados */
+.dados {
+  margin-bottom: 2.5rem;
+}
+
+.dados h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #444;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.dados ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dados li {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.dados li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-size: 1.2rem;
+}
+
+/* Comentário do anunciante */
+.comentario {
+  background-color: #f6f6f6;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
+}
+
+.comentario h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.comentario p {
+  font-style: italic;
+  line-height: 1.6;
+  color: #444;
+}

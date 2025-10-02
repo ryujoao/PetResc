@@ -1,6 +1,7 @@
 import styles from "../style/centralAdocao.module.css";
 import Nav from "../components/navbar";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+
 
 export default function CentralAdocao() {
   const pageRef = useRef<HTMLDivElement | null>(null);
@@ -21,81 +22,225 @@ export default function CentralAdocao() {
       pageEl.style.minHeight = `calc(100vh - ${totalHeight}px)`;
     }, 0);
   }, []);
-
+  
   return (
     <>
       <Nav />
       <div ref={pageRef} className={styles.pageCentralAdocao}>
         <h1 className={styles.titulo}>Centro de Adoção</h1>
         <p className={styles.subtitulo}>
-          Encontre o pet ideal para adoção usando os filtros abaixo.
+          Animais disponíveis para adoção:
         </p>
 
-        <div className={styles.container}>
-          {/* Filtros */}
-          <aside className={styles.filtros}>
-            <h2>Filtrar por:</h2>
+        <div className={styles.containerFiltrosPets}>
+          <div className={styles.filtros}>
+            <h2 className={styles.tituloFiltro}>Filtros</h2>
+            <div className={styles.filtroGrupo}>
+              <h3>Espécie</h3>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Cachorro
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Gato
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Pássaros
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Outros
+              </label>
+            </div>
 
-            <label>Espécie</label>
-            <select>
-              <option value="">Todos</option>
-              <option value="cachorro">Cachorro</option>
-              <option value="gato">Gato</option>
-              <option value="outros">Outros</option>
-            </select>
+            <div className={styles.filtroGrupo}>
+              <h3>Gênero</h3>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Macho
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Fêmea
+              </label>
+            </div>
 
-            <label>Porte</label>
-            <select>
-              <option value="">Todos</option>
-              <option value="pequeno">Pequeno</option>
-              <option value="medio">Médio</option>
-              <option value="grande">Grande</option>
-            </select>
+            <div className={styles.filtroGrupo}>
+              <h3>Porte</h3>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Pequeno
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Médio
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Grande
+              </label>
+            </div>
 
-            <label>Idade</label>
-            <select>
-              <option value="">Todas</option>
-              <option value="filhote">Filhote</option>
-              <option value="adulto">Adulto</option>
-              <option value="idoso">Idoso</option>
-            </select>
+            <div className={styles.filtroGrupo}>
+              <h3>Idade</h3>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Filhote
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Adulto
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input type="checkbox" />
+                <span className={styles.checkmark}></span>
+                Idoso
+              </label>
+            </div>
 
-            <label>Sexo</label>
-            <select>
-              <option value="">Todos</option>
-              <option value="macho">Macho</option>
-              <option value="femea">Fêmea</option>
-            </select>
+            <div className={styles.filtroGrupo}>
+              <h3>Cor predominante</h3>
+              <div className={styles.gradeCores}>
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.preto}`}
+                  ></span>
+                  Preto
+                </label>
 
-            <label>Cor predominante</label>
-            <select>
-              <option value="">Todas</option>
-              <option value="branco">Branco</option>
-              <option value="preto">Preto</option>
-              <option value="marrom">Marrom</option>
-              <option value="amarelo">Amarelo</option>
-              <option value="cinza">Cinza</option>
-              <option value="laranja">Laranja</option>
-              <option value="mesclado">Mesclado</option>
-            </select>
-          </aside>
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.branco}`}
+                  ></span>
+                  Branco
+                </label>
 
-          {/* Lista de pets */}
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.marrom}`}
+                  ></span>
+                  Marrom
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.cinza}`}
+                  ></span>
+                  Cinza
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.caramelo}`}
+                  ></span>
+                  Caramelo
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.azul}`}
+                  ></span>
+                  Azul
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.vermelho}`}
+                  ></span>
+                  Vermelho
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.verde}`}
+                  ></span>
+                  Verde
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.laranja}`}
+                  ></span>
+                  Laranja
+                </label>
+
+                <label className={styles.itemCor}>
+                  <input type="checkbox" />
+                  <span className={styles.caixaCheckbox}></span>
+                  <span
+                    className={`${styles.bolinhaCor} ${styles.amarelo}`}
+                  ></span>
+                  Amarelo
+                </label>
+              </div>
+            </div>
+
+            <div className={styles.filtroGrupo}>
+              <h3>Raça</h3>
+              <select>
+                <option value="">Todas</option>
+                <option value="vira-lata">Vira-lata</option>
+                <option value="poodle">Poodle</option>
+                <option value="siamês">Siamês</option>
+              </select>
+            </div>
+          </div>
+
           <section className={styles.listaPets}>
-            {/* Exemplo de card de pet */}
             <div className={styles.cardPet}>
-              <img src="/pets/zeus.jpg" alt="Zeus" />
-              <h3>Zeus</h3>
-              <p>Cachorro • Macho • Adulto</p>
+              <img src="branquinho.png" alt="branquinho" />
+              <h3>Branquinho</h3>
+              <p>Sem raça definida (SRD)</p>
             </div>
 
             <div className={styles.cardPet}>
-              <img src="/pets/feijao.jpg" alt="Feijão" />
+              <img src="feijao.png" alt="Feijão" />
               <h3>Feijão</h3>
-              <p>Gato • Macho • Adulto</p>
+              <p>Sem raça definida (SRD)</p>
             </div>
 
-            {/* Adicione mais cards conforme necessário */}
+             <div className={styles.cardPet}>
+              <img src="zeus.png" alt="Zeus" />
+              <h3>Zeus</h3>
+              <p>Pitbull</p>
+            </div>
+
+             <div className={styles.cardPet}>
+              <img src="frajola.png" alt="Frajola" />
+              <h3>Frajola</h3>
+              <p>Sem raça definida (SRD)</p>
+            </div>
           </section>
         </div>
       </div>

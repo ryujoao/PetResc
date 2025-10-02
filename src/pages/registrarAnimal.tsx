@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Nav from "../components/navbar";
 import styles from "../style/registrarAnimal.module.css";
 
