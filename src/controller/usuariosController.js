@@ -80,28 +80,39 @@ const deletarUsuario = async (req, res) => {
     }
 };
 
-// PÚBLICO: Registro
 const registrarUsuarioPublico = async (req, res) => {
-    const { email, password, name } = req.body;
-    if (!email || !password || !name) return res.status(400).json({ error: 'Preencha todos os campos obrigatórios' });
+    const { email, password, name, cpf } = req.body; 
+
+    if (!email || !password || !name || !cpf) {
+        return res.status(400).json({ error: 'Preencha todos os campos obrigatórios (nome, email, senha e CPF).' });
+    }
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const novaConta = await prisma.account.create({
-            data: { email, password: hashedPassword, role: 'PUBLICO', publico: { create: { nome: name } } },
+            data: {
+                email,
+                password: hashedPassword,
+                role: 'PUBLICO',
+                publico: {
+                    create: {
+                        nome: name,
+                        cpf: cpf 
+                }
+            },
             include: { publico: true }
         });
         delete novaConta.password;
         res.status(201).json(novaConta);
     } catch (err) {
         console.error("ERRO DETALHADO DO PRISMA:", err);
-        if (err.code === 'P2002' && err.meta?.target?.includes('email')) {
-            return res.status(400).json({ error: 'Este email já está em uso.' });
+        if (err.code === 'P2002') {
+            const field = err.meta.target.includes('email') ? 'Email' : 'CPF';
+            return res.status(400).json({ error: `Este ${field} já está em uso.` });
         }
         res.status(500).json({ error: 'Erro ao registrar usuário.' });
     }
 };
-
 // LOGADO: Obter usuário por ID
 const obterUsuarioPorId = async (req, res) => {
     try {
@@ -143,26 +154,39 @@ const atualizarUsuario = async (req, res) => {
         const account = await prisma.account.findUnique({ where: { id: userIdToUpdate } });
         if (!account) return res.status(404).json({ error: 'Conta não encontrada' });
 
-        // Checar duplicidade de email
         if (email && email !== account.email) {
             const emailExist = await prisma.account.findUnique({ where: { email } });
             if (emailExist) return res.status(400).json({ error: 'Email já em uso' });
         }
 
-        // Atualizar profile (name) e email
-        let profileUpdate;
+        let profileUpdatePromise;
         if (name) {
-            if (account.role === 'PUBLICO') profileUpdate = prisma.publico.updateMany({ where: { accountId: userIdToUpdate }, data: { name } });
-            else if (account.role === 'ADMIN') profileUpdate = prisma.admin.updateMany({ where: { accountId: userIdToUpdate }, data: { name } });
-            else if (account.role === 'ONG') profileUpdate = prisma.ong.updateMany({ where: { accountId: userIdToUpdate }, data: { name } });
+            if (account.role === 'PUBLICO') {
+                profileUpdatePromise = prisma.publico.update({
+                    where: { id: userIdToUpdate },
+                    data: { nome: name }
+                });
+            } else if (account.role === 'ADMIN') {
+                profileUpdatePromise = prisma.admin.update({
+                    where: { id: userIdToUpdate },
+                    data: { nome: name }
+                });
+            } else if (account.role === 'ONG') {
+                profileUpdatePromise = prisma.ong.update({
+                    where: { id: userIdToUpdate },
+                    data: { name: name }
+                });
+            }
         }
 
-        const [updatedAccount] = await prisma.$transaction([
+        const transactionResult = await prisma.$transaction([
             prisma.account.update({ where: { id: userIdToUpdate }, data: { email } }),
-            ...(profileUpdate ? [profileUpdate] : [])
+            ...(profileUpdatePromise ? [profileUpdatePromise] : [])
         ]);
 
+        const updatedAccount = transactionResult[0];
         delete updatedAccount.password;
+
         res.json({ message: "Usuário atualizado com sucesso", account: updatedAccount });
     } catch (err) {
         console.error(err);

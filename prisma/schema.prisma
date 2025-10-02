@@ -41,6 +41,8 @@ model Admin {
 model Publico {
   id      Int     @id
   nome    String
+  cpf     String  @unique 
+
   account Account @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
