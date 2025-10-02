@@ -13,21 +13,25 @@ export default function CadastroUsu() {
   const [password, setPassword] = useState(''); 
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [cpf, setCpf] = useState('');
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault(); // Impede o recarregamento da página
+   const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError('');
 
-    if (!name || !email || !password) {
-      setError('Por favor, preencha nome, email e senha.');
+    // Adicionado 'cpf' na validação
+    if (!name || !email || !password || !cpf) {
+      setError('Por favor, preencha todos os campos obrigatórios (nome, email, senha e CPF).');
       return;
     }
 
     try {
+      // Adicionado 'cpf' no objeto enviado para a API
       await api.post('/usuarios/register', {
         name,
         email,
-        password
+        password,
+        cpf 
       });
 
       alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
@@ -90,11 +94,13 @@ export default function CadastroUsu() {
 
           <label className={styles.grupoInput}>
             <span>CPF</span>
-            <input
-              className={styles.inputLogin}
-              type="text"
-              placeholder="000.000.000-00"
-            />
+             <input
+            className={styles.inputLogin}
+            type="text"
+            placeholder="000.000.000-00"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+          />
           </label>
 
           <label className={styles.grupoInput}>
