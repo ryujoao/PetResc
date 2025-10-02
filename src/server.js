@@ -42,6 +42,16 @@ app.get("/api", (req, res) => {
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000 🚀");
 
+  app.use((err, req, res, next) => {
+  console.error("UM ERRO OCORREU:", err.stack);
+
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+
+  res.status(statusCode).json({
+    error: "Ocorreu um erro no servidor. Tente novamente."
+  });
+});
+
   async function testConnection() {
     try {
       await prisma.$connect();
