@@ -49,10 +49,13 @@ const criarReport = async (req, res) => {
 // Listardenuncias
 const listarReports = async (req, res) => {
   try {
-    const reports = await prisma.report.findMany({
-      include: { animal: true, usuario: true }
+    const denuncias = await prisma.denuncia.findMany({
+      include: {
+        animal: true,
+        autor: true // O nome da relação com Account é 'autor'
+      }
     });
-    res.json(reports);
+    res.json(denuncias);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erro ao buscar denúncias" });
