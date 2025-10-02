@@ -4,26 +4,18 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #fff; /* ou a cor que você quiser */
-  display: block; /* garante que o body ocupe 100% */
-  overflow-x: hidden; /* impede rolagem horizontal */
-  font-family: 'Darker Grotesque', sans-serif;
-  
-
+  width: 100vw;
+  overflow-x: hidden;
 }
-
 
 /* Banner com imagem de fundo */
 .bannerUm {
   width: 100vw;
   height: 100vh;
-  background: url('/banner1.png') no-repeat center center;
+  background: url('/banner3.png') no-repeat center center;
   background-size: cover;
   display: flex;
   align-items: center;

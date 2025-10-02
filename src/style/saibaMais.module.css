@@ -1,0 +1,37 @@
+.containerSaibaMais {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13rem;
+  
+}
+
+.card {
+    border: 2px solid #286699;
+    border-radius: 7%;
+    min-height: 17rem;
+    width: 20%;
+    color: black;
+    padding: 30px;
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.card p {
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px; 
+}
+
+.card a {
+    color: #4BAEF2;
+}

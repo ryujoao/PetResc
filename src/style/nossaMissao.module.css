@@ -1,0 +1,59 @@
+.containerPrincipal {
+  display: flex;
+  min-height: 80vh;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f0f9ff;
+
+  
+}
+
+.containerNossaMissao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.imgAnimais, .tituloNossaMissao {
+    flex: 1;
+    width: 100%;
+    gap: 5rem;    
+}
+
+.imgAnimais {
+    display: flex;
+    gap: 4rem;
+    padding-left: 8rem;
+}
+
+.cachorro {
+    margin-top: 8rem;
+}
+
+.gato {
+    margin-bottom: 8rem;
+}
+
+.tituloNossaMissao {
+    display: block;
+    font-size: 1.5rem;
+    color: black;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+    margin-right: 5rem;
+}
+
+.tituloNossaMissao h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.tituloNossaMissao p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 0 2rem 0 0;
+    font-weight: 500;
+}
