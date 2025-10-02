@@ -20,11 +20,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Conteúdo abaixo do banner */}
-      <section className={styles.mainContent}>
-        {/* Cards, textos, etc. */}
-      </section>
-
       <MeusAnimais />
 
       <section className={styles.bannerDois}>

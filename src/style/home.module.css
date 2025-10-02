@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
-html, body {
+body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  overflow-x: hidden;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff; /* ou a cor que você quiser */
+  display: block; /* garante que o body ocupe 100% */
+  overflow-x: hidden; /* impede rolagem horizontal */
 }
+
 
 /* Banner com imagem de fundo */
 .bannerUm {
@@ -31,6 +36,8 @@ html, body {
   margin-left: 17rem;
   margin-top: 7rem;
 }
+
+
 
 .titulo {
   font-size: clamp(2.5rem, 6vw, 4rem);
@@ -64,32 +71,6 @@ html, body {
   border-bottom: none;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-  .bannerUm {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 5vw;
-    text-align: center;
-  }
-
-  .homeTitulo {
-    margin-top: 5vh;
-    text-align: center;
-    margin-left: 0;
-  }
-
-
-  .titulo {
-    font-size: clamp(1.8rem, 6vw, 2.5rem);
-  }
-
-  .subtitulo {
-    font-size: 1rem;
-    padding: 0.5rem 2rem;
-  }
-}
 
 .bannerDois {
   position: relative;
@@ -103,6 +84,7 @@ html, body {
   overflow: hidden;
   padding-right: 20vw; /* aumente para afastar do canto direito */
 }
+
 
 .paginaDoar {
   background: #286699;
@@ -144,4 +126,48 @@ html, body {
 .paginaDoar button a {
   color: #fff;
   text-decoration: none;
+
 }
+  /* Responsividade do Título da Home */
+  @media (max-width: 1835px) {
+  
+    .homeTitulo {
+      margin-left: 13rem;
+    }
+  }
+  @media (max-width: 1653px) {
+  
+    .homeTitulo {
+      margin-left: 10rem; 
+    }
+  }
+  @media (max-width: 1560px) {
+  
+    .homeTitulo {
+      margin-left: 7rem; 
+    }
+  }
+  @media (max-width: 1443px) {
+  
+    .homeTitulo {
+      margin-left: 5rem; 
+    }
+  }
+  @media (max-width: 1374px) {
+  
+    .homeTitulo {
+      margin-left: 3rem; 
+    }
+  }
+  @media (max-width: 1300px) {
+  
+    .homeTitulo {
+      margin-left: 1.5rem;
+    }
+  }
+  @media (max-width: 1300px) {
+  
+    .homeTitulo {
+      margin-left: 1.5rem;
+    }
+  }

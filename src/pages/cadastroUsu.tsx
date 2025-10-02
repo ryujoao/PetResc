@@ -62,7 +62,6 @@ export default function CadastroUsu() {
               Cadastre-se com o Google
             </button>
 
-
             <button type="button" className={styles.botaoRede}>
               <img className={styles.apple} src="apple.png" alt="Apple" />
               Cadastre-se com a Apple
@@ -116,13 +115,12 @@ export default function CadastroUsu() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
            <button type="submit" className={styles.botaoProx}>
             Cadastrar
           </button>
-
+      
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
           </p>

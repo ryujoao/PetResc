@@ -1,0 +1,124 @@
+.perfilContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  padding-top: 120px; /* deixa espaço para a navbar */
+  background-color: #fff;
+  min-width: 100%;   /* troquei 100vw por 100% para não causar scroll horizontal */
+  min-height: 100vh;
+  box-sizing: border-box;
+}   
+
+.banner {
+  width: 90%;
+  height: 180px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9fc9ef, #d1e7f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #d8d8d8;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.infoBox {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.username {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #004080;
+}
+
+.btnContainer {
+  display: flex;
+  width: 60%;
+  border: 1px solid #004080;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  background: transparent;
+  color: #004080;
+  cursor: pointer;
+}
+
+.btnActive {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  background: #c9dff4;
+  color: #004080;
+  font-weight: bold;
+}
+
+.petsContainer {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.petCard {
+  background: #fff;
+  border-radius: 12px;
+  width: 200px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
+  text-align: center;
+}
+
+.petImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.petNome {
+  font-weight: bold;
+  margin: 0.2rem 0;
+}
+
+.petRaca {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.petSexo {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.favorite {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: red;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

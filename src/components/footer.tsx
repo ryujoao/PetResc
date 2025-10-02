@@ -7,20 +7,20 @@ export default function Footer() {
         <div className={style.rowFooter}>
           
           <div className={style.footerCol}>
-            <h4 className={style.petcoFooter}>PetCo</h4>
-            <p className={style.petcoDescricao}>
-              PetControl conecta ONGs, protetores e a comunidade para facilitar resgates, adoções e cuidados com animais.
+            <h4 className={style.animaFooter}>Anima</h4>
+            <p className={style.animaDescricao}>
+              Anima conecta ONGs, protetores e a comunidade para facilitar resgates, adoções e cuidados com animais.
             </p>
           </div>
 
           <div className={style.footerCol}>
             <h4>Menu</h4>
             <ul>
-              <li><a href="#">Início</a></li>
+              <li><a href="/home">Início</a></li>
               <li><a href="#">Animais para Adoção</a></li>
-              <li><a href="#">Registrar Animal</a></li>
-              <li><a href="#">Doações</a></li>
-              <li><a href="#">Seja um Lar Temporário</a></li>
+              <li><a href="/registrarAnimal">Registrar Animal</a></li>
+              <li><a href="/doar">Doações</a></li>
+              <li><a href="/larTemporario">Seja um Lar Temporário</a></li>
               <li><a href="#">Contato</a></li>
             </ul>
           </div>
