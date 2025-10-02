@@ -31,16 +31,19 @@ export default function CadastroUsu() {
       });
 
       alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
-      navigate('/login'); // Redireciona para a página de login após o sucesso
+      navigate('/login'); 
+  } catch (err: any) {
+      console.error("Erro no cadastro:", err); 
 
-    } catch (err: any) {
-      // Captura os erros 
-      if (err.response && err.response.data && err.response.data.error) {
+      if (err.response?.data?.error) {
         setError(err.response.data.error);
-      } else {
-        setError('Ocorreu um erro inesperado. Tente novamente.');
+      } 
+      else if (err.response) {
+        setError(`Erro ${err.response.status}: O servidor respondeu, mas não foi possível processar a resposta.`);
       }
-      console.error("Erro no cadastro:", err);
+      else {
+        setError('Ocorreu um erro de rede. O servidor está offline?');
+      }
     }
   };
   return (
