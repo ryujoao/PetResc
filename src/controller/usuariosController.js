@@ -101,27 +101,52 @@ const registrarUsuarioPublico = async (req, res) => {
   }
 };
 
-// LOGADO: Obter usuário
+
+// LOGADO: Obter usuário (VERSÃO DE DEBUG)
 const obterUsuarioPorId = async (req, res) => {
-  try {
-    const userIdToView = parseInt(req.params.id);
-    const loggedInUser = req.account;
+    console.log("\n--- [DEBUG] REQUISIÇÃO RECEBIDA EM GET /usuarios/:id ---");
 
-    if (loggedInUser.role !== 'ADMIN' && loggedInUser.id !== userIdToView) {
-      return res.status(403).json({ error: "Acesso negado" });
+    try {
+        const userIdToView = parseInt(req.params.id);
+        console.log(`--- [DEBUG] ID para visualizar: ${userIdToView}`);
+
+        const loggedInUser = req.account;
+        console.log("--- [DEBUG] Dados do usuário extraídos do token (req.account):", loggedInUser);
+
+        // Verificação para evitar crash se o token for inválido e loggedInUser for nulo
+        if (!loggedInUser) {
+            console.log("--- [DEBUG] ERRO: req.account está indefinido. O middleware de autenticação pode ter falhado.");
+            // Retornando um erro claro aqui, caso seja esse o problema.
+            return res.status(500).json({ error: "Falha na autenticação - req.account não definido." });
+        }
+
+        if (loggedInUser.role !== 'ADMIN' && loggedInUser.id !== userIdToView) {
+            console.log("--- [DEBUG] Acesso negado pela regra de permissão.");
+            return res.status(403).json({ error: "Acesso negado" });
+        }
+
+        console.log("--- [DEBUG] Permissão concedida. Buscando no banco de dados...");
+        const account = await prisma.account.findUnique({
+            where: { id: userIdToView },
+            include: { admin: true, ong: true, publico: true }
+        });
+        
+        console.log("--- [DEBUG] Resultado da busca no banco:", account);
+
+        if (!account) {
+            console.log("--- [DEBUG] Usuário não encontrado no banco.");
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        delete account.password;
+        console.log("--- [DEBUG] Enviando resposta de sucesso.");
+        res.json(account);
+
+    } catch (err) {
+        console.log("--- [DEBUG] !!! ERRO CAPTURADO NO BLOCO CATCH !!! ---");
+        console.error(err); // Forçando a exibição do erro
+        res.status(500).json({ error: 'Erro ao obter usuário.' });
     }
-
-    const account = await prisma.account.findUnique({
-      where: { id: userIdToView },
-      include: { admin: true, ong: true, publico: true }
-    });
-    if (!account) return res.status(404).json({ error: 'Usuário não encontrado' });
-
-    delete account.password;
-    res.json(account);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao obter usuário.' });
-  }
 };
 
 // LOGADO: Atualizar usuário

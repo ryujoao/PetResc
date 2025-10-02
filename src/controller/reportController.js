@@ -1,47 +1,51 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// CREATE
 const criarReport = async (req, res) => {
-    const usuarioId = req.account.id; 
+    // Pega o ID do usuário logado diretamente do token (mais seguro)
+    const usuarioLogadoId = req.account.id;
+    
+    // Pega os dados do corpo da requisição
+    const { descricao, localizacao, contato, animalId, anonimo } = req.body;
 
-    const { animalId, descricao, endereco } = req.body; 
-
-    if (!descricao) {
-        return res.status(400).json({ error: "O campo 'descricao' é obrigatório" });
+    if (!descricao || !localizacao) {
+        return res.status(400).json({ error: "Descrição e localização são obrigatórias." });
     }
 
     try {
-        const data = {
+        const dadosParaCriar = {
             descricao,
-            usuario: { 
+            localizacao,
+            contato: contato || "", // Garante que contato não seja nulo se não for enviado
+            anonimo: anonimo || false,
+            autor: { // Usa o nome da relação 'autor' para conectar ao usuário
                 connect: {
-                    id: usuarioId
+                    id: usuarioLogadoId
                 }
             }
         };
 
+        // Adiciona a conexão com o animal apenas se um animalId for fornecido
         if (animalId) {
-            data.animal = {
+            dadosParaCriar.animal = {
                 connect: {
                     id: parseInt(animalId)
                 }
             };
-        } else if (!endereco) {
-             return res.status(400).json({ error: "Para denúncias de animais não cadastrados, o endereço é obrigatório." });
-        } else {
-            data.endereco = endereco; // Salva o endereço na denúncia
         }
 
-        const report = await prisma.report.create({ data });
-        
-        res.status(201).json({ message: "Denúncia registrada com sucesso", report });
+        // Usa prisma.denuncia, pois o modelo no schema é 'Denuncia'
+        const novaDenuncia = await prisma.denuncia.create({
+            data: dadosParaCriar
+        });
+
+        res.status(201).json({ message: "Denúncia registrada com sucesso", denuncia: novaDenuncia });
+
     } catch (err) {
-        console.error(err);
+        console.error("ERRO DETALHADO AO CRIAR DENÚNCIA:", err);
         res.status(500).json({ error: "Erro ao registrar denúncia" });
     }
 };
-
 // Listardenuncias
 const listarReports = async (req, res) => {
   try {

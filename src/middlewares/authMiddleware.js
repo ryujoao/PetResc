@@ -13,8 +13,7 @@ const authenticateToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ message: 'Token inválido ou expirado' });
     }
-    req.user = decoded; // aqui vai ter { id, role }
-    next();
+    req.account = decoded;     next();
   });
 };
 

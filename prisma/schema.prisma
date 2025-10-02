@@ -9,20 +9,20 @@ datasource db {
 
 /// login usuario
 model Account {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
-  role     Role
-  admin    Admin?
-  ong      Ong?
-  publico  Publico?
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      Role
+  admin     Admin?
+  ong       Ong?
+  publico   Publico?
 
   // Relaçoes inversas
   doacoes        Doacao[]
   larTemporarios LarTemporario[]
   animals        Animal[]
+  denuncias      Denuncia[] // <--- ADICIONE ESTA LINHA
 }
-
 /// papeis possíveis
 enum Role {
   ADMIN
@@ -183,6 +183,8 @@ model Denuncia {
   animalId Int?
   
   animal   Animal? @relation("AnimalDenuncias", fields: [animalId], references: [id])
+  autor        Account? @relation(fields: [createdBy], references: [id])
+
   
   @@map("denuncias")
 }
