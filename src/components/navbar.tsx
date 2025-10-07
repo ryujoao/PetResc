@@ -17,7 +17,7 @@ export default function Nav() {
             <img
               src="/logo.png"
               alt="Logo"
-              style={{ maxWidth: "150px", height: "98px" }}
+              style={{ maxWidth: "90px", height: "60px", marginTop: "10px", marginLeft: "10px" }}
             />
           </Link>
         </div>

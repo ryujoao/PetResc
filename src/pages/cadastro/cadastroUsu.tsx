@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from "../style/cadastroUsu.module.css";
+import styles from "./cadastroUsu.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import api from '../services/api';
+import api from '../../services/api';
 
 import * as Icon from "react-bootstrap-icons";
 import "@fortawesome/fontawesome-free/css/all.min.css";

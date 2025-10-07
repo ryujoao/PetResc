@@ -1,17 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/home";
+import Home from "./pages/home/home";
 import Denuncie from "./pages/denuncie";
-import Doar from "./pages/doar";
-import Adotar from "./pages/adotar";
+import Doar from "./pages/doar/doar";
+import Adotar from "./pages/adotar/adotar";
 import LarTemporario from "./pages/larTemporario";
-import CadastroUsu from "./pages/cadastroUsu";
-import Index from "./pages/index";
-import RegistrarAnimal from "./pages/registrarAnimal";
-import CentralAdocao from "./pages/centralAdocao";
-import Perfil from "./pages/perfil";
-import PerfilAnimal from "./pages/perfilAnimal";
-
+import CadastroUsu from "./pages/cadastro/cadastroUsu";
+import Index from "./pages/index/index";
+import RegistrarAnimal from "./pages/registrarAnimal/registrarAnimal";
+import CentralAdocao from "./pages/centralAdocao/centralAdocao";
+import Perfil from "./pages/perfil/perfil";
+import PerfilAnimal from "./pages/perfilAnimal/perfilAnimal";
 
 function App() {
   return (

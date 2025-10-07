@@ -1,4 +1,4 @@
-import styles from '../style/saibaMais.module.css';
+import styles from './saibaMais.module.css';
 
 export default function SaibaMais() {
     return (

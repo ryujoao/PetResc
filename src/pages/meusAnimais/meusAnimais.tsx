@@ -1,4 +1,4 @@
-import styles from "../style/meusAnimais.module.css";
+import styles from "./meusAnimais.module.css";
 
 export default function MeusAnimais() {
   return (

@@ -1,4 +1,4 @@
-import styles from "../style/ongsProximas.module.css";
+import styles from "./ongsProximas.module.css";
 
 export default function OngsProximas() {
   return (

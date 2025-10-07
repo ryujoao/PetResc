@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import Nav from "../components/navbar";
-import styles from "../style/registrarAnimal.module.css";
+import Nav from "../../components/navbar";
+import styles from "./registrarAnimal.module.css";
 
 export default function RegistrarAnimal() {
   const pageRef = useRef<HTMLDivElement | null>(null);

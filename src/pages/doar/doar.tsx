@@ -1,6 +1,6 @@
-import Footer from "../components/footer";
-import Nav from "../components/navbar";
-import styles from "../style/doar.module.css";
+import Footer from "../../components/footer";
+import Nav from "../../components/navbar";
+import styles from "./doar.module.css";
 
 export default function Doar() {
   return (
@@ -12,7 +12,7 @@ export default function Doar() {
           Veja a Diferença Que Você Pode Fazer
         </h1>
         <h2 className={styles.subtitle}>
-          No PetControl, você pode apoiar diretamente as ONGs cadastradas. Cada
+          No PetResc, você pode apoiar diretamente as ONGs cadastradas. Cada
           contribuição ajuda a oferecer alimentação, cuidados médicos e abrigo
           para animais em situação de vulnerabilidade. Escolha a ONG que mais
           toca seu coração e faça parte dessa rede de solidariedade.

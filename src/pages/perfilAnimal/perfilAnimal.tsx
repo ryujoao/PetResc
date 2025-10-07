@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import Nav from "../components/navbar";
-import styles from "../style/perfilAnimal.module.css";
+import Nav from "../../components/navbar";
+import styles from "./perfilAnimal.module.css";
 
 type Pet = {
   nome: string;

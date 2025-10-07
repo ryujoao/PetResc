@@ -1,4 +1,4 @@
-import styles from "../style/nossaMissao.module.css";
+import styles from "./nossaMissao.module.css";
 
 export default function NossaMissao() {
   return (

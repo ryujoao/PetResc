@@ -1,5 +1,5 @@
-import styles from "../style/centralAdocao.module.css";
-import Nav from "../components/navbar";
+import styles from "./centralAdocao.module.css";
+import Nav from "../../components/navbar";
 import { useLayoutEffect, useRef, useState } from "react";
 
 

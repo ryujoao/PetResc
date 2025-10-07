@@ -2,9 +2,6 @@ import { Link } from "react-router-dom";
 import style from "../style/navbar.module.css";
 
 export default function Nav() {
-  // function handleSearch(term: string) {
-    // console.log("Buscando por:", term);
-
 
   return (
     <>
