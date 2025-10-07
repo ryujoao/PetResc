@@ -8,7 +8,7 @@ export default function MeusAnimais() {
 
         <div className={styles.card}>
           <div className={styles.imgCard}>
-            <img src="/animalSemNome.png" alt="Animal Sem Nome" />
+            <img src="../../../public/animais/animalSemNome.png" alt="Animal Sem Nome" />
           </div>
 
           <div className={styles.infoCard}>
@@ -25,7 +25,7 @@ export default function MeusAnimais() {
 
         <div className={styles.card}>
           <div className={styles.imgCard}>
-            <img src="/amendoim.png" alt="Amendoim" />
+            <img src="../../../public/animais/amendoim.png" alt="Amendoim" />
           </div>
 
           <div className={styles.infoCard}>
@@ -47,7 +47,7 @@ export default function MeusAnimais() {
 
         <div className={styles.card}>
           <div className={styles.imgCard}>
-            <img src="/estrela.png" alt="Estrela" />
+            <img src="../../../public/animais/estrela.png" alt="Estrela" />
           </div>
 
           <div className={styles.infoCard}>

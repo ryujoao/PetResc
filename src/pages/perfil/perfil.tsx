@@ -105,19 +105,19 @@ export default function Perfil() {
               nome: "Zeus",
               raca: "Pitbull.",
               sexo: "M",
-              img: "/zeus.png",
+              img: "../../../public/animais/zeus.png",
             },
             {
               nome: "Frajola",
               raca: "Sem raça definida (SRD)",
               sexo: "F",
-              img: "/frajola.png",
+              img: "../../../public/animais/frajola.png",
             },
             {
               nome: "Branquinho",
               raca: "Sem raça definida (SRD)",
               sexo: "M",
-              img: "/branquinho.png",
+              img: "../../../public/animais/branquinho.png",
             },
           ].map((pet, index) => (
             <div key={index} className={styles.petCard}>

@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/home/home";
-import Denuncie from "./pages/denuncie";
 import Doar from "./pages/doar/doar";
 import Adotar from "./pages/adotar/adotar";
-import LarTemporario from "./pages/larTemporario";
+import LarTemporario from "./pages/larTemporario/larTemporario";
 import CadastroUsu from "./pages/cadastro/cadastroUsu";
 import Index from "./pages/index";
 import RegistrarAnimal from "./pages/registrarAnimal/registrarAnimal";
 import CentralAdocao from "./pages/centralAdocao/centralAdocao";
 import Perfil from "./pages/perfil/perfil";
 import PerfilAnimal from "./pages/perfilAnimal/perfilAnimal";
+import Institutos from "./pages/institutos/institutos";
 
 function App() {
   return (
@@ -18,7 +18,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/denuncie" element={<Denuncie />} />
         <Route path="/adotar" element={<Adotar />} />
         <Route path="/larTemporario" element={<LarTemporario />} />
         <Route path="/doar" element={<Doar />} />
@@ -27,6 +26,7 @@ function App() {
         <Route path="/centralAdocao" element={<CentralAdocao />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/perfilAnimal/:id" element={<PerfilAnimal />} />
+        <Route path="/instituto/:id" element={<Institutos />} />
       </Routes>
     </BrowserRouter>
   );

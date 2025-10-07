@@ -65,12 +65,12 @@ export default function CadastroUsu() {
 
           <div className={styles.botoesRedes}>
             <button type="button" className={styles.botaoRede}>
-              <img className={styles.google} src="google.png" alt="Google" />
+              <img className={styles.google} src="../../../public/icones/google.png" alt="Google" />
               Cadastre-se com o Google
             </button>
 
             <button type="button" className={styles.botaoRede}>
-              <img className={styles.apple} src="apple.png" alt="Apple" />
+              <img className={styles.apple} src="../../../public/icones/apple.png" alt="Apple" />
               Cadastre-se com a Apple
             </button>
           </div>
