@@ -27,7 +27,7 @@ const pets: Record<string, Pet> = {
     sexo: "Macho",
     porte: "Médio",
     cor: "Azul",
-    imagem: "/branquinho.png",
+    imagem: "../../../public/animais/branquinho.png",
     cuidados: ["Vacinado", "Castrado", "Vermifugado"],
     temperamento: ["Sociável", "Brincalhão", "Carente"],
     sociabilidade: [
@@ -46,7 +46,7 @@ const pets: Record<string, Pet> = {
     sexo: "Macho",
     porte: "Grande",
     cor: "Preto",
-    imagem: "/zeus.png",
+    imagem: "../../../public/animais/zeus.png",
     cuidados: ["Vacinado", "Castrado"],
     temperamento: ["Protetor", "Leal"],
     sociabilidade: ["Com adultos"],

@@ -1,5 +1,5 @@
-import Nav from "../components/navbar";
-import styles from "../style/larTemporario.module.css";
+import Nav from "../../components/navbar";
+import styles from "./larTemporario.module.css";
 
 
 export default function LarTemporario() {

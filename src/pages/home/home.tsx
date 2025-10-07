@@ -1,7 +1,7 @@
 import Nav from "../../components/navbar";
 import styles from "./home.module.css";
 import Footer from "../../components/footer";
-import MeusAnimais from "../meusAnimais/meusAnimais";
+import MeusAnimais from "./meusAnimais";
 import OngsProximas from "../home/ongsProximas";
 import { Link } from "react-router-dom";
 

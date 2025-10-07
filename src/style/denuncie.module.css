@@ -1,0 +1,75 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: #000;
+}
+
+.titulo {
+  display: flex;
+  justify-content: center;
+}
+
+.subtitulo {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.modal {
+  background: #fff;
+  padding: 0 2rem 2rem 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+  color: #c62828;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.modal li {
+  margin-bottom: 0.5rem;
+}
+
+.vermelhoPopUp {
+  color: #c62828;
+}
+
+.vermelhoPopUp strong {
+  color: #000;
+}
+
+.divisoria {
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.sairPopUp {
+  position: absolute;
+  color: #000;
+  cursor: pointer;
+  font-size: 2.5rem;
+  line-height: 1;
+}

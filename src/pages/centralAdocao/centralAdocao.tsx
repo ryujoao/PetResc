@@ -219,25 +219,25 @@ export default function CentralAdocao() {
 
           <section className={styles.listaPets}>
             <div className={styles.cardPet}>
-              <img src="branquinho.png" alt="branquinho" />
+              <img src="../../../public/animais/branquinho.png" alt="branquinho" />
               <h3>Branquinho</h3>
               <p>Sem raça definida (SRD)</p>
             </div>
 
             <div className={styles.cardPet}>
-              <img src="feijao.png" alt="Feijão" />
+              <img src="../../../public/animais/feijao.png" alt="Feijão" />
               <h3>Feijão</h3>
               <p>Sem raça definida (SRD)</p>
             </div>
 
              <div className={styles.cardPet}>
-              <img src="zeus.png" alt="Zeus" />
+              <img src="../../../public/animais/zeus.png" alt="Zeus" />
               <h3>Zeus</h3>
               <p>Pitbull</p>
             </div>
 
              <div className={styles.cardPet}>
-              <img src="frajola.png" alt="Frajola" />
+              <img src="../../../public/animais/frajola.png" alt="Frajola" />
               <h3>Frajola</h3>
               <p>Sem raça definida (SRD)</p>
             </div>

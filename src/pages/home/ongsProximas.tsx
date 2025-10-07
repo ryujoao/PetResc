@@ -7,7 +7,7 @@ export default function OngsProximas() {
         <h2 className={styles.titulo}>ONGs próximas a você</h2>
 
         <div className={styles.card}>
-          <img src="/ong1.png" alt="ONG 1" />
+          <img src="../../../public/home/ong1.png" alt="ONG 1" />
           <div>
             <h3>ONG 1</h3>
             <p>Rua do Saber, 223 - Vila Santo Antônio, Cotia - SP</p>
@@ -16,7 +16,7 @@ export default function OngsProximas() {
         </div>
 
         <div className={styles.card}>
-          <img src="/ong2.png" alt="ONG 2" />
+          <img src="../../../public/home/ong2.png" alt="ONG 2" />
           <div>
             <h3>ONG 2</h3>
             <p>Avenida da Inovação, 1420 - Vila Santo Antônio, Cotia - SP</p>
@@ -25,7 +25,7 @@ export default function OngsProximas() {
         </div>
 
         <div className={styles.card}>
-          <img src="/ong3.png" alt="ONG 3" />
+          <img src="../../../public/home/ong3.png" alt="ONG 3" />
           <div>
             <h3>ONG 3</h3>
             <p>Travessa dos Estudos, 48 - Vila Santo Antônio, Cotia - SP</p>

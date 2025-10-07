@@ -15,7 +15,7 @@ html, body {
 .bannerUm {
   width: 100vw;
   height: 100vh;
-  background: url('/banner3.png') no-repeat center center;
+  background: url('../../../public/banners/banner3.png') no-repeat center center;
   background-size: cover;
   display: flex;
   align-items: center;

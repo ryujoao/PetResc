@@ -6,8 +6,8 @@ export default function NossaMissao() {
       <div className={styles.containerPrincipal}>
         <div className={styles.containerNossaMissao}>
           <div className={styles.imgAnimais}>
-            <img className={styles.cachorro} src="/cachorroMissao.png" alt="" />
-            <img className={styles.gato} src="/gatoMissao.png" alt="" />
+            <img className={styles.cachorro} src="../../../public/banners/cachorroMIssao.png" alt="" />
+            <img className={styles.gato} src="../../../public/banners/gatoMissao.png" alt="" />
           </div>
           <div className={styles.tituloNossaMissao}>
             <h2 className={styles.titulo}>Nossa Missão</h2>
