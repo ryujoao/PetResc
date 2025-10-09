@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "./cadastroUsu.module.css";
 import { useNavigate } from "react-router-dom";
-
+import { GoogleAuthProvider, signInWithPopup, type User,  } from 'firebase/auth';
+// import { auth } from '../../services/firebaseConfig'; // Importando a instância do auth
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+
 export default function CadastroUsu() {
+
   const navigate = useNavigate();
 
   // Estados para os campos desta página
@@ -106,7 +109,7 @@ export default function CadastroUsu() {
           </p>
         </form>
       </div>
-      <div className={styles.bannerSessao}></div>
+      <div className={styles.bannerCadastro}></div>
     </div>
   );
 }

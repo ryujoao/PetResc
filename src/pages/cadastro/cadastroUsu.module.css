@@ -36,13 +36,13 @@
 
 .bannerCadastro {
   width: 50%;
-  background: #F0F9FF url('/banners/cadastroImagem.png') no-repeat right;
+  background: #F0F9FF url('../../../public/banners/cadastroImagem.png') no-repeat right;
 ;
 }
 
 .bannerLogin {
   width: 50%;
-  background: #F0F9FF url('/banners/loginImagem.png') no-repeat center;
+  background: #F0F9FF url('../../../public/banners/loginImagem.png') no-repeat center;
   background-size: 600px
 ;
 
@@ -111,6 +111,12 @@
   background-color: #fff;
   color: #000000;
   border: 1px solid #286699;
+}
+
+.botaoRede:hover {
+  color: #fff;
+  background: #286699;
+  transition: 0.3s;
 }
 
 .google {
@@ -188,6 +194,7 @@
 .botaoProx:hover {
   background: #fff;
   color: #286699;
+  transition: 0.3s;
 }
 
 .loginLink {

@@ -105,7 +105,7 @@ export default function Login() {
           </button>
           </Link>
           <p className={styles.loginLink}>
-            Não tem uma conta? <a href="/cadastroUsu">Cadastre-se</a>
+            Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
           </p>
         </form>
       </div>
