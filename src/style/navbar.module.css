@@ -59,13 +59,50 @@
   font-weight: 700;
 }
 
+.botoesCadastro {
+  display: flex;
+
+  margin-left: auto;
+  padding: 0 2rem;
+  gap: 4rem;
+  font-size: 23px;
+}
+
 .botoesCadastro button {
   font-size: 1.5rem;
   font-weight: 600;
   min-width: 250px;
   max-height: 50px;
   border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.5rem;
+  transition: 0.3s;
 }
+
+.cadastroONG {
+  background-color: #286699;
+  color: white;
+}
+
+.cadastroONG:hover {
+  background-color: aliceblue;
+  color: #286699;
+}
+
+.cadastro {
+  background-color: #4baef2;
+  color: white;
+}
+
+.cadastro:hover {
+  background-color: #1976d2;
+}
+
+
 
 .navLink {
   background: none;
