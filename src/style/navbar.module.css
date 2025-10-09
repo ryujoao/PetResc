@@ -5,12 +5,9 @@
 .navbar {
   display: flex;
   width: 100%;
-  display: flex;
-  width: 100%;
   position: fixed;
   top: 40px;
   left: 0;
-  width: 100%;
   background-color: white;
   align-items: center;
   max-height: 90px;

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../style/notificacoes.module.css';
 
 export default function Notificacoes() {

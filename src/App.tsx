@@ -14,6 +14,8 @@ import Institutos from "./pages/institutos/institutos";
 import CadastroNext from "./pages/cadastro/cadastroNext";
 import CadastroOng from "./pages/cadastro/cadastroOng";
 import Login from "./pages/login/login";
+import CadastroFinal from "./pages/cadastro/cadastroFinal";
+import FormularioLarTemporario from "./pages/larTemporario/formularioLarTemporario";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
         <Route path="/perfilAnimal/:id" element={<PerfilAnimal />} />
         <Route path="/instituto/:id" element={<Institutos />} />
         <Route path="/cadastroOng" element={<CadastroOng />} />
+        <Route path="/cadastroFinal" element={<CadastroFinal />} />
+        <Route path="/formularioLarTemporario" element={<FormularioLarTemporario />} />
       </Routes>
     </BrowserRouter>
   );

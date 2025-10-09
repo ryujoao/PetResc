@@ -36,13 +36,13 @@
 
 .bannerCadastro {
   width: 50%;
-  background: #F0F9FF url('/banners/cadastroImagem.png') no-repeat right;
+  background: #F0F9FF url('../../../public/banners/cadastroImagem.png') no-repeat right;
 ;
 }
 
 .bannerLogin {
   width: 50%;
-  background: #F0F9FF url('/banners/loginImagem.png') no-repeat center;
+  background: #F0F9FF url('../../../public/banners/loginImagem.png') no-repeat center;
   background-size: 600px
 ;
 
@@ -164,12 +164,25 @@
   font-size: 1.3rem;
 }
 
+.linhaCampos {
+  display: flex;        
+  gap: 1rem;              
+  align-items: flex-start;  
+}
+
+.campoMetade {
+  flex: 1;                
+  min-width: 0;           
+}
+
 .inputLogin {
   width: 100%;
-  padding: 0.75rem;
+  padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #286699;
   font-size: 1.3rem;
+  background-color: #fff;
+  color: #000;
 }
 
 .botaoProx {
@@ -205,13 +218,4 @@
 
 .loginLink a:hover {
   text-decoration: underline;
-}
-
-.inputLogin {
-  border: 1px solid #286699;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  width: 100%;
-  background-color: #fff;
-  color: #000;
 }
