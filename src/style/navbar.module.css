@@ -59,29 +59,12 @@
   font-weight: 700;
 }
 
-.botoesCadastro {
-  display: flex;
-
-  margin-left: auto;
-  padding: 0 2rem;
-  /* margin-right: 5rem; */
-  gap: 4rem;
-  font-size: 23px;
-}
-
 .botoesCadastro button {
   font-size: 1.5rem;
   font-weight: 600;
   min-width: 250px;
   max-height: 50px;
   border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0.5rem;
-  transition: 0.3s;
 }
 
 .navLink {
@@ -94,76 +77,6 @@
   text-decoration: none;
   padding: 0;
   transition: color 0.2s ease;
-}
-
-
-.cadastroONG {
-  background-color: #286699;
-  color: white;
-}
-
-.cadastroONG:hover {
-  background-color: aliceblue;
-  color: #286699;
-}
-
-.cadastro {
-  background-color: #4baef2;
-  color: white;
-}
-
-.cadastro:hover {
-  background-color: #1976d2;
-}
-
-.formSearch {
-  display: flex;
-  align-items: center;
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-}
-
-.searchWrapper {
-  position: relative;
-  width: 400px;
-}
-
-.formSearch {
-  display: flex;
-  align-items: center;
-  background: #eaeef7;
-  border-radius: 24px;
-  padding: 2px 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-  position: relative;
-}
-
-.iconSearch {
-  display: flex;
-  align-items: center;
-  color: #b0b8c1;
-  margin-right: 8px;
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.inputSearch {
-  border: none;
-  background: transparent;
-  color: #666768;
-  padding: 8px 8px 8px 36px;
-  outline: none;
-  font-size: 1rem;
-  width: 100%;
-}
-
-.inputSearch::placeholder {
-  color: #858585;
-  opacity: 1;
 }
 
 @media (max-width: 1513px) {
@@ -210,6 +123,7 @@
   font-weight: 500;
   color: #333;
   font-size: 1.2rem;
+  list-style-type: none;
 }
 
 .perfilUsuario svg {

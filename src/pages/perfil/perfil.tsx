@@ -120,7 +120,7 @@ export default function Perfil() {
               nome: "Branquinho",
               raca: "Sem raça definida (SRD)",
               sexo: "M",
-              img: "/branquinho.png",
+              img: "../../../public/animais/branquinho.png",
             },
           ].map((pet, index) => (
             <div key={index} className={styles.petCard}>

@@ -5,72 +5,84 @@ import styles from "./registrarAnimal.module.css";
 export default function RegistrarAnimal() {
   const pageRef = useRef<HTMLDivElement | null>(null);
 
-  /* NavBar e TopBar com posições fixas e nao sobrepondo o código*/
   useLayoutEffect(() => {
+    // ... (seu código para ajustar o padding da página continua igual)
     const pageEl = pageRef.current;
     if (!pageEl) return;
-
-    const topBar = document.querySelector(
-      `.${styles.topBar}`
-    ) as HTMLElement | null;
-    const navBar = document.querySelector(
-      `.${styles.navbar}`
-    ) as HTMLElement | null;
-
+    const topBar = document.querySelector(".topBar") as HTMLElement | null;
+    const navBar = document.querySelector(".navbar") as HTMLElement | null;
     const topHeight = topBar?.offsetHeight ?? 0;
     const navHeight = navBar?.offsetHeight ?? 0;
     const totalHeight = topHeight + navHeight;
-
     pageEl.style.paddingTop = `${totalHeight}px`;
-    pageEl.style.minHeight = `calc(100vh - ${totalHeight}px)`;
   }, []);
 
-  // Estado que guarda a imagem selecionada (como base64)
+  // O seu estado para guardar a imagem continua o mesmo
   const [imagemSelecionada, setImagemSelecionada] = useState<string | null>(
     null
   );
+
+  // A sua função para ler o arquivo também continua a mesma
+  const handleSelecaoDeArquivo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagemSelecionada(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <>
       <Nav />
       <div ref={pageRef} className={styles.pageRegistroAnimal}>
         <div className={styles.colunaUm}>
+          {/* ALTERADO: Toda a área de imagem foi refatorada */}
           <div className={styles.imagemContainer}>
-            {/* Label associada ao input escondido, mas aplicada só na imagem */}
-            <label htmlFor="uploadImagem">
-              <img
-                // Se tiver imagem selecionada, mostra ela. Senão, mostra imagem padrão
-                src={imagemSelecionada || "/iconeImg.png"} // substitua pelo caminho do seu ícone
-                alt="Clique para selecionar imagem"
-                className={styles.imagem}
-                style={{ cursor: "pointer" }}
-              />
-            </label>
-
-            {/* Texto explicativo só aparece se nenhuma imagem foi selecionada */}
-            {!imagemSelecionada && (
-              <span className={styles.textoImagem}>
-                Arraste uma imagem nesta área, ou clique na imagem para
-                selecionar.
-              </span>
+            {/* Se NENHUMA imagem foi selecionada, mostra o novo formulário de upload */}
+            {!imagemSelecionada ? (
+              <form className={styles.formularioUploadArquivo}>
+                <label
+                  className={styles.rotuloUploadArquivo}
+                  htmlFor="uploadImagem"
+                >
+                  <div className={styles.designUploadArquivo}>
+                    <svg height="1em" viewBox="0 0 640 512">
+                      <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
+                    </svg>
+                    <p>Arraste uma imagem nesta área</p>
+                    <p>ou</p>
+                    <span className={styles.botaoNavegar}>
+                      clique para selecionar uma imagem
+                    </span>
+                  </div>
+                </label>
+              </form>
+            ) : (
+              // Se UMA imagem foi selecionada, mostra a pré-visualização
+              <div className={styles.previewContainer}>
+                <img
+                  src={imagemSelecionada}
+                  alt="Pré-visualização da imagem selecionada"
+                  className={styles.imagem}
+                />
+                <label
+                  htmlFor="uploadImagem"
+                  className={styles.botaoTrocarImagem}
+                >
+                  Trocar Imagem
+                </label>
+              </div>
             )}
 
-            {/* Input escondido que abre ao clicar na imagem */}
             <input
               type="file"
               id="uploadImagem"
               accept="image/*"
               style={{ display: "none" }}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = () => {
-                    setImagemSelecionada(reader.result as string); // salva a imagem como base64
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
+              onChange={handleSelecaoDeArquivo}
             />
           </div>
 
@@ -81,7 +93,7 @@ export default function RegistrarAnimal() {
             className={styles.barraInfos}
             type="text"
             id="nome"
-            placeholder="Digite Deixe em branco se não tiver nome"
+            placeholder="Deixe em branco se não tiver nome"
             required
           />
           <label className={styles.label} htmlFor="historia">
@@ -108,7 +120,7 @@ export default function RegistrarAnimal() {
           <textarea
             className={styles.barraInfos}
             id="sociabilidade"
-            placeholder="Ex: Sociável com estranhos,  Sociável com gatos, ETC."
+            placeholder="Ex: Sociável com estranhos,  Sociável com gatos, ETC."
             required
           ></textarea>
         </div>

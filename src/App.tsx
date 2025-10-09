@@ -11,8 +11,9 @@ import CentralAdocao from "./pages/centralAdocao/centralAdocao";
 import Perfil from "./pages/perfil/perfil";
 import PerfilAnimal from "./pages/perfilAnimal/perfilAnimal";
 import Institutos from "./pages/institutos/institutos";
-import Login from "./pages/login/login";
 import CadastroNext from "./pages/cadastro/cadastroNext";
+import CadastroOng from "./pages/cadastro/cadastroOng";
+import Login from "./pages/login/login";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/perfilAnimal/:id" element={<PerfilAnimal />} />
         <Route path="/instituto/:id" element={<Institutos />} />
+        <Route path="/cadastroOng" element={<CadastroOng />} />
       </Routes>
     </BrowserRouter>
   );

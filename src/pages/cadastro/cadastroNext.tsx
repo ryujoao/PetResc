@@ -1,52 +1,72 @@
 import React, { useState } from 'react';
-import styles from "../cadastro/cadastroUsu.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import styles from "./cadastroUsu.module.css"; // Mantive o seu import de estilo
+import { useNavigate, useLocation } from "react-router-dom";
 import api from '../../services/api';
 
-import "@fortawesome/fontawesome-free/css/all.min.css";
-
 export default function CadastroNext() {
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
-  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [cpf, setCpf] = useState('');
+  const location = useLocation();
+  const [telefone, setTelefone] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [error, setError] = useState('');
 
-   const handleRegister = async (e: React.FormEvent) => {
+  // --- Lógica Unificada de Submissão ---
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (!name || !email || !password || !cpf) {
-      setError('Por favor, preencha todos os campos obrigatórios (nome, email, senha e CPF).');
+    // 1. Validação dos campos desta página
+    if (!telefone || !senha || !confirmarSenha) {
+      setError('Por favor, preencha todos os campos.');
       return;
     }
 
+    if (senha !== confirmarSenha) {
+      setError('As senhas não coincidem.');
+      return;
+    }
+
+    // 2. Recuperar os dados da página anterior (enviados via state)
+    const dadosPrimeiraPagina = location.state?.dados;
+    if (!dadosPrimeiraPagina) {
+        // Medida de segurança: se o utilizador chegar aqui sem passar pela primeira página
+        setError("Ocorreu um erro. Por favor, inicie o cadastro novamente.");
+        console.error("Dados da primeira etapa do cadastro não encontrados no location.state");
+        return;
+    }
+
     try {
-      await api.post('/usuarios/register', {
-        name,
-        email,
-        password,
-        cpf 
-      });
+      // 3. Juntar os dados de ambas as páginas e enviar para a API
+      const dadosCompletos = {
+        ...dadosPrimeiraPagina, // Ex: { name, email, cpf }
+        telefone,
+        password: senha, // Envia para a API o campo 'password' com o valor do estado 'senha'
+      };
+      
+      // NOTA: Ajuste o endpoint '/usuarios/register' se o da ONG for diferente
+      await api.post('/usuarios/register', dadosCompletos);
 
-      // Salva o nome do usuário no localStorage
-      localStorage.setItem('nomeUsuario', name);
+      alert('Cadastro realizado com sucesso!');
 
-      alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
-      navigate('/login'); 
+      // 4. Lógica de Navegação Condicional (A MÁGICA ACONTECE AQUI)
+      const tipoDeCadastro = location.state?.tipo;
+
+      if (tipoDeCadastro === 'ong') {
+        // Se for uma ONG, vai para a 3ª etapa
+        // Sugestão de nome para a nova página: /cadastro-ong-final
+        navigate('/cadastro-ong-final');
+      } else {
+        // Se for um utilizador comum, vai para a home (ou login)
+        navigate('/home');
+      }
+
     } catch (err: any) {
-      console.error("Erro no cadastro:", err); 
-
+      console.error("Erro no cadastro:", err);
       if (err.response?.data?.error) {
         setError(err.response.data.error);
-      } 
-      else if (err.response) {
-        setError(`Erro ${err.response.status}: O servidor respondeu, mas não foi possível processar a resposta.`);
-      }
-      else {
-        setError('Ocorreu um erro de rede. O servidor está offline?');
+      } else {
+        setError('Ocorreu um erro ao processar seu cadastro. Tente novamente.');
       }
     }
   };
@@ -58,57 +78,51 @@ export default function CadastroNext() {
           <a href="/">PetResc</a>
         </div>
 
-        <form className={styles.form}  onSubmit={handleRegister}>
-          <h1 className={styles.titulo}>Cadastre-se</h1>
+        {/* O formulário agora chama a função 'handleSubmit' unificada */}
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <h1 className={styles.titulo}>Últimos Passos</h1>
           <p className={styles.subTitulo}>
-            Crie sua conta e ajude a transformar vidas
+            Complete seus dados para finalizar
           </p>
 
-          <div className={styles.divisoria}>
-            <div className={styles.linhaEsquerda}></div>
-            <span className={styles.texto}>ou</span>
-            <div className={styles.linhaDireita}></div>
-          </div>
-
+          {/* --- Campos Corrigidos --- */}
           <div>
-          <label className={styles.grupoInput}>Telefone</label>
+            <label className={styles.grupoInput}>Telefone</label>
             <input
-            className={styles.inputLogin}
-            type="text"
-            placeholder="(+55) 00 00000-0000"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            />         
+              className={styles.inputLogin}
+              type="text"
+              placeholder="(+55) 00 00000-0000"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+            />
           </div>
           <div>
-          <label className={styles.grupoInput}>Senha</label>
-  
-           <input
-            className={styles.inputLogin}
-            type="text"
-            placeholder="Digite sua senha"
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
-          />
-          </div>
-          <div>
-          <label className={styles.grupoInput}>Confirme sua senha</label>
-            
+            <label className={styles.grupoInput}>Senha</label>
             <input
-            className={styles.inputLogin}
-            type="text"
-            placeholder="Confirme sua senha"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+              className={styles.inputLogin}
+              type="password" // Tipo corrigido para esconder a senha
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className={styles.grupoInput}>Confirme sua senha</label>
+            <input
+              className={styles.inputLogin}
+              type="password" // Tipo corrigido para esconder a senha
+              placeholder="Confirme sua senha"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+            />
           </div>
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-          <Link to="/home">
-           <button type="submit" className={styles.botaoProx}>
-            Cadastrar
+          {/* REMOVIDO o <Link> daqui. O botão agora apenas submete o formulário */}
+          <button type="submit" className={styles.botaoProx}>
+            Finalizar Cadastro
           </button>
-          </Link>
+          
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
           </p>
@@ -118,4 +132,3 @@ export default function CadastroNext() {
     </div>
   );
 }
-    

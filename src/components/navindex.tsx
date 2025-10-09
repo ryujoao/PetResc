@@ -24,7 +24,9 @@ export default function Nav() {
         </ul>
 
         <ul className={style.botoesCadastro}>
+          <Link to={"/cadastroOng"} style={{ textDecoration: 'none' }}>
           <button className={style.cadastroONG}>Cadastre sua ONG</button>
+          </Link>
           <Link to={"/cadastro"} style={{ textDecoration: 'none' }} >
           <button className={style.cadastro}>Cadastre-se</button>
           </Link>
