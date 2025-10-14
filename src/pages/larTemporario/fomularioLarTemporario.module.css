@@ -1,40 +1,182 @@
-.pageFormularioLarTemporario {
+.pageFormulario {
   display: flex;
   width: 100vw;
-  min-height: calc(100vh - 130px);
+  min-height: 100vh;
   background-color: #fff;
   color: #0f4979;
 }
 
-.colunaUm {
+/* Coluna 1 */
+.coluna {
   flex: 1;
-  padding: 3rem;
+  padding: 2rem 3rem;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* centraliza horizontalmente */
-  text-align: center; /* centraliza textos e labels */
+}
+
+/* Coluna 2 */
+.coluna2 {
+  flex: 1;
+  padding: 2rem 3rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e0e0e0;
+}
+
+.titulo {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.tituloSecao {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f4979;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  text-align: left;
+  width: 100%;
+  display: block;
 }
 
 .barraInfos {
-  width: 80%;
-  padding: 0.7rem;
+  width: 100%;
+  padding: 0.8rem;
   margin-bottom: 1rem;
   border: 1px solid #6487a3;
   border-radius: 5px;
   background-color: white;
   color: #0f4979;
+  font-size: 1rem;
 }
 
-.label {
-  font-weight: 600;
-  margin-bottom: 10px;
-  text-align: left;
-  margin-top: 1rem;
-  width: 80%;
+.linhaCampos {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
 }
 
-/* Coluna do formulário */
-.colunaDois {
+.campoMetade {
   flex: 1;
-  padding: 2rem;
+}
+
+.secaoOpcoes {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.secaoOpcoes h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.tituloQuestao {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.grupoOpcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.checkboxCustomizado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+  position: relative;
+  user-select: none;
+}
+
+.checkboxCustomizado input {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #0f4979;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: background-color 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.checkboxCustomizado:hover input ~ .checkmark {
+  background-color: #f0f8ff;
+}
+
+.checkboxCustomizado input:checked ~ .checkmark {
+  background-color: #286699;
+  border-color: #286699;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkboxCustomizado input:checked ~ .checkmark::after {
+  display: block;
+}
+
+.checkboxCustomizado .checkmark::after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* --- CORREÇÃO DO BOTÃO ENVIAR --- */
+.botaoEnviar {
+  background: #286699;
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem; /* Bordas um pouco mais arredondadas como na imagem */
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border: 2px solid #286699;
+  transition: all 0.3s ease-in-out;
+  
+  /* Alterações para centralizar e ajustar a largura */
+  width: 80%;
+  margin-top: auto; /* Empurra para o final da coluna */
+  align-self: center; /* Centraliza horizontalmente */
+  margin-bottom: 1rem; /* Espaço na parte inferior */
+}
+
+.botaoEnviar:hover {
+  background: #fff;
+  color: #286699;
 }

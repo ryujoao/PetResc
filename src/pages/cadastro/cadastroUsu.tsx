@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from "./cadastroUsu.module.css";
 import { useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, signInWithPopup, type User,  } from 'firebase/auth';
 // import { auth } from '../../services/firebaseConfig'; // Importando a instância do auth
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
