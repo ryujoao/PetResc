@@ -1,44 +1,96 @@
-import React, { createContext, useState, useContext, type ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import api from '../services/api'; // O Contexto importa o Axios
+import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom'; // Para redirecionar
 
+// 1. Interface para os dados do usuário (vem do backend)
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
+// 2. Interface para o valor do Contexto (O "CONTRATO")
 interface AuthContextType {
-  isAuthenticated: boolean;
-  login: () => void;
+  user: User | null;
+  isLoading: boolean;
+  // 3. CORREÇÃO AQUI: Especificamos os tipos dos argumentos
+  login: (email: string, password: string) => Promise<void>; 
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // o usuário não está logado por padrão
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // login
-  const login = () => { setIsAuthenticated(true);
-    localStorage.setItem('isAuthenticated', 'true');
-    };
-    
-
-  // logout
-  const logout = () => { setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated');
-  };
-
+  // Efeito para carregar o usuário do localStorage ao iniciar
   useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === 'isAuthenticated') {
-        setIsAuthenticated(e.newValue === 'true');
+    async function loadStoragedData() {
+      const storedToken = localStorage.getItem('@AuthData:token');
+      const storedUser = localStorage.getItem('@AuthData:user');
+
+      if (storedToken && storedUser) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+        setUser(JSON.parse(storedUser));
       }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+      setIsLoading(false);
+    }
+    loadStoragedData();
   }, []);
 
+  // 4. A LÓGICA DE LOGIN (A "IMPLEMENTAÇÃO")
+  // 5. CORREÇÃO AQUI: Especificamos os tipos novamente na implementação
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await api.post('/auth/login', {
+        email,
+        password, 
+      });
+
+      const { token, usuario } = response.data;
+
+      localStorage.setItem('@AuthData:token', token);
+      localStorage.setItem('@AuthData:user', JSON.stringify(usuario));
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setUser(usuario);
+
+      // Redirecionamento inteligente
+      if (usuario.role === 'ADMIN') {
+        navigate('/admin/dashboard'); 
+      } else {
+        navigate('/'); 
+      }
+
+    } catch (err) {
+      if (err instanceof AxiosError && err.response) {
+        throw new Error(err.response.data.error || 'E-mail ou senha inválidos.');
+      }
+      throw new Error('Erro de conexão. Tente novamente.');
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('@AuthData:token');
+    localStorage.removeItem('@AuthData:user');
+    api.defaults.headers.common['Authorization'] = undefined;
+    setUser(null);
+    navigate('/login'); 
+  };
+
+  if (isLoading) {
+    return null; // ou um componente de splash screen/loading global
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import styles from "./cadastro.module.css";
-import { Link, useNavigate } from "react-router-dom";
-// import { auth } from '../../services/firebaseConfig'; // Importando a instância do auth
+import React, { useState } from 'react';import styles from "./cadastro.module.css";
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-// --- Função auxiliar para validar o formato do CPF ---
 function isCpfValido(cpf: string): boolean {
   // Remove caracteres não numéricos
   const cpfLimpo = cpf.replace(/[^\d]/g, ''); 
@@ -12,8 +9,6 @@ function isCpfValido(cpf: string): boolean {
   if (cpfLimpo.length !== 11 || /^(\d)\1{10}$/.test(cpfLimpo)) {
     return false;
   }
-  // Se quiser uma validação completa com os dígitos verificadores,
-  // precisaria de uma lógica mais complexa, mas esta já ajuda bastante.
   return true;
 }
 
@@ -21,7 +16,6 @@ export default function CadastroUsu() {
 
   const navigate = useNavigate();
 
-  // --- Estados para os campos desta página ---
   const [nome, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');

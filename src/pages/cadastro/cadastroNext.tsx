@@ -1,74 +1,64 @@
 import React, { useState } from 'react';
 import styles from "./cadastro.module.css";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import api from '../../services/api';
-import { useAuth } from '../../auth/AuthContext';
+import { AxiosError } from 'axios';
 
 export default function CadastroNext() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
 
   const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegistrar = async (e: React.FormEvent) => {
-    e.preventDefault(); // Impede o recarregamento da página
+    e.preventDefault();
     setError('');
-
-// --- Validações básicas ---
-    if (!telefone || !senha || !confirmarSenha) {
-      setError('Por favor, preencha todos os campos.');
-      return;
-    }
 
     if (senha !== confirmarSenha) {
       setError('As senhas não coincidem.');
       return;
     }
-    if (senha.length < 8) {
-      setError('A senha deve ter no mínimo 8 caracteres.');
-      return;
-    }
+    // ... (suas outras validações)
 
-    // Pega os dados da primeira página que foram passados pelo navigate
     const dadosDaPagina1 = location.state?.dados;
     if (!dadosDaPagina1) {
-      setError("Ocorreu um erro. Por favor, tente o cadastro desde o início.");
+      setError("Ocorreu um erro. Por favor, volte para o início do cadastro.");
       return;
     }
 
-    // Junta todos os dados do usuário
     const dadosCompletos = {
-      ...dadosDaPagina1, 
+      name: dadosDaPagina1.nome,
+      email: dadosDaPagina1.email,
+      cpf: dadosDaPagina1.cpf,
       telefone,
-      senha,
+      password: senha,
+      role: 'PUBLICO',
     };
 
+    setIsLoading(true);
+
     try {
-      // lógica da api iria aqui 
-      // --
-      //
-
-      await api.post('/usuarios/register', dadosCompletos);
-      
-
-      console.log("Enviando para a API:", dadosCompletos);
-
-      
-      console.log("Cadastro finalizado com sucesso!");
-      
-      
-      login();
-
-      navigate('/');
+      await api.post('/auth/register', dadosCompletos);
+      alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
+      navigate('/login');
 
     } catch (apiError) {
-      // Se a API retornar um erro (ex: email já existe)
-      console.error("Erro ao cadastrar:", apiError);
-      setError("Não foi possível realizar o cadastro. Tente novamente.");
+      // 2. CORREÇÃO DE TIPO: Verificamos se o erro é um AxiosError
+      if (apiError instanceof AxiosError && apiError.response) {
+        // Agora o TypeScript sabe que 'apiError.response' existe
+        console.error("Erro do backend:", apiError.response.data);
+        setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
+      } else {
+        // Erro de rede ou um erro inesperado
+        console.error("Erro ao cadastrar:", apiError);
+        setError("Erro de conexão. Verifique se o servidor está rodando.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -79,7 +69,8 @@ export default function CadastroNext() {
           <a href="/">PetResc</a>
         </div>
 
-        <form className={styles.form} onClick={handleRegistrar}>
+        {/* Seu JSX (que já estava ótimo) continua aqui... */}
+        <form className={styles.form} onSubmit={handleRegistrar}>
           <h1 className={styles.titulo}>Últimos Passos</h1>
           <p className={styles.subTitulo}>
             Complete seus dados para finalizar
@@ -100,7 +91,7 @@ export default function CadastroNext() {
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Mínimo 8 caracteres" // Dica para o utilizador
+              placeholder="Mínimo 8 caracteres"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
@@ -116,13 +107,11 @@ export default function CadastroNext() {
             />
           </div>
 
-          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
 
-          {/* <Link to={"/"}> */}
-          <button type="submit" onClick={login} className={styles.botaoProx}>
-            Cadastrar
+          <button type="submit" className={styles.botaoProx} disabled={isLoading}>
+            {isLoading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
-          {/* </Link> */}
 
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
