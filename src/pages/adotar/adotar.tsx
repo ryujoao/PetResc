@@ -14,7 +14,7 @@ export default function Adotar() {
           <Link to="/formularioAdotar" style={{ textDecoration: "none" }}>
             <button className={styles.subtitulo}>Adote-me</button>
           </Link>
-          <Link to="/petsDisponiveis" style={{ textDecoration: "none" }}>
+          <Link to="/centralAdocao" style={{ textDecoration: "none" }}>
             <button className={styles.subtitulo}>Pets Disponíveis</button>
           </Link>
         </div>

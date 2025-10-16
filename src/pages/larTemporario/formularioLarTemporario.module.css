@@ -177,12 +177,10 @@
   font-size: 1.2rem;
   border: 2px solid #286699;
   transition: all 0.3s ease-in-out;
-  
-  /* Alterações para centralizar e ajustar a largura */
   width: 80%;
-  margin-top: auto; /* Empurra para o final da coluna */
-  align-self: center; /* Centraliza horizontalmente */
-  margin-bottom: 1rem; /* Espaço na parte inferior */
+  margin-top: auto; 
+  align-self: center; 
+  margin-bottom: 1rem; 
 }
 
 .botaoEnviar:hover {

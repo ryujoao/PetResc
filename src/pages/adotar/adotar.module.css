@@ -1,0 +1,27 @@
+.bannerUm {
+  width: 100vw;
+  height: 100vh;
+  background: url('../../../public/banners/banner1.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5vw;
+  box-sizing: border-box;
+}
+
+.homeTitulo {
+  max-width: 550px;
+  text-align: left;
+  margin-left: 17rem;
+  margin-top: 7rem;
+}
+
+.titulo {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  font-family: 'More Sugar', cursive;
+  color: #286699;
+  margin-bottom: 20px;
+  -webkit-text-stroke: 2px #286699;
+}
