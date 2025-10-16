@@ -1,12 +1,13 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
-import styles from "./fomularioLarTemporario.module.css";
+import styles from "./formularioLarTemporario.module.css";
 import Nav from "../../components/navbar";
+import Sucesso from "../../components/sucesso";
 
 export default function FormularioLarTemporario() {
- const pageRef = useRef<HTMLDivElement | null>(null);
+  const pageRef = useRef<HTMLFormElement | null>(null);
+  const [sucessoOpen, setSucessoOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    // Coluna 1
     nomeCompleto: "",
     cpf: "",
     dataNascimento: "",
@@ -19,7 +20,6 @@ export default function FormularioLarTemporario() {
     bairro: "",
     cidade: "",
     estado: "",
-    // Coluna 2
     tipoMoradia: "",
     quintal: "",
     porteAnimal: "",
@@ -30,7 +30,6 @@ export default function FormularioLarTemporario() {
     arcarCustos: "",
     ajudaSuprimentos: "",
     disponibilidade: "",
-    // --- NOVOS CAMPOS PARA AS DECLARAÇÕES ---
     declaroLido: false,
     declaroVerdade: false,
   });
@@ -40,24 +39,22 @@ export default function FormularioLarTemporario() {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      // Se o input for do tipo checkbox, usa o 'checked' (true/false)
-      // Senão, usa o 'value' (para texto, radio, etc.)
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Validação para garantir que as declarações foram marcadas
     if (!formData.declaroLido || !formData.declaroVerdade) {
       alert("Por favor, concorde com as declarações para finalizar.");
       return;
     }
     console.log("Dados Finais do Formulário:", formData);
-    alert("Formulário enviado! Verifique a consola do navegador.");
+    // abre modal de sucesso
+    setSucessoOpen(true);
   };
 
-useLayoutEffect(() => {
+  useLayoutEffect(() => {
     setTimeout(() => {
       const pageEl = pageRef.current;
       if (!pageEl) return;
@@ -79,7 +76,6 @@ useLayoutEffect(() => {
         className={styles.pageFormulario}
         onSubmit={handleSubmit}
       >
-        {/* --- COLUNA 1 --- */}
         <div className={styles.coluna}>
           <h1 className={styles.titulo}>Seja um lar temporário</h1>
           <p className={styles.subtitulo}>
@@ -192,25 +188,24 @@ useLayoutEffect(() => {
             </div>
           </div>
 
-
-
           <div className={styles.secaoOpcoes}>
             <h3 className={styles.tituloQuestao}>Declarações</h3>
             <label className={styles.checkboxCustomizado}>
               <input
                 type="checkbox"
                 name="declaroVerdade"
-                checked={formData.declaroLido}
+                checked={formData.declaroVerdade}
                 onChange={handleChange}
               />
               <span className={styles.checkmark}></span>
-              Declaração de que se compromete a cuidar do animal com responsabilidade, respeitando as orientações da ONG.
+              Declaração de que se compromete a cuidar do animal com
+              responsabilidade, respeitando as orientações da ONG.
             </label>
             <label className={styles.checkboxCustomizado}>
               <input
                 type="checkbox"
                 name="declaroLido"
-                checked={formData.declaroVerdade}
+                checked={formData.declaroLido}
                 onChange={handleChange}
               />
               <span className={styles.checkmark}></span>
@@ -219,77 +214,264 @@ useLayoutEffect(() => {
           </div>
         </div>
 
-        {/* --- COLUNA 2 (Alterações aplicadas aqui) --- */}
         <div className={styles.coluna2}>
           <div className={styles.secaoOpcoes}>
             <h3 className={styles.tituloQuestao}>Sobre o Espaço Disponível</h3>
-            <h4>Tipo de Moradia:</h4>
+            <h4 className={styles.subtituloQuestao}>Tipo de Moradia:</h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoMoradia" value="casa" onChange={handleChange} /><span className={styles.checkmark}></span>Casa</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoMoradia" value="apartamento" onChange={handleChange} /><span className={styles.checkmark}></span>Apartamento</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoMoradia" value="sitioChacara" onChange={handleChange} /><span className={styles.checkmark}></span>Sítio ou Chácara</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoMoradia" value="outro" onChange={handleChange} /><span className={styles.checkmark}></span>Outro</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoMoradia"
+                  value="casa"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Casa
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoMoradia"
+                  value="apartamento"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Apartamento
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoMoradia"
+                  value="sitioChacara"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sítio ou Chácara
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoMoradia"
+                  value="outro"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Outro
+              </label>
             </div>
 
-            <h4>Possui quintal?</h4>
+            <h4 className={styles.subtituloQuestao}>Possui quintal?</h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="quintal" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="quintal" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="quintal"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="quintal"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
 
-            <h4>Quais portes aceita?</h4>
+            <h4 className={styles.subtituloQuestao}>Quais portes aceita?</h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="porteAnimal" value="pequeno" onChange={handleChange} /><span className={styles.checkmark}></span>Pequeno</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="porteAnimal" value="medio" onChange={handleChange} /><span className={styles.checkmark}></span>Médio</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="porteAnimal" value="grande" onChange={handleChange} /><span className={styles.checkmark}></span>Grande</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="porteAnimal"
+                  value="pequeno"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Pequeno
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="porteAnimal"
+                  value="medio"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Médio
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="porteAnimal"
+                  value="grande"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Grande
+              </label>
             </div>
 
-            <h4>Quais Animais Aceita?</h4>
+            <h4 className={styles.subtituloQuestao}>Quais Animais Aceita?</h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoAnimal" value="cachorro" onChange={handleChange} /><span className={styles.checkmark}></span>Cachorro</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoAnimal" value="gato" onChange={handleChange} /><span className={styles.checkmark}></span>Gato</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="tipoAnimal" value="todos" onChange={handleChange} /><span className={styles.checkmark}></span>Todos</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoAnimal"
+                  value="cachorro"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Cachorro
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoAnimal"
+                  value="gato"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Gato
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="tipoAnimal"
+                  value="todos"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Todos
+              </label>
             </div>
           </div>
 
           <div className={styles.secaoOpcoes}>
             <h3 className={styles.tituloQuestao}>Experiência com Animais</h3>
-            <h4>Possui outros animais em casa?</h4>
+            <h4 className={styles.subtituloQuestao}>
+              Possui outros animais em casa?
+            </h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="outrosAnimais" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="outrosAnimais" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="outrosAnimais"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="outrosAnimais"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
 
-            <h4>Está disposto a administrar medicamentos, se necessário?</h4>
+            <h4 className={styles.subtituloQuestao}>
+              Está disposto a administrar medicamentos, se necessário?
+            </h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="administraMedicamentos" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="administraMedicamentos" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="administraMedicamentos"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="administraMedicamentos"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
 
-            <h4>Tem disponibilidade para levar o animal ao veterinário?</h4>
+            <h4 className={styles.subtituloQuestao}>
+              Tem disponibilidade para levar o animal ao veterinário?
+            </h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="levarVeterinario" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="levarVeterinario" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="levarVeterinario"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="levarVeterinario"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
           </div>
 
           <div className={styles.secaoOpcoes}>
             <h3 className={styles.tituloQuestao}>Recursos e condições</h3>
-            <h4>Pode fornecer ração e cuidados básicos?</h4>
+            <h4 className={styles.subtituloQuestao}>
+              Pode fornecer ração e cuidados básicos?
+            </h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="arcarCustos" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="arcarCustos" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="arcarCustos"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="arcarCustos"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
 
-            <h4>Precisa de ajuda da ONG com suprimentos?</h4>
+            <h4 className={styles.subtituloQuestao}>
+              Precisa de ajuda da ONG com suprimentos?
+            </h4>
             <div className={styles.grupoOpcoes}>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="ajudaSuprimentos" value="sim" onChange={handleChange} /><span className={styles.checkmark}></span>Sim</label>
-              <label className={styles.checkboxCustomizado}><input type="radio" name="ajudaSuprimentos" value="nao" onChange={handleChange} /><span className={styles.checkmark}></span>Não</label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="ajudaSuprimentos"
+                  value="sim"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Sim
+              </label>
+              <label className={styles.checkboxCustomizado}>
+                <input
+                  type="radio"
+                  name="ajudaSuprimentos"
+                  value="nao"
+                  onChange={handleChange}
+                />
+                <span className={styles.checkmark}></span>Não
+              </label>
             </div>
           </div>
 
           <h3 className={styles.tituloQuestao}> Tempo de Disponibilidade</h3>
-          <h4 className={styles.label}>Período disponível para abrigar</h4>
+          <h4 className={styles.subtituloQuestao}>
+            Período disponível para abrigar
+          </h4>
           <input
             name="disponibilidade"
             className={styles.barraInfos}
@@ -302,6 +484,8 @@ useLayoutEffect(() => {
           </button>
         </div>
       </form>
+
+      <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} />
     </>
   );
 }
