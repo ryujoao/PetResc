@@ -12,7 +12,7 @@ import PerfilAnimal from "./pages/perfilAnimal/perfilAnimal";
 import Institutos from "./pages/institutos/institutos";
 import CadastroNext from "./pages/cadastro/cadastroNext";
 import CadastroOng from "./pages/cadastro/cadastroOng";
-import Login from "./pages/login/login";
+import Login from "./pages/cadastro/login";
 import CadastroFinal from "./pages/cadastro/cadastroFinal";
 import FormularioLarTemporario from "./pages/larTemporario/formularioLarTemporario";
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from "./cadastroUsu.module.css";
+import styles from "./cadastro.module.css";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import api from '../../services/api';
 import { useAuth } from '../../auth/AuthContext';
@@ -14,11 +14,16 @@ export default function CadastroNext() {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [error, setError] = useState('');
 
-  const handleFinalizarCadastro = async (e: React.FormEvent) => {
+  const handleRegistrar = async (e: React.FormEvent) => {
     e.preventDefault(); // Impede o recarregamento da página
     setError('');
 
 // --- Validações básicas ---
+    if (!telefone || !senha || !confirmarSenha) {
+      setError('Por favor, preencha todos os campos.');
+      return;
+    }
+
     if (senha !== confirmarSenha) {
       setError('As senhas não coincidem.');
       return;
@@ -37,24 +42,25 @@ export default function CadastroNext() {
 
     // Junta todos os dados do usuário
     const dadosCompletos = {
-      ...dadosDaPagina1, // name, cpf, email
+      ...dadosDaPagina1, 
       telefone,
       senha,
     };
 
     try {
-      // --- LÓGICA DE API IRIA AQUI ---
-      // Aqui você faria a chamada para sua API para criar o usuário
-      // Exemplo: const response = await api.post('/usuarios', dadosCompletos);
+      // lógica da api iria aqui 
+      // --
+      //
+      
+
       console.log("Enviando para a API:", dadosCompletos);
 
-      // Se a chamada à API for um sucesso, faça o login:
+      
       console.log("Cadastro finalizado com sucesso!");
       
-      // 4. CHAMAR A FUNÇÃO DE LOGIN!
+      
       login();
 
-      // 5. REDIRECIONAR PARA A HOME LOGADA
       navigate('/');
 
     } catch (apiError) {
@@ -71,7 +77,7 @@ export default function CadastroNext() {
           <a href="/">PetResc</a>
         </div>
 
-        <form className={styles.form}>
+        <form className={styles.form} onClick={handleRegistrar}>
           <h1 className={styles.titulo}>Últimos Passos</h1>
           <p className={styles.subTitulo}>
             Complete seus dados para finalizar
@@ -107,20 +113,21 @@ export default function CadastroNext() {
               onChange={(e) => setConfirmarSenha(e.target.value)}
             />
           </div>
+
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-          <Link to={"/"} style={{ textDecoration: 'none' }}>
-          <button type="submit" className={styles.botaoProx}>
-            Próximo
+          {/* <Link to={"/"}> */}
+          <button type="submit" onClick={login} className={styles.botaoProx}>
+            Cadastrar
           </button>
-          </Link>
+          {/* </Link> */}
 
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
           </p>
         </form>
       </div>
-      <div className={styles.bannerSessao}></div>
+      <div className={styles.bannerCadastro}></div>
     </div>
   );
 }

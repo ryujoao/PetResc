@@ -1,4 +1,4 @@
-import styles from "./cadastroUsu.module.css";
+import styles from "./cadastro.module.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

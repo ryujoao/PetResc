@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../services/api'; 
-import styles from "./cadastroUsu.module.css";
+import styles from "./cadastro.module.css";
 import axios from 'axios'; // Importamos o axios para fazer as chamadas às APIs externas
 
 // --- Tipos para organizar os dados do IBGE ---

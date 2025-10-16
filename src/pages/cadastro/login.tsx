@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import styles from "../cadastro/cadastroUsu.module.css";
+import styles from "../cadastro/cadastro.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import api from '../../services/api';
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useAuth } from '../../auth/AuthContext';
 
 export default function Login() {
+
+  const { login } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-   const handleRegister = async (e: React.FormEvent) => {
+   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (!email || !password ) {
-      setError('Por favor, preencha todos os campos obrigatórios (nome, email, senha e CPF).');
+      setError('Por favor, preencha todos os campos obrigatórios (email e senha).');
       return;
     }
 
@@ -28,6 +31,7 @@ export default function Login() {
       });
 
       alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
+      login();
       navigate('/login'); 
     } catch (err: any) {
       console.error("Erro no cadastro:", err); 
@@ -51,7 +55,7 @@ export default function Login() {
           <a href="/">PetResc</a>
         </div>
 
-        <form className={styles.form}  onSubmit={handleRegister}>
+        <form className={styles.form}  onSubmit={handleLogin}>
           <h1 className={styles.titulo}>Bem-vindo de volta</h1>
           <p className={styles.subTitulo}>
             Faça login para continuar
@@ -99,11 +103,11 @@ export default function Login() {
             />
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-          <Link to="/home">
-           <button type="submit" className={styles.botaoProx}>
+          
+           <button type="submit" onClick={login} className={styles.botaoProx}>
             Entrar
           </button>
-          </Link>
+          
           <p className={styles.loginLink}>
             Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
           </p>

@@ -12,7 +12,7 @@ export default function Adotar() {
         <div className={styles.homeTitulo}>
           <h1 className={styles.titulo}>Conheça seu novo melhor amigo!</h1>
           <Link to="/formularioAdotar" style={{ textDecoration: "none" }}>
-            <button className={styles.subtitulo}>Adote-me</button>
+            <button className={styles.subtitulo}>Formulário</button>
           </Link>
           <Link to="/petsDisponiveis" style={{ textDecoration: "none" }}>
             <button className={styles.subtitulo}>Pets Disponíveis</button>

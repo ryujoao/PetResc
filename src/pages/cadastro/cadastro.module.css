@@ -42,7 +42,7 @@
 
 .bannerLogin {
   width: 50%;
-  background: #F0F9FF url('../../../public/banners/loginImagem.png') no-repeat center;
+  background: #F0F9FF url('../../../public/banners/loginImagem.png') no-repeat center bottom;
   background-size: 600px
 ;
 

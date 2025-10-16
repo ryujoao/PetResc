@@ -47,9 +47,9 @@
   margin-bottom: 0.8rem;
 }
 
-.cardText {
+.cardText p {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 600;
   color: #fff;
 }
 

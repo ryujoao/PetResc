@@ -9,8 +9,8 @@ import { useAuth } from "../../auth/AuthContext"; // Importe o hook!
 import MeusAnimais from "./meusAnimais";
 import OngsProximas from "./ongsProximas";
 import Estatisticas from "../estatisticas";
-import NossaMissao from "../index/nossaMissao";
-import SaibaMais from "../index/saibaMais";
+import NossaMissao from "./nossaMissao";
+import SaibaMais from "./saibaMais";
 
 
 function Home() {

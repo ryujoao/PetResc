@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import styles from "./cadastroUsu.module.css";
-import { useNavigate } from "react-router-dom";
+import styles from "./cadastro.module.css";
+import { Link, useNavigate } from "react-router-dom";
 // import { auth } from '../../services/firebaseConfig'; // Importando a instância do auth
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -25,8 +25,6 @@ export default function CadastroUsu() {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); // NOVO
-  const [confirmarPassword, setConfirmarPassword] = useState(''); // NOVO
   const [error, setError] = useState('');
 
   const handleProximoPasso = (e: React.FormEvent) => {
@@ -34,7 +32,7 @@ export default function CadastroUsu() {
     setError('');
 
     // Validação dos campos
-    if (!name || !cpf || !email || !password || !confirmarPassword) {
+    if (!name || !cpf || !email) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
@@ -45,19 +43,8 @@ export default function CadastroUsu() {
       return;
     }
 
-    // Validação da senha
-    if (password.length < 8) {
-      setError('A senha deve ter no mínimo 8 caracteres.');
-      return;
-    }
-
-    if (password !== confirmarPassword) {
-      setError('As senhas não coincidem.');
-      return;
-    }
-
     // Agrupa os dados desta página
-    const dadosDaPagina1 = { name, cpf, email, password };
+    const dadosDaPagina1 = { name, cpf, email };
 
     // Navega para a próxima página enviando o TIPO 'usuario' e os DADOS
     navigate('/cadastroNext', { 
@@ -106,6 +93,7 @@ export default function CadastroUsu() {
               placeholder="Digite seu nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
+  
             />
           </div>
           <div>
@@ -130,10 +118,12 @@ export default function CadastroUsu() {
           </div>
 
           {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
-
-          <button type="submit" className={styles.botaoProx}>
+          
+        {/* <Link to={"/cadastroNext"}> */}
+          <button type="submit"  className={styles.botaoProx}>
             Próximo
           </button>
+          {/* </Link> */}
 
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>
