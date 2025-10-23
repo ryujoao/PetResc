@@ -28,7 +28,10 @@ type FormData = {
   qualTipoPet?: string;
   preferenciaPet?: string;
   pessoasNoLar?: string;
-  outrosAnimaisLocal?: string;
+  outrosAnimaisLocal?: { 
+    Quantidade: string;
+    "Tipo de Animal": string; 
+  };
   alergia?: string;
   aceitaTermo?: boolean;
 };
@@ -70,12 +73,12 @@ export default function FormularioAdotar() {
   }, []);
 
   const majorSteps = [
-    { id: 0, title: "Intro", pages: 1 },
-    { id: 1, title: "Pessoais", pages: 1 },
+    { id: 0, title: "Introdução", pages: 1 },
+    { id: 1, title: "Informações Pessoais", pages: 1 },
     { id: 2, title: "Sobre espaço", pages: 3 },
     { id: 3, title: "Preferências", pages: 3 },
     { id: 4, title: "Recursos & Lar", pages: 3 },
-    { id: 5, title: "Final", pages: 2 },
+    { id: 5, title: "Termo de Responsabilidade", pages: 2 },
   ];
 
   const update = (patch: Partial<FormData>) =>
