@@ -1,80 +1,77 @@
-/* ...existing code... */
-
-/* Responsividade sem :root - usamos max-width fixo (1100px) e largura percentual */
-.pageFormularioAdotar {
-  width: 100%;
-  min-height: 100vh;
-  background: #fff;
-  color: #0f4979;
-  box-sizing: border-box;
+  .pageFormularioAdotar {
+ width: 100%;
+ min-height: 100vh;
+ background: #fff;
+ color: #0f4979;
+ box-sizing: border-box;
 }
 
-/* topo / barra de progresso */
+/* ... (O código da barra de progresso, steps, conteudo, etc. continua igual) ... */
 .barraProgresso {
-  padding: 1.2rem 0;
+ padding: 1.2rem 0;
 }
 .progressoContainer {
-  position: relative;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1rem;
+ position: relative;
+ max-width: 1100px;
+ margin: 0 auto;
+ padding: 0 1rem;
 }
 .progressoLinha {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 26px;
-  height: 6px;
-  background: #e6eef6;
-  border-radius: 6px;
-  z-index: 1;
+ position: absolute;
+ left: 0;
+ right: 0;
+ top: 26px;
+ height: 6px;
+ background: #e6eef6;
+ border-radius: 6px;
+ z-index: 1;
 }
 .progressoPreenchido {
-  position: absolute;
-  left: 0;
-  top: 26px;
-  height: 6px;
-  background: linear-gradient(90deg, #2b6b99, #4b9ad1);
-  border-radius: 6px;
-  z-index: 2;
-  transition: width 300ms ease;
+ position: absolute;
+ left: 0;
+ top: 26px;
+ height: 6px;
+ background: linear-gradient(90deg, #2b6b99, #4b9ad1);
+ border-radius: 6px;
+ z-index: 2;
+ transition: width 300ms ease;
 }
 
 .steps {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  z-index: 3;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+ display: flex;
+ justify-content: space-between;
+ position: relative;
+ z-index: 3;
+ gap: 8px;
+ overflow-x: auto;
+ padding-bottom: 8px;
 }
 .steps::-webkit-scrollbar { height: 8px; }
 .steps::-webkit-scrollbar-thumb { background: rgba(43,107,153,0.2); border-radius: 8px; }
 
 .step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 140px;
-  color: #9fb6cf;
-  transition: color 200ms;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 140px;
+ color: #9fb6cf;
+ transition: color 200ms;
 }
 .iconWrap {
-  background: #f3f8fc;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9fb6cf;
-  transition: all 200ms;
-  margin-bottom: 8px;
+ background: #f3f8fc;
+ width: 48px;
+ height: 48px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ color: #9fb6cf;
+ transition: all 200ms;
+ margin-bottom: 8px;
 }
 .stepTitle {
-  font-size: 0.9rem;
-  text-align: center;
+ font-size: 0.9rem;
+ text-align: center;
 }
 
 .active { color: #0f4979; }
@@ -84,74 +81,74 @@
 
 /* conteudo */
 .conteudo {
-  max-width: 1100px;
-  width: 90%;
-  margin: 1.5rem auto;
-  padding: 1rem;
-  box-sizing: border-box;
+ max-width: 1100px;
+ width: 90%;
+ margin: 1.5rem auto;
+ padding: 1rem;
+ box-sizing: border-box;
 }
 
 .titulo {
-  color: #0f4979;
-  margin-bottom: 0.5rem;
-  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-  display: flex;
-  justify-content: center;
+ color: #0f4979;
+ margin-bottom: 0.5rem;
+ font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+ display: flex;
+ justify-content: center;
 }
 
 .introducaoFormulario {
-  color: #000;
-  margin-bottom: 1.25rem;
-  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
-  font-weight: 500;
+ color: #000;
+ margin-bottom: 1.25rem;
+ font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+ font-weight: 500;
 }
 
 .form {
-  background: #fff;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-height: 300px;
+ background: #fff;
+ padding: 1rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+ min-height: 300px;
 }
 
 .stepSection {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center; /* centraliza os labels */
-  margin-bottom: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ align-items: center; /* centraliza os labels */
+ margin-bottom: 8px;
 }
 .stepSectionIntro { margin-bottom: 16px; }
 
 /* Colunas adaptáveis */
 .twoColumns {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+ display: flex;
+ gap: 2rem;
+ flex-wrap: wrap;
 }
 .twoColumns > * {
-  flex: 1 1 320px;
-  min-width: 220px;
+ flex: 1 1 320px;
+ min-width: 220px;
 }
 
 .label {
-  margin: 0.5rem 0;
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: #286699;
+ margin: 0.5rem 0;
+ font-weight: 700;
+ font-size: 1.3rem;
+ color: #286699;
 }
 
 .input {
-  width: 100%;
-  padding: 0.75rem 0.9rem;
-  background-color: #fff;
-  border: 1px solid #286699;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  color: #123347;
-  box-sizing: border-box;
+ width: 100%;
+ padding: 0.75rem 0.9rem;
+ background-color: #fff;
+ border: 1px solid #286699;
+ border-radius: 8px;
+ margin-bottom: 0.75rem;
+ font-size: clamp(1rem, 2.2vw, 1.2rem);
+ color: #123347;
+ box-sizing: border-box;
 }
 
 .row { display: flex; gap: 1rem; flex-wrap: wrap; }
@@ -162,136 +159,182 @@
 .introducaoCheckBox { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
 
 .checkboxCustomizado {
-  display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
-  font-size: 1.3rem; color: #333; position: relative; user-select: none; margin-top: 0.75rem;
+ display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+ font-size: 1.3rem; color: #333; position: relative; user-select: none; margin-top: 0.75rem;
 }
 .checkboxCustomizado input { opacity: 0; position: absolute; }
 
 .checkmark {
-  width: 43px; height: 25px; border: 1px solid #0f4979; border-radius: 4px;
-  background-color: #fff; display: inline-block; margin-right: 1rem;
+ width: 43px; height: 25px; border: 1px solid #0f4979; border-radius: 4px;
+ background-color: #fff; display: inline-block; margin-right: 1rem;
 }
 .checkboxCustomizado input:checked ~ .checkmark { background-color: #286699; border-color: #286699; }
 .checkboxCustomizado .checkmark::after {
-  content: ""; position: absolute; display: none; left: 8px; top: 18px; width: 7px; height: 10px;
-  border: solid white; border-width: 0 3px 3px 0; transform: rotate(45deg);
+ content: ""; position: absolute; display: none; left: 8px; top: 18px; width: 7px; height: 10px;
+ border: solid white; border-width: 0 3px 3px 0; transform: rotate(45deg);
 }
 .checkboxCustomizado input:checked ~ .checkmark::after { display: block; }
 
 /* controls */
 .controls {
-  display: flex; gap: 12px; justify-content: flex-end; margin-top: auto; flex-wrap: wrap;
+ display: flex; gap: 12px; justify-content: flex-end; margin-top: auto; flex-wrap: wrap;
 }
 .botoesVoltar, .botoesAvancar { width: 200px; }
 .botoesVoltar {
-  padding: 0.7rem 1rem; font-size: 1.2rem; background: transparent; border: 1px solid #cddfe9;
-  color: #0f4979; border-radius: 999px; cursor: pointer;
+ padding: 0.7rem 1rem; font-size: 1.2rem; background: transparent; border: 1px solid #cddfe9;
+ color: #0f4979; border-radius: 999px; cursor: pointer;
 }
 .botoesAvancar {
-  padding: 0.7rem 1.4rem; font-size: 1.2rem; background: #2b6b99; color: #fff; border: none;
-  border-radius: 999px; cursor: pointer;
+ padding: 0.7rem 1.4rem; font-size: 1.2rem; background: #2b6b99; color: #fff; border: none;
+ border-radius: 999px; cursor: pointer;
 }
 
 .optionButton {
-  display: flex; /* mantém estrutura interna igual (input + span) */
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  width: 40%;
-  max-width: 700px; /* ajuste se quiser maior/menor */
-  background: #eef7fb;
-  border-radius: 8px;
-  padding: 0.9rem 1rem; /* aumenta área clicável para todo o botão */
-  cursor: pointer;
-  position: relative;
-  border: 1px solid transparent;
-  transition: background 150ms, border-color 150ms, box-shadow 150ms, transform 120ms;
-  box-sizing: border-box;
+ display: flex; 
+ align-items: center;
+ justify-content: flex-start;
+ gap: 1rem; 
+ margin: 0;
+ width: 50%;
+ max-width: 700px; 
+ background: #eef7fb;
+ border-radius: 8px;
+ padding: 0.9rem 1rem; 
+ cursor: pointer;
+ position: relative;
+ border: 1px solid transparent;
+ box-sizing: border-box;
 }
 
 /* input cobre todo o label (continua invisível e acionável) */
 .optionButton input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  margin: 0;
-  cursor: pointer;
-  z-index: 0;
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ opacity: 0;
+ margin: 0;
+ cursor: pointer;
+ z-index: 0;
+  outline: none; /* <-- MUDANÇA: Remove o outline do input invisível */
 }
 
-/* texto do botão centrado */
-.optionLabel {
-  display: block;
-  width: 100%;
-  text-align: center;
-  color: #0f4979;
+/* O círculo com a letra (a, b, c...) */
+.optionLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; 
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #0f4979; 
+  color: #fff; 
+  font-size: 0.9rem;
   font-weight: 600;
-  z-index: 1; /* acima do input invisível */
-  pointer-events: none;
-  line-height: 1;
+  z-index: 1; 
+  pointer-events: none; 
+}
+
+
+/* texto do botão */
+.optionLabel {
+ display: block;
+ width: auto; 
+  flex: 1; 
+ text-align: left; 
+ color: #0f4979;
+ font-weight: 600;
+ z-index: 1; 
+ pointer-events: none;
+ line-height: 1.5;
+ font-size: 1.3rem;
 }
 
 /* estado selecionado: altera o fundo do label inteiro e o texto */
 .optionButton.selectedOption,
-.optionButton input:checked ~ .optionLabel, /* fallback se a classe não for aplicada */
+.optionButton input:checked ~ .optionLabel, 
 .optionButton input:checked + .optionLabel {
-  background: #2b6b99;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(11,35,51,0.12);
+ background: #2b6b99;
+ color: #fff;
+ box-shadow: 0 6px 18px rgba(11,35,51,0.12);
 }
 
-/* garante que o texto fique branco quando o botão (label) tem a classe */
 .optionButton.selectedOption .optionLabel,
 .optionButton input:checked ~ .optionLabel {
-  color: #fff;
+ color: #fff;
 }
 
-/* foco acessível (contorno leve no botão inteiro) */
-.optionButton input:focus + .optionLabel,
-.optionButton input:focus ~ .optionLabel {
-  outline: 3px solid rgba(43,107,153,0.16);
-  border-radius: 6px;
+.optionButton.selectedOption .optionLetter,
+.optionButton input:checked ~ .optionLetter {
+  color: #fff; 
 }
+
+/* --- MUDANÇA: Foco Acessível (Moderno) --- */
+
+/* * Remove a regra antiga que colocava o foco só no texto 
+ * (este bloco foi REMOVIDO):
+ * .optionButton input:focus + .optionLabel,
+ * .optionButton input:focus ~ .optionLabel { ... }
+*/
+
+/* * Adiciona um "brilho" (box-shadow) no botão inteiro 
+ * quando o input dentro dele é focado (ex: navegação por teclado).
+*/
+.optionButton:focus-within {
+  box-shadow: 0 0 0 3px rgba(43,107,153,0.35); /* Um "brilho" azul claro */
+}
+
+/* * Remove o brilho de foco se o botão JÁ ESTIVER selecionado,
+ * pois o fundo azul já é um indicador de seleção/foco.
+*/
+.optionButton.selectedOption:focus-within {
+  box-shadow: 0 6px 18px rgba(11,35,51,0.12); /* Mantém só a sombra de elevação */
+}
+
+/* --- FIM DAS MUDANÇAS DE FOCO --- */
+
 
 /* hover suave */
 .optionButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(11,35,51,0.04);
+ transform: translateY(-2px);
+ box-shadow: 0 6px 18px rgba(11,35,51,0.04);
 }
 .selectedOption {
-  background: #2b6b99;
-  color: #fff;
+ background: #2b6b99;
+ color: #fff;
 }
 .selectedOption .optionLabel {
-  color: #fff;
+ color: #fff;
 }
 
-/* responsive: ajuste em telas medianas/pequenas */
+/* ... (O resto do seu CSS responsivo continua igual) ... */
 @media (max-width: 900px) {
-  .steps { gap: 8px; }
-  .step { width: auto; }
-  .twoColumns { flex-direction: column; }
-  .conteudo { width: 94%; padding: 0.75rem; }
-  .titulo { text-align: center; }
-  .introducaoFormulario { font-size: 1.2rem; }
+ .steps { gap: 8px; }
+ .step { width: auto; }
+ .twoColumns { flex-direction: column; }
+ .conteudo { width: 94%; padding: 0.75rem; }
+ .titulo { text-align: center; }
+ .introducaoFormulario { font-size: 1.2rem; }
 }
 
 /* mobile small */
 @media (max-width: 560px) {
-  .controls { flex-direction: column-reverse; align-items: stretch; }
-  .botoesVoltar, .botoesAvancar { width: 100%; }
-  .step { width: auto; min-width: 120px; }
-  .optionButton { max-width: 100%; padding: 0.8rem; }
-  .checkboxCustomizado .checkmark { width: 36px; height: 20px; left: 6px; top: 14px; }
+ .controls { flex-direction: column-reverse; align-items: stretch; }
+ .botoesVoltar, .botoesAvancar { width: 100%; }
+ .step { width: auto; min-width: 120px; }
+ .optionButton { max-width: 100%; padding: 0.8rem; }
+ .checkboxCustomizado .checkmark { width: 36px; height: 20px; left: 6px; top: 14px; }
+  .optionButton { gap: 0.75rem; }
+  .optionLetter { width: 24px; height: 24px; font-size: 0.8rem; }
+  .optionLabel { font-size: 1.1rem; }
 }
 
 /* telas grandes */
 @media (min-width: 1200px) {
-  .conteudo { width: 75%; max-width: 1100px; }
-  .twoColumns > * { flex: 1 1 420px; }
-  .titulo { font-size: 2.8rem; }
+ .conteudo { width: 75%; max-width: 1100px; }
+ .twoColumns > * { flex: 1 1 420px; }
+ .titulo { font-size: 2.8rem; }
 }
 
 /* estados */
