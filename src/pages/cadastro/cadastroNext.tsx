@@ -22,46 +22,55 @@ export default function CadastroNext() {
       setError('As senhas não coincidem.');
       return;
     }
-    // ... (suas outras validações)
 
-    const dadosDaPagina1 = location.state?.dados;
+    const { tipo, dados: dadosDaPagina1 } = location.state || {};
     if (!dadosDaPagina1) {
       setError("Ocorreu um erro. Por favor, volte para o início do cadastro.");
       return;
     }
-
-    const dadosCompletos = {
-      name: dadosDaPagina1.nome,
-      email: dadosDaPagina1.email,
-      cpf: dadosDaPagina1.cpf,
-      telefone,
-      password: senha,
-      role: 'PUBLICO',
-    };
-
+    
     setIsLoading(true);
 
-    try {
-      await api.post('/auth/register', dadosCompletos);
-      alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
-      navigate('/login');
+    if (tipo === 'usuario') {
+      
+      const dadosCompletos = {
+        nome: dadosDaPagina1.nome,
+        email: dadosDaPagina1.email,
+        cpf: dadosDaPagina1.cpf,
+        telefone,
+        password: senha,
+      };
 
-    } catch (apiError) {
-      // 2. CORREÇÃO DE TIPO: Verificamos se o erro é um AxiosError
-      if (apiError instanceof AxiosError && apiError.response) {
-        // Agora o TypeScript sabe que 'apiError.response' existe
-        console.error("Erro do backend:", apiError.response.data);
-        setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
-      } else {
-        // Erro de rede ou um erro inesperado
-        console.error("Erro ao cadastrar:", apiError);
-        setError("Erro de conexão. Verifique se o servidor está rodando.");
+      try {
+        await api.post('/auth/register', dadosCompletos);
+        alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
+        navigate('/login');
+
+      } catch (apiError) {
+        if (apiError instanceof AxiosError && apiError.response) {
+          setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
+        } else {
+          setError("Erro de conexão. Verifique se o servidor está rodando.");
+        }
+      } finally {
+        setIsLoading(false); 
       }
-    } finally {
+
+    } else if (tipo === 'ong') {
+      
+      const dadosCombinados = {
+        ...dadosDaPagina1, 
+        telefone,
+        password: senha,
+      };
+
+      navigate('/cadastroFinal', { state: dadosCombinados });
+      
+    } else {
+      setError("Tipo de cadastro desconhecido.");
       setIsLoading(false);
     }
   };
-  
   return (
     <div className={styles.pagCadastro}>
       <div className={styles.containerForms2}>

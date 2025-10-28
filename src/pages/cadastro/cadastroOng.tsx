@@ -13,6 +13,7 @@ export default function CadastroOng() {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [descricao, setDescricao] = useState("");
 
   const handleProximoPasso = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +24,13 @@ export default function CadastroOng() {
       return;
     }
 
-    // --- AQUI ESTÁ A CORREÇÃO ---
-    // Mapeamos 'nomeResponsavel' para o campo 'name' que a API espera.
     const dadosDaPagina1 = {
-      name: nomeResponsavel, // A API vai receber { name: "valor do nome do responsável" }
+      name: nomeResponsavel,
       cpf,
       nomeOng,
       cnpj,
       email,
+      descricao, 
     };
 
     navigate('/cadastroNext', { 
@@ -85,6 +85,16 @@ export default function CadastroOng() {
                 onChange={(e) => setNomeOng(e.target.value)}
               />
             </div>
+            <div>
+              <label className={styles.grupoInput}>Descrição da ONG</label>
+              <textarea
+              className={styles.inputLogin}
+             placeholder="Fale um pouco sobre a sua ONG"
+             value={descricao}
+               onChange={(e) => setDescricao(e.target.value)} 
+                />
+              </div>
+
             <div>
               <label className={styles.grupoInput}>CNPJ</label>
               <input

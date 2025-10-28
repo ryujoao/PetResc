@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../services/api'; 
 import styles from "./cadastro.module.css";
-import axios from 'axios'; // Importamos o axios para fazer as chamadas às APIs externas
+import axios, { AxiosError } from 'axios';
 
-// --- Tipos para organizar os dados do IBGE ---
 interface IBGEUFResponse {
   id: number;
   sigla: string;
   nome: string;
 }
-
 interface IBGECidadeResponse {
   id: number;
   nome: string;
@@ -19,42 +17,36 @@ interface IBGECidadeResponse {
 export default function CadastroFinal() {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const dadosEtapaAnterior = location.state;
 
-  // --- Estados para os campos do formulário ---
   const [cep, setCep] = useState('');
   const [rua, setRua] = useState('');
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
   const [bairro, setBairro] = useState('');
-  const [estado, setEstado] = useState(''); // Agora será a Sigla (ex: 'SP')
+  const [estado, setEstado] = useState('');
   const [cidade, setCidade] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // --- Estados para as listas de localidades ---
   const [estados, setEstados] = useState<IBGEUFResponse[]>([]);
   const [cidades, setCidades] = useState<IBGECidadeResponse[]>([]);
   
-  // --- Efeito para buscar a lista de ESTADOS (UFs) do IBGE ao carregar a página ---
   useEffect(() => {
     axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
-      .then(response => {
-        setEstados(response.data);
-      });
+      .then(response => setEstados(response.data));
   }, []);
 
-  // --- Efeito para buscar as CIDADES sempre que um ESTADO for selecionado ---
   useEffect(() => {
     if (estado) {
       axios.get<IBGECidadeResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`)
-        .then(response => {
-          setCidades(response.data);
-        });
+        .then(response => setCidades(response.data));
     }
-  }, [estado]); // Este efeito roda sempre que a variável 'estado' mudar
+  }, [estado]);
 
-  // --- Efeito para buscar o endereço quando o CEP tiver 8 dígitos ---
   useEffect(() => {
-    const cepFormatado = cep.replace(/\D/g, ''); // Remove caracteres não numéricos
+    const cepFormatado = cep.replace(/\D/g, '');
     if (cepFormatado.length === 8) {
       axios.get(`https://viacep.com.br/ws/${cepFormatado}/json/`)
         .then(response => {
@@ -63,20 +55,59 @@ export default function CadastroFinal() {
             setBairro(response.data.bairro);
             setEstado(response.data.uf);
             setCidade(response.data.localidade);
-            setError(''); // Limpa o erro se a busca for bem sucedida
+            setError('');
           } else {
             setError('CEP não encontrado.');
           }
         })
         .catch(() => setError('Erro ao buscar o CEP.'));
     }
-  }, [cep]); // Este efeito roda sempre que a variável 'cep' mudar
+  }, [cep]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // ... (sua lógica de submit continua a mesma)
-  };
+    setError('');
 
+    if (!cep || !rua || !numero || !bairro || !cidade || !estado) {
+        setError('Por favor, preencha todos os campos do endereço.');
+        return;
+    }
+    
+    if (!dadosEtapaAnterior) {
+        setError("Ocorreu um erro. Por favor, volte para o início do cadastro.");
+        return;
+    }
+
+    setIsLoading(true);
+
+    const dadosCompletos = {
+      ...dadosEtapaAnterior, 
+      cep,
+      rua,
+      numero,
+      complemento,
+      bairro,
+      cidade,
+      estado
+    };
+
+    try {
+      await api.post('/auth/register-ong', dadosCompletos);
+      alert("Cadastro da ONG realizado com sucesso! Você será redirecionado para o login.");
+      navigate('/login');
+    
+    } catch (apiError) {
+        if (apiError instanceof AxiosError && apiError.response) {
+            console.error("Erro do backend:", apiError.response.data);
+            setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
+        } else {
+            console.error("Erro ao cadastrar:", apiError);
+            setError("Erro de conexão. Verifique se o servidor está rodando.");
+        }
+    } finally {
+        setIsLoading(false);
+    }
+  };
   return (
     <div className={styles.pagCadastro}>
       <div className={styles.containerForms2}>
@@ -96,7 +127,7 @@ export default function CadastroFinal() {
               placeholder="Digite o CEP"
               value={cep}
               onChange={(e) => setCep(e.target.value)}
-              maxLength={9} // CEP tem 8 dígitos + hífen
+              maxLength={9}
             />
           </div>
           <div>
@@ -144,7 +175,7 @@ export default function CadastroFinal() {
           <div className={styles.linhaCampos}>
             <div className={styles.campoMetade}>
               <label className={styles.grupoInput}>Estado</label>
-              {/* --- ALTERADO para SELECT (Dropdown) --- */}
+              {/*  Dropdown  */}
               <select 
                 className={styles.inputLogin} 
                 value={estado}
@@ -158,12 +189,12 @@ export default function CadastroFinal() {
             </div>
             <div className={styles.campoMetade}>
               <label className={styles.grupoInput}>Cidade</label>
-              {/* --- ALTERADO para SELECT (Dropdown) --- */}
+              {/* Dropdown */}
               <select 
                 className={styles.inputLogin} 
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}
-                disabled={!estado} // Desabilita se nenhum estado for selecionado
+                disabled={!estado} 
               >
                 <option value="">Selecione uma cidade</option>
                 {cidades.map(cidade => (
@@ -175,9 +206,14 @@ export default function CadastroFinal() {
 
           {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
 
-          <button type="submit" className={styles.botaoProx}>
-            Finalizar Cadastro
-          </button>
+            <button 
+             type="submit" 
+             className={styles.botaoProx} 
+             disabled={isLoading}  
+             >
+             {/*muda o texto se isLoading for true*/}
+             {isLoading ? 'Finalizando...' : 'Finalizar Cadastro'}
+           </button>
 
           <p className={styles.loginLink}>
             Já tem conta? <a href="/login">Login</a>

@@ -1,301 +1,534 @@
-/* ...existing code... */
-
-/* Responsividade sem :root - usamos max-width fixo (1100px) e largura percentual */
 .pageFormularioAdotar {
-  width: 100%;
-  min-height: 100vh;
-  background: #fff;
-  color: #0f4979;
-  box-sizing: border-box;
+ width: 100%;
+ min-height: 100vh;
+ background: #fff;
+ color: #0f4979;
+ box-sizing: border-box;
 }
 
-/* topo / barra de progresso */
+/* ... (O código da barra de progresso, steps, conteudo, etc. continua igual) ... */
 .barraProgresso {
-  padding: 1.2rem 0;
+ padding: 1.2rem 0;
 }
 .progressoContainer {
-  position: relative;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1rem;
+ position: relative;
+ max-width: 1100px;
+ margin: 0 auto;
+ padding: 0 1rem;
 }
 .progressoLinha {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 26px;
-  height: 6px;
-  background: #e6eef6;
-  border-radius: 6px;
-  z-index: 1;
+ position: absolute;
+ left: 0;
+ right: 0;
+ top: 26px;
+ height: 6px;
+ background: #e6eef6;
+ border-radius: 6px;
+ z-index: 1;
 }
 .progressoPreenchido {
-  position: absolute;
-  left: 0;
-  top: 26px;
-  height: 6px;
-  background: linear-gradient(90deg, #2b6b99, #4b9ad1);
-  border-radius: 6px;
-  z-index: 2;
-  transition: width 300ms ease;
+ position: absolute;
+ left: 0;
+ top: 26px;
+ height: 6px;
+ background: linear-gradient(90deg, #2b6b99, #4b9ad1);
+ border-radius: 6px;
+ z-index: 2;
+ transition: width 300ms ease;
 }
 
 .steps {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  z-index: 3;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+ margin-top: 1rem;
+ display: flex;
+ justify-content: space-between;
+ position: relative;
+ z-index: 3;
+ gap: 8px;
+ overflow-x: auto;
+ padding-bottom: 8px;
 }
-.steps::-webkit-scrollbar { height: 8px; }
-.steps::-webkit-scrollbar-thumb { background: rgba(43,107,153,0.2); border-radius: 8px; }
+
+.steps::-webkit-scrollbar {
+ height: 8px;
+}
+.steps::-webkit-scrollbar-thumb {
+ background: rgba(43, 107, 153, 0.2);
+ border-radius: 8px;
+}
 
 .step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 140px;
-  color: #9fb6cf;
-  transition: color 200ms;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 140px;
+ color: #9fb6cf;
+ transition: color 200ms;
 }
 .iconWrap {
-  background: #f3f8fc;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9fb6cf;
-  transition: all 200ms;
-  margin-bottom: 8px;
+ background: #f3f8fc;
+ width: 48px;
+ height: 48px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ color: #9fb6cf;
+ transition: all 200ms;
+ margin-bottom: 8px;
 }
 .stepTitle {
-  font-size: 0.9rem;
-  text-align: center;
+ font-size: 1.1rem;
+ text-align: center;
 }
 
-.active { color: #0f4979; }
-.active .iconWrap { background: #2b6b99; color: #fff; transform: scale(1.05); }
-.done { color: #0f4979; }
-.done .iconWrap { background: #2b6b99; color: #fff; }
+.active {
+ color: #0f4979;
+}
+.active .iconWrap {
+ background: #2b6b99;
+ color: #fff;
+ transform: scale(1.05);
+}
+.done {
+ color: #0f4979;
+}
+.done .iconWrap {
+ background: #2b6b99;
+ color: #fff;
+}
 
 /* conteudo */
 .conteudo {
-  max-width: 1100px;
-  width: 90%;
-  margin: 1.5rem auto;
-  padding: 1rem;
-  box-sizing: border-box;
+ max-width: 1100px;
+ width: 90%;
+ margin: 1.5rem auto;
+ padding: 1rem;
+ box-sizing: border-box;
 }
 
 .titulo {
-  color: #0f4979;
-  margin-bottom: 0.5rem;
-  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-  display: flex;
-  justify-content: center;
+ color: #0f4979;
+ margin-bottom: 0.5rem;
+ font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+ display: flex;
+ justify-content: center;
 }
 
 .introducaoFormulario {
-  color: #000;
-  margin-bottom: 1.25rem;
-  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
-  font-weight: 500;
+ color: #000;
+ margin-bottom: 1.25rem;
+ font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+ font-weight: 500;
 }
 
 .form {
-  background: #fff;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-height: 300px;
+ background: #fff;
+ padding: 1rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+ min-height: 300px;
 }
 
+/* --- MUDANÇA AQUI --- */
+/* Removido 'align-items: center' para que o texto do termo fique alinhado à esquerda */
 .stepSection {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center; /* centraliza os labels */
-  margin-bottom: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ /* align-items: center; */ /* <-- REMOVIDO */
+ margin-bottom: 8px;
 }
-.stepSectionIntro { margin-bottom: 16px; }
+.stepSectionIntro {
+ margin-bottom: 16px;
+}
 
 /* Colunas adaptáveis */
 .twoColumns {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+ display: flex;
+ gap: 2rem;
+ flex-wrap: wrap;
 }
 .twoColumns > * {
-  flex: 1 1 320px;
-  min-width: 220px;
+ flex: 1 1 320px;
+ min-width: 220px;
 }
 
 .label {
-  margin: 0.5rem 0;
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: #286699;
+ margin: 0.5rem 0;
+ font-weight: 700;
+ font-size: 1.3rem;
+ color: #286699;
 }
 
 .input {
-  width: 100%;
-  padding: 0.75rem 0.9rem;
-  background-color: #fff;
-  border: 1px solid #286699;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  color: #123347;
-  box-sizing: border-box;
+ width: 100%;
+ padding: 0.75rem 0.9rem;
+ background-color: #fff;
+ border: 1px solid #286699;
+ border-radius: 8px;
+ margin-bottom: 0.75rem;
+ font-size: clamp(1rem, 2.2vw, 1.2rem);
+ color: #123347;
+ transition: border-color 150ms, box-shadow 150ms;
+ box-sizing: border-box;
 }
 
-.row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.inputFinal {
+ width: 60%;
+ background-color: #e5eef5;
+ color: #000;
+ border: none;
+ border-radius: 12px;
+ font-size: 1.5rem;
+ transition: border-color 150ms, box-shadow 150ms;
+ box-sizing: border-box;
+ padding: 0.75rem 1rem;
+ height: 4rem;
+}
 
-.questionTitle { font-weight: 500; font-size: 2rem; margin-bottom: 0.75rem; text-align: center; }
+.row {
+ display: flex;
+ gap: 1rem;
+ flex-wrap: wrap;
+}
 
-.termoText { color: #333; line-height: 1.4; margin-bottom: 1rem; }
-.introducaoCheckBox { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
+.questionTitle {
+ font-weight: 500;
+ font-size: 2.2rem;
+ margin-bottom: 0.75rem;
+ text-align: center;
+}
+
+.termoText {
+ color: #333;
+ line-height: 1.6; /* Aumentei um pouco para legibilidade */
+ margin-bottom: 1rem;
+  font-size: 1.1rem; /* Tamanho da fonte do parágrafo */
+}
+.introducaoCheckBox {
+ font-size: 1.3rem;
+ font-weight: 600;
+ margin-bottom: 0.5rem;
+}
 
 .checkboxCustomizado {
-  display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
-  font-size: 1.3rem; color: #333; position: relative; user-select: none; margin-top: 0.75rem;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ cursor: pointer;
+ font-size: 1.3rem;
+ color: #333;
+ position: relative;
+ user-select: none;
+ margin-top: 0.75rem;
 }
-.checkboxCustomizado input { opacity: 0; position: absolute; }
+.checkboxCustomizado input {
+ opacity: 0;
+ position: absolute;
+}
 
 .checkmark {
-  width: 43px; height: 25px; border: 1px solid #0f4979; border-radius: 4px;
-  background-color: #fff; display: inline-block; margin-right: 1rem;
+ width: 43px;
+ height: 25px;
+ border: 1px solid #0f4979;
+ border-radius: 4px;
+ background-color: #fff;
+ display: inline-block;
+ margin-right: 1rem;
 }
-.checkboxCustomizado input:checked ~ .checkmark { background-color: #286699; border-color: #286699; }
+.checkboxCustomizado input:checked ~ .checkmark {
+ background-color: #286699;
+ border-color: #286699;
+}
 .checkboxCustomizado .checkmark::after {
-  content: ""; position: absolute; display: none; left: 8px; top: 18px; width: 7px; height: 10px;
-  border: solid white; border-width: 0 3px 3px 0; transform: rotate(45deg);
+ content: "";
+ position: absolute;
+ display: none;
+ left: 8px;
+ top: 18px;
+ width: 7px;
+ height: 10px;
+ border: solid white;
+ border-width: 0 3px 3px 0;
+ transform: rotate(45deg);
 }
-.checkboxCustomizado input:checked ~ .checkmark::after { display: block; }
+.checkboxCustomizado input:checked ~ .checkmark::after {
+ display: block;
+}
 
 /* controls */
 .controls {
-  display: flex; gap: 12px; justify-content: flex-end; margin-top: auto; flex-wrap: wrap;
+ display: flex;
+ gap: 12px;
+ justify-content: flex-end;
+ margin-top: auto;
+ flex-wrap: wrap;
 }
-.botoesVoltar, .botoesAvancar { width: 200px; }
+.botoesVoltar,
+.botoesAvancar {
+ width: 200px;
+}
 .botoesVoltar {
-  padding: 0.7rem 1rem; font-size: 1.2rem; background: transparent; border: 1px solid #cddfe9;
-  color: #0f4979; border-radius: 999px; cursor: pointer;
+ padding: 0.7rem 1rem;
+ font-size: 1.2rem;
+ background: transparent;
+ border: 1px solid #cddfe9;
+ color: #0f4979;
+ border-radius: 999px;
+ cursor: pointer;
 }
 .botoesAvancar {
-  padding: 0.7rem 1.4rem; font-size: 1.2rem; background: #2b6b99; color: #fff; border: none;
-  border-radius: 999px; cursor: pointer;
+ padding: 0.7rem 1.4rem;
+ font-size: 1.2rem;
+ background: #2b6b99;
+ color: #fff;
+ border: none;
+ border-radius: 999px;
+ cursor: pointer;
 }
 
 .optionButton {
-  display: flex; /* mantém estrutura interna igual (input + span) */
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  width: 40%;
-  max-width: 700px; /* ajuste se quiser maior/menor */
-  background: #eef7fb;
-  border-radius: 8px;
-  padding: 0.9rem 1rem; /* aumenta área clicável para todo o botão */
-  cursor: pointer;
-  position: relative;
-  border: 1px solid transparent;
-  transition: background 150ms, border-color 150ms, box-shadow 150ms, transform 120ms;
-  box-sizing: border-box;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ gap: 1rem;
+ margin: 0;
+ width: 50%;
+ max-width: 700px;
+ background: #eef7fb;
+ border-radius: 8px;
+ padding: 0.9rem 1rem;
+ cursor: pointer;
+ position: relative;
+ border: 1px solid transparent;
+ box-sizing: border-box;
 }
 
 /* input cobre todo o label (continua invisível e acionável) */
 .optionButton input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  margin: 0;
-  cursor: pointer;
-  z-index: 0;
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ opacity: 0;
+ margin: 0;
+ cursor: pointer;
+ z-index: 0;
+ outline: none; /* <-- MUDANÇA: Remove o outline do input invisível */
 }
 
-/* texto do botão centrado */
+.optionLetter {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 32px;
+ height: 32px;
+ background-color: #E5EEF5;
+ color: #8a8989;
+ font-size: 1.5rem;
+ border-radius: 20%;
+}
+
+/* texto do botão */
 .optionLabel {
-  display: block;
-  width: 100%;
-  text-align: center;
-  color: #0f4979;
-  font-weight: 600;
-  z-index: 1; /* acima do input invisível */
-  pointer-events: none;
-  line-height: 1;
+ display: block;
+ width: auto;
+ flex: 1;
+ text-align: left;
+ color: #0f4979;
+ font-weight: 600;
+ z-index: 1;
+ pointer-events: none;
+ line-height: 1.5;
+ font-size: 1.4rem;
 }
 
 /* estado selecionado: altera o fundo do label inteiro e o texto */
 .optionButton.selectedOption,
-.optionButton input:checked ~ .optionLabel, /* fallback se a classe não for aplicada */
+.optionButton input:checked ~ .optionLabel,
 .optionButton input:checked + .optionLabel {
-  background: #2b6b99;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(11,35,51,0.12);
+ background: #2b6b99;
+ color: #fff;
+ box-shadow: 0 6px 18px rgba(11, 35, 51, 0.12);
 }
 
-/* garante que o texto fique branco quando o botão (label) tem a classe */
-.optionButton.selectedOption .optionLabel,
-.optionButton input:checked ~ .optionLabel {
-  color: #fff;
+.multiTextContainer {
+ display: flex;
+ flex-direction: column;
+ justify-content: center; /* Centraliza os dois campos */
+ align-items: center;
+ gap: 1rem; /* Espaço entre eles */
+ width: 100%;
+ flex-wrap: wrap; /* Quebra a linha em telas pequenas */
 }
 
-/* foco acessível (contorno leve no botão inteiro) */
-.optionButton input:focus + .optionLabel,
-.optionButton input:focus ~ .optionLabel {
-  outline: 3px solid rgba(43,107,153,0.16);
-  border-radius: 6px;
+
+/* --- NOVOS ESTILOS PARA O STEP FINAL (COMO NA IMAGEM) --- */
+
+/* O container que centraliza o conteúdo de "Tudo Pronto!" */
+.finalHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza tudo */
+  gap: 1.25rem; /* Espaçamento entre os itens */
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
-/* hover suave */
-.optionButton:hover {
+/* O ícone de Check verde */
+.finalIcon {
+  width: 80px;
+  height: 80px;
+  color: #3B9A6F; /* Um tom de verde (pode ajustar) */
+}
+
+/* O título "Tudo pronto!" */
+.finalTitle {
+  font-size: clamp(2rem, 4vw, 3rem); /* Fonte bem grande */
+  font-weight: 700;
+  color: #0f4979;
+  margin: 0;
+}
+
+/* O parágrafo "Revise seus dados..." */
+.finalSubtitle {
+  font-size: 1.3rem; /* Fonte média */
+  font-weight: 400;
+  color: #333;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* O botão "Revisar dados" */
+.finalReviewButton {
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid #2b6b99; /* Borda azul */
+  color: #2b6b99; /* Texto azul */
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.finalReviewButton:hover {
+  background: #eef7fb; /* Fundo azul claro ao passar o mouse */
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(11,35,51,0.04);
-}
-.selectedOption {
-  background: #2b6b99;
-  color: #fff;
-}
-.selectedOption .optionLabel {
-  color: #fff;
 }
 
-/* responsive: ajuste em telas medianas/pequenas */
+/* A linha divisória */
+.finalDivider {
+  border: 0;
+  height: 1px;
+  background-color: #e6eef6; /* Cinza claro */
+  margin: 1.5rem 0;
+}
+
+/* O título "Termo de Responsabilidade de Adoção" */
+.finalTermTitle {
+  font-size: 1.6rem; /* Fonte grande, mas menor que o título principal */
+  font-weight: 600;
+  color: #0f4979;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* --- FIM DOS NOVOS ESTILOS --- */
+
+
 @media (max-width: 900px) {
-  .steps { gap: 8px; }
-  .step { width: auto; }
-  .twoColumns { flex-direction: column; }
-  .conteudo { width: 94%; padding: 0.75rem; }
-  .titulo { text-align: center; }
-  .introducaoFormulario { font-size: 1.2rem; }
+ .steps {
+  gap: 8px;
+ }
+ .step {
+  width: auto;
+ }
+ .twoColumns {
+  flex-direction: column;
+ }
+ .conteudo {
+  width: 94%;
+  padding: 0.75rem;
+ }
+ .titulo {
+  text-align: center;
+ }
+ .introducaoFormulario {
+  font-size: 1.2rem;
+ }
 }
 
 /* mobile small */
 @media (max-width: 560px) {
-  .controls { flex-direction: column-reverse; align-items: stretch; }
-  .botoesVoltar, .botoesAvancar { width: 100%; }
-  .step { width: auto; min-width: 120px; }
-  .optionButton { max-width: 100%; padding: 0.8rem; }
-  .checkboxCustomizado .checkmark { width: 36px; height: 20px; left: 6px; top: 14px; }
+ .controls {
+  flex-direction: column-reverse;
+  align-items: stretch;
+ }
+ .botoesVoltar,
+ .botoesAvancar {
+  width: 100%;
+ }
+ .step {
+  width: auto;
+  min-width: 120px;
+ }
+ .optionButton {
+  max-width: 100%;
+  padding: 0.8rem;
+ }
+ .checkboxCustomizado .checkmark {
+  width: 36px;
+  height: 20px;
+  left: 6px;
+  top: 14px;
+ }
+ .optionButton {
+  gap: 0.75rem;
+ }
+ .optionLetter {
+  width: 24px;
+ 	height: 24px;
+ 	font-size: 0.8rem;
+  }
+  .optionLabel {
+ 	font-size: 1.1rem;
+  }
+  
+  /* Ajustes mobile para o StepFinal */
+  .finalTitle {
+    font-size: 2.2rem;
+  }
+  .finalSubtitle {
+    font-size: 1.1rem;
+  }
+  .finalTermTitle {
+    font-size: 1.3rem;
+  }
 }
 
 /* telas grandes */
 @media (min-width: 1200px) {
-  .conteudo { width: 75%; max-width: 1100px; }
-  .twoColumns > * { flex: 1 1 420px; }
-  .titulo { font-size: 2.8rem; }
+ .conteudo {
+ 	width: 75%;
+ 	max-width: 1100px;
+  }
+ .twoColumns > * {
+ 	flex: 1 1 420px;
+  }
+ .titulo {
+ 	font-size: 2.8rem;
+  }
 }
 
 /* estados */
-.idle { color: #9fb6cf; }
-.idle .iconWrap { background: #f3f8fc; color: #9fb6cf; }
-
-/* ...existing code... */
+.idle {
+ color: #9fb6cf;
+}
+.idle .iconWrap {
+ background: #f3f8fc;
+ color: #9fb6cf;
+}

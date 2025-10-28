@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import styles from "../cadastro/cadastro.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import styles from "../cadastro/cadastro.module.css"; 
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useAuth } from '../../auth/AuthContext';
-import { AxiosError } from 'axios'; 
 
 export default function Login() {
-  const { login } = useAuth(); o
+  const { login } = useAuth(); 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -26,12 +25,11 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-    
       await login(email, password);
 
-      navigate('/');
+      navigate('/'); 
+
     } catch (err) {
-     
       if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -41,7 +39,6 @@ export default function Login() {
       setIsLoading(false);
     }
   };
-
   return (
     <div className={styles.pagCadastro}>
       <div className={styles.containerForms}>
@@ -72,14 +69,14 @@ export default function Login() {
               className={styles.inputLogin}
               type="password"
               placeholder="Insira sua senha"
-              value={password} // Corrigido
-              onChange={(e) => setPassword(e.target.value)} // Corrigido
+              value={password}// Corrigido
+              onChange={(e) => setPassword(e.target.value)} 
             />
           </div>
 
           {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
           
-          {/* 4. CORREÇÃO: O botão é do tipo 'submit' e não tem 'onClick' */}
+          {/* O botão é do tipo submit e não tem onClick*/}
           <button type="submit" className={styles.botaoProx} disabled={isLoading}>
             {isLoading ? 'Entrando...' : 'Entrar'}
           </button>
