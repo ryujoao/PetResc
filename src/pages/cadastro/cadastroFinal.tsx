@@ -18,8 +18,8 @@ export default function CadastroFinal() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // dadosEtapaAnterior deve conter: { nome, email, cnpj, descricao, telefone, password, role }
   const dadosEtapaAnterior = location.state;
+  const tipo = dadosEtapaAnterior?.role === "ONG" ? "ong" : "usuario";
 
   const [cep, setCep] = useState("");
   const [rua, setRua] = useState("");
@@ -34,7 +34,6 @@ export default function CadastroFinal() {
   const [estados, setEstados] = useState<IBGEUFResponse[]>([]);
   const [cidades, setCidades] = useState<IBGECidadeResponse[]>([]);
 
-  // (Os useEffects para buscar CEP, Estados e Cidades continuam iguais)
   useEffect(() => {
     axios
       .get<IBGEUFResponse[]>(
@@ -87,15 +86,10 @@ export default function CadastroFinal() {
       return;
     }
 
-    // --- MUDANÇA 1: VERIFICAR SE 'descricao' VEIO DA PÁGINA ANTERIOR ---
-    if (!dadosEtapaAnterior.descricao) {
-      setError(
-        "Erro: A 'descrição' da ONG não foi encontrada. Por favor, volte ao início do cadastro."
-      );
-      setIsLoading(false);
+    if (tipo === "ong" && !dadosEtapaAnterior.descricao) {
+      setError("Erro: A 'descrição' da ONG não foi encontrada.");
       return;
     }
-    // --- FIM DA MUDANÇA ---
 
     setIsLoading(true);
 
@@ -103,39 +97,26 @@ export default function CadastroFinal() {
       complemento ? ` - ${complemento}` : ""
     } - ${bairro}, ${cidade}/${estado} - ${cep}`;
 
-    // --- MUDANÇA 2: MONTAR O PAYLOAD CORRETO ---
     const dadosCompletos = {
-      nome: dadosEtapaAnterior.nome,
-      email: dadosEtapaAnterior.email,
-      password: dadosEtapaAnterior.password,
-      role: dadosEtapaAnterior.role, // "ONG"
-      cnpj: dadosEtapaAnterior.cnpj,
-      descricao: dadosEtapaAnterior.descricao, // <-- Lendo o dado que veio do state
-      telefone: dadosEtapaAnterior.telefone,
+      ...dadosEtapaAnterior,
       endereco: enderecoFormatado,
     };
 
     try {
-      await api.post("/auth/register", dadosCompletos);
-      alert(
-        "Cadastro da ONG realizado com sucesso! Você será redirecionado para o login."
-      );
+      if (tipo === "ong") {
+        await api.post("/auth/register-ong", dadosCompletos);
+      } else {
+        await api.post("/auth/register", dadosCompletos);
+      }
+
+      alert("Cadastro realizado com sucesso!");
       navigate("/login");
     } catch (apiError) {
       if (apiError instanceof AxiosError && apiError.response) {
         console.error("Erro do backend:", apiError.response.data);
-
-        let msg = "Não foi possível realizar o cadastro.";
-        // Tenta ler a mensagem de erro específica do back-end
-        if (apiError.response.data && apiError.response.data.error) {
-          msg = apiError.response.data.error; // Ex: "E-mail já cadastrado."
-        } else if (
-          apiError.response.data &&
-          typeof apiError.response.data === "object"
-        ) {
-          msg =
-            "Erro de validação. Verifique se todos os campos estão corretos.";
-        }
+        const msg =
+          apiError.response.data.error ||
+          "Erro de validação. Verifique os campos.";
         setError(msg);
       } else {
         console.error("Erro ao cadastrar:", apiError);
@@ -145,6 +126,7 @@ export default function CadastroFinal() {
       setIsLoading(false);
     }
   };
+
   return (
     <div className={styles.pagCadastro}>
       <div className={styles.containerForms2}>
@@ -153,13 +135,10 @@ export default function CadastroFinal() {
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <h1 className={styles.titulo}>Endereço da ONG</h1>
+          <h1 className={styles.titulo}>Endereço</h1>
           <p className={styles.subTitulo}>
             Complete os dados de localização para finalizar
           </p>
-
-          {/* --- MUDANÇA 3: REMOVER O CAMPO DE DESCRIÇÃO DAQUI --- */}
-          {/* O <textarea> de Descrição foi removido. */}
 
           <div>
             <label className={styles.grupoInput}>CEP</label>

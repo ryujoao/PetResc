@@ -11,12 +11,10 @@ interface User {
   role: string;
 }
 
-// 2. Interface para o valor do Contexto (O "CONTRATO")
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  // 3. CORREÇÃO AQUI: Especificamos os tipos dos argumentos
   login: (email: string, password: string) => Promise<void>; 
   logout: () => void;
 }
@@ -43,8 +41,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loadStoragedData();
   }, []);
 
-  // 4. A LÓGICA DE LOGIN (A "IMPLEMENTAÇÃO")
-  // 5. CORREÇÃO AQUI: Especificamos os tipos novamente na implementação
   const login = async (email: string, password: string) => {
     try {
       const response = await api.post('/auth/login', {
@@ -59,7 +55,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(usuario);
 
-      // Redirecionamento inteligente
       if (usuario.role === 'ADMIN') {
         navigate('/admin/dashboard'); 
       } else {
@@ -86,7 +81,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return null; // ou um componente de splash screen/loading global
   }
 
-  const isAuthenticated = !!user; // <-- adicionado
+  const isAuthenticated = !!user;
 
   return (
     <AuthContext.Provider value={{ user, isLoading, isAuthenticated, login, logout }}>
