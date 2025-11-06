@@ -247,6 +247,51 @@ progress::-webkit-progress-value {
   background-color: #fdf2f2;
 }
 
+.bannerNovaCampanha {
+  position: relative;
+  width: 100vw;
+  height: 80vh;
+  background: url("../../../public/banners/banner2.png") no-repeat center bottom;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding-right: 20vw; /* aumente para afastar do canto direito */
+}
+
+
+.textoEsquerda {
+  color: #286699;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.textoDireita {
+  color: #286699;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: flex-end;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.botaoNovaCampanha {
+  background-color: #286699;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
 /* Media query para os stats da ONG */
 @media (max-width: 600px) {
   .ongDashboardContainer {
