@@ -2,7 +2,16 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/footer";
 import Nav from "../../components/navbar";
 import styles from "./perfil.module.css";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
+
+
+interface UserData {
+  id: number;
+  nome: string;
+  email: string;
+  telefone?: string;
+  role: string;
+}
 
 interface Pet {
   id: number;
@@ -60,29 +69,80 @@ export default function Perfil() {
     }, 0);
   }, []);
 
+  const [usuario, setUsuario] = useState<UserData | null>(null);
+  const [pets, setPets] = useState<Pet[]>(petsIniciais);
+  const [activeView, setActiveView] = useState<"todos" | "salvos">("todos");
+
+const toggleFavorito = (idDoPet: number) => {
+  setPets((petsAtuais) =>
+    petsAtuais.map((pet) =>
+      pet.id === idDoPet ? { ...pet, favorito: !pet.favorito } : pet
+    )
+  );
+};
+
+const petsParaExibir =
+  activeView === "todos" ? pets : pets.filter((pet) => pet.favorito);
+  const [petsSalvos, setPetsSalvos] = useState([
+    {
+      nome: "Zeus",
+      raca: "Pitbull.",
+      sexo: "M",
+      img: "../../../public/animais/zeus.png",
+     },
+    {
+      nome: "Frajola",
+      raca: "Sem raça definida (SRD)",
+      sexo: "F",
+     img: "../../../public/animais/frajola.png",
+    },
+    {
+      nome: "Branquinho",
+      raca: "Sem raça definida (SRD)",
+      sexo: "M",
+      img: "../../../public/animais/branquinho.png",
+    },
+  ]);
+
   const [imagemSelecionada, setImagemSelecionada] = useState<string | null>(
     null
   );
 
-  const [pets, setPets] = useState(petsIniciais);
+   useEffect(() => {
+  const fetchUserData = async () => {
+     const token = localStorage.getItem('@AuthData:token');
+    if (!token) {
+      console.error("Usuário não autenticado");
+      return;
+    }
 
-  const nome = localStorage.getItem("nomeUsuario") || "Username";
+    try {
+        const response = await fetch('http://localhost:3000/auth/me', {
+         method: 'GET',
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+         }
+      });
+      
+       console.log("Token enviado:", token);
 
-  const [activeView, setActiveView] = useState("todos");
+      if (!response.ok) {
+        throw new Error('Falha ao buscar dados do usuário');
+      }
 
-  const toggleFavorito = (idDoPet: number) => {
-    setPets((petsAtuais) =>
-      petsAtuais.map((pet) => {
-        if (pet.id !== idDoPet) {
-          return pet;
-        }
-        return { ...pet, favorito: !pet.favorito };
-      })
-    );
+      const data: UserData = await response.json();
+      console.log("Dados recebidos:", data);
+      setUsuario(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const petsParaExibir =
-    activeView === "todos" ? pets : pets.filter((pet) => pet.favorito);
+  fetchUserData();
+}, []);
+
+
 
   return (
     <>
@@ -127,22 +187,16 @@ export default function Perfil() {
         </div>
 
         <div className={styles.infoContainer}>
-          <div className={`${styles.infoBox} ${styles.alignLeft}`}>
-            <p>
-              <strong>Contato</strong>
-            </p>
-            <p>Username@gmail.com</p>
-            <p>11 96584 2214</p>
+          <div className={styles.infoBox}>
+             <p>{usuario?.email || 'Email não disponível'}</p>
+             <p>{usuario?.telefone || 'Telefone não disponível'}</p>
+             <p className={styles.username}>{usuario?.nome || usuario?.nome || 'Username'}</p>
           </div>
-          <div className={`${styles.infoBox} ${styles.alignCenter}`}>
-            <p className={styles.username}>
-              <strong>{nome}</strong>
-            </p>
-          </div>
-          <div className={`${styles.infoBox} ${styles.alignRight}`}>
-            <p>
-              <strong>Localização</strong>
-            </p>
+          {/* <div className={styles.infoBox}>
+          <p className={styles.username}>{usuario?.nome || 'Username'}</p>
+          </div> */}
+          <div className={styles.infoBox}>
+            <p>Localização</p>
             <p>SP, Brasil</p>
           </div>
         </div>

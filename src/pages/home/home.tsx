@@ -2,9 +2,8 @@ import Nav from "../../components/navbar";
 import styles from "./home.module.css";
 import Footer from "../../components/footer";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext"; // Importe seu hook!
+import { useAuth } from "../../auth/AuthContext";
 
-// --- COMPONENTES DA HOME PÚBLICA ---
 import Estatisticas from "../estatisticas";
 import NossaMissao from "./nossaMissao";
 import SaibaMais from "./saibaMais";

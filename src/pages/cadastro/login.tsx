@@ -4,6 +4,8 @@ import { useAuth } from "../../auth/AuthContext";
 import api from "../../services/api";
 import styles from "./cadastro.module.css";
 
+
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

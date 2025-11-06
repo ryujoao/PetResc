@@ -4,12 +4,14 @@ import styles from "../style/navbar.module.css";
 import Denuncie from "./denuncie";
 import Notificacoes from "./notificacoes";
 import { useAuth } from "../auth/AuthContext"; 
+import { useAuth } from "../auth/AuthContext"; 
 
 export default function Nav() {
   const { isAuthenticated, login, logout } = useAuth(); 
 
   const [showModal, setShowModal] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  
 
   const toggleNotifications = () => {
     setIsNotificationsOpen(!isNotificationsOpen);

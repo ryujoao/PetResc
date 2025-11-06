@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import api from '../services/api';
+import api from '../services/api'; 
 import { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 
 interface User {
   id: number;
-  name: string;
+  nome: string;
   email: string;
   role: 'ADMIN' | 'ONG' | 'PUBLICO';
   cpf?: string;
@@ -61,44 +61,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await api.post('/auth/login', {
-        email,
-        password,
-      });
+  try {
+    const response = await api.post('/auth/login', {
+      email,
+      password, 
+    });
 
-      const { token, usuario } = response.data;
+    const { token, usuario } = response.data;
 
-      console.log("=== Dados do Login ===");
-      console.log("Usuario:", usuario);
-      console.log("Role:", usuario.role);
-      console.log("===================");
+    localStorage.setItem('@AuthData:token', token);
+    localStorage.setItem('@AuthData:user', JSON.stringify(usuario));
 
-      if (!['ADMIN', 'ONG', 'PUBLICO'].includes(usuario.role)) {
-        throw new Error('Role de usuário inválido');
-      }
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    setUser(usuario);
 
-      const userData = {
-        ...usuario,
-        role: usuario.role
-      };
-
-      localStorage.setItem('@AuthData:token', token);
-      localStorage.setItem('@AuthData:user', JSON.stringify(userData));
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      setUser(userData);
-      navigate('/');
-
-    } catch (err) {
-      console.error('Erro no login:', err);
-      if (err instanceof AxiosError && err.response) {
-        throw new Error(err.response.data.error || 'E-mail ou senha inválidos.');
-      }
-      throw new Error('Erro de conexão. Tente novamente.');
+    if (usuario.role === 'ADMIN') {
+      navigate('/admin/dashboard'); 
+    } else {
+      navigate('/'); 
     }
-  };
 
+  } catch (err) {
+    if (err instanceof AxiosError && err.response) {
+      throw new Error(err.response.data.error || 'E-mail ou senha inválidos.');
+    }
+    throw new Error('Erro de conexão. Tente novamente.');
+  }
+};
   const logout = () => {
     localStorage.removeItem('@AuthData:token');
     localStorage.removeItem('@AuthData:user');
@@ -107,12 +96,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     navigate('/login');
   };
 
+
+  if (isLoading) {
+    return null; 
+  }
+
+  const isAuthenticated = !!user; 
+
   const hasPermission = (requiredRoles: User['role'][]): boolean => {
     if (!user) return false;
     return requiredRoles.includes(user.role);
   };
 
-  const isAuthenticated = !!user;
 
   return (
     <AuthContext.Provider 
