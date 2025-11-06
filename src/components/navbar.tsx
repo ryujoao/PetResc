@@ -29,11 +29,11 @@ export default function Nav() {
 
         {/* Links de navegação que mudam o destino com base no login */}
         <ul className={styles.navCategorias}>
-          <li><a href={isAuthenticated ? "/adotar" : "/cadastro"} className={styles.navLink}>Adotar</a></li>
-          <li><a href={isAuthenticated ? "/larTemporario" : "/cadastro"} className={styles.navLink}>Lar Temporário</a></li>
-          <li><a href={isAuthenticated ? "/doar" : "/cadastro"} className={styles.navLink}>Doar</a></li>
-          <li><button type="button" onClick={() => setShowModal(true)} className={styles.navLink}>Denuncie</button></li>
-          <li><a href={isAuthenticated ? "/registrarAnimal" : "/cadastro"} className={styles.navLink}>Registrar Animal</a></li>
+        <li><Link to={isAuthenticated ? "/adotar" : "/cadastro"} className={styles.navLink}>Adotar</Link></li>
+        <li><Link to={isAuthenticated ? "/larTemporario" : "/cadastro"} className={styles.navLink}>Lar Temporário</Link></li>
+        <li><Link to={isAuthenticated ? "/doar" : "/cadastro"} className={styles.navLink}>Doar</Link></li>
+        <li><button type="button" onClick={() => setShowModal(true)} className={styles.navLink}>Denuncie</button></li>
+         <li><Link to={isAuthenticated ? "/registrarAnimal" : "/cadastro"} className={styles.navLink}>Registrar Animal</Link></li>
         </ul>
 
         {/* AQUI ESTÁ A MÁGICA: Renderização Condicional */}

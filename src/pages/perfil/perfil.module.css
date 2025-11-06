@@ -11,8 +11,8 @@
 }
 
 .banner {
-  width: 70%;
-  height: 150px;
+  width: 75%;
+  height: 200px;
   border-radius: 12px;
   background: radial-gradient(ellipse at center, #fafafa, #9fc9ef);
   margin-top: 5rem;
@@ -193,6 +193,12 @@
   color: red;
   font-size: 1.2rem;
   cursor: pointer;
+
+  
+  -webkit-user-select: none; 
+  -moz-user-select: none;    
+  -ms-user-select: none;     
+  user-select: none;         
 }
 
 .nonFavorite {
@@ -202,6 +208,11 @@
   color: #ccc;
   font-size: 1.2rem;
   cursor: pointer;
+
+  -webkit-user-select: none; 
+  -moz-user-select: none;    
+  -ms-user-select: none;     
+  user-select: none; 
 }
 
 .petsTitulo {
@@ -234,5 +245,13 @@
   position: relative;
   top: -0.6rem;
   
+}
 
+.configIcon {
+  position: absolute;
+  top: 140px; 
+  right: 15rem;
+  color: #004080;
+  cursor: pointer;
+  z-index: 10;
 }

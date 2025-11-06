@@ -4,9 +4,18 @@ import Nav from "../../components/navbar";
 import styles from "./perfil.module.css";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const petsIniciais = [
+interface Pet {
+  id: number;
+  nome: string;
+  raca: string;
+  sexo: string;
+  img: string;
+  favorito: boolean;
+}
+
+const petsIniciais: Pet[] = [
   {
-    id: 1, 
+    id: 1,
     nome: "Neguinho",
     raca: "Sem raça definida (SRD)",
     sexo: "M",
@@ -14,7 +23,7 @@ const petsIniciais = [
     favorito: false,
   },
   {
-    id: 2, 
+    id: 2,
     nome: "Frajola",
     raca: "Sem raça definida (SRD)",
     sexo: "F",
@@ -22,7 +31,7 @@ const petsIniciais = [
     favorito: false,
   },
   {
-    id: 3, 
+    id: 3,
     nome: "Rabito",
     raca: "Sem raça definida (SRD)",
     sexo: "M",
@@ -59,7 +68,9 @@ export default function Perfil() {
 
   const nome = localStorage.getItem("nomeUsuario") || "Username";
 
-  const toggleFavorito = (idDoPet) => {
+  const [activeView, setActiveView] = useState("todos");
+
+  const toggleFavorito = (idDoPet: number) => {
     setPets((petsAtuais) =>
       petsAtuais.map((pet) => {
         if (pet.id !== idDoPet) {
@@ -70,13 +81,26 @@ export default function Perfil() {
     );
   };
 
+  const petsParaExibir =
+    activeView === "todos" ? pets : pets.filter((pet) => pet.favorito);
+
   return (
     <>
       <Nav />
 
-    
-
       <div className={styles.perfilContainer} ref={pageRef}>
+        <Link to="/config" className={styles.configIcon}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={30}
+            height={30}
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+          </svg>
+        </Link>
+
         <div className={styles.banner}></div>
 
         <div className={styles.avatar}>
@@ -90,8 +114,8 @@ export default function Perfil() {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width={16}
+                height={16}
                 fill="currentColor"
                 className={styles.avatarIcon}
                 viewBox="0 0 16 16"
@@ -100,10 +124,8 @@ export default function Perfil() {
               </svg>
             )}
           </label>
-
         </div>
 
-        
         <div className={styles.infoContainer}>
           <div className={`${styles.infoBox} ${styles.alignLeft}`}>
             <p>
@@ -125,38 +147,48 @@ export default function Perfil() {
           </div>
         </div>
 
-        
         <div className={styles.btnContainer}>
-          <button className={styles.salvos}>Salvos</button>
+          <button
+            className={
+              activeView === "todos" ? styles.salvos : styles.editarPerfil
+            }
+            onClick={() => setActiveView("todos")}
+          >
+            Meus Pets
+          </button>
+          <button
+            className={
+              activeView === "salvos" ? styles.salvos : styles.editarPerfil
+            }
+            onClick={() => setActiveView("salvos")}
+          >
+            Salvos
+          </button>
         </div>
 
         <div className={styles.petsHeader}>
-          <h2 className={styles.petsTitulo}>Meus Pets</h2>
+          <h2 className={styles.petsTitulo}>
+            {activeView === "todos" ? "Meus Pets" : "Pets Salvos"}
+          </h2>
           <Link to="/registrarAnimal" className={styles.addIcon}>
             +
           </Link>
         </div>
 
-        
         <div className={styles.petsContainer}>
-          
-        
-          {pets.map((pet) => ( 
-            <div key={pet.id} className={styles.petCard}> 
+          {petsParaExibir.map((pet) => (
+            <div key={pet.id} className={styles.petCard}>
               <img src={pet.img} alt={pet.nome} className={styles.petImage} />
               <p className={styles.petNome}>{pet.nome}</p>
               <p className={styles.petRaca}>{pet.raca}</p>
               <p className={styles.petSexo}>{pet.sexo}</p>
 
               <span
-                className={
-                  pet.favorito ? styles.favorite : styles.nonFavorite
-                }
+                className={pet.favorito ? styles.favorite : styles.nonFavorite}
                 onClick={() => toggleFavorito(pet.id)}
               >
                 ♥
               </span>
-
             </div>
           ))}
         </div>
