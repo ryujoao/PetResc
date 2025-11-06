@@ -31,22 +31,17 @@ export default function CadastroNext() {
 
     setIsLoading(true);
 
-    // --- CORREÇÃO PRINCIPAL AQUI ---
-    // Vamos garantir que lemos o nome, quer a página anterior
-    // o tenha guardado como 'nome' (com 'e') ou 'name' (com 'a').
     const nomeDoUsuario = dadosDaPagina1.nome || dadosDaPagina1.name;
 
-    // Também verificamos se o nome realmente existe
     if (!nomeDoUsuario) {
       setError("Erro: O nome não foi encontrado. Por favor, volte ao início.");
       setIsLoading(false);
       return;
     }
-    // --- FIM DA CORREÇÃO ---
 
     if (tipo === "usuario") {
       const dadosCompletos = {
-        nome: nomeDoUsuario, // <-- Usamos a variável corrigida
+        nome: nomeDoUsuario,
         email: dadosDaPagina1.email,
         cpf: dadosDaPagina1.cpf,
         telefone,
@@ -56,16 +51,12 @@ export default function CadastroNext() {
 
       try {
         await api.post("/auth/register", dadosCompletos);
-        alert(
-          "Cadastro realizado com sucesso! Você será redirecionado para a página de login."
-        );
+        alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
         navigate("/login");
       } catch (apiError) {
         if (apiError instanceof AxiosError && apiError.response) {
-          setError(
-            apiError.response.data.error ||
-              "Não foi possível realizar o cadastro."
-          );
+          console.error("Erro completo:", apiError.response.data);
+          setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
         } else {
           setError("Erro de conexão. Verifique se o servidor está rodando.");
         }
@@ -75,62 +66,65 @@ export default function CadastroNext() {
     } else if (tipo === "ong") {
       const dadosCombinados = {
         ...dadosDaPagina1,
-        // Garantimos que o nome da ONG também é lido corretamente
         nome: nomeDoUsuario,
         telefone,
         password: senha,
         role: "ONG",
       };
 
-      // Remove a chave 'name' se ela existir, para evitar duplicados
       delete dadosCombinados.name;
-
       navigate("/cadastroFinal", { state: dadosCombinados });
     } else {
       setError("Tipo de cadastro desconhecido.");
       setIsLoading(false);
     }
   };
+
   return (
     <div className={styles.pagCadastro}>
-      <div className={styles.containerForms2}>
+      <div className={styles.containerForms}>
         <div className={styles.logoHeader}>
           <a href="/">PetResc</a>
         </div>
 
-        {/* Seu JSX ... */}
         <form className={styles.form} onSubmit={handleRegistrar}>
-          <h1 className={styles.titulo}>Últimos Passos</h1>
-          <p className={styles.subTitulo}>Complete seus dados para finalizar</p>
+          <h1 className={styles.titulo}>
+            {location.state?.tipo === "ong" ? "Cadastro da ONG" : "Complete seu cadastro"}
+          </h1>
 
           <div>
             <label className={styles.grupoInput}>Telefone</label>
             <input
               className={styles.inputLogin}
-              type="text"
-              placeholder="00 00000-0000"
+              type="tel"
+              placeholder="(11) 99999-9999"
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
+              required
             />
           </div>
+
           <div>
             <label className={styles.grupoInput}>Senha</label>
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Mínimo 8 caracteres"
+              placeholder="Digite sua senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              required
             />
           </div>
+
           <div>
-            <label className={styles.grupoInput}>Confirme sua senha</label>
+            <label className={styles.grupoInput}>Confirmar senha</label>
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Confirme sua senha"
+              placeholder="Digite sua senha novamente"
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
+              required
             />
           </div>
 
@@ -140,12 +134,8 @@ export default function CadastroNext() {
             </p>
           )}
 
-          <button
-            type="submit"
-            className={styles.botaoProx}
-            disabled={isLoading}
-          >
-            {isLoading ? "Cadastrando..." : "Cadastrar"}
+          <button type="submit" className={styles.botaoProx} disabled={isLoading}>
+            {isLoading ? "Carregando..." : "Próximo"}
           </button>
 
           <p className={styles.loginLink}>

@@ -1,0 +1,90 @@
+.containerPrincipal {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.secaoAnimais {
+  margin-bottom: 3rem;
+}
+
+.secaoAnimais h2 {
+  color: #1B4B84;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.listaCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.cardImagem {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardInfo {
+  padding: 1rem;
+}
+
+.cardInfo h3 {
+  color: #1B4B84;
+  margin: 0 0 0.5rem 0;
+}
+
+.status {
+  display: block;
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.verMais {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #1B4B84;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.secaoCampanhas {
+  background: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.botoesCampanha {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.botaoPrimario {
+  padding: 0.75rem 1.5rem;
+  background: #1B4B84;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.botaoSecundario {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #1B4B84;
+  border: 1px solid #1B4B84;
+  text-decoration: none;
+  border-radius: 4px;
+}
