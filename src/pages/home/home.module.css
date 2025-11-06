@@ -39,7 +39,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   overflow: hidden;
-  padding-right: 20vw; /* aumente para afastar do canto direito */
+  padding-right: 20vw; 
 }
 
 .bannerTres {
@@ -50,7 +50,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 5vw;
+
+  /* padding-left: 5vw; */
   box-sizing: border-box;
 }
 
@@ -112,17 +113,18 @@ body {
 }
 
 .paginaDoar {
-  background: #286699;
-  color: #fff;
-  border-radius: 15px;
-  padding: 0 0 4rem 0;
-  max-width: 700px;
-  min-width: 40vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 2vw; /* afasta o card da borda direita */
-  font-size: 1.2rem;
+ background: #0F4979;
+ color: #fff;
+ border-radius: 15px;
+  padding: 2.5rem 0;     
+ max-width: 700px;
+ min-width: 40vw;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ margin-right: 2vw; 
+ font-size: 1.2rem;
+ min-height: 350px;     
 }
 
 .tituloDoar {
@@ -132,24 +134,33 @@ body {
 }
 
 .paginaDoar p {
-  margin-bottom: 1.5rem;
-  text-align: left;
-  font-size: 19px;
-  padding: 0 4.5rem 0 4.5rem;
+ margin-bottom: 1.5rem;
+ text-align: left;
+ font-size: 19px;
+ padding: 0 4.5rem 0 4.5rem;
 }
 
-.paginaDoar button {
-  background: #4baef2;
-  border: none;
-  border-radius: 15px;
-  padding: 0.7rem 2rem;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
+.buttonWrapper {
+  display: flex;            /* Isso alinha os botões lado a lado */
+  justify-content: center;  /* Isso centraliza o(s) botão(ões) */
+  gap: 1.5rem;              /* Espaço entre os botões (se houver mais de um) */
+  width: 100%;
+  margin-top: auto;         /* <-- A MÁGICA: Empurra para o final do card */
+  padding-top: 1.5rem;      /* Espaço entre o texto e os botões */
+}
+
+.buttonWrapper button {
+ background: #F0F9FF;
+ border: none;
+ border-radius: 15px;
+ padding: 0.7rem 2rem;
+ font-size: 20px;
+ font-weight: bold;
+ cursor: pointer;
 }
 
 .paginaDoar button a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
 }
 

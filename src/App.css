@@ -8,6 +8,8 @@
   font-weight: 600; 
   color-scheme: light dark;
   font-synthesis: none;
+  max-width: 1920px;
+  max-height: 1080px;
 }
 
 ::marker {

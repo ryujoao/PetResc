@@ -7,8 +7,10 @@ import StepIntro from "./stepIntro";
 import StepPersonal from "./stepPersonal";
 import StepQuestionsGroup from "./stepQuestionsGroup";
 import StepFinal from "./stepFinal";
+import StepTermo from "./stepTermo"; 
 
-type FormData = {
+// --- MUDANÇA 1: MOVA O TIPO PARA CÁ E EXPORTE ---
+export type FormData = {
   nome: string;
   email: string;
   telefone: string;
@@ -28,10 +30,10 @@ type FormData = {
   qualTipoPet?: string;
   preferenciaPet?: string;
   pessoasNoLar?: string;
-  outrosAnimaisLocal?: { 
-    Quantidade: string;
-    "Tipo de Animal": string; 
-  };
+  outrosAnimaisLocal?: {
+    Quantidade: string;
+    "Tipo de Animal": string;
+  };
   alergia?: string;
   aceitaTermo?: boolean;
 };
@@ -58,27 +60,33 @@ export default function FormularioAdotar() {
     aceitaTermo: false,
   });
 
+  // Correção do useLayoutEffect (para a barra de progresso não sumir)
   useLayoutEffect(() => {
     setTimeout(() => {
       const pageEl = pageRef.current;
       if (!pageEl) return;
-      const topBar = document.querySelector(".topBar") as HTMLElement | null;
+      
+      // 1. Encontramos APENAS o navbar fixo
       const navBar = document.querySelector(".navbar") as HTMLElement | null;
-      const topHeight = topBar?.offsetHeight ?? 0;
       const navHeight = navBar?.offsetHeight ?? 0;
-      const totalHeight = topHeight + navHeight;
-      pageEl.style.paddingTop = `${totalHeight}px`;
-      pageEl.style.minHeight = `calc(100vh - ${totalHeight}px)`;
+      
+      // 2. O padding-top SÓ precisa compensar a altura do Nav
+      pageEl.style.paddingTop = `${navHeight}px`;
+
+      // 3. O min-height da página é 100vh MENOS a altura do Nav
+      pageEl.style.minHeight = `calc(100vh - ${navHeight}px)`;
     }, 0);
   }, []);
 
+  // Array de steps (corrigido para ter 7 steps)
   const majorSteps = [
     { id: 0, title: "Introdução", pages: 1 },
     { id: 1, title: "Informações Pessoais", pages: 1 },
     { id: 2, title: "Sobre espaço", pages: 3 },
     { id: 3, title: "Preferências", pages: 3 },
     { id: 4, title: "Recursos & Lar", pages: 3 },
-    { id: 5, title: "Termo de Responsabilidade", pages: 2 },
+    { id: 5, title: "Termo de Responsabilidade", pages: 1 },
+    { id: 6, title: "Concluído", pages: 1 },
   ];
 
   const update = (patch: Partial<FormData>) =>
@@ -141,7 +149,7 @@ export default function FormularioAdotar() {
             groupId={2}
             subStep={subStep}
             onAnswer={update}
-            data={data} // <-- MUDANÇA AQUI
+            data={data}
           />
         );
       case 3:
@@ -150,7 +158,7 @@ export default function FormularioAdotar() {
             groupId={3}
             subStep={subStep}
             onAnswer={update}
-            data={data} // <-- MUDANÇA AQUI
+            data={data} 
           />
         );
       case 4:
@@ -159,15 +167,22 @@ export default function FormularioAdotar() {
             groupId={4}
             subStep={subStep}
             onAnswer={update}
-            data={data} // <-- MUDANÇA AQUI
+            data={data} 
           />
         );
       case 5:
         return (
-          <StepFinal
+          <StepTermo 
             data={data}
             onChange={update}
-            setCanProceed={setCanProceed}
+            setCanProceed={setCanProceed} 
+          />
+        );
+      case 6: 
+        return (
+          // --- MUDANÇA 2: PASSE OS DADOS PARA O STEPFINAL ---
+          <StepFinal 
+            data={data}
           />
         );
       default:
@@ -177,7 +192,6 @@ export default function FormularioAdotar() {
 
   return (
     <>
-      {/* ... (O resto do seu componente Nav, Footer, barra de progresso, etc. continua igual) ... */}
       <Nav />
       <div ref={pageRef} className={styles.pageFormularioAdotar}>
         <div className={`${styles.barraProgresso} topBar`}>
@@ -195,8 +209,8 @@ export default function FormularioAdotar() {
                   state === "done"
                     ? styles.done
                     : state === "active"
-                      ? styles.active
-                      : styles.idle;
+                    ? styles.active
+                    : styles.idle;
                 return (
                   <div key={s.id} className={`${styles.step} ${stateClass}`}>
                     <div className={styles.iconWrap} aria-hidden>
@@ -233,25 +247,30 @@ export default function FormularioAdotar() {
             </div>
           </div>
         </div>
-
-        <main className={styles.conteudo}>
+        
+        {/* Lógica para aplicar a classe de largura total */}
+        <main
+          className={`${styles.conteudo} ${
+            majorStep === 5 ? styles.conteudoFullWidth : ""
+          }`}
+        >
           {majorStep === 0 && subStep === 0 && (
             <h1 className={styles.titulo}>Formulário de Interesse em Adoção</h1>
           )}
-
-          {/* introdução grande aparece apenas no primeiro bloco/subpasso */}
+          
           {majorStep === 0 && subStep === 0 && (
             <p className={styles.introducaoFormulario}>
-              Bem-vindo(a) ao nosso Formulário de Interesse. Ficamos muito
-            	 felizes por você ter dado o primeiro passo para adotar um pet.
-            	 Aqui você irá responder algumas perguntas iniciais para que a
-            	 ONG/protetor parceiro possa te conhecer melhor e dar agilidade ao
-            	 processo de adoção. Precisaremos de alguns dados pessoais para que
-            	 possamos entrar em contato com você, além de saber um pouco sobre
-            	 a sua casa, sua família e estrutura.
+                     Bem-vindo(a) ao nosso Formulário de Interesse.
+              Ficamos muito       felizes por você ter dado o primeiro
+              passo para adotar um pet.       Aqui você irá responder
+              algumas perguntas iniciais para que a       ONG/protetor
+              parceiro possa te conhecer melhor e dar agilidade ao      
+              processo de adoção. Precisaremos de alguns dados pessoais para que
+                    possamos entrar em contato com você, além de saber um
+              pouco sobre       a sua casa, sua família e estrutura.   
             </p>
           )}
-
+          
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -259,8 +278,7 @@ export default function FormularioAdotar() {
             }}
             className={styles.form}
           >
-            {renderCurrent()}
-
+              {renderCurrent()}
             <div className={styles.controls}>
               <button
                 type="button"
@@ -268,9 +286,9 @@ export default function FormularioAdotar() {
                 disabled={majorStep === 0 && subStep === 0}
                 className={styles.botoesVoltar}
               >
-                Voltar
+                  Voltar
               </button>
-
+             
               <button
                 type="button"
                 onClick={goNext}
@@ -278,17 +296,16 @@ export default function FormularioAdotar() {
                 disabled={!canProceed}
               >
                 {majorStep === majorSteps.length - 1 &&
-                  subStep === majorSteps[majorStep].pages - 1
+                subStep === majorSteps[majorStep].pages - 1
                   ? "Enviar"
                   : "Próximo"}
               </button>
             </div>
           </form>
         </main>
-      </div>
-
+    </div>
       <Footer />
-      <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} />
+      <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} /> 
     </>
   );
 }

@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styles from "./cadastro.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import api from '../../services/api';
-import { AxiosError } from 'axios';
+import api from "../../services/api";
+import { AxiosError } from "axios";
 
 export default function CadastroNext() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [telefone, setTelefone] = useState('');
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [error, setError] = useState('');
+  const [telefone, setTelefone] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegistrar = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (senha !== confirmarSenha) {
-      setError('As senhas não coincidem.');
+      setError("As senhas não coincidem.");
       return;
     }
 
@@ -28,98 +28,114 @@ export default function CadastroNext() {
       setError("Ocorreu um erro. Por favor, volte para o início do cadastro.");
       return;
     }
-    
+
     setIsLoading(true);
 
-    if (tipo === 'usuario') {
-      
+    const nomeDoUsuario = dadosDaPagina1.nome || dadosDaPagina1.name;
+
+    if (!nomeDoUsuario) {
+      setError("Erro: O nome não foi encontrado. Por favor, volte ao início.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (tipo === "usuario") {
       const dadosCompletos = {
-        nome: dadosDaPagina1.nome,
+        nome: nomeDoUsuario,
         email: dadosDaPagina1.email,
         cpf: dadosDaPagina1.cpf,
         telefone,
         password: senha,
+        role: "PUBLICO",
       };
 
       try {
-        await api.post('/auth/register', dadosCompletos);
+        await api.post("/auth/register", dadosCompletos);
         alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
-        navigate('/login');
-
+        navigate("/login");
       } catch (apiError) {
         if (apiError instanceof AxiosError && apiError.response) {
+          console.error("Erro completo:", apiError.response.data);
           setError(apiError.response.data.error || "Não foi possível realizar o cadastro.");
         } else {
           setError("Erro de conexão. Verifique se o servidor está rodando.");
         }
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
-
-    } else if (tipo === 'ong') {
-      
+    } else if (tipo === "ong") {
       const dadosCombinados = {
-        ...dadosDaPagina1, 
+        ...dadosDaPagina1,
+        nome: nomeDoUsuario,
         telefone,
         password: senha,
+        role: "ONG",
       };
 
-      navigate('/cadastroFinal', { state: dadosCombinados });
-      
+      delete dadosCombinados.name;
+      navigate("/cadastroFinal", { state: dadosCombinados });
     } else {
       setError("Tipo de cadastro desconhecido.");
       setIsLoading(false);
     }
   };
+
   return (
     <div className={styles.pagCadastro}>
-      <div className={styles.containerForms2}>
+      <div className={styles.containerForms}>
         <div className={styles.logoHeader}>
           <a href="/">PetResc</a>
         </div>
 
-        {/* Seu JSX (que já estava ótimo) continua aqui... */}
         <form className={styles.form} onSubmit={handleRegistrar}>
-          <h1 className={styles.titulo}>Últimos Passos</h1>
-          <p className={styles.subTitulo}>
-            Complete seus dados para finalizar
-          </p>
-          
+          <h1 className={styles.titulo}>
+            {location.state?.tipo === "ong" ? "Cadastro da ONG" : "Complete seu cadastro"}
+          </h1>
+
           <div>
             <label className={styles.grupoInput}>Telefone</label>
             <input
               className={styles.inputLogin}
-              type="text"
-              placeholder="(+55) 00 00000-0000"
+              type="tel"
+              placeholder="(11) 99999-9999"
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
+              required
             />
           </div>
+
           <div>
             <label className={styles.grupoInput}>Senha</label>
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Mínimo 8 caracteres"
+              placeholder="Digite sua senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
+              required
             />
           </div>
+
           <div>
-            <label className={styles.grupoInput}>Confirme sua senha</label>
+            <label className={styles.grupoInput}>Confirmar senha</label>
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Confirme sua senha"
+              placeholder="Digite sua senha novamente"
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
+              required
             />
           </div>
 
-          {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
+          {error && (
+            <p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
+              {error}
+            </p>
+          )}
 
           <button type="submit" className={styles.botaoProx} disabled={isLoading}>
-            {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+            {isLoading ? "Carregando..." : "Próximo"}
           </button>
 
           <p className={styles.loginLink}>

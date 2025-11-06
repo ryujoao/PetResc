@@ -121,6 +121,11 @@ export default function StepQuestionsGroup({
   // Pega o valor (que é uma string) para o campo único
   const singleTextValue = data[q.key] ?? "";
 
+  // --- MUDANÇA 1: Variável para checar a condição ---
+  // Verifica se a pergunta atual é "jaViuPet" E se a resposta é "Sim, já vi"
+  const showIdAnimalInput =
+    q.key === "jaViuPet" && data.jaViuPet === "Sim, já vi";
+
   return (
     <section className={styles.stepSection}>
       <h3 className={styles.questionTitle}>{q.title}</h3>
@@ -154,6 +159,21 @@ export default function StepQuestionsGroup({
           );
         })}
 
+      {/* --- MUDANÇA 2: Renderização condicional do Input --- */}
+      {showIdAnimalInput && (
+        <input
+          type="text"
+          className={styles.inputFinal}
+          placeholder="Qual o ID ou nome do animal?"
+          // O valor é salvo em um novo campo 'idAnimal'
+          value={data.idAnimal ?? ""}
+          // O 'onChange' atualiza esse novo campo 'idAnimal'
+          onChange={(e) => onAnswer({ idAnimal: e.target.value })}
+          style={{ marginTop: "1rem", width: "100%" }} // Estilo para espaçar
+        />
+      )}
+      {/* --- FIM DA MUDANÇA --- */}
+
       {/* --- RENDERIZAÇÃO DOS CAMPOS DE TEXTO --- */}
 
       {/* Caso 1: Múltiplos campos de texto (para "Outros animais no local?") */}
@@ -165,25 +185,17 @@ export default function StepQuestionsGroup({
             return (
               <input
                 key={placeholder}
-                // MUDANÇA 1: Sempre 'text' para remover as setas
                 type={"text"}
-                // MUDANÇA 2: Teclado numérico em celulares
                 inputMode={isQuantidade ? "numeric" : "text"}
                 className={styles.inputFinal}
                 style={{ width: "48%", minWidth: "200px" }}
                 placeholder={placeholder}
                 value={multiTextValue[placeholder] ?? ""}
-                // MUDANÇA 3: Lógica de validação no onChange
                 onChange={(e) => {
                   let value = e.target.value;
-
-                  // Se for o campo "Quantidade", filtramos a entrada
                   if (isQuantidade) {
-                    // Remove qualquer coisa que NÃO seja um dígito (0-9)
-                    // Isso impede "-", "+", "." e "e"
                     value = value.replace(/[^0-9]/g, "");
                   }
-
                   handleMultiTextChange(placeholder, value);
                 }}
               />

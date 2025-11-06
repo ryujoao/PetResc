@@ -1,48 +1,35 @@
-import React, { useState } from 'react';
-import styles from "../cadastro/cadastro.module.css"; 
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from "../../auth/AuthContext";
+import api from "../../services/api";
+import styles from "./cadastro.module.css";
 
 
 
 export default function Login() {
-  const { login } = useAuth(); 
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    if (!email || !password) {
-      setError('Por favor, preencha email e senha.');
-      return;
-    }
-
+    setError("");
     setIsLoading(true);
 
     try {
       await login(email, password);
 
-      navigate('/'); 
-
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Ocorreu um erro desconhecido.');
-      }
+    } catch (error: any) {
+      console.error("Login error:", error);
+      setError(error?.message || "Erro ao fazer login");
     } finally {
       setIsLoading(false);
     }
   };
 
-  
   return (
     <div className={styles.pagCadastro}>
       <div className={styles.containerForms}>
@@ -50,43 +37,47 @@ export default function Login() {
           <a href="/">PetResc</a>
         </div>
 
-        <form className={styles.form} onSubmit={handleLogin}>
-          <h1 className={styles.titulo}>Bem-vindo de volta</h1>
-          <p className={styles.subTitulo}>Faça login para continuar</p>
-
-          {/* ... seus botões de redes sociais ... */}
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <h1 className={styles.titulo}>Login</h1>
 
           <div>
             <label className={styles.grupoInput}>E-mail</label>
             <input
               className={styles.inputLogin}
               type="email"
-              placeholder="user@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          
+
           <div>
             <label className={styles.grupoInput}>Senha</label>
             <input
               className={styles.inputLogin}
               type="password"
-              placeholder="Insira sua senha"
-              value={password}// Corrigido
-              onChange={(e) => setPassword(e.target.value)} 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
-          {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
-          
-          {/* O botão é do tipo submit e não tem onClick*/}
-          <button type="submit" className={styles.botaoProx} disabled={isLoading}>
-            {isLoading ? 'Entrando...' : 'Entrar'}
+          {error && (
+            <p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
+              {error}
+            </p>
+          )}
+
+          <button 
+            type="submit" 
+            className={styles.botaoProx}
+            disabled={isLoading}
+          >
+            {isLoading ? "Entrando..." : "Entrar"}
           </button>
-          
+
           <p className={styles.loginLink}>
-            Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+            Não tem conta? <a href="/cadastro">Cadastre-se</a>
           </p>
         </form>
       </div>
