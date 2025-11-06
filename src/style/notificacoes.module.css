@@ -35,6 +35,7 @@
   cursor: pointer;
   border-bottom: 1px solid #f3f4f6;
   transition: background-color 0.2s ease-in-out;
+  font-weight: 600;
 }
 
 /* Remove a borda do último item */
