@@ -205,7 +205,7 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
   useEffect(() => {
     // Define o estado de carregamento
     setLoading(true);
-    
+
     // Chama a função (simulada) da API
     fetchOngStats(ongId)
       .then((data) => {
@@ -223,9 +223,7 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
   return (
     <>
       <div className={styles.pagDoar}>
-        <h1 className={styles.tituloDoar}>
-          Suas Estatísticas na PetResc
-        </h1>
+        <h1 className={styles.tituloDoar}>Suas Estatísticas na PetResc</h1>
         <h2 className={styles.subtitle}>
           Acompanhe aqui o impacto das suas campanhas, o número de doadores
           engajados e o total arrecadado pela sua ONG.
@@ -235,11 +233,17 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
         <div className={styles.cardContainer}>
           {/* NOVO: Lógica de Carregamento */}
           {loading ? (
-            <h2 className={styles.subtitle} style={{ width: '100%', textAlign: 'center' }}>
+            <h2
+              className={styles.subtitle}
+              style={{ width: "100%", textAlign: "center" }}
+            >
               Carregando estatísticas...
             </h2>
           ) : !stats ? (
-             <h2 className={styles.subtitle} style={{ width: '100%', textAlign: 'center' }}>
+            <h2
+              className={styles.subtitle}
+              style={{ width: "100%", textAlign: "center" }}
+            >
               Não foi possível carregar os dados.
             </h2>
           ) : (
@@ -296,20 +300,24 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
           )}
         </div>
       </div>
-      
+
       {/* O restante do seu componente (banner nova campanha) */}
       <section className={styles.bannerNovaCampanha}>
         <div className={styles.textoEsquerda}>
           <p>
             Sua doação é muito mais do que um simples gesto de solidariedade —
             ela é o que nos permite alimentar, tratar e proteger cada um dos
-            nossos animais resgatados...
+            nossos animais resgatados, garantindo que tenham acesso a cuidados
+            veterinários, alimentação de qualidade e um ambiente seguro onde
+            possam se recuperar física e emocionalmente.
           </p>
         </div>
         <div className={styles.textoDireita}>
           <p>
-            Crie novas campanhas para arrecadar doações e ajude a transformar a
-            vida de mais animais...
+            Apoiar nossa causa é se tornar parte ativa dessa transformação, é
+            estender a mão àqueles que não têm voz e participar da mudança que
+            tantos animais esperam: um futuro livre do abandono, da fome e do
+            sofrimento.
           </p>
           <Link to="/nova-campanha" className={styles.botaoNovaCampanha}>
             Nova Campanha
