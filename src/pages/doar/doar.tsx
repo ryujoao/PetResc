@@ -2,7 +2,8 @@ import Footer from "../../components/footer";
 import Nav from "../../components/navbar";
 import styles from "./doar.module.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext"; // 1. Importar o useAuth
+import { useAuth } from "../../auth/AuthContext";
+import { useState, useEffect } from "react"; // NOVO: Importar hooks do React
 
 // --- COMPONENTE PARA VISÃO DO USUÁRIO ('PUBLICO') ---
 // (Este é o código que você já tinha, sem alterações)
@@ -19,7 +20,7 @@ const DoarUsuarioView = () => {
           para animais em situação de vulnerabilidade. Escolha a ONG que mais
           toca seu coração e faça parte dessa rede de solidariedade.
         </h2>
-        {/* cards de estatísticas */}
+        {/* cards de estatísticas (Visão Pública/Plataforma) */}
         <div className={styles.cardContainer}>
           <div className={styles.card}>
             <img
@@ -66,9 +67,9 @@ const DoarUsuarioView = () => {
       </div>
 
       <div className={styles.pagInstituicoes}>
+        {/* ... (Seu código .map() para 'Mais Populares' e 'Novas Campanhas' continua o mesmo) ... */}
         <h1 className={styles.tituloInstituicoes}>Mais Populares</h1>
         <div className={styles.cardInstituicoes}>
-          {/* ... (Seu código .map() para 'Mais Populares' continua o mesmo) ... */}
           {[
             {
               id: "caramelo",
@@ -106,7 +107,7 @@ const DoarUsuarioView = () => {
               </p>
               <progress value={inst.arrecadado} max={inst.meta}></progress>
               <p className={styles.valorInstituicoes}>
-                R$ {inst.arrecadado.toLocaleString("pt-BR")} / R$
+                R$ {inst.arrecadado.toLocaleString("pt-BR")} / R${" "}
                 {inst.meta.toLocaleString("pt-BR")} (
                 {Math.round((inst.arrecadado / inst.meta) * 100)}%)
               </p>
@@ -116,7 +117,6 @@ const DoarUsuarioView = () => {
 
         <h1 className={styles.tituloInstituicoes}>Novas Campanhas</h1>
         <div className={styles.cardInstituicoes}>
-          {/* ... (Seu código .map() para 'Novas Campanhas' continua o mesmo) ... */}
           {[
             {
               id: "ampara",
@@ -154,7 +154,7 @@ const DoarUsuarioView = () => {
               </p>
               <progress value={inst.arrecadado} max={inst.meta}></progress>
               <p className={styles.valorInstituicoes}>
-                R$ {inst.arrecadado.toLocaleString("pt-BR")} / R$
+                R$ {inst.arrecadado.toLocaleString("pt-BR")} / R${" "}
                 {inst.meta.toLocaleString("pt-BR")} (
                 {Math.round((inst.arrecadado / inst.meta) * 100)}%)
               </p>
@@ -166,82 +166,163 @@ const DoarUsuarioView = () => {
   );
 };
 
+// --- NOVO: Interface para os dados da ONG ---
+interface OngStats {
+  totalCampanhas: number;
+  totalDoadores: number;
+  valorArrecadado: number;
+}
+
+// --- NOVO: Função que SIMULA a busca de dados na API ---
+// Substitua esta função pela sua chamada de API real
+const fetchOngStats = (ongId: string): Promise<OngStats> => {
+  console.log("Buscando dados para a ONG:", ongId);
+  // Simula uma chamada de API que demora 1 segundo
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Dados de exemplo (parecidos com a Imagem 1)
+      const mockData: OngStats = {
+        totalCampanhas: 72,
+        totalDoadores: 1420,
+        valorArrecadado: 127800.0,
+      };
+      // Em um caso real:
+      // const response = await fetch(`/api/ongs/${ongId}/stats`);
+      // const mockData = await response.json();
+      resolve(mockData);
+    }, 1000);
+  });
+};
+
 // --- COMPONENTE PARA VISÃO DA ONG ('ONG' / 'ADMIN') ---
-// (Este é o novo componente, baseado na Imagem 2)
-const DoarOngView = () => {
+// (Este componente foi REFEITO para buscar e exibir dados dinâmicos)
+const DoarOngView = ({ ongId }: { ongId: string }) => {
+  // NOVO: Estados para guardar os dados, carregamento e erro
+  const [stats, setStats] = useState<OngStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // NOVO: Hook para buscar os dados da API quando o componente montar
+  useEffect(() => {
+    // Define o estado de carregamento
+    setLoading(true);
+
+    // Chama a função (simulada) da API
+    fetchOngStats(ongId)
+      .then((data) => {
+        // Sucesso: guarda os dados no estado
+        setStats(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // Erro: para de carregar e loga o erro
+        console.error("Erro ao buscar estatísticas:", err);
+        setLoading(false);
+      });
+  }, [ongId]); // A busca roda sempre que o ongId mudar
+
   return (
     <>
       <div className={styles.pagDoar}>
-        <h1 className={styles.tituloDoar}>
-          Veja a Diferença Que Você Pode Fazer
-        </h1>
+        <h1 className={styles.tituloDoar}>Suas Estatísticas na PetResc</h1>
         <h2 className={styles.subtitle}>
-          No PetResc, você pode apoiar diretamente as ONGs cadastradas. Cada
-          contribuição ajuda a oferecer alimentação, cuidados médicos e abrigo
-          para animais em situação de vulnerabilidade. Escolha a ONG que mais
-          toca seu coração e faça parte dessa rede de solidariedade.
+          Acompanhe aqui o impacto das suas campanhas, o número de doadores
+          engajados e o total arrecadado pela sua ONG.
         </h2>
-        {/* cards de estatísticas */}
+
+        {/* cards de estatísticas (Visão da ONG) */}
         <div className={styles.cardContainer}>
-          <div className={styles.card}>
-            <img
-              src="../../../public/doar/campanhas.png"
-              alt="Campanhas realizadas"
-              className={styles.cardImage}
-            />
-            <p className={styles.cardText}>85</p>
-            <p className={styles.cardSubtext}>Campanhas Realizadas</p>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="../../../public/doar/doarImg.png"
-              alt="Pessoas beneficiadas"
-              className={styles.cardImage}
-            />
-          </div>
-          <div className={styles.card}>
-            <img
-              src="../../../public/doar/doadores.png"
-              alt="Doadores ativos"
-              className={styles.cardImage}
-            />
-            <p className={styles.cardText}>157</p>
-            <p className={styles.cardSubtext}>Doadores Ativos</p>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="../../../public/doar/doarImg2.png"
-              alt="Pessoas beneficiadas"
-              className={styles.cardImage}
-            />
-          </div>
-          <div className={styles.card}>
-            <img
-              src="../../../public/doar/valor.png"
-              alt="Valor arrecadado"
-              className={styles.cardImage}
-            />
-            <p className={styles.cardText}>R$ 78.446,96</p>
-            <p className={styles.cardSubtext}>Valor Arrecadado</p>
-          </div>
+          {/* NOVO: Lógica de Carregamento */}
+          {loading ? (
+            <h2
+              className={styles.subtitle}
+              style={{ width: "100%", textAlign: "center" }}
+            >
+              Carregando estatísticas...
+            </h2>
+          ) : !stats ? (
+            <h2
+              className={styles.subtitle}
+              style={{ width: "100%", textAlign: "center" }}
+            >
+              Não foi possível carregar os dados.
+            </h2>
+          ) : (
+            // NOVO: Renderização com dados dinâmicos
+            <>
+              <div className={styles.card}>
+                <img
+                  src="../../../public/doar/campanhas.png"
+                  alt="Campanhas realizadas"
+                  className={styles.cardImage}
+                />
+                <p className={styles.cardText}>{stats.totalCampanhas}</p>
+                <p className={styles.cardSubtext}>Campanhas Realizadas</p>
+              </div>
+              <div className={styles.card}>
+                <img
+                  src="../../../public/doar/doarImg.png"
+                  alt="Pessoas beneficiadas"
+                  className={styles.cardImage}
+                />
+              </div>
+              <div className={styles.card}>
+                <img
+                  src="../../../public/doar/doadores.png"
+                  alt="Doadores ativos"
+                  className={styles.cardImage}
+                />
+                <p className={styles.cardText}>{stats.totalDoadores}</p>
+                <p className={styles.cardSubtext}>Doadores Ativos</p>
+              </div>
+              <div className={styles.card}>
+                <img
+                  src="../../../public/doar/doarImg2.png"
+                  alt="Pessoas beneficiadas"
+                  className={styles.cardImage}
+                />
+              </div>
+              <div className={styles.card}>
+                <img
+                  src="../../../public/doar/valor.png"
+                  alt="Valor arrecadado"
+                  className={styles.cardImage}
+                />
+                <p className={styles.cardText}>
+                  R${" "}
+                  {stats.valorArrecadado.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+                <p className={styles.cardSubtext}>Valor Arrecadado</p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
+      {/* O restante do seu componente (banner nova campanha) */}
       <section className={styles.bannerNovaCampanha}>
-          <p className={styles.textoEsquerda}>
+        <div className={styles.textoEsquerda}>
+          <p>
             Sua doação é muito mais do que um simples gesto de solidariedade —
             ela é o que nos permite alimentar, tratar e proteger cada um dos
             nossos animais resgatados, garantindo que tenham acesso a cuidados
             veterinários, alimentação de qualidade e um ambiente seguro onde
             possam se recuperar física e emocionalmente.
           </p>
-          <p className={styles.textoDireita}>
-            Crie novas campanhas para arrecadar doações e ajude a transformar a
-            vida de mais animais. Aqui você também encontra todas as suas
-            campanhas anteriores, com relatórios e histórico de contribuições.
-            
+        </div>
+        <div className={styles.textoDireita}>
+          <p>
+            Apoiar nossa causa é se tornar parte ativa dessa transformação, é
+            estender a mão àqueles que não têm voz e participar da mudança que
+            tantos animais esperam: um futuro livre do abandono, da fome e do
+            sofrimento.
           </p>
-          
+          <Link to="/nova-campanha" className={styles.botaoNovaCampanha}>
+            Nova Campanha
+          </Link>
+        </div>
       </section>
     </>
   );
@@ -249,18 +330,21 @@ const DoarOngView = () => {
 
 // --- COMPONENTE PRINCIPAL 'DOAR' ---
 export default function Doar() {
-  // 2. Usar o hook para pegar o usuário
   const { isAuthenticated, user } = useAuth();
 
-  // 3. Decidir se é uma ONG ou Admin
   const isOng =
     isAuthenticated && (user?.role === "ONG" || user?.role === "ADMIN");
 
   return (
     <>
       <Nav />
-      {/* 4. Renderizar o componente correto baseado no 'role' */}
-      {isOng ? <DoarOngView /> : <DoarUsuarioView />}
+      {/* ALTERADO: Passar o 'user.id' para o componente da ONG */}
+      {/* Garante que 'isOng' é verdadeiro e que 'user' não é nulo antes de passar o ID */}
+      {isOng && user ? (
+        <DoarOngView ongId={user.id.toString()} />
+      ) : (
+        <DoarUsuarioView />
+      )}
       <Footer />
     </>
   );

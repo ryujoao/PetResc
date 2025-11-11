@@ -1,21 +1,21 @@
 .pagDoar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: url('/public/banners/banner4.png') no-repeat center ;
-  padding: 2rem;
-  background-size: cover;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ min-height: 100vh;
+ background: url("/public/banners/banner4.png") no-repeat center;
+ padding: 2rem;
+ background-size: cover;
 }
 
 .tituloDoar {
-  font-size: 2.5rem;
-  color: #fff;
-  margin-bottom: 1rem;
-  text-align: center;
-  font-family: 'More Sugar';
-  -webkit-text-stroke: 2px #fff;
+ font-size: 2.5rem;
+ color: #fff;
+ margin-bottom: 1rem;
+ text-align: center;
+ font-family: "More Sugar";
+ -webkit-text-stroke: 2px #fff;
 }
 
 .cardContainer {
@@ -27,7 +27,7 @@
 }
 
 .card {
- background: #94B9D8;
+ background: #94b9d8;
  border-radius: 12px;
  width: 220px;
  height: 349px;
@@ -49,7 +49,6 @@
 
 .cardText {
  font-size: 2rem;
- 
  color: #fff;
 }
 
@@ -58,12 +57,12 @@
 }
 
 .subtitle {
-  font-size: 1.5rem;
-  color: #fff;
-  font-weight: normal;
-  margin-bottom: 2rem;
-  text-align: center;
-  width: 85%;
+ font-size: 1.5rem;
+ color: #fff;
+ font-weight: normal;
+ margin-bottom: 2rem;
+ text-align: center;
+ width: 85%;
 }
 
 /* Este é o container cinza (reutilizado para a ONG) */
@@ -115,14 +114,12 @@
  font-size: 1.2rem;
  color: #000;
  margin-bottom: 1rem;
- 
 }
 
 .valorInstituicoes {
  font-size: 1.3rem;
  color: #286699;
  margin-top: 0.5rem;
- 
 }
 
 progress {
@@ -148,157 +145,141 @@ progress::-webkit-progress-value {
  display: inline-block;
 }
 
-
-/* --- NOVOS ESTILOS PARA A PÁGINA DA ONG (Baseado na Imagem 2) --- */
+/* --- ESTILOS CORRIGIDOS PARA A PÁGINA DA ONG (Imagem 1) --- */
 
 .ongHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap; /* Para telas menores */
-  gap: 1rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-bottom: 2rem;
+ flex-wrap: wrap;
+ gap: 1.5rem;
 }
 
 .ongTitulo {
-  color: #0F4979;
-  font-size: 2.5rem;
-  font-weight: 700;
+ color: #0f4979;
+ font-size: 2.5rem;
+ font-weight: 700;
+ flex-grow: 1; /* Faz o título ocupar o espaço */
+ margin-bottom: 0;
 }
 
-.botaoNovaCampanha {
-  background-color: #286699;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-.botaoNovaCampanha:hover {
-  background-color: #1e527a;
-}
-
-.ongStatsGrid {
-  display: grid;
-  /* Cria 4 colunas em telas grandes, 2 em tablet, 1 em celular */
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.ongStatCard {
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e0e0e0;
-}
-
-.ongStatCard h3 {
-  font-size: 1.1rem;
-  color: #555;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-.ongStatCard p {
-  font-size: 2.2rem;
-  color: #0F4979;
-  font-weight: 700;
-  margin: 0;
-}
+/* (Estilos .ongStatsGrid e .ongStatCard removidos pois reutilizamos .cardContainer) */
 
 .ongCampaignActions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem; /* Adiciona espaço acima dos botões */
+ display: flex;
+ gap: 1rem;
+ margin-top: 1rem;
 }
 
-.botaoEditar, .botaoEncerrar {
-  background-color: transparent;
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
+.botaoEditar,
+.botaoEncerrar {
+ background-color: transparent;
+ padding: 0.5rem 1.2rem;
+ border-radius: 6px;
+ cursor: pointer;
+ font-weight: 600;
+ font-size: 0.9rem;
+ text-decoration: none;
+ display: inline-block;
+ text-align: center;
 }
 
 .botaoEditar {
-  border: 1px solid #286699;
-  color: #286699;
+ border: 1px solid #286699;
+ color: #286699;
 }
 .botaoEditar:hover {
-  background-color: #f0f9ff;
+ background-color: #f0f9ff;
 }
 
 .botaoEncerrar {
-  border: 1px solid #c0392b;
-  color: #c0392b;
+ border: 1px solid #c0392b;
+ color: #c0392b;
 }
 .botaoEncerrar:hover {
-  background-color: #fdf2f2;
+ background-color: #fdf2f2;
 }
+
+/* BANNER DA ONG */
 
 .bannerNovaCampanha {
-  position: relative;
-  width: 100vw;
-  height: 80vh;
-  background: url("../../../public/banners/banner2.png") no-repeat center bottom;
-  background-size: cover;
-  display: flex;
-  justify-content: flex-end;
-  overflow: hidden;
-  padding-right: 20vw; /* aumente para afastar do canto direito */
+ position: relative;
+ width: 100%;
+ height: 80vh;
+ background: url("../../../public/banners/cachorroDoar.png") no-repeat center bottom;
+ background-size: cover;
+ display: flex;
+ justify-content: space-around;
+ overflow: hidden;
+ gap: 20rem;
+ align-items: flex-start;
+ padding-top: 20vh; 
+ box-sizing: border-box; /* NOVO: Garante que o padding não aumente a altura total */
 }
 
-
 .textoEsquerda {
-  color: #286699;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
+ color: #286699;
+ font-size: 2rem;
+ text-align: center;
+ max-width: 550px;
 }
 
 .textoDireita {
-  color: #286699;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  text-align: flex-end;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+ color: #286699;
+ font-size: 2rem;
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center; /* Alinha o botão ao centro */
+ max-width: 550px;
+ gap: 4rem; /* Espaço entre o <p> e o <button> */
 }
 
 .botaoNovaCampanha {
-  background-color: #286699;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.2s;
+ background-color: #286699;
+ color: #fff;
+ font-size: 1.7rem;
+ font-weight: 600;
+ padding: 0.8rem 1.5rem;
+ border: none;
+ border-radius: 120px;
+ cursor: pointer;
+ text-decoration: none;
+ transition: background-color 0.2s;
+}
+
+.botaoNovaCampanha:hover {
+ background-color: #1e527a;
 }
 
 /* Media query para os stats da ONG */
 @media (max-width: 600px) {
-  .ongDashboardContainer {
-    padding: 1.5rem;
-  }
-  .ongHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+ .ongHeader {
+  flex-direction: column;
+  align-items: flex-start;
+ }
+}
+
+/* Media query para o novo banner da ONG */
+@media (max-width: 900px) {
+ .bannerNovaCampanha {
+  flex-direction: column; /* Empilha as colunas em telas pequenas */
+  height: auto; /* Altura automática */
+  padding: 3rem 2rem;
+  align-items: center; /* Centraliza no mobile, sobrepõe o flex-start */
+ }
+ .textoEsquerda,
+ .textoDireita,
+ .imagemCentralContainer {
+  flex-basis: 100%; /* Cada coluna ocupa 100% */
+  max-width: 600px; /* Limita a largura do texto */
+  text-align: center; /* Centraliza o texto no mobile */
+ }
+ .textoDireita {
+  align-items: center; /* Centraliza o botão no mobile */
+ }
+ .imagemCentral {
+  max-height: 40vh; /* Diminui a imagem no mobile */
+ }
 }
