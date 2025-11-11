@@ -187,15 +187,19 @@ const petsParaExibir =
         </div>
 
         <div className={styles.infoContainer}>
-          <div className={styles.infoBox}>
+          <div className={`${styles.infoBox} ${styles.alignLeft}`}>
              <p>{usuario?.email || 'Email não disponível'}</p>
              <p>{usuario?.telefone || 'Telefone não disponível'}</p>
-             <p className={styles.username}>{usuario?.nome || usuario?.nome || 'Username'}</p>
+          </div>
+          <div className={`${styles.infoBox} ${styles.alignCenter }`}>
+            <p className={styles.username}>
+              {usuario?.nome || usuario?.nome || 'Username'}
+            </p>
           </div>
           {/* <div className={styles.infoBox}>
           <p className={styles.username}>{usuario?.nome || 'Username'}</p>
           </div> */}
-          <div className={styles.infoBox}>
+          <div className={`${styles.infoBox} ${styles.alignRight}`}>
             <p>Localização</p>
             <p>SP, Brasil</p>
           </div>
