@@ -16,30 +16,45 @@ import Login from "./pages/cadastro/login";
 import CadastroFinal from "./pages/cadastro/cadastroFinal";
 import FormularioLarTemporario from "./pages/larTemporario/formularioLarTemporario";
 import FormularioAdotar from "./pages/adotar/formularioAdotar";
-import Config from "./pages/configuracoes/config";
+import Config from "./pages/configuracoes/configMenu";
+import ConfigLayout from "./pages/configuracoes/configLayout";
+import ConfigMenu from "./pages/configuracoes/configMenu";
+import Conta from "./pages/configuracoes/conta";
 
 // ...existing code...
 function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/adotar" element={<Adotar />} />
-        <Route path="/larTemporario" element={<LarTemporario />} />
-        <Route path="/doar" element={<Doar />} />
-        <Route path="/cadastro" element={<CadastroUsu />} />
-        <Route path="/cadastroNext" element={<CadastroNext />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registrarAnimal" element={<RegistrarAnimal />} />
-        <Route path="/centralAdocao" element={<CentralAdocao />} />
-        <Route path="/perfil" element={<Perfil />} />
-        <Route path="/perfilAnimal/:id" element={<PerfilAnimal />} />
-        <Route path="/instituto/:id" element={<Institutos />} />
-        <Route path="/cadastroOng" element={<CadastroOng />} />
-        <Route path="/cadastroFinal" element={<CadastroFinal />} />
-        <Route path="/formularioLarTemporario" element={<FormularioLarTemporario />} />
-        <Route path="/formularioAdotar" element={<FormularioAdotar />} />
-        <Route path="/config" element={<Config />} />
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/adotar" element={<Adotar />} />
+      <Route path="/larTemporario" element={<LarTemporario />} />
+      <Route path="/doar" element={<Doar />} />
+      <Route path="/cadastro" element={<CadastroUsu />} />
+      <Route path="/cadastroNext" element={<CadastroNext />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registrarAnimal" element={<RegistrarAnimal />} />
+      <Route path="/centralAdocao" element={<CentralAdocao />} />
+      <Route path="/perfil" element={<Perfil />} />
+      <Route path="/perfilAnimal/:id" element={<PerfilAnimal />} />
+      <Route path="/instituto/:id" element={<Institutos />} />
+      <Route path="/cadastroOng" element={<CadastroOng />} />
+      <Route path="/cadastroFinal" element={<CadastroFinal />} />
+      <Route
+        path="/formularioLarTemporario"
+        element={<FormularioLarTemporario />}
+      />
+      <Route path="/formularioAdotar" element={<FormularioAdotar />} />
+
+      <Route path="/config" element={<ConfigMenu />} />
+
+      <Route element={<ConfigLayout />}>
+        <Route path="/config/conta" element={<Conta />} />
+        {/* <Route path="endereco" element={<PaginaEndereco />} /> */}
+        {/* <Route path="seguranca" element={<PaginaSeguranca />} /> */}
+        {/* <Route path="notificacao" element={<PaginaNotificacao />} /> */}
+        {/* ... etc ... */}
+      </Route>
+    </Routes>
   );
 }
 

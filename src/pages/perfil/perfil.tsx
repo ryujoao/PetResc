@@ -4,7 +4,6 @@ import Nav from "../../components/navbar";
 import styles from "./perfil.module.css";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 
-
 interface UserData {
   id: number;
   nome: string;
@@ -73,28 +72,28 @@ export default function Perfil() {
   const [pets, setPets] = useState<Pet[]>(petsIniciais);
   const [activeView, setActiveView] = useState<"todos" | "salvos">("todos");
 
-const toggleFavorito = (idDoPet: number) => {
-  setPets((petsAtuais) =>
-    petsAtuais.map((pet) =>
-      pet.id === idDoPet ? { ...pet, favorito: !pet.favorito } : pet
-    )
-  );
-};
+  const toggleFavorito = (idDoPet: number) => {
+    setPets((petsAtuais) =>
+      petsAtuais.map((pet) =>
+        pet.id === idDoPet ? { ...pet, favorito: !pet.favorito } : pet
+      )
+    );
+  };
 
-const petsParaExibir =
-  activeView === "todos" ? pets : pets.filter((pet) => pet.favorito);
+  const petsParaExibir =
+    activeView === "todos" ? pets : pets.filter((pet) => pet.favorito);
   const [petsSalvos, setPetsSalvos] = useState([
     {
       nome: "Zeus",
       raca: "Pitbull.",
       sexo: "M",
       img: "../../../public/animais/zeus.png",
-     },
+    },
     {
       nome: "Frajola",
       raca: "Sem raça definida (SRD)",
       sexo: "F",
-     img: "../../../public/animais/frajola.png",
+      img: "../../../public/animais/frajola.png",
     },
     {
       nome: "Branquinho",
@@ -108,41 +107,39 @@ const petsParaExibir =
     null
   );
 
-   useEffect(() => {
-  const fetchUserData = async () => {
-     const token = localStorage.getItem('@AuthData:token');
-    if (!token) {
-      console.error("Usuário não autenticado");
-      return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:3000/auth/me', {
-         method: 'GET',
-          headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-         }
-      });
-      
-       console.log("Token enviado:", token);
-
-      if (!response.ok) {
-        throw new Error('Falha ao buscar dados do usuário');
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("@AuthData:token");
+      if (!token) {
+        console.error("Usuário não autenticado");
+        return;
       }
 
-      const data: UserData = await response.json();
-      console.log("Dados recebidos:", data);
-      setUsuario(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      try {
+        const response = await fetch("http://localhost:3000/auth/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  fetchUserData();
-}, []);
+        console.log("Token enviado:", token);
 
+        if (!response.ok) {
+          throw new Error("Falha ao buscar dados do usuário");
+        }
 
+        const data: UserData = await response.json();
+        console.log("Dados recebidos:", data);
+        setUsuario(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <>
@@ -188,12 +185,12 @@ const petsParaExibir =
 
         <div className={styles.infoContainer}>
           <div className={`${styles.infoBox} ${styles.alignLeft}`}>
-             <p>{usuario?.email || 'Email não disponível'}</p>
-             <p>{usuario?.telefone || 'Telefone não disponível'}</p>
+            <p>{usuario?.email || "Email não disponível"}</p>
+            <p>{usuario?.telefone || "Telefone não disponível"}</p>
           </div>
-          <div className={`${styles.infoBox} ${styles.alignCenter }`}>
+          <div className={`${styles.infoBox} ${styles.alignCenter}`}>
             <p className={styles.username}>
-              {usuario?.nome || usuario?.nome || 'Username'}
+              {usuario?.nome || usuario?.nome || "Username"}
             </p>
           </div>
           {/* <div className={styles.infoBox}>
@@ -229,8 +226,14 @@ const petsParaExibir =
             {activeView === "todos" ? "Meus Pets" : "Pets Salvos"}
           </h2>
           <Link to="/registrarAnimal" className={styles.addIcon}>
-            <svg xmlns="http://www.w3.org/2000/svg" width={35} height={35} fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={35}
+              height={35}
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
             </svg>
           </Link>
         </div>
@@ -247,7 +250,25 @@ const petsParaExibir =
                 className={pet.favorito ? styles.favorite : styles.nonFavorite}
                 onClick={() => toggleFavorito(pet.id)}
               >
-                ♥
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  {pet.favorito ? (
+                    // preencher
+                    <path
+                      fillRule="evenodd"
+                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                    />
+                  ) : (
+                    // não preencher
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01z" />
+                  )}
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                </svg>
               </span>
             </div>
           ))}
