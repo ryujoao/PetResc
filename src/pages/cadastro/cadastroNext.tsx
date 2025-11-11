@@ -50,7 +50,7 @@ export default function CadastroNext() {
       };
 
       try {
-        await api.post("/auth/register", dadosCompletos);
+        await api.post("/api/auth/register", dadosCompletos);
         alert("Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
         navigate("/login");
       } catch (apiError) {

@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string) => {
   try {
-    const response = await api.post('/auth/login', {
+    const response = await api.post('/api/auth/login', {
       email,
       password, 
     });
@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(usuario);
 
     if (usuario.role === 'ADMIN') {
-      navigate('/admin/dashboard'); 
+      navigate('/api/admin/dashboard'); 
     } else {
       navigate('/'); 
     }
@@ -98,8 +98,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 
   if (isLoading) {
-    return null; 
-  }
+  return <div>Carregando...</div>;
+}
 
   const isAuthenticated = !!user; 
 

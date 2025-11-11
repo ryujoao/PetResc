@@ -124,9 +124,9 @@ useEffect(() => {
 
     try {
       if (tipo === "ong") {
-        await api.post("/auth/register-ong", dadosCompletos);
+        await api.post("/api/auth/register-ong", dadosCompletos);
       } else {
-        await api.post("/auth/register", dadosCompletos);
+        await api.post("/api/auth/register", dadosCompletos);
       }
 
       alert("Cadastro realizado com sucesso!");
