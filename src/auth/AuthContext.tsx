@@ -19,6 +19,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>; 
   logout: () => void;
   hasPermission: (requiredRole: User['role'][]) => boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -117,7 +118,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isAuthenticated, 
         login, 
         logout,
-        hasPermission 
+        hasPermission,
+         setUser 
       }}
     >
       {children}

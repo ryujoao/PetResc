@@ -1,74 +1,75 @@
 import { Link } from "react-router-dom";
 import styles from "./conta.module.css"; 
 import { useEffect, useState } from "react";
-
-// Você pode reusar esta interface
-interface UserData {
-  id: number;
-  nome: string;
-  email: string;
-  telefone?: string;
-  role: string;
-}
+import { useAuth } from "../../auth/AuthContext";
 
 export default function Conta() {
-  // 1. MANTER: Estados para os campos do formulário
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
+  const { setUser } = useAuth();
 
-  // 2. MANTER E AJUSTAR: Busca os dados para preencher o formulário
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("@AuthData:token");
-      if (!token) {
-        console.error("Usuário não autenticado");
-        return;
-      }
+      if (!token) return;
+
       try {
-        const response = await fetch("http://localhost:3000/auth/me", {
+        const response = await fetch("http://localhost:3000/api/auth/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
+
         if (!response.ok) {
-          throw new Error("Falha ao buscar dados do usuário");
+          throw new Error("Erro ao buscar dados do usuário");
         }
-        const data: UserData = await response.json();
-        
-        // --- AJUSTE IMPORTANTE ---
-        // Preenche os estados do formulário, em vez de um 'usuario' separado
+
+        const data = await response.json();
         setNome(data.nome || "");
         setEmail(data.email || "");
         setTelefone(data.telefone || "");
-        // --- FIM DO AJUSTE ---
-
       } catch (error) {
-        console.error(error);
+        console.error("Erro ao carregar dados:", error);
       }
     };
-    fetchUserData();
-  }, []); // Roda só uma vez
 
-  // 3. MANTER: A lógica de salvar (que você precisa adicionar)
-  const handleSubmit = (e: React.FormEvent) => {
+    fetchUserData();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você faria a chamada de API (PUT ou PATCH) para salvar
-    console.log("Salvando dados:", { nome, email, telefone });
-    alert("Dados salvos (simulação)");
+    const token = localStorage.getItem("@AuthData:token");
+    if (!token) return;
+
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/me", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ nome, telefone }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar perfil");
+      }
+
+      const result = await response.json();
+      setUser(result.user);
+      localStorage.setItem("@AuthData:user", JSON.stringify(result.user));
+      alert("Dados atualizados com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar alterações:", error);
+      alert("Falha ao salvar alterações.");
+    }
   };
 
-
-
   return (
-
     <div className={styles.formContainer}>
-
-        
-      
-      {/* 1. Cabeçalho com "Voltar" e Título */}
       <div className={styles.formHeader}>
         <Link to="/config" className={styles.backButton}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -78,42 +79,23 @@ export default function Conta() {
         <h1 className={styles.title}>Conta</h1>
       </div>
 
-      {/* 2. Formulário */}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
           <label htmlFor="nome">Nome</label>
-          <input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
+          <input id="nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="email">E-mail</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input id="email" type="email" value={email} readOnly />
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="telefone">Telefone</label>
-          <input
-            id="telefone"
-            type="tel"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
+          <input id="telefone" type="tel" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
         </div>
 
-        {/* 3. Botão de Salvar */}
-        <button type="submit" className={styles.saveButton}>
-          Salvar Alterações
-        </button>
+        <button type="submit" className={styles.saveButton}>Salvar Alterações</button>
       </form>
     </div>
   );
