@@ -111,19 +111,24 @@
 }
 
 .botao {
-  background: #286699;
+  background: #2b6b99;
   color: white;
   margin: 1.5rem 0;
   padding: 0.8rem;
   border: none;
   cursor: pointer;
-  border-radius: 7px;
+  border-radius: 30px;
   width: 250px;
   font-size: 1.3rem;
   font-weight: 600;
   align-self: center;
-  
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.botao:hover {
+  background-color: #0f4979;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsividade: no mobile, vira uma coluna só */

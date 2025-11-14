@@ -91,8 +91,8 @@ function Home() {
                 contribuição é essencial para que eles tenham uma nova chance de
                 vida cheia de carinho e dignidade.
               </p>
-              <div className={styles.buttonWrapper}>
-                <button>
+              <div className={styles.divBotaoDoar}>
+                <button className={styles.botaoDoar}>
                   <a href="/doar">Doe agora!</a>
                 </button>
               </div>

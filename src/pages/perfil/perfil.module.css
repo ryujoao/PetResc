@@ -115,21 +115,24 @@
 .btnContainer {
   display: flex;
   width: 30%;
+  min-width: 300px; 
   border: 1px solid #004080;
-  border-radius: 15px;
+  border-radius: 999px; 
   overflow: hidden;
   margin-bottom: 2rem;
+  background-color: #fff;
 }
 
 .salvos {
   flex: 1;
   padding: 0.7rem;
   border: none;
-  border-radius: 15px;
-  background: #c9dff4;
+  background: #c9dff4; 
   color: #004080;
-  font-weight: 600;
-  font-size: 1.5rem;
+  font-weight: 700;
+  font-size: 1.3rem; 
+  cursor: default; 
+  transition: all 0.3s ease;
 }
 
 .editarPerfil {
@@ -137,10 +140,16 @@
   padding: 0.7rem;
   border: none;
   background: transparent;
-  color: #004080;
+  color: #6b8bad; 
   cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.3rem; 
+  font-weight: 600; 
+  transition: all 0.3s ease;
+}
+
+.editarPerfil:hover {
+  background-color: #eef7fb; 
+  color: #004080; 
 }
 
 .petsContainer {
@@ -249,6 +258,7 @@
 
   position: relative;
   top: -0.6rem;
+  transition: transform 0.2s ease, color 0.2s ease;
   
 }
 
@@ -258,5 +268,13 @@
   color: #004080;
   cursor: pointer;
   z-index: 10;  
-  right: 15px;
+  right: 10px;
+
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.configIcon:hover, .addIcon:hover {
+  opacity: 0.8; 
+  transform: translateY(-3px);
+  transition: transform 0.2s ease, color 0.2s ease;
 }

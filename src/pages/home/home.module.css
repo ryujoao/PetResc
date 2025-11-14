@@ -20,7 +20,7 @@ body {
 .bannerUm {
   width: 100vw;
   height: 100vh;
-  background: url("/banners/banner1.png") no-repeat center center;
+  background: url("/banners/banner1.png") no-repeat bottom ;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -91,10 +91,14 @@ body {
   display: inline-block;
   margin-top: 10px;
   margin-right: 3rem;
+
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .subtitulo:hover {
   background-color: #1976d2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Conteúdo abaixo do banner */
@@ -144,23 +148,30 @@ body {
  padding: 0 4.5rem 0 4.5rem;
 }
 
-.buttonWrapper {
-  display: flex;            /* Isso alinha os botões lado a lado */
-  justify-content: center;  /* Isso centraliza o(s) botão(ões) */
-  gap: 1.5rem;              /* Espaço entre os botões (se houver mais de um) */
+.divBotaoDoar {
+  display: flex;            
+  justify-content: center;  
+  gap: 1.5rem;              
   width: 100%;
-  margin-top: auto;         /* <-- A MÁGICA: Empurra para o final do card */
-  padding-top: 1.5rem;      /* Espaço entre o texto e os botões */
+  margin-top: auto;         
+  padding-top: 1.5rem;      
 }
 
-.buttonWrapper button {
- background: #F0F9FF;
+.botaoDoar {
+ background: #fff;
  border: none;
  border-radius: 15px;
  padding: 0.7rem 2rem;
  font-size: 20px;
  font-weight: bold;
  cursor: pointer;
+ transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.botaoDoar:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .paginaDoar button a {
