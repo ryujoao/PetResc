@@ -113,13 +113,17 @@
 .botao {
   background: #286699;
   color: white;
+  margin: 1.5rem 0;
   padding: 0.8rem;
   border: none;
   cursor: pointer;
   border-radius: 7px;
   width: 250px;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
   align-self: center;
+  
+
 }
 
 /* Responsividade: no mobile, vira uma coluna só */
@@ -215,7 +219,6 @@ select {
   align-items: center;
   cursor: pointer;
   font-size: 1.2rem;
-  font-weight: 500px;
   color: #333;
   position: relative;
   user-select: none;

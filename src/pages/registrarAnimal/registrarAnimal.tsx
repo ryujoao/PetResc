@@ -1,31 +1,17 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import Nav from "../../components/navbar";
-import Footer from "../../components/footer";
+import { useState } from "react";
 import styles from "./registrarAnimal.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { IconCloud } from "../../components/icons";
+import Layout from "../../components/layout";
 
 // =================================================================
 // === COMPONENTE 1: FORMULÁRIO DO USUÁRIO COMUM (SIMPLIFICADO) ===
 // =================================================================
 const RegistrarAnimalUsuario = () => {
-  const pageRef = useRef<HTMLDivElement | null>(null);
+  
   const navigate = useNavigate();
 
-  // Ajuste de padding para o TopBar/NavBar
-  useLayoutEffect(() => {
-    const timer = setTimeout(() => {
-      const pageEl = pageRef.current;
-      if (!pageEl) return;
-      const topBar = document.querySelector(".topBar") as HTMLElement | null;
-      const navBar = document.querySelector(".navbar") as HTMLElement | null;
-      const topHeight = topBar?.offsetHeight ?? 0;
-      const navHeight = navBar?.offsetHeight ?? 0;
-      const totalHeight = topHeight + navHeight;
-      pageEl.style.paddingTop = `${totalHeight}px`;
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
 
   const [imagemPreview, setImagemPreview] = useState<string | null>(null);
   const [imagemArquivo, setImagemArquivo] = useState<File | null>(null);
@@ -111,16 +97,14 @@ const RegistrarAnimalUsuario = () => {
   };
 
   return (
-    <div ref={pageRef} className={styles.pageRegistroAnimal}>
+    <div className={styles.pageRegistroAnimal}>
       <div className={styles.colunaUm}>
         <div className={styles.imagemContainer}>
           {!imagemPreview ? (
             <form className={styles.formularioUploadArquivo}>
               <label className={styles.rotuloUploadArquivo} htmlFor="uploadImagem">
                 <div className={styles.designUploadArquivo}>
-                  <svg height="1em" viewBox="0 0 640 512">
-                    <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
-                  </svg>
+                  <IconCloud />
                   <p>Arraste uma imagem nesta área</p>
                   <p>ou</p>
                   <span className={styles.botaoNavegar}>clique para selecionar uma imagem</span>
@@ -206,22 +190,7 @@ const RegistrarAnimalUsuario = () => {
 // === COMPONENTE 2: FORMULÁRIO DA ONG (COMPLETO E DETALHADO) ===
 // =================================================================
 const RegistrarAnimalOng = () => {
-  const pageRef = useRef<HTMLFormElement | null>(null);
   const navigate = useNavigate();
-
-  useLayoutEffect(() => {
-    const timer = setTimeout(() => {
-      const formEl = pageRef.current;
-      if (!formEl) return;
-      const topBar = document.querySelector(".topBar") as HTMLElement | null;
-      const navBar = document.querySelector(".navbar") as HTMLElement | null;
-      const topHeight = topBar?.offsetHeight ?? 0;
-      const navHeight = navBar?.offsetHeight ?? 0;
-      const totalHeight = topHeight + navHeight;
-      formEl.style.paddingTop = `${totalHeight}px`;
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
 
   // --- States da ONG ---
   const [imgResgatePreview, setImgResgatePreview] = useState<string | null>(null);
@@ -358,7 +327,7 @@ const RegistrarAnimalOng = () => {
   };
 
   return (
-    <form ref={pageRef} className={`${styles.formOng} ${styles.pageRegistroAnimal}`} onSubmit={handleSubmitOng}>
+    <form className={`${styles.formOng} ${styles.pageRegistroAnimal}`} onSubmit={handleSubmitOng}>
       {/* Coluna 1 - ESQUERDA */}
       <div className={styles.colunaUm}>
         <div className={styles.campoForm}>
@@ -366,7 +335,7 @@ const RegistrarAnimalOng = () => {
             {!imgResgatePreview ? (
               <label className={styles.rotuloUploadArquivo} htmlFor="uploadResgate">
                 <div className={styles.designUploadArquivo}>
-                   <svg height="1em" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path></svg>
+                  <IconCloud />
                    <p>Arraste ou clique</p>
                 </div>
               </label>
@@ -386,7 +355,7 @@ const RegistrarAnimalOng = () => {
              {!imgAtualPreview ? (
                <label className={styles.rotuloUploadArquivo} htmlFor="uploadAtual">
                  <div className={styles.designUploadArquivo}>
-                    <svg height="1em" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path></svg>
+                    <IconCloud />
                     <p>Arraste ou clique</p>
                  </div>
                </label>
@@ -627,9 +596,9 @@ const PaginaRegistrarAnimal = () => {
 
   return (
     <>
-      <Nav />
+      <Layout>
       {ehOng ? <RegistrarAnimalOng /> : <RegistrarAnimalUsuario />}
-      <Footer />
+      </Layout>
     </>
   );
 };

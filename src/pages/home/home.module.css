@@ -27,6 +27,8 @@ body {
   justify-content: flex-start;
   padding-left: 5vw;
   box-sizing: border-box;
+  margin-top: -9rem; 
+  padding-top: 9rem; 
 }
 
 .bannerDois {
@@ -50,6 +52,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-top: -9rem; 
+  padding-top: 9rem; 
 
   /* padding-left: 5vw; */
   box-sizing: border-box;

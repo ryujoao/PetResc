@@ -11,6 +11,13 @@
 .barraProgresso {
   padding: 1.2rem 0;
 }
+
+@media (max-width: 600px) {
+  .barraProgresso {
+    margin-top: 6rem; 
+  }
+}
+
 .progressoContainer {
   position: relative;
   max-width: 1100px;
@@ -379,11 +386,7 @@
   width: 100%;
 }
 
-.finalIcon {
-  width: 80px;
-  height: 80px;
-  color: #3b9a6f;
-}
+
 
 .finalTitle {
   font-size: clamp(2rem, 4vw, 3rem);
@@ -394,7 +397,7 @@
 
 .finalSubtitle {
   font-size: 1.3rem;
-  font-weight: 400;
+  font-weight: 600;
   color: #333;
   text-align: center;
   max-width: 600px;

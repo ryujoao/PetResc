@@ -1,311 +1,261 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState } from "react"; 
 import styles from "./formularioAdotar.module.css";
-import Nav from "../../components/navbar";
-import Footer from "../../components/footer";
+import Layout from "../../components/layout"; 
 import Sucesso from "../../components/sucesso";
 import StepIntro from "./stepIntro";
 import StepPersonal from "./stepPersonal";
 import StepQuestionsGroup from "./stepQuestionsGroup";
 import StepFinal from "./stepFinal";
-import StepTermo from "./stepTermo"; 
+import StepTermo from "./stepTermo";
+import { IconWrap } from "../../components/icons";
 
-// --- MUDANÇA 1: MOVA O TIPO PARA CÁ E EXPORTE ---
 export type FormData = {
-  nome: string;
-  email: string;
-  telefone: string;
-  cep: string;
-  rua: string;
-  numero: string;
-  complemento?: string;
-  bairro: string;
-  estado?: string;
-  cidade?: string;
-  tipoMoradia: string;
-  quintal: string;
-  tipoMoradiaChoice?: string;
-  portesAceitos?: string;
-  animaisAceitos?: string;
-  jaViuPet?: string;
-  qualTipoPet?: string;
-  preferenciaPet?: string;
-  pessoasNoLar?: string;
-  outrosAnimaisLocal?: {
-    Quantidade: string;
-    "Tipo de Animal": string;
-  };
-  alergia?: string;
-  aceitaTermo?: boolean;
+  nome: string;
+  email: string;
+  telefone: string;
+  cep: string;
+  rua: string;
+  numero: string;
+  complemento?: string;
+  bairro: string;
+  estado?: string;
+  cidade?: string;
+  tipoMoradia: string;
+  quintal: string;
+  tipoMoradiaChoice?: string;
+  portesAceitos?: string;
+  animaisAceitos?: string;
+  jaViuPet?: string;
+  qualTipoPet?: string;
+  preferenciaPet?: string;
+  pessoasNoLar?: string;
+  outrosAnimaisLocal?: {
+    Quantidade: string;
+    "Tipo de Animal": string;
+  };
+  alergia?: string;
+  aceitaTermo?: boolean;
 };
 
 export default function FormularioAdotar() {
-  const pageRef = useRef<HTMLDivElement | null>(null);
-  const [sucessoOpen, setSucessoOpen] = useState(false);
-  const [majorStep, setMajorStep] = useState(0);
-  const [subStep, setSubStep] = useState(0);
-  const [canProceed, setCanProceed] = useState(true);
-  const [data, setData] = useState<FormData>({
-    nome: "",
-    email: "",
-    telefone: "",
-    cep: "",
-    rua: "",
-    numero: "",
-    complemento: "",
-    bairro: "",
-    estado: "",
-    cidade: "",
-    tipoMoradia: "",
-    quintal: "",
-    aceitaTermo: false,
-  });
+  
+  const [sucessoOpen, setSucessoOpen] = useState(false);
+  const [majorStep, setMajorStep] = useState(0);
+  const [subStep, setSubStep] = useState(0);
+  const [canProceed, setCanProceed] = useState(true);
+  const [data, setData] = useState<FormData>({
+    nome: "",
+    email: "",
+    telefone: "",
+    cep: "",
+    rua: "",
+    numero: "",
+    complemento: "",
+    bairro: "",
+    estado: "",
+    cidade: "",
+    tipoMoradia: "",
+    quintal: "",
+    aceitaTermo: false,
+  });
 
-  // Correção do useLayoutEffect (para a barra de progresso não sumir)
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      const pageEl = pageRef.current;
-      if (!pageEl) return;
-      
-      // 1. Encontramos APENAS o navbar fixo
-      const navBar = document.querySelector(".navbar") as HTMLElement | null;
-      const navHeight = navBar?.offsetHeight ?? 0;
-      
-      // 2. O padding-top SÓ precisa compensar a altura do Nav
-      pageEl.style.paddingTop = `${navHeight}px`;
+  const majorSteps = [
+    { id: 0, title: "Introdução", pages: 1 },
+    { id: 1, title: "Informações Pessoais", pages: 1 },
+    { id: 2, title: "Sobre espaço", pages: 3 },
+    { id: 3, title: "Preferências", pages: 3 },
+    { id: 4, title: "Recursos & Lar", pages: 3 },
+    { id: 5, title: "Termo de Responsabilidade", pages: 1 },
+    { id: 6, title: "Concluído", pages: 1 },
+  ];
 
-      // 3. O min-height da página é 100vh MENOS a altura do Nav
-      pageEl.style.minHeight = `calc(100vh - ${navHeight}px)`;
-    }, 0);
-  }, []);
+  const update = (patch: Partial<FormData>) =>
+    setData((d) => ({ ...d, ...patch }));
 
-  // Array de steps (corrigido para ter 7 steps)
-  const majorSteps = [
-    { id: 0, title: "Introdução", pages: 1 },
-    { id: 1, title: "Informações Pessoais", pages: 1 },
-    { id: 2, title: "Sobre espaço", pages: 3 },
-    { id: 3, title: "Preferências", pages: 3 },
-    { id: 4, title: "Recursos & Lar", pages: 3 },
-    { id: 5, title: "Termo de Responsabilidade", pages: 1 },
-    { id: 6, title: "Concluído", pages: 1 },
-  ];
+  const goNext = () => {
+    if (!canProceed) return;
+    const block = majorSteps[majorStep];
+    if (subStep < block.pages - 1) {
+      setSubStep((s) => s + 1);
+    } else {
+      if (majorStep < majorSteps.length - 1) {
+        setMajorStep((m) => m + 1);
+        setSubStep(0);
+      } else {
+        handleSubmit();
+      }
+    }
+    setCanProceed(true);
+  };
 
-  const update = (patch: Partial<FormData>) =>
-    setData((d) => ({ ...d, ...patch }));
+  const goPrev = () => {
+    if (subStep > 0) {
+      setSubStep((s) => s - 1);
+    } else if (majorStep > 0) {
+      const prevBlock = majorSteps[majorStep - 1];
+      setMajorStep((m) => m - 1);
+      setSubStep(prevBlock.pages - 1);
+    }
+    setCanProceed(true);
+  };
 
-  const goNext = () => {
-    if (!canProceed) return;
-    const block = majorSteps[majorStep];
-    if (subStep < block.pages - 1) {
-      setSubStep((s) => s + 1);
-    } else {
-      if (majorStep < majorSteps.length - 1) {
-        setMajorStep((m) => m + 1);
-        setSubStep(0);
-      } else {
-        handleSubmit();
-      }
-    }
-    setCanProceed(true);
-  };
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!data.aceitaTermo) {
+      alert("Você precisa aceitar o termo para finalizar.");
+      return;
+    }
+    console.log("Enviar dados:", data);
+    setSucessoOpen(true);
+  };
 
-  const goPrev = () => {
-    if (subStep > 0) {
-      setSubStep((s) => s - 1);
-    } else if (majorStep > 0) {
-      const prevBlock = majorSteps[majorStep - 1];
-      setMajorStep((m) => m - 1);
-      setSubStep(prevBlock.pages - 1);
-    }
-    setCanProceed(true);
-  };
+  const progressPercent = (majorStep / (majorSteps.length - 1)) * 100;
 
-  const handleSubmit = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!data.aceitaTermo) {
-      alert("Você precisa aceitar o termo para finalizar.");
-      return;
-    }
-    console.log("Enviar dados:", data);
-    setSucessoOpen(true);
-  };
+  const renderCurrent = () => {
+    switch (majorStep) {
+      case 0:
+        return <StepIntro onChange={update} setCanProceed={setCanProceed} />;
+      case 1:
+        return (
+          <StepPersonal
+            data={data}
+            onChange={update}
+            setCanProceed={setCanProceed}
+          />
+        );
+      case 2:
+        return (
+          <StepQuestionsGroup
+            groupId={2}
+            subStep={subStep}
+            onAnswer={update}
+            data={data}
+          />
+        );
+      case 3:
+        return (
+          <StepQuestionsGroup
+            groupId={3}
+            subStep={subStep}
+            onAnswer={update}
+            data={data}
+          />
+        );
+      case 4:
+        return (
+          <StepQuestionsGroup
+            groupId={4}
+            subStep={subStep}
+            onAnswer={update}
+            data={data}
+          />
+        );
+      case 5:
+        return (
+          <StepTermo
+            data={data}
+            onChange={update}
+            setCanProceed={setCanProceed}
+          />
+        );
+      case 6:
+        return <StepFinal data={data} />;
+      default:
+        return null;
+    }
+  };
 
-  const progressPercent = (majorStep / (majorSteps.length - 1)) * 100;
+  return (
+    <Layout>
+      
+      <div className={styles.pageFormularioAdotar}>
+        
+        <div className={`${styles.barraProgresso} topBar`}>
+          <div className={styles.progressoContainer}>
+            <div className={styles.progressoLinha} />
+            <div
+              className={styles.progressoPreenchido}
+              style={{ width: `${progressPercent}%` }}
+            />
+            <div className={styles.steps}>
+              {majorSteps.map((s, i) => {
+                const state =
+                  i < majorStep ? "done" : i === majorStep ? "active" : "idle";
+                const stateClass =
+                  state === "done"
+                    ? styles.done
+                    : state === "active"
+                    ? styles.active
+                    : styles.idle;
+                return (
+                  <div key={s.id} className={`${styles.step} ${stateClass}`}>
+                    <div className={styles.iconWrap} aria-hidden>
+                      <IconWrap state={state} />
+                    </div>
+                    <div className={styles.stepTitle}>{s.title}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
-  const renderCurrent = () => {
-    switch (majorStep) {
-      case 0:
-        return <StepIntro onChange={update} setCanProceed={setCanProceed} />;
-      case 1:
-        return (
-          <StepPersonal
-            data={data}
-            onChange={update}
-            setCanProceed={setCanProceed}
-          />
-        );
-      case 2:
-        return (
-          <StepQuestionsGroup
-            groupId={2}
-            subStep={subStep}
-            onAnswer={update}
-            data={data}
-          />
-        );
-      case 3:
-        return (
-          <StepQuestionsGroup
-            groupId={3}
-            subStep={subStep}
-            onAnswer={update}
-            data={data} 
-          />
-        );
-      case 4:
-        return (
-          <StepQuestionsGroup
-            groupId={4}
-            subStep={subStep}
-            onAnswer={update}
-            data={data} 
-          />
-        );
-      case 5:
-        return (
-          <StepTermo 
-            data={data}
-            onChange={update}
-            setCanProceed={setCanProceed} 
-          />
-        );
-      case 6: 
-        return (
-          // --- MUDANÇA 2: PASSE OS DADOS PARA O STEPFINAL ---
-          <StepFinal 
-            data={data}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <>
-      <Nav />
-      <div ref={pageRef} className={styles.pageFormularioAdotar}>
-        <div className={`${styles.barraProgresso} topBar`}>
-          <div className={styles.progressoContainer}>
-            <div className={styles.progressoLinha} />
-            <div
-              className={styles.progressoPreenchido}
-              style={{ width: `${progressPercent}%` }}
-            />
-            <div className={styles.steps}>
-              {majorSteps.map((s, i) => {
-                const state =
-                  i < majorStep ? "done" : i === majorStep ? "active" : "idle";
-                const stateClass =
-                  state === "done"
-                    ? styles.done
-                    : state === "active"
-                    ? styles.active
-                    : styles.idle;
-                return (
-                  <div key={s.id} className={`${styles.step} ${stateClass}`}>
-                    <div className={styles.iconWrap} aria-hidden>
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                        />
-                        {state === "done" && (
-                          <path
-                            d="M7 12l3 3 7-7"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            fill="none"
-                          />
-                        )}
-                        {state === "active" && (
-                          <circle cx="12" cy="12" r="4" fill="currentColor" />
-                        )}
-                      </svg>
-                    </div>
-                    <div className={styles.stepTitle}>{s.title}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        
-        {/* Lógica para aplicar a classe de largura total */}
-        <main
+        <main
           className={`${styles.conteudo} ${
             majorStep === 5 ? styles.conteudoFullWidth : ""
           }`}
         >
-          {majorStep === 0 && subStep === 0 && (
-            <h1 className={styles.titulo}>Formulário de Interesse em Adoção</h1>
-          )}
-          
-          {majorStep === 0 && subStep === 0 && (
-            <p className={styles.introducaoFormulario}>
-                     Bem-vindo(a) ao nosso Formulário de Interesse.
-              Ficamos muito       felizes por você ter dado o primeiro
-              passo para adotar um pet.       Aqui você irá responder
-              algumas perguntas iniciais para que a       ONG/protetor
-              parceiro possa te conhecer melhor e dar agilidade ao      
-              processo de adoção. Precisaremos de alguns dados pessoais para que
-                    possamos entrar em contato com você, além de saber um
-              pouco sobre       a sua casa, sua família e estrutura.   
-            </p>
-          )}
-          
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              goNext();
-            }}
-            className={styles.form}
-          >
-              {renderCurrent()}
-            <div className={styles.controls}>
-              <button
-                type="button"
-                onClick={goPrev}
-                disabled={majorStep === 0 && subStep === 0}
-                className={styles.botoesVoltar}
-              >
-                  Voltar
-              </button>
-             
-              <button
-                type="button"
-                onClick={goNext}
-                className={styles.botoesAvancar}
-                disabled={!canProceed}
-              >
-                {majorStep === majorSteps.length - 1 &&
-                subStep === majorSteps[majorStep].pages - 1
-                  ? "Enviar"
-                  : "Próximo"}
-              </button>
-            </div>
-          </form>
-        </main>
-    </div>
-      <Footer />
-      <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} /> 
-    </>
-  );
+          {majorStep === 0 && subStep === 0 && (
+            <h1 className={styles.titulo}>Formulário de Interesse em Adoção</h1>
+          )}
+          
+          {majorStep === 0 && subStep === 0 && (
+            <p className={styles.introducaoFormulario}>
+              Bem-vindo(a) ao nosso Formulário de Interesse. Ficamos muito
+              felizes por você ter dado o primeiro passo para adotar um pet.
+              Aqui você irá responder algumas perguntas iniciais para que a
+              ONG/protetor parceiro possa te conhecer melhor e dar agilidade ao
+              processo de adoção. Precisaremos de alguns dados pessoais para que
+              possamos entrar em contato com você, além de saber um pouco sobre
+              a sua casa, sua família e estrutura.
+            </p>
+          )}
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              goNext();
+            }}
+            className={styles.form}
+          >
+            {renderCurrent()}
+            
+            <div className={styles.controls}>
+              <button
+                type="button"
+                onClick={goPrev}
+                disabled={majorStep === 0 && subStep === 0}
+                className={styles.botoesVoltar}
+              >
+                Voltar
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className={styles.botoesAvancar}
+                disabled={!canProceed}
+              >
+                {majorStep === majorSteps.length - 1 &&
+                subStep === majorSteps[majorStep].pages - 1
+                  ? "Enviar"
+                  : "Próximo"}
+              </button>
+            </div>
+          </form>
+        </main>
+      </div>
+      
+      <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} />
+    </Layout>
+  );
 }

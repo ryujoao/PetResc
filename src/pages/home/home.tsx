@@ -1,6 +1,5 @@
-import Nav from "../../components/navbar";
 import styles from "./home.module.css";
-import Footer from "../../components/footer";
+import Layout from "../../components/layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
@@ -12,6 +11,7 @@ import SaibaMais from "./saibaMais";
 import MeusAnimais from "./meusAnimais"; // Para o 'PUBLICO'
 import OngsProximas from "./ongsProximas"; // Para o 'PUBLICO'
 import AnimaisCadastrados from "./animaisCadastrados"; // <-- 1. IMPORTE O COMPONENTE DA ONG
+
 
 function Home() {
   // 1. Pegue 'isAuthenticated' E o 'user' completo do contexto
@@ -137,10 +137,10 @@ function Home() {
 
   return (
     <>
-      <Nav />
+      <Layout>
       {renderBanner()}
       {renderContent()}
-      <Footer />
+      </Layout>
     </>
   );
 }

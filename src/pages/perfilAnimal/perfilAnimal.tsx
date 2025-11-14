@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import Nav from "../../components/navbar";
 import styles from "./perfilAnimal.module.css";
+import Layout from "../../components/layout";
 
 type Pet = {
   nome: string;
@@ -62,18 +62,19 @@ export default function PerfilAnimal() {
   if (!pet) {
     return (
       <>
-        <Nav />
+        <Layout>
         <div className={styles.container}>
           <h1>Animal não encontrado</h1>
           <p>Verifique se o link está correto.</p>
         </div>
+        </Layout>
       </>
     );
   }
 
   return (
     <>
-      <Nav />
+      <Layout>
       <main className={styles.container}>
         <h1 className={styles.nome}>{pet.nome}</h1>
         <p className={styles.status}>Para adoção</p>
@@ -126,6 +127,7 @@ export default function PerfilAnimal() {
           <p>{pet.comentario}</p>
         </section>
       </main>
+      </Layout>
     </>
   );
 }

@@ -1,9 +1,8 @@
-import Footer from "../../components/footer";
-import Nav from "../../components/navbar";
 import styles from "./doar.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import { useState, useEffect } from "react"; // NOVO: Importar hooks do React
+import Layout from "../../components/layout";
 
 // --- COMPONENTE PARA VISÃO DO USUÁRIO ('PUBLICO') ---
 // (Este é o código que você já tinha, sem alterações)
@@ -337,7 +336,7 @@ export default function Doar() {
 
   return (
     <>
-      <Nav />
+      <Layout>
       {/* ALTERADO: Passar o 'user.id' para o componente da ONG */}
       {/* Garante que 'isOng' é verdadeiro e que 'user' não é nulo antes de passar o ID */}
       {isOng && user ? (
@@ -345,7 +344,7 @@ export default function Doar() {
       ) : (
         <DoarUsuarioView />
       )}
-      <Footer />
+      </Layout>
     </>
   );
 }

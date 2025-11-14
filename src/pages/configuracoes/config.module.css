@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10rem 2rem 5rem 2rem; 
+  padding: 2rem 2rem 5rem 2rem;
   background-color: #fff;
   min-height: 100vh;
   box-sizing: border-box;
@@ -17,7 +17,7 @@
 
 .configSection {
   width: 100%;
-  max-width: 700px; 
+  max-width: 700px;
   margin-bottom: 2.5rem;
 }
 
@@ -29,7 +29,6 @@
   margin-bottom: 1rem;
   padding-left: 0.5rem;
 }
-
 
 .configItem {
   display: flex;
@@ -53,7 +52,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #004080; 
+  background-color: #004080;
   color: #fff;
   display: flex;
   align-items: center;
@@ -64,11 +63,6 @@
 .itemTexto {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #004080;
-}
-
-.seta {
-  margin-left: auto;
   color: #004080;
 }
 
@@ -84,6 +78,13 @@
   color: #004080;
   text-decoration: none;
   margin-bottom: 1rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit; /* Herda a mesma fonte dos links */
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
 }
 
 .ajudaLink:hover {
@@ -91,13 +92,11 @@
 }
 
 .botaoLogout {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 0.5rem 2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.3rem;
-  font-weight: 700;
-  transition: background-color 0.3s ease;
+  color: #c62828;
+  font-weight: 900;
+}
+
+.botaoLogout:hover {
+  filter: brightness(0.8);
+  text-decoration: underline;
 }

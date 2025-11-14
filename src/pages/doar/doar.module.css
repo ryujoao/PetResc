@@ -7,6 +7,8 @@
  background: url("/public/banners/banner4.png") no-repeat center;
  padding: 2rem;
  background-size: cover;
+ margin-top: -9rem;
+ padding: 11rem 2rem 2rem 2rem;
 }
 
 .tituloDoar {

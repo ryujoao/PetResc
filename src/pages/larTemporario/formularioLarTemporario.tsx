@@ -1,10 +1,9 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState } from "react";
 import styles from "./formularioLarTemporario.module.css";
-import Nav from "../../components/navbar";
 import Sucesso from "../../components/sucesso";
+import Layout from "../../components/layout";
 
 export default function FormularioLarTemporario() {
-  const pageRef = useRef<HTMLFormElement | null>(null);
   const [sucessoOpen, setSucessoOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -54,25 +53,12 @@ export default function FormularioLarTemporario() {
     setSucessoOpen(true);
   };
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      const pageEl = pageRef.current;
-      if (!pageEl) return;
-      const topBar = document.querySelector(".topBar") as HTMLElement | null;
-      const navBar = document.querySelector(".navbar") as HTMLElement | null;
-      const topHeight = topBar?.offsetHeight ?? 0;
-      const navHeight = navBar?.offsetHeight ?? 0;
-      const totalHeight = topHeight + navHeight;
-      pageEl.style.paddingTop = `${totalHeight}px`;
-      pageEl.style.minHeight = `calc(100vh - ${totalHeight}px)`;
-    }, 0);
-  }, []);
 
   return (
     <>
-      <Nav />
+      <Layout>
       <form
-        ref={pageRef}
+
         className={styles.pageFormulario}
         onSubmit={handleSubmit}
       >
@@ -486,6 +472,7 @@ export default function FormularioLarTemporario() {
       </form>
 
       <Sucesso isOpen={sucessoOpen} onClose={() => setSucessoOpen(false)} />
+      </Layout>
     </>
   );
 }
