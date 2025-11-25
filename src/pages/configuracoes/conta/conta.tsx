@@ -14,7 +14,7 @@ export default function Conta() {
       if (!token) return;
 
       try {
-        const response = await fetch("http://localhost:3000/api/auth/me", {
+        const response = await fetch("https://petresc.onrender.com/api/auth/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function Conta() {
     if (!token) return;
 
     try {
-      const response = await fetch("http://localhost:3000/api/auth/me", {
+      const response = await fetch("https://petresc.onrender.com/api/auth/me", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
