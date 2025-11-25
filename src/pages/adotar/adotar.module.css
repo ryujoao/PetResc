@@ -1,8 +1,6 @@
-/* --- ESTILOS DA PÁGINA DE ADOÇÃO/HOME (Seu CSS Original) --- */
-
 .bannerAdotar {
  width: 100%;
- min-height: 100vh; /* Altura máxima em desktops */
+ min-height: 100vh; 
  background: url("../../../public/banners/animaisAdocao.png") no-repeat bottom;
  background-size: cover;
  display: flex;
@@ -43,7 +41,6 @@
  display: inline-block;
  margin-top: 10px;
  margin-right: 3rem;
-
  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -124,9 +121,6 @@
  color: #555;
 }
 
-/* --- RESPONSIVIDADE (Ajustes para o banner e layout geral) --- */
-
-/* Ajustes gerais de padding */
 @media (max-width: 1024px) {
     .secaoComoFunciona,
     .secaoEtapas {

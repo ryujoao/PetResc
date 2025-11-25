@@ -119,10 +119,10 @@ function Home() {
               </p>
               <div className={styles.botaoWrapper}>
                 <button className={styles.botaoDoar}>
-                  <a href="/novaCampanha">Nova Campanha</a>
+                  <a href="/nova-campanha">Nova Campanha</a>
                 </button>
                 <button className={styles.botaoDoar}>
-                  <a href="/campanhasAnteriores">Campanhas Anteriores</a>
+                  <a href="/campanhas-anteriores">Campanhas Anteriores</a>
                 </button>
               </div>
             </div>

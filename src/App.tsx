@@ -26,6 +26,7 @@ import FAQ from "./pages/configuracoes/ajuda/faq";
 import Contato from "./pages/configuracoes/ajuda/contato";
 import Cadastro from "./pages/cadastro/cadastro";
 import RecuperarSenha from "./pages/cadastro/recuperarSenha";
+import NovaCampanha from "./pages/novaCampanha/novaCampanha";
 
 
 // ...existing code...
@@ -46,6 +47,7 @@ function App() {
       <Route path="/instituto/:id" element={<Institutos />} />
       <Route path="/formulario-adotar" element={<FormularioAdotar />} />
       <Route path="/formulario-lar-temporario" element={<FormularioLarTemporario />} />
+      <Route path="/nova-campanha" element={<NovaCampanha />} />
       
 
       <Route path="/config" element={<ConfigMenu />} />
