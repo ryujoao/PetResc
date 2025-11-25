@@ -23,7 +23,7 @@ export default function LarTemporario() {
               Salve Vidas Hoje
             </h1>
             <p className={styles.textoHero}>
-              No PetCo, você pode apoiar diretamente as ONGs cadastradas. 
+              No PetResc, você pode apoiar diretamente as ONGs cadastradas. 
               Cada contribuição ajuda a oferecer alimentação, cuidados médicos 
               e abrigo para animais em situação de vulnerabilidade. Escolha a 
               ONG que mais toca seu coração e faça parte dessa rede de solidariedade.

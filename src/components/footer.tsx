@@ -37,7 +37,7 @@ export default function Footer() {
           <div className={style.footerCol}>
             <h4>Contato</h4>
             <ul>
-              <li><a href="#">E-mail: contato@petcontrol.org</a></li>
+              <li><a href="#">E-mail: contato@petresc.org</a></li>
               <li><a href="#">Telefone/WhatsApp: (11) 99999-9999</a></li>
               <li><a href="#">Endereço: Rua Exemplo, 123 - São Paulo/SP</a></li>
             </ul>
