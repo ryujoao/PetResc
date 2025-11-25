@@ -42,7 +42,8 @@ interface Animal {
   createdAt: string;
   accountId: number;
   account: AccountInfo; 
-  ficha?: FichaTecnica; 
+  ficha?:  FichaTecnica; 
+}
 
 export default function PerfilAnimal() {
   const { id } = useParams<{ id: string }>();
