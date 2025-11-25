@@ -320,7 +320,7 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
             tantos animais esperam: um futuro livre do abandono, da fome e do
             sofrimento.
           </p>
-          <Link to="/novaCampanha" className={styles.botoes}>
+          <Link to="/nova-campanha" className={styles.botoes}>
             Nova Campanha
           </Link>
         </div>
