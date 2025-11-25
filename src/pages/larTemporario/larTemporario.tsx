@@ -128,7 +128,7 @@ export default function LarTemporario() {
           {/* 3. Botão corrigido usando navigate (Maneira correta no React) */}
           <button 
             className={styles.botaoAcao} 
-            onClick={() => navigate('/formularioLarTemporario')}
+            onClick={() => navigate('/formulario-lar-temporario')}
           >
             Responder Formulário
           </button>

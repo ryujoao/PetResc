@@ -227,12 +227,45 @@
   text-align: center;
 }
 
+.listaTermos {
+  list-style: none; /* Remove bolinhas padrão */
+  padding: 0;
+  margin: 0 0 2rem 0; /* Espaço maior abaixo da lista */
+  width: 100%;
+  max-width: 900px;
+  text-align: left;
+}
+
 .termoText {
   color: #333;
   line-height: 1.6;
-  margin-bottom: 1rem;
-  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem; /* Tamanho grande garantido */
+  width: 100%;
+  max-width: 900px;
+  text-align: left;
 }
+
+.termoItem {
+  color: #333;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  font-size: 1.6rem; /* MESMO TAMANHO do .termoText */
+  width: 100%;
+  display: block;
+  font-weight: 500; 
+}
+
+.termoStrong {
+  display: block; /* Faz ocupar a linha toda se necessário */
+  color: #0f4979; /* Cor de destaque */
+  font-size: 1.6rem; /* MESMO TAMANHO */
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
 .introducaoCheckBox {
   font-size: 1.3rem;
   font-weight: 600;
@@ -466,10 +499,10 @@
 }
 
 .finalTermTitle {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.8rem; /* Aumentei um pouco para destaque */
+  font-weight: 700;
   color: #0f4979;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 

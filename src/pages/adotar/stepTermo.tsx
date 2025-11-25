@@ -27,27 +27,32 @@ export default function StepTermo({ data, onChange, setCanProceed }: Props) {
         <br />
       </p>
 
-      <li className={styles.termoText}>
-        <ul>
+      {/* A classe 'listaTermos' vai remover as bolinhas automáticas */}
+      <ul className={styles.listaTermos}>
+        <li className={styles.termoItem}>
           1. Oferecer alimentação, cuidados veterinários, abrigo seguro e carinho.
-        </ul>
-        <ul>
+        </li>
+        <li className={styles.termoItem}>
           2. Manter o animal vacinado, vermifugado e, quando necessário, castrado.
-        </ul>
-        <ul>
+        </li>
+        <li className={styles.termoItem}>
           3. Nunca praticar ou permitir maus-tratos, negligência ou abandono.
-        </ul>
-        <ul>
+        </li>
+        <li className={styles.termoItem}>
           4. Não vender, doar ou repassar o animal sem informar previamente a ONG.
-        </ul>
-        <ul>5. Permitir contatos da ONG para acompanhamento da adaptação.</ul>
-        <ul>
+        </li>
+        <li className={styles.termoItem}>
+          5. Permitir contatos da ONG para acompanhamento da adaptação.
+        </li>
+        <li className={styles.termoItem}>
           6. Reconhecer que o animal depende de mim e que sua guarda é de minha
           total responsabilidade.
-        </ul>
-      </li>
+        </li>
+      </ul>
 
-      <strong className={styles.termoText}>Importante: o animal escolhido pode não estar disponível no momento da aprovação do formulário, sendo indicada outra opção pela ONG.</strong>
+      <strong className={styles.termoText}>
+        Importante: o animal escolhido pode não estar disponível no momento da aprovação do formulário, sendo indicada outra opção pela ONG.
+      </strong>
 
       <label className={styles.checkboxCustomizado}>
         <input
