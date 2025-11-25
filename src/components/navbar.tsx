@@ -125,8 +125,8 @@ export default function Nav() {
         ) : (
           // Se DESLOGADO
           <ul className={styles.botoesCadastro}>
-            <Link to={"/cadastro-ong"} style={{ textDecoration: "none" }}>
-              <button className={styles.cadastroONG}>Cadastre sua ONG</button>
+            <Link to={"/login"} style={{ textDecoration: "none" }}>
+              <button className={styles.cadastroONG}>Faça Login</button>
             </Link>
             <Link to={"/cadastro"} style={{ textDecoration: "none" }}>
               <button className={styles.cadastro}>Cadastre-se</button>

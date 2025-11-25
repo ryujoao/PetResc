@@ -2,164 +2,290 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./centralAdocao.module.css";
+// --- IMPORTAÇÃO DAS CONSTANTES CENTRALIZADAS ---
+import { 
+    OPCOES_ESPECIE, 
+    OPCOES_GENERO, 
+    OPCOES_PORTE, 
+    OPCOES_IDADE, 
+    CORES_PREDOMINANTES 
+} from "../../constants/opcoesAnimais"; 
 
+// --- Definição de Tipos ---
 interface AccountInfo {
-  id: number;
-  nome: string;
-  email: string;
-  telefone: string;
+id: number;
+nome: string;
+email: string;
+telefone: string;
 }
 
 interface Animal {
-  id: number;
-  nome: string;
-  especie: string;
-  raca: string | null;
-  idade: number | null;
-  status: string;
-  porte: string | null;
-  sexo: string | null;
-  descricao: string | null;
-  photoURL: string | null;
-  corPredominante: string | null;
-  createdAt: string;
-  accountId: number;
-  account: AccountInfo | null; 
+id: number;
+nome: string;
+especie: string;
+raca: string | null;
+idade: number | null;
+status: string;
+porte: string | null;
+sexo: string | null;
+descricao: string | null;
+photoURL: string | null;
+corPredominante: string | null;
+createdAt: string;
+accountId: number;
+account: AccountInfo | null; 
 }
 
+
 export default function CentralAdocao() {
-  const [animais, setAnimais] = useState<Animal[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// --- Estados ---
+const [animais, setAnimais] = useState<Animal[]>([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
 
-  const [filtroEspecie, setFiltroEspecie] = useState("");
-  const [filtroPorte, setFiltroPorte] = useState("");
-  const [filtroSexo, setFiltroSexo] = useState("");
+// --- Filtros (Radio Buttons/Seleção Única) ---
+const [filtroEspecie, setFiltroEspecie] = useState("");
+const [filtroPorte, setFiltroPorte] = useState("");
+const [filtroSexo, setFiltroSexo] = useState("");
+const [filtroIdade, setFiltroIdade] = useState(""); 
+const [filtroCor, setFiltroCor] = useState(""); 
 
-  useEffect(() => {
-    const fetchAnimais = async () => {
-      setLoading(true);
-      setError(null);
+// --- Busca de Dados Reais ---
+useEffect(() => {
+const fetchAnimais = async () => {
+setLoading(true);
+setError(null);
 
-      try {
-        const params = new URLSearchParams();
-        params.append("status", "DISPONIVEL"); 
+try {
+const params = new URLSearchParams();
+params.append("status", "DISPONIVEL");
 
-        if (filtroEspecie) params.append("especie", filtroEspecie);
-        if (filtroPorte) params.append("porte", filtroPorte);
-        if (filtroSexo) params.append("sexo", filtroSexo);
+if (filtroEspecie) params.append("especie", filtroEspecie);
+if (filtroPorte) params.append("porte", filtroPorte);
+if (filtroSexo) params.append("sexo", filtroSexo);
 
-        const response = await fetch(`https://petresc.onrender.com/api/animais?${params.toString()}`);
+const response = await fetch(`https://petresc.onrender.com/api/animais?${params.toString()}`);
 
-        if (!response.ok) {
-          throw new Error("Erro ao buscar animais.");
-        }
+if (!response.ok) {
+throw new Error("Erro ao buscar animais.");
+}
 
-        const data = await response.json();
-        setAnimais(data);
-      } catch (err) {
-        console.error(err);
-        setError("Não foi possível carregar o feed de adoção.");
-      } finally {
-        setLoading(false);
-      }
-    };
+const data = await response.json();
+setAnimais(data);
+} catch (err) {
+console.error(err);
+setError("Não foi possível carregar o feed de adoção.");
+} finally {
+setLoading(false);
+}
+};
 
-    fetchAnimais();
-  }, [filtroEspecie, filtroPorte, filtroSexo]); 
+const timer = setTimeout(() => {
+  fetchAnimais();
+}, 300);
 
-  return (
-    <Layout>
-      <div className={styles.pageCentralAdocao}>
-        <h1 className={styles.titulo}>Centro de Adoção</h1>
-        <p className={styles.subtitulo}>
-          Encontre seu novo melhor amigo:
-        </p>
+return () => clearTimeout(timer);
 
-        <div className={styles.containerFiltrosPets}>
-          
-          {/* --- BARRA DE FILTROS --- */}
-          <div className={styles.filtros}>
-            
-            {/* Filtro Espécie */}
-            <select 
-              value={filtroEspecie} 
-              onChange={(e) => setFiltroEspecie(e.target.value)}
-              className={styles.selectFiltro}
-            >
-              <option value="">Todas as Espécies</option>
-              <option value="Cachorro">Cachorro</option>
-              <option value="Gato">Gato</option>
-            </select>
+}, [filtroEspecie, filtroPorte, filtroSexo]); 
 
-            {/* Filtro Porte */}
-            <select 
-              value={filtroPorte} 
-              onChange={(e) => setFiltroPorte(e.target.value)}
-              className={styles.selectFiltro}
-            >
-              <option value="">Qualquer Porte</option>
-              <option value="Pequeno">Pequeno</option>
-              <option value="Medio">Médio</option>
-              <option value="Grande">Grande</option>
-            </select>
 
-            {/* Filtro Sexo */}
-            <select 
-              value={filtroSexo} 
-              onChange={(e) => setFiltroSexo(e.target.value)}
-              className={styles.selectFiltro}
-            >
-              <option value="">Qualquer Sexo</option>
-              <option value="MACHO">Macho</option>
-              <option value="FEMEA">Fêmea</option>
-            </select>
-          </div>
+return (
+<Layout>
+<div className={styles.pageCentralAdocao}>
+<h1 className={styles.titulo}>Centro de Adoção</h1>
+<p className={styles.subtitulo}>
+Encontre seu novo melhor amigo filtrando pelas características desejadas.
+</p>
 
-          {/* --- LISTA DE PETS --- */}
-          <section className={styles.listaPets}>
-            {loading && <p className={styles.loadingText}>Buscando amigos...</p>}
-            {error && <p className={styles.errorText}>{error}</p>}
-            
-            {!loading && !error && animais.length === 0 && (
-                <p>Nenhum animal encontrado com esses filtros.</p>
-            )}
+<div className={styles.containerFiltrosPets}>
+<div className={styles.filtros}>
+<h2 className={styles.tituloFiltro}>Filtros</h2>
 
-            {!loading && !error && animais.map((animal) => (
-              <Link
-                // ID na rota para evitar nomes duplicados
-                to={`/animal/${animal.id}`} 
-                key={animal.id}
-                className={styles.cardPet}
-              >
-                <div className={styles.imageWrapper}>
-                    <img
-                    src={animal.photoURL || "https://placehold.co/300x300?text=Sem+Foto"}
-                    alt={animal.nome}
-                    className={styles.petImage}
-                    />
-                </div>
-                
-                <div className={styles.cardContent}>
-                    <h3>{animal.nome}</h3>
-                    <p className={styles.raca}>{animal.raca || "Raça não definida"}</p>
-                    
-                    <div className={styles.tags}>
-                        <span>{animal.sexo === 'MACHO' ? '♂ Macho' : '♀ Fêmea'}</span>
-                        {animal.idade && <span>• {animal.idade} anos</span>}
-                    </div>
+{/* Filtro Espécie (Radio Buttons Customizados) */}
+<div className={styles.filtroGrupo}>
+<h3>Espécie</h3>
+    {OPCOES_ESPECIE.map(especie => (
+      <label key={especie} className={styles.radioCustomizado}>
+        <input
+          type="radio"
+          name="especie"
+          value={especie}
+          checked={filtroEspecie === especie}
+          onChange={(e) => setFiltroEspecie(e.target.value)}
+        />
+        <span className={styles.checkmark}></span>
+        {especie}
+      </label>
+    ))}
+    {/* Opção "Todas" */}
+    <label key="Todas" className={styles.radioCustomizado}>
+      <input
+        type="radio"
+        name="especie"
+        value=""
+        checked={filtroEspecie === ""}
+        onChange={() => setFiltroEspecie("")}
+      />
+      <span className={styles.checkmark}></span>
+      Todas
+    </label>
+</div>
 
-                    {animal.account && (
-                    <p className={styles.ongNome}>
-                        Resgatado por: <strong>{animal.account.nome}</strong>
-                    </p>
-                    )}
-                </div>
-              </Link>
-            ))}
-          </section>
-        </div>
-      </div>
-    </Layout>
-  );
+{/* Filtro Gênero (Radio Buttons Customizados) */}
+<div className={styles.filtroGrupo}>
+<h3>Gênero</h3>
+    {/* Adicionando a opção "Ambos" (valor vazio) para o filtro */}
+    <label key="Ambos" className={styles.radioCustomizado}>
+      <input
+        type="radio"
+        name="genero"
+        value=""
+        checked={filtroSexo === ""}
+        onChange={() => setFiltroSexo("")}
+      />
+      <span className={styles.checkmark}></span>
+      Ambos
+    </label>
+    {OPCOES_GENERO.map(genero => (
+      <label key={genero.valor} className={styles.radioCustomizado}>
+        <input
+          type="radio"
+          name="genero"
+          value={genero.valor}
+          checked={filtroSexo === genero.valor}
+          onChange={(e) => setFiltroSexo(e.target.value)}
+        />
+        <span className={styles.checkmark}></span>
+        {genero.label}
+      </label>
+    ))}
+</div>
+
+{/* Filtro Porte (Radio Buttons Customizados) */}
+<div className={styles.filtroGrupo}>
+<h3>Porte</h3>
+    {OPCOES_PORTE.map(porte => (
+      <label key={porte} className={styles.radioCustomizado}>
+        <input
+          type="radio"
+          name="porte"
+          value={porte}
+          checked={filtroPorte === porte}
+          onChange={(e) => setFiltroPorte(e.target.value)}
+        />
+        <span className={styles.checkmark}></span>
+        {porte}
+      </label>
+    ))}
+    {/* Opção "Todos" */}
+    <label key="Todos" className={styles.radioCustomizado}>
+      <input
+        type="radio"
+        name="porte"
+        value=""
+        checked={filtroPorte === ""}
+        onChange={() => setFiltroPorte("")}
+      />
+      <span className={styles.checkmark}></span>
+      Todos
+    </label>
+</div>
+
+{/* Filtro Idade (Placeholder visual - Checkboxes) */}
+<div className={styles.filtroGrupo} style={{ opacity: 0.8 }}> 
+<h3>Idade (Em breve)</h3>
+    {OPCOES_IDADE.map(idade => (
+      <label key={idade} className={styles.checkboxCustomizado}>
+        <input
+          type="checkbox" 
+          value={idade}
+          checked={filtroIdade === idade}
+          onChange={() => setFiltroIdade(idade)} 
+          disabled
+        />
+        <span className={styles.checkmark}></span>
+        {idade}
+      </label>
+    ))}
+</div>
+ 
+ {/* Filtro Cor Predominante (Placeholder visual com Radio Buttons de Cor) */}
+<div className={styles.filtroGrupo} style={{ opacity: 0.8 }}>
+<h3>Cor Predominante (Em breve)</h3>
+  <div className={styles.gradeCores}>
+  {CORES_PREDOMINANTES.map((cor) => (
+   <label 
+   key={cor.valor} 
+   className={styles.itemCor}
+   >
+   <input
+    type="radio" 
+    name="corPredominante"
+    value={cor.valor}
+    checked={filtroCor === cor.valor} 
+    onChange={(e) => setFiltroCor(e.target.value)}
+    disabled
+   />
+   <span className={styles.caixaCheckbox}></span> 
+   <span className={`${styles.bolinhaCor} ${styles[cor.valor.toLowerCase()]}`}></span>
+   {cor.nome}
+   </label>
+  ))}
+     {/* Opção Limpar Cor */}
+     <label key="Limpar Cor" className={styles.itemCor}>
+      <input
+       type="radio" 
+       name="corPredominante"
+       value=""
+       checked={filtroCor === ""} 
+       onChange={() => setFiltroCor("")}
+       disabled
+      />
+      <span className={styles.caixaCheckbox}></span>
+      <span className={`${styles.bolinhaCor} ${styles.limparCor}`}></span>
+      Todas
+     </label>
+  </div>
+</div>
+
+{/* Filtro Raça (Placeholder visual - Select) */}
+<div className={styles.filtroGrupo} style={{ opacity: 0.8 }}>
+<h3>Raça (Em breve)</h3>
+<select disabled className={styles.selectFiltro}>
+ <option value="">Todas</option>
+</select>
+</div>
+</div>
+
+{/* --- Renderização Dinâmica dos Pets --- */}
+<section className={styles.listaPets}>
+{loading && <p>Carregando animais...</p>}
+{error && <p className={styles.erro}>{error}</p>}
+
+{!loading && !error && animais.length === 0 && (
+<p>Nenhum animal encontrado com esses filtros.</p>
+)}
+
+{!loading && !error && animais.map((animal) => (
+<Link 
+  to={`/animal/${animal.id}`} 
+  key={animal.id} 
+  className={styles.cardPet}
+  >
+ <img
+ src={animal.photoURL || "https://placehold.co/300x300/f8f8f8/ccc?text=Sem+Foto"}
+ alt={animal.nome}
+ />
+ <h3>{animal.nome}</h3>
+ <p>{animal.raca || "Sem raça definida"}</p>
+ {animal.account && ( 
+ <p className={styles.ongNome}>Doador: {animal.account.nome}</p>
+ )}
+</Link>
+))}
+</section>
+</div>
+</div>
+</Layout>
+);
 }

@@ -47,6 +47,7 @@ export default function Login() {
             <input
               className={styles.inputLogin}
               type="email"
+              placeholder="user@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -58,6 +59,7 @@ export default function Login() {
             <input
               className={styles.inputLogin}
               type="password"
+              placeholder="Digite sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

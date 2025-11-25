@@ -28,6 +28,7 @@ import Historico from "./pages/configuracoes/seguranca/historico";
 import HistoricoAnimais from "./pages/configuracoes/seguranca/historicoAnimais";
 import FAQ from "./pages/configuracoes/ajuda/faq";
 import Contato from "./pages/configuracoes/ajuda/contato";
+import Cadastro from "./pages/cadastro/cadastro";
 
 
 // ...existing code...
@@ -38,16 +39,14 @@ function App() {
       <Route path="/adotar" element={<Adotar />} />
       <Route path="/lar-temporario" element={<LarTemporario />} />
       <Route path="/doar" element={<Doar />} />
-      <Route path="/cadastro" element={<CadastroUsu />} />
-      <Route path="/cadastro-next" element={<CadastroNext />} />
+      <Route path="/cadastro" element={<Cadastro/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/registrar-animal" element={<RegistrarAnimal />} />
       <Route path="/central-adocao" element={<CentralAdocao />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/animal/:id" element={<PerfilAnimal />} />
       <Route path="/instituto/:id" element={<Institutos />} />
-      <Route path="/cadastro-ong" element={<CadastroOng />} />
-      <Route path="/cadastro-final" element={<CadastroFinal />} />
+      
       <Route
         path="/formulario-lar-temporario"
         element={<FormularioLarTemporario />}

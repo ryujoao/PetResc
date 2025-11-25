@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from "../../components/layout";
 import styles from "./perfilAnimal.module.css";
-import { useAuth } from "../../auth/AuthContext"; 
+import { useAuth } from "../../auth/AuthContext";
 import api from "../../services/api";
 import { AxiosError } from "axios";
 
+// --- TIPAGEM ---
 interface FichaTecnica {
   vacinado: boolean;
   vermifugado: boolean;
@@ -40,12 +41,11 @@ interface Animal {
   corPredominante: string | null;
   createdAt: string;
   accountId: number;
-  account: AccountInfo; // Dados do dono/ONG
-  ficha?: FichaTecnica; // Dados extras (se for ONG)
-}
+  account: AccountInfo; 
+  ficha?: FichaTecnica; 
 
 export default function PerfilAnimal() {
-  const { id } = useParams<{ id: string }>(); // Pega o ID da URL
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -53,11 +53,11 @@ export default function PerfilAnimal() {
   const [loading, setLoading] = useState(true);
   const [loadingAdocao, setLoadingAdocao] = useState(false);
 
-  // 1. BUSCAR DADOS DO ANIMAL
   useEffect(() => {
     async function fetchAnimal() {
+      if (!id || id === 'undefined') return;
+
       try {
-        // Importante: O backend espera um número, mas a URL é string
         const response = await api.get(`/api/animais/${id}`);
         setAnimal(response.data);
       } catch (error) {
@@ -66,10 +66,11 @@ export default function PerfilAnimal() {
         setLoading(false);
       }
     }
-    if (id) fetchAnimal();
+
+    fetchAnimal();
   }, [id]);
 
-  // 2. FUNÇÃO DE ADOTAR
+  // 2. PEDIR ADOÇÃO
   const handleQueroAdotar = async () => {
     if (!user) {
       alert("Você precisa fazer login para adotar!");
@@ -86,17 +87,15 @@ export default function PerfilAnimal() {
 
     setLoadingAdocao(true);
     try {
-      // Chama a rota de criação de pedido
       await api.post("/api/pedidos-adocao", {
         animalId: animal?.id
       });
-         
-         alert(`Pedido enviado com sucesso! \n\nO responsável (${animal?.account.nome}) entrará em contato com você.`);
 
-           setTimeout(() => {
-             navigate("/central-adocao");
-  
-        }, 1000);
+      // ALERTA DE SUCESSO
+      alert(`Pedido enviado com sucesso! \n\nO responsável (${animal?.account.nome}) entrará em contato com você.`);
+      
+      // REDIRECIONAMENTO PARA O FEED
+      navigate("/central-adocao"); 
 
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -125,10 +124,9 @@ export default function PerfilAnimal() {
       <Layout>
         <div style={{ textAlign: "center", padding: "4rem" }}>
           <h1 style={{ color: "#2b6b99" }}>Animal não encontrado</h1>
-          <p>O animal que você procura não está disponível ou foi removido.</p>
-              <button onClick={() => navigate('/central-adocao')} >
-                Voltar para o Feed
-              </button>
+          <button onClick={() => navigate('/central-adocao')} style={{ marginTop: 20, padding: 10, cursor: 'pointer' }}>
+            Voltar para o Feed
+          </button>
         </div>
       </Layout>
     );
@@ -138,10 +136,9 @@ export default function PerfilAnimal() {
     <Layout>
       <main className={styles.container}>
         
-        {/* GRID PRINCIPAL: FOTO | INFO BÁSICA | COMENTÁRIO */}
         <div className={styles.profileWrapper}>
           
-          {/* COLUNA 1: IMAGEM */}
+          {/* FOTO */}
           <div className={styles.imagemContainer}>
             <div className={styles.imagem}>
               <img
@@ -154,7 +151,7 @@ export default function PerfilAnimal() {
             </div>
           </div>
 
-          {/* COLUNA 2: DETALHES PRINCIPAIS e BOTÃO */}
+          {/* INFORMAÇÕES PRINCIPAIS */}
           <div className={styles.infoContainer}>
             <h1 className={styles.nome}>{animal.nome}</h1>
             <p className={styles.status}>
@@ -173,6 +170,7 @@ export default function PerfilAnimal() {
               </p>
             </section>
 
+            {/* BOTÃO */}
             {animal.status === 'DISPONIVEL' ? (
                 <button 
                     className={styles.botaoAdotar} 
@@ -188,7 +186,7 @@ export default function PerfilAnimal() {
             )}
           </div>
         
-          {/* COLUNA 3: COMENTÁRIO/DESCRIÇÃO */}
+          {/* DESCRIÇÃO */}
           <div className={styles.comentarioContainer}>
             <h2>Sobre o {animal.nome}</h2>
             <p>{animal.descricao || "O responsável não forneceu uma descrição detalhada."}</p>
@@ -200,10 +198,9 @@ export default function PerfilAnimal() {
 
         <hr className={styles.divider} />
 
-        {/* GRID INFERIOR: CARACTERÍSTICAS (4 COLUNAS) */}
+        {/* CARACTERÍSTICAS E SAÚDE */}
         <div className={styles.caracteristicasGrid}>
           
-          {/* Coluna 1: Características Físicas */}
           <div className={styles.caracteristicaColuna}>
             <h3>Características</h3>
             <ul>
@@ -214,11 +211,9 @@ export default function PerfilAnimal() {
             </ul>
           </div>
 
-          {/* Coluna 2: Cuidados Veterinários (DADOS DA FICHA TÉCNICA OU PADRÃO) */}
           <div className={styles.caracteristicaColuna}>
             <h3>Cuidados Veterinários</h3>
             <ul className={styles.tagsList}>
-              {/* Se tiver ficha técnica, usa os dados reais. Se não, mostra 'Não informado' */}
               {animal.ficha ? (
                   <>
                     <li>{animal.ficha.vacinado ? "✅ Vacinado" : "❌ Não Vacinado"}</li>
@@ -231,7 +226,6 @@ export default function PerfilAnimal() {
             </ul>
           </div>
 
-          {/* Coluna 3: Temperamento */}
           <div className={styles.caracteristicaColuna}>
             <h3>Temperamento</h3>
             <ul className={styles.tagsList}>
@@ -243,7 +237,6 @@ export default function PerfilAnimal() {
             </ul>
           </div>
 
-          {/* Coluna 4: Saúde Geral */}
           <div className={styles.caracteristicaColuna}>
             <h3>Saúde Geral</h3>
             <ul className={styles.tagsList}>
