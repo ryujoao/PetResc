@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./centralAdocao.module.css";
 // --- IMPORTAÇÃO DAS CONSTANTES CENTRALIZADAS ---
-// VERIFIQUE SE O CAMINHO É EXATAMENTE ESTE. SE O ERRO PERSISTIR, TENTE UM '../' A MAIS
 import { 
     OPCOES_ESPECIE, 
     OPCOES_GENERO, 

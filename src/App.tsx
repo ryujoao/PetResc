@@ -40,7 +40,7 @@ function App() {
       <Route path="/registrar-animal" element={<RegistrarAnimal />} />
       <Route path="/central-adocao" element={<CentralAdocao />} />
       <Route path="/perfil" element={<Perfil />} />
-      <Route path="/perfil-animal/:id" element={<PerfilAnimal />} />
+      <Route path="/animal/:id" element={<PerfilAnimal />} />
       <Route path="/instituto/:id" element={<Institutos />} />
       
       <Route
