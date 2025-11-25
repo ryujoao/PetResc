@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../conta/conta.module.css"; 
+import api from "../../../services/api"; 
+import { AxiosError } from "axios";
+
 
 import { IoIosArrowBack } from "react-icons/io";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 export default function AlterarSenha() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); 
 
   const [form, setForm] = useState({
     senhaAtual: "",
@@ -28,21 +32,41 @@ export default function AlterarSenha() {
     setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validações locais
     if (form.novaSenha !== form.confirmarSenha) {
       alert("As senhas não coincidem!");
       return;
     }
     if (form.novaSenha.length < 6) {
-        alert("Senha muito curta!");
+        alert("A nova senha é muito curta (mínimo 6 dígitos)!");
         return;
     }
 
-    console.log("Salvando...", form);
-    // Adicione sua lógica de API aqui
-    navigate("/config/seguranca");
+    setLoading(true);
+
+    try {
+      await api.put("/api/auth/me", {
+        currentPassword: form.senhaAtual, 
+        password: form.novaSenha         
+      });
+
+      alert("Senha alterada com sucesso!");
+      navigate("/config/seguranca");
+
+    } catch (err) {
+      console.error("Erro ao alterar senha:", err);
+
+      if (err instanceof AxiosError && err.response && err.response.data) {
+        alert(err.response.data.error || "Erro ao atualizar senha.");
+      } else {
+        alert("Erro de conexão. Tente novamente mais tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

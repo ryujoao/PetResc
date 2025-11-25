@@ -1,8 +1,6 @@
-
 .pagCadastro {
   display: flex;
-  /* height: 100vh; */
-  /* width: 200vh; */
+  
   
 }
 
@@ -66,7 +64,6 @@
   background: transparent;
   padding: 3 2 2 2;
   border-radius: 1.5rem;
-  /* box-shadow: 0 8px 24px rgba(0,0,0,0.1); */
   width: 100%;
   max-width: 480px;
 }
@@ -94,9 +91,9 @@
 
 .botaoRede {
   display: flex;;
-  align-items: center; /* centraliza verticalmente */
-  justify-content: center; /* centraliza horizontalmente */
-  gap: 0.5rem; /* espaço entre ícone e texto */
+  align-items: center; 
+  justify-content: center; 
+  gap: 0.5rem; 
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
   font-size: 1.3rem;
@@ -180,12 +177,21 @@
 
 .inputLogin {
   width: 100%;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #286699;
-  font-size: 1.3rem;
   background-color: #fff;
-  color: #000;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #123347;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+.inputLogin:hover {
+  transform: translateY(-3px); 
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1); 
 }
 
 .botaoProx {
@@ -209,7 +215,7 @@
 
 .loginLink {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   color: #286699;
   font-size: 1.3rem;
   font-weight: 700;
@@ -222,4 +228,78 @@
 
 .loginLink a:hover {
   text-decoration: underline;
+}
+
+.tituloEscolha {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #286699;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+
+.escolhaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+
+.navButton {
+  background: #286699;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border: 1px solid #286699;
+  transition: all 0.3s ease;
+  flex: 1; 
+}
+
+.navButton:hover {
+  background: #fff;
+  color: #286699;
+}
+
+
+.navButtonBack {
+  background: #e0e0e0;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  flex: 0.5; 
+}
+
+.navButtonBack:hover {
+  background: #d0d0d0;
+  color: #333;
+}
+
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+
+.rowInputs {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.colInput {
+  flex: 1;
+  min-width: 0;
 }

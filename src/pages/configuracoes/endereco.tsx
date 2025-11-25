@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import styles from "../conta/conta.module.css"; 
-import { useAuth } from "../../../auth/AuthContext";
+import styles from "./conta.module.css"; 
+import { useAuth } from "../../auth/AuthContext";
 
 export default function Endereco() {
   const { user, setUser } = useAuth();
@@ -41,7 +41,7 @@ export default function Endereco() {
     }
   };
 
-  
+  // Salvar Endereço com Fetch
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -64,7 +64,7 @@ export default function Endereco() {
     const enderecoData = { cep, rua, numero, complemento, bairro, cidade, estado };
 
     try {
-      const response = await fetch(`https://petresc.onrender.com/api/usuarios/${user.id}`, {
+      const response = await fetch(`/api/usuarios/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export default function Endereco() {
             maxLength={8} 
             value={cep} 
             onChange={(e) => setCep(e.target.value)}
-            onBlur={buscarCep} 
+            onBlur={buscarCep} // <--- IMPORTANTE: Isso ativa a busca do CEP
             placeholder="00000000"
           />
 
