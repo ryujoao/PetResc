@@ -76,7 +76,7 @@ const RegistrarAnimalUsuario = () => {
     formData.append("sociabilidade", sociabilidade);
 
     try {
-      const response = await fetch("http://localhost:3000/api/animais", {
+     const response = await fetch("https://petresc.onrender.com/api/animais", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -496,7 +496,7 @@ const RegistrarAnimalOng = () => {
     );
 
     try {
-      const response = await fetch("http://localhost:3000/api/animais", {
+        const response = await fetch("https://petresc.onrender.com/api/animais", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
