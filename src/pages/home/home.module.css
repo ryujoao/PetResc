@@ -31,18 +31,6 @@ body {
   padding-top: 9rem;
 }
 
-.bannerAdotar {
-  width: 100% ;
-  height: 100vh;
-  background: url("../../../public/banners/animaisAdocao.png") no-repeat bottom;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 5vw;
-  box-sizing: border-box;
-}
-
 .bannerDois {
   position: relative;
   width: 100%;
