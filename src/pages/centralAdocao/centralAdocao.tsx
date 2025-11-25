@@ -228,7 +228,7 @@ Encontre seu novo melhor amigo filtrando pelas características desejadas.
    />
    <span className={styles.caixaCheckbox}></span> 
    <span className={`${styles.bolinhaCor} ${styles[cor.valor.toLowerCase()]}`}></span>
-   {cor.nome}
+   {cor.label}
    </label>
   ))}
      {/* Opção Limpar Cor */}

@@ -8,7 +8,7 @@ export default function Adotar() {
     <>
       <Layout>
 
-      <div className={styles.bannerUm}>
+      <div className={styles.bannerAdotar}>
         <div className={styles.homeTitulo}>
           <h1 className={styles.titulo}>Conheça seu novo melhor amigo!</h1>
           <Link to="/formulario-adotar" style={{ textDecoration: "none" }}>
