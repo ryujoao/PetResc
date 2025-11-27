@@ -1,17 +1,16 @@
-// src/pages/meusAnimais/meusAnimais.tsx
 
 import React, { useState, useEffect } from "react";
 import styles from "./meusAnimais.module.css";
-import { useAuth } from "../../auth/AuthContext"; // Importa o contexto de autenticação
+import { useAuth } from "../../auth/AuthContext";
+import api from "../../services/api"; 
 
-// --- TIPAGENS (Adapte conforme sua API) ---
 interface Animal {
     id: string;
     nome: string;
     raca: string;
     idade: string; // Ex: 'ADULTO', 'FILHOTE'
     status: 'PERDIDO' | 'ENCONTRADO' | 'DISPONIVEL' | 'EM_TRATAMENTO' | 'ADOTADO';
-    imagem_url: string; 
+    photoURL: string; 
     // Outros campos relevantes...
 }
 
@@ -30,37 +29,40 @@ interface AnimalCardProps {
 
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatus }) => {
     
-    // Simulação: Transforma o status do backend em algo legível para o frontend
-    const formatStatus = (status: string) => status.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
+    const formatStatus = (status: string) => status ? status.replace(/_/g, ' ') : 'Desconhecido';
 
     const statusSuperior = tipoStatus === 'CADASTRO' ? formatStatus(animal.status) : 'Adoção Solicitada';
-    const statusInferior = tipoStatus === 'CADASTRO' ? `Status: ${formatStatus(animal.status)}` : `Status: ${statusAdocao}`;
+    // Se for adoção, mostra o status do pedido. Se for cadastro, não repete o status (já está em cima).
+    const statusInferior = tipoStatus === 'ADOCAO' ? `Status: ${statusAdocao}` : '';
     
-    // Substitua 'animal.imagem_url' pela URL correta da imagem (pode ser necessário ajuste de caminhos)
-    const imagemSrc = animal.imagem_url || "/path/to/default/image.png"; 
+    // Tenta usar a foto do animal, senão usa um placeholder confiável
+    const imagemSrc = animal.photoURL || "https://placehold.co/300x300/f8f8f8/ccc?text=Sem+Foto";
 
     return (
         <div className={styles.card}>
-            <div className={styles.imgCard}>
+            <div className={styles.imgWrapper}>
                 <img 
-                    // Tente usar caminhos relativos ou a URL completa da API
                     src={imagemSrc} 
-                    alt={animal.nome || "Animal sem nome"} 
+                    alt={animal.nome || "Animal"} 
+                    onError={(e) => {
+                        // Se a imagem falhar, substitui por placeholder
+                        e.currentTarget.src = "https://placehold.co/300x300/f8f8f8/ccc?text=Erro+Imagem";
+                    }}
                 />
             </div>
 
             <div className={styles.infoCard}>
-                <div className={styles.cardNome}>
-                    <h1>{animal.nome || "Não possui nome"}</h1>
-                    <p className={styles.descricaoCard}>
-                        {animal.raca || "Sem raça definida"}, {animal.idade ? animal.idade.substring(0, 2) : "Idade não informada"}.
-                    </p>
-                    <p className={styles.descricaoCard}>({animal.raca ? 'Raça informada' : 'SRD'})</p>
-                </div>
+                <h3 className={styles.cardNome}>{animal.nome || "Sem Nome"}</h3>
+                <p className={styles.descricaoCard}>
+                    {animal.raca || "SRD"} • {animal.idade || "?"} anos
+                </p>
+                {/* Se quiser mostrar ID ou outra info */}
+                <span className={styles.tagId}>#{animal.id}</span>
             </div>
 
+            {/* Status Flutuantes */}
             <div className={styles.statusSuperior}>{statusSuperior}</div>
-            <div className={styles.statusInferior}>{statusInferior}</div>
+            {statusInferior && <div className={styles.statusInferior}>{statusInferior}</div>}
         </div>
     );
 };
@@ -75,65 +77,43 @@ export default function MeusAnimais() {
 
     const token = localStorage.getItem("@AuthData:token");
 
-    useEffect(() => {
-        if (!token) {
-            setError("Usuário não autenticado.");
+   useEffect(() => {
+        // Se não tiver usuário, nem tenta buscar (o AuthContext deve lidar com redirect se for rota protegida)
+        if (!user) {
             setLoading(false);
             return;
         }
 
-        // Função para buscar dados do Backend
         const fetchMeusDados = async () => {
             setLoading(true);
             setError(null);
             
-            // 1. URL para buscar animais cadastrados PELO USUÁRIO (seja ONG ou usuário comum)
-            // OBS: Esta rota ('/api/animais/meus') é uma suposição, adapte-a ao seu backend.
             try {
-                const responseAnimais = await fetch("https://petresc.onrender.com/api/animais/meus", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                // Requisições paralelas para ganhar tempo
+                const [resAnimais, resAdocoes] = await Promise.all([
+                    api.get("/animais/gerenciar/lista"), // Rota de Animais Cadastrados
+                    api.get("/pedidos-adocao/meus-pedidos")      // Rota de Pedidos feitos (Ajuste se sua rota for diferente no server.js)
+                ]);
 
-                if (responseAnimais.ok) {
-                    const data: Animal[] = await responseAnimais.json();
-                    setAnimaisCadastrados(data);
-                } else {
-                    console.error("Erro ao buscar animais cadastrados:", await responseAnimais.json());
-                }
-
-                // 2. URL para buscar processos de adoção iniciados PELO USUÁRIO
-                // OBS: Esta rota ('/api/adocoes/minhas') é uma suposição.
-                const responseAdocoes = await fetch("https://petresc.onrender.com/api/adocoes/minhas", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                if (responseAdocoes.ok) {
-                    const data: Adocao[] = await responseAdocoes.json();
-                    setAdocoesEmProcesso(data.filter(a => a.status_adocao !== 'APROVADO' && a.status_adocao !== 'REPROVADO'));
-                } else {
-                    console.error("Erro ao buscar adoções em processo:", await responseAdocoes.json());
-                }
+                setAnimaisCadastrados(resAnimais.data);
+                setAdocoesEmProcesso(resAdocoes.data);
 
             } catch (err) {
-                console.error("Erro de rede:", err);
-                setError("Falha ao carregar dados. Verifique a conexão.");
+                console.error("Erro ao buscar dados:", err);
+                setError("Falha ao carregar seus registros. Tente novamente.");
             } finally {
                 setLoading(false);
             }
         };
 
         fetchMeusDados();
-    }, [token]);
+    }, [user]);
 
-    // --- Renderização de Status ---
-    if (loading) {
-        return <div className={styles.containerPrincipal}><p>Carregando seus registros...</p></div>;
-    }
-
-    if (error) {
-        return <div className={styles.containerPrincipal}><p className={styles.erro}>Erro: {error}</p></div>;
-    }
+    // --- Renderização ---
+    if (loading) return <div className={styles.loadingContainer}><p>Carregando seus registros...</p></div>;
     
+    // Se o usuário não estiver logado, mostre uma mensagem ou redirecione
+    if (!user) return <div className={styles.containerPrincipal}><p>Faça login para ver seus animais.</p></div>;
     // --- Renderização Principal ---
     return (
         <div className={styles.containerPrincipal}>
