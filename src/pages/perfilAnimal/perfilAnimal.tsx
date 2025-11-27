@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Layout from "../../components/layout";
 import styles from "./perfilAnimal.module.css";
 import { useAuth } from "../../auth/AuthContext";
-import { AxiosError } from "axios";
 import api from '../../services/api';
 
 // --- TIPAGEM ---
@@ -52,7 +51,6 @@ export default function PerfilAnimal() {
 
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [loading, setLoading] = useState(true);
-  const [loadingAdocao, setLoadingAdocao] = useState(false);
 
   useEffect(() => {
     async function fetchAnimal() {
@@ -72,41 +70,24 @@ export default function PerfilAnimal() {
   }, [id]);
 
   // --- QUERO ADOTAR (DISPONÍVEL) ---
-  const handleQueroAdotar = async () => {
+  const handleQueroAdotar = () => {
+    // 1. Verifica se está logado
     if (!user) {
-      alert("Você precisa fazer login para adotar!");
+      // Salva a intenção para redirecionar depois do login (opcional)
+      alert("Você precisa fazer login para preencher o formulário de adoção!");
       navigate("/login");
       return;
     }
 
+    // 2. Verifica se é dono do animal
     if (user.id === animal?.accountId) {
-      alert("Você não pode adotar seu próprio animal.");
+      alert("Você não pode adotar seu próprio animal. Edite as informações no painel de controle.");
       return;
     }
 
-    if (!confirm(`Deseja confirmar interesse em adotar o(a) ${animal?.nome}?`))
-      return;
-
-    setLoadingAdocao(true);
-    try {
-      await api.post("/pedidos-adocao", {
-        animalId: animal?.id,
-      });
-
-      alert(
-        `Pedido enviado com sucesso!\n\nO responsável (${animal?.account.nome}) entrará em contato com você.`
-      );
-
-      navigate("/central-adocao");
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        alert(error.response.data.error || "Erro ao solicitar adoção.");
-      } else {
-        alert("Ocorreu um erro inesperado.");
-      }
-    } finally {
-      setLoadingAdocao(false);
-    }
+    // 3. REDIRECIONA PARA O FORMULÁRIO COM O ID DO ANIMAL
+    // Agora o formulário vai abrir sabendo quem é o animal e preenchendo os dados do usuário
+    navigate(`/formulario-adotar/${animal?.id}`);
   };
 
   // --- ENTRAR EM CONTATO (ENCONTRADO) ---
@@ -204,16 +185,13 @@ export default function PerfilAnimal() {
               </p>
             </section>
 
-            {/* BOTÃO PRINCIPAL — NOVA LÓGICA */}
+            {/* BOTÃO PRINCIPAL — ATUALIZADO */}
             {animal.status === "DISPONIVEL" ? (
               <button
                 className={styles.botaoAdotar}
                 onClick={handleQueroAdotar}
-                disabled={loadingAdocao}
               >
-                {loadingAdocao
-                  ? "ENVIANDO..."
-                  : `QUERO ADOTAR ${animal.nome.toUpperCase()}!`}
+                QUERO ADOTAR {animal.nome.toUpperCase()}!
               </button>
             ) : (
               <button
