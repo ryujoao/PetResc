@@ -43,6 +43,7 @@
   font-weight: 700;
   font-size: 1.3rem;
   color: #286699;
+  display: block;
 }
 
 .input {
@@ -92,6 +93,7 @@
   gap: 2rem;
   margin-bottom: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .checkboxCustomizado {
@@ -146,6 +148,7 @@
 
 .spanCheckmark {
   font-size: 1.2rem;
+  line-height: 1.4;
 }
 
 /* Botão Finalizar */
@@ -161,6 +164,7 @@
   margin-top: 3rem;
   width: 100%;
   transition: background-color 0.3s;
+  max-width: 300px;
 }
 
 .botaoEnviar:hover {

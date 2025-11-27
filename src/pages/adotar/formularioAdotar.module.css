@@ -1,4 +1,4 @@
-.pageFormularioAdotar {
+.pageFormulario {
   width: 100%;
   height: 100%;
   background: #fff;
@@ -108,14 +108,12 @@
 
 /* conteudo */
 .conteudo {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1rem;
-  box-sizing: border-box;
   width: 100%; 
-  flex-grow: 1; 
-  display: flex; 
-  flex-direction: column; 
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 600px;
   
 }
 
@@ -161,11 +159,10 @@
 .twoColumns {
   display: flex;
   gap: 2rem;
-  flex-wrap: wrap;
+  width: 100%;
 }
 .twoColumns > * {
-  flex: 1 1 320px;
-  min-width: 220px;
+  flex: 1 
 }
 
 .label {
@@ -331,7 +328,9 @@
 
 .botoesVoltar,
 .botoesAvancar {
-  width: 200px;
+  width: auto;
+  min-width: 160px;
+  cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .botoesVoltar:hover {
@@ -502,87 +501,6 @@
   color: #0f4979;
   margin-bottom: 1.5rem;
   text-align: left;
-}
-
-
-@media (max-width: 900px) {
-  .steps {
-    gap: 8px;
-  }
-  .step {
-    width: auto;
-  }
-  .twoColumns {
-    flex-direction: column;
-  }
-  .conteudo {
-    width: 94%;
-    padding: 0.75rem;
-  }
-  .titulo {
-    text-align: center;
-  }
-  .introducaoFormulario {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 560px) {
-  .controls {
-    flex-direction: column-reverse;
-    align-items: stretch;
-  }
-  .botoesVoltar,
-  .botoesAvancar {
-    width: 100%;
-  }
-  .step {
-    width: auto;
-    min-width: 120px;
-  }
-  .optionButton {
-    max-width: 100%;
-    padding: 0.8rem;
-  }
-  .checkboxCustomizado .checkmark {
-    width: 36px;
-    height: 20px;
-    left: 6px;
-    top: 14px;
-  }
-  .optionButton {
-    gap: 0.75rem;
-  }
-  .optionLetter {
-    width: 24px;
-    height: 24px;
-    font-size: 0.8rem;
-  }
-  .optionLabel {
-    font-size: 1.1rem;
-  }
-  .finalTitle {
-    font-size: 2.2rem;
-  }
-  .finalSubtitle {
-    font-size: 1.1rem;
-  }
-  .finalTermTitle {
-    font-size: 1.3rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .conteudo {
-    width: 75%;
-    max-width: 1100px;
-  }
-  .twoColumns > * {
-    flex: 1 1 420px;
-  }
-  .titulo {
-    font-size: 2.8rem;
-  }
 }
 
 .idle {

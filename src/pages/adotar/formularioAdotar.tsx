@@ -283,7 +283,7 @@ export default function FormularioAdotar() {
 
   return (
     <Layout>
-      <div className={styles.pageFormularioAdotar}>
+      <div className={styles.pageFormulario}>
         
         {/* BANNER CONDICIONAL: Avisa o usuário o que ele está fazendo */}
         <div style={{
