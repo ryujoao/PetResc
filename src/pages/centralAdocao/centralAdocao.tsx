@@ -52,41 +52,47 @@ const [filtroCor, setFiltroCor] = useState("");
 
 // --- Busca de Dados Reais ---
 useEffect(() => {
-const fetchAnimais = async () => {
-setLoading(true);
-setError(null);
+  const fetchAnimais = async () => {
+    setLoading(true);
+    setError(null);
 
-try {
-const params = new URLSearchParams();
-params.append("status", "DISPONIVEL");
+    try {
+      const params = new URLSearchParams();
+      
+      // ❌ REMOVIDO: params.append("status", "DISPONIVEL");
+      // ✅ AGORA: Não enviamos status fixo. 
+      // O Backend (já configurado) vai entender que "sem status" = trazer TUDO (Disponível + Encontrado).
 
-if (filtroEspecie) params.append("especie", filtroEspecie);
-if (filtroPorte) params.append("porte", filtroPorte);
-if (filtroSexo) params.append("sexo", filtroSexo);
+      if (filtroEspecie) params.append("especie", filtroEspecie);
+      if (filtroPorte) params.append("porte", filtroPorte);
+      if (filtroSexo) params.append("sexo", filtroSexo);
 
-const response = await fetch(`https://petresc.onrender.com/api/animais?${params.toString()}`);
+      // Se houver filtro de idade ou cor no futuro, adicione aqui
+      // if (filtroIdade) params.append("idade", filtroIdade);
 
-if (!response.ok) {
-throw new Error("Erro ao buscar animais.");
-}
+      const response = await fetch(`https://petresc.onrender.com/api/animais?${params.toString()}`);
+      
+      if (!response.ok) {
+        throw new Error("Erro ao buscar animais.");
+      }
 
-const data = await response.json();
-setAnimais(data);
-} catch (err) {
-console.error(err);
-setError("Não foi possível carregar o feed de adoção.");
-} finally {
-setLoading(false);
-}
-};
+      const data = await response.json();
+      setAnimais(data);
+    } catch (err) {
+      console.error(err);
+      setError("Não foi possível carregar o feed de adoção.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const timer = setTimeout(() => {
-  fetchAnimais();
-}, 300);
+  const timer = setTimeout(() => {
+    fetchAnimais();
+  }, 300);
 
-return () => clearTimeout(timer);
+  return () => clearTimeout(timer);
 
-}, [filtroEspecie, filtroPorte, filtroSexo]); 
+}, [filtroEspecie, filtroPorte, filtroSexo]);
 
 
 return (

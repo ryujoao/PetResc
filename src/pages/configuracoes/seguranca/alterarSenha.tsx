@@ -48,7 +48,7 @@ export default function AlterarSenha() {
     setLoading(true);
 
     try {
-      await api.put("/api/auth/me", {
+      await api.put("/auth/me", {
         currentPassword: form.senhaAtual, 
         password: form.novaSenha         
       });

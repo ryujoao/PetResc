@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         try {
             console.log("Buscando dados atualizados do usuário...");
-            const response = await api.get('/api/auth/me');
+            const response = await api.get('/auth/me');
 
             // Atualiza o estado com o que veio do servidor
             setUser(response.data);

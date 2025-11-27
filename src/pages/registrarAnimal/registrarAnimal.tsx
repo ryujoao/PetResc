@@ -122,6 +122,8 @@ const RegistrarAnimalUsuario = () => {
     }
   };
 
+
+
   return (
     <div className={styles.pageRegistroAnimal}>
       
