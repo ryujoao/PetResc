@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-// ...existing code...
 import Home from "./pages/home/home";
 import Doar from "./pages/doar/doar";
 import Adotar from "./pages/adotar/adotar";
@@ -27,10 +26,8 @@ import Contato from "./pages/configuracoes/ajuda/contato";
 import Cadastro from "./pages/cadastro/cadastro";
 import RecuperarSenha from "./pages/cadastro/recuperarSenha";
 import NovaCampanha from "./pages/novaCampanha/novaCampanha";
+import GerenciarAdocao from "./pages/gerenciarAdocao/gerenciarAdocao";
 
-
-
-// ...existing code...
 function App() {
   return (
     <Routes>
@@ -44,13 +41,18 @@ function App() {
       <Route path="/registrar-animal" element={<RegistrarAnimal />} />
       <Route path="/central-adocao" element={<CentralAdocao />} />
       <Route path="/perfil" element={<Perfil />} />
+      
       <Route path="/animal/:id" element={<PerfilAnimal />} />
       <Route path="/instituto/:id" element={<Institutos />} />
+      
+      {/* --- ALTERAÇÃO AQUI: Rota para o formulário com ID do animal --- */}
       <Route path="/formulario-adotar" element={<FormularioAdotar />} />
+      <Route path="/formulario-adotar/:id" element={<FormularioAdotar />} />
+      
       <Route path="/formulario-lar-temporario" element={<FormularioLarTemporario />} />
       <Route path="/nova-campanha" element={<NovaCampanha />} />
+      <Route path="/gerenciar-adocao" element={<GerenciarAdocao />} />
       
-
       <Route path="/config" element={<ConfigMenu />} />
       <Route element={<ConfigLayout />}>
         <Route path="/config/conta" element={<Conta />} />
@@ -63,7 +65,6 @@ function App() {
         <Route path="/config/historico-animais" element={<HistoricoAnimais />} />
         <Route path="/config/faq" element={<FAQ />} />
         <Route path="/config/contate-nos" element={<Contato />} />
-        
       </Route>
     </Routes>
   );

@@ -17,14 +17,22 @@ interface Pet {
   favorito?: boolean; 
 }
 
-const PetCard = ({ pet, onToggle, onClickCard }: { pet: Pet; onToggle: (id: number) => void; onClickCard: (id: number) => void }) => (
+// --- CORREÇÃO AQUI ---
+// Adicionamos 'isOwned: boolean' na definição do tipo das props
+const PetCard = ({ pet, onToggle, onClickCard, isOwned }: 
+    { 
+        pet: Pet; 
+        onToggle: (id: number) => void; 
+        onClickCard: (id: number, isOwned: boolean) => void;
+        isOwned: boolean; // <--- O ERRO ESTAVA FALTANDO ESSA LINHA
+    }) => (
   <div className={styles.petCard}>
     {/* Clique na imagem navega para o detalhe */}
     <img 
         src={pet.photoURL || "https://placehold.co/300x300/f8f8f8/ccc?text=Sem+Foto"} 
         alt={pet.nome} 
         className={styles.petImage} 
-        onClick={() => onClickCard(pet.id)}
+        onClick={() => onClickCard(pet.id, isOwned)} 
         style={{ cursor: 'pointer' }}
     />
     <p className={styles.petNome}>{pet.nome}</p>
@@ -72,10 +80,12 @@ export default function Perfil() {
     async function fetchData() {
         setLoading(true);
         try {
+            // Busca animais que o usuário/ONG cadastrou
             const resMeus = await api.get("/animais/gerenciar/lista");
             const meusFormatados = resMeus.data.map((p: any) => ({ ...p, favorito: false })); 
             setMeusPets(meusFormatados);
 
+            // Busca favoritos
             try {
                 const resSalvos = await api.get("/favoritos/meus"); 
                 const salvosFormatados = resSalvos.data.map((item: any) => ({
@@ -103,7 +113,6 @@ export default function Perfil() {
         const isFavoritoNow = outrosSalvos.some(p => p.id === id);
         
         if (isFavoritoNow) {
-            // 
             await api.delete(`/animais/${id}/desfavoritar`);
             setOutrosSalvos(prev => prev.filter(p => p.id !== id));
         } else {
@@ -115,8 +124,12 @@ export default function Perfil() {
     }
   };
 
-  const handleCardClick = (id: number) => {
-      navigate(`/animal/${id}`);
+  const handleCardClick = (id: number, isOwned: boolean) => {
+    if (isOwned) {
+        navigate(`/gerenciar-adocao/${id}`);
+    } else {
+        navigate(`/animal/${id}`);
+    }
   };
 
   const petsExibidos = activeView === "todos" ? meusPets : outrosSalvos;
@@ -185,6 +198,7 @@ export default function Perfil() {
                 pet={pet}
                 onToggle={toggleFavorito}
                 onClickCard={handleCardClick}
+                isOwned={activeView === "todos"}
               />
             ))
           ) : (

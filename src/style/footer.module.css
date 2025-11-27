@@ -11,16 +11,15 @@
 
 .containerFooter {
   width: 100%;
-  padding: 0 5vw;
-  box-sizing: border-box;
+  max-width: 1400px; 
+  margin: 0 auto;    
+  padding: 0 2rem;
 }
 
 .rowFooter {
   display: flex;
   justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 20px;
-  padding-top: 30px;
+  gap: 40px;
 }
 
 .footerCol {

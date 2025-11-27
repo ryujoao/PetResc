@@ -2,8 +2,7 @@
 color: #0f4979;
 width: 100%;
 background-color: #fff;
-display: flex;
-flex-direction: column;
+display: grid;
 }
 
 .titulo {
@@ -30,11 +29,12 @@ padding: 0 4rem 4rem 4rem;
 
 /* --- ESTILOS DO PAINEL DE FILTROS --- */
 .filtros {
-display: flex;
-flex-direction: column;
-gap: 2.5rem; 
-border: none; 
-max-width: 300px; 
+width: 280px; 
+flex-shrink: 0; 
+border-right: 1px solid #eee;
+padding-right: 2rem;
+margin-right: 2rem;
+  
 }
 
 .tituloFiltro {
@@ -48,14 +48,15 @@ padding-left: 0.5rem;
 .filtroGrupo {
 display: flex;
 flex-direction: column;
-gap: 0.5rem; 
-padding: 0 0.5rem; 
+gap: 0.2rem; 
+padding: 1rem 0.5rem; 
 }
 
 .filtroGrupo h3 {
 font-size: 1.1rem; 
 font-weight: bold;
 color: #0f4979; 
+padding-bottom: 1rem;
 }
 
 /* --- Selects (Dropdowns) --- */
@@ -210,12 +211,10 @@ border: 1px solid rgba(0, 0, 0, 0.15);
 
 /* --- ESTILOS DA LISTA DE PETS --- */
 .listaPets {
-flex: 3;
+flex-grow: 1;
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-gap: 3rem 2rem; 
-margin-left: 0; 
-max-width: 1200px; 
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+gap: 30px;  
 }
 
 .cardPet {
@@ -238,17 +237,18 @@ margin-bottom: 0.5rem;
 }
 
 .cardPet h3 {
-font-size: 1.1rem; 
+font-size: 1.5rem; 
 margin: 0;
 }
 
 .cardPet p {
-font-size: 0.9rem;
+font-size: 1.2rem;
 margin: 0;
 color: #666;
 }
 
-.ongNome {
+.doadorNome {
+ font-size: 1rem;
  font-weight: bold;
  color: #0f4979;
  margin-top: 0.25rem !important;

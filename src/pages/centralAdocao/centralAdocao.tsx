@@ -285,7 +285,7 @@ Encontre seu novo melhor amigo filtrando pelas características desejadas.
  <h3>{animal.nome}</h3>
  <p>{animal.raca || "Sem raça definida"}</p>
  {animal.account && ( 
- <p className={styles.ongNome}>Doador: {animal.account.nome}</p>
+ <p className={styles.doadorNome}>Doador: {animal.account.nome}</p>
  )}
 </Link>
 ))}

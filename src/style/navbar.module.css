@@ -10,11 +10,11 @@
   left: 0;
   background-color: white;
   align-items: center;
+  justify-content: space-between;
   height: 90px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  font-size: 18px;
-  padding: 0 1rem;
+  padding: 0 3rem;
 }
 
 .topBar {
@@ -43,18 +43,10 @@
   max-height: 90px;
 }
 .navCategorias {
-  /* display: flex;
-  gap: 5rem;
-  /* display: flex;
-  gap: 5rem;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  align-items: center;
-  height: 100%; */
   display: flex;
   gap: 3rem;
   padding: 0 2rem;
+  align-items: center;
 }
 
 .navCategorias li a,
@@ -82,10 +74,9 @@ button.navLink:hover {
 
 .botoesCadastro {
   display: flex;
-
   margin-left: auto;
   padding: 0 2rem;
-  gap: 4rem;
+  gap: 2rem;
   font-size: 23px;
 }
 
@@ -131,6 +122,10 @@ button.navLink:hover {
   background-color: #fff;
   padding: 0;
   transition: color 0.2s ease;
+  font-size: 1.4rem; 
+  font-weight: 700;
+  
+  
 }
 
 @media (max-width: 1513px) {

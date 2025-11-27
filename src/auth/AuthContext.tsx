@@ -23,6 +23,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  token: string | null; // <--- 1. ADICIONADO AQUI
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>; 
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null); // <--- 2. ESTADO DO TOKEN ADICIONADO
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -51,19 +53,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     async function loadStoragedData() {
       const storedToken = localStorage.getItem('@AuthData:token');
-      
       const storedUser = localStorage.getItem('@AuthData:user');
 
       if (storedToken) {
-        // 1. Define o token no cabeçalho para poder fazer a requisição
+        // 3. Atualiza o estado do token ao carregar a página
+        setToken(storedToken); 
+
+        // Define o token no cabeçalho do Axios
         api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
 
-        // 2. Valida se o token não expirou localmente
+        // Valida se o token não expirou localmente
         if (!isTokenValid(storedToken)) {
           logout();
           return;
         }
-
         
         try {
             console.log("Buscando dados atualizados do usuário...");
@@ -93,12 +96,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string) => {
     try {
-     const response = await api({
-  method: 'post',
-  url: '/auth/login',
-  data: { email, password }
-});
-console.log("Resposta do login:", response);;
+      const response = await api({
+        method: 'post',
+        url: '/auth/login',
+        data: { email, password }
+      });
+      console.log("Resposta do login:", response);
 
       const { token, usuario } = response.data;
 
@@ -106,7 +109,10 @@ console.log("Resposta do login:", response);;
       localStorage.setItem('@AuthData:user', JSON.stringify(usuario));
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      // Atualiza os estados
       setUser(usuario);
+      setToken(token); // <--- 4. ATUALIZA O TOKEN NO LOGIN
 
       if (usuario.role === 'ADMIN') {
         navigate('/api/admin/dashboard'); 
@@ -126,12 +132,15 @@ console.log("Resposta do login:", response);;
     localStorage.removeItem('@AuthData:token');
     localStorage.removeItem('@AuthData:user');
     api.defaults.headers.common['Authorization'] = undefined;
+    
+    // Limpa os estados
     setUser(null);
+    setToken(null); // <--- 5. LIMPA O TOKEN NO LOGOUT
+    
     navigate('/login');
   };
 
   if (isLoading) {
-    
     return <div>Carregando...</div>;
   }
 
@@ -146,6 +155,7 @@ console.log("Resposta do login:", response);;
     <AuthContext.Provider 
       value={{ 
         user, 
+        token, // <--- 6. EXPORTA O TOKEN PARA O CONTEXTO
         isLoading, 
         isAuthenticated, 
         login, 
