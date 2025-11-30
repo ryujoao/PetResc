@@ -30,8 +30,7 @@ export default function StepFinal({ data }: Props) {
     });
   };
 
-  // 🛠️ CORREÇÃO IMPORTANTE: 
-  // Função para transformar o objeto de animais em texto legível
+  
   const formatOutrosAnimais = () => {
     if (
       data.outrosAnimaisLocal && 

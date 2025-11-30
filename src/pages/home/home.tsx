@@ -3,23 +3,21 @@ import Layout from "../../components/layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
+// Componentes principais da home
 import Estatisticas from "../estatisticas";
 import NossaMissao from "./nossaMissao";
 import SaibaMais from "./saibaMais";
 
-// --- COMPONENTES DAS HOMES LOGADAS ---
-import MeusAnimais from "./meusAnimais"; // Para o 'PUBLICO'
-import OngsProximas from "./ongsProximas"; // Para o 'PUBLICO'
-import AnimaisCadastrados from "./animaisCadastrados"; // <-- 1. IMPORTE O COMPONENTE DA ONG
+// Componentes específicos para cada tipo de usuário
+import MeusAnimais from "./meusAnimais";           // Usuário público
+import OngsProximas from "./ongsProximas";         // Usuário público
+import AnimaisCadastrados from "./animaisCadastrados"; // ONG/Admin
 
-
-function Home() {
-  // 1. Pegue 'isAuthenticated' E o 'user' completo do contexto
+export default function Home() {
   const { isAuthenticated, user } = useAuth();
 
-  // 2. Lógica de renderização do Banner
+  // ------------------- Banner -------------------
   const renderBanner = () => {
-    // NÃO LOGADO
     if (!isAuthenticated) {
       return (
         <section className={styles.bannerTres}>
@@ -30,8 +28,7 @@ function Home() {
       );
     }
 
-    // LOGADO COMO USUÁRIO (HomeUsu)
-    if (user && user.role === "PUBLICO") {
+    if (user?.role === "PUBLICO") {
       return (
         <section className={styles.bannerUm}>
           <div className={styles.homeTitulo}>
@@ -44,8 +41,7 @@ function Home() {
       );
     }
 
-    // LOGADO COMO ONG ou ADMIN (HomeOng)
-    if (user && (user.role === "ONG" || user.role === "ADMIN")) {
+    if (user?.role === "ONG" || user?.role === "ADMIN") {
       return (
         <section className={styles.bannerUm}>
           <div className={styles.homeTitulo}>
@@ -58,13 +54,11 @@ function Home() {
       );
     }
 
-    // Fallback (enquanto carrega, etc)
-    return <div className={styles.bannerEspera}></div>; // Um banner neutro
+    return <div className={styles.bannerEspera}></div>;
   };
 
-  // 3. Lógica de renderização do Conteúdo da Página
+  // ------------------- Conteúdo -------------------
   const renderContent = () => {
-    // CONTEÚDO NÃO LOGADO
     if (!isAuthenticated) {
       return (
         <>
@@ -75,8 +69,7 @@ function Home() {
       );
     }
 
-    // CONTEÚDO DO USUÁRIO (HomeUsu)
-    if (user && user.role === "PUBLICO") {
+    if (user?.role === "PUBLICO") {
       return (
         <>
           <MeusAnimais />
@@ -103,8 +96,7 @@ function Home() {
       );
     }
 
-    // CONTEÚDO DA ONG (HomeOng)
-    if (user && (user.role === "ONG" || user.role === "ADMIN")) {
+    if (user?.role === "ONG" || user?.role === "ADMIN") {
       return (
         <>
           <AnimaisCadastrados />
@@ -131,18 +123,13 @@ function Home() {
       );
     }
 
-    // Fallback
     return <div>Carregando...</div>;
   };
 
   return (
-    <>
-      <Layout>
+    <Layout>
       {renderBanner()}
       {renderContent()}
-      </Layout>
-    </>
+    </Layout>
   );
 }
-
-export default Home;

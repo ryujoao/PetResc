@@ -4,8 +4,9 @@ import Layout from "../../components/layout";
 import styles from "./perfilAnimal.module.css";
 import { useAuth } from "../../auth/AuthContext";
 import api from '../../services/api';
+import { FaWhatsapp, FaCheckCircle } from "react-icons/fa";
 
-// --- TIPAGEM ---
+// ... (Interfaces FichaTecnica, AccountInfo, Animal mantidas iguais) ...
 interface FichaTecnica {
   vacinado: boolean;
   vermifugado: boolean;
@@ -41,7 +42,7 @@ interface Animal {
   createdAt: string;
   accountId: number;
   account: AccountInfo; 
-  ficha?: FichaTecnica; 
+  ficha?:  FichaTecnica; 
 }
 
 export default function PerfilAnimal() {
@@ -51,11 +52,12 @@ export default function PerfilAnimal() {
 
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pedidoExistente, setPedidoExistente] = useState<any>(null); 
 
+  // 1. Busca dados do Animal
   useEffect(() => {
     async function fetchAnimal() {
-      if (!id || id === "undefined") return;
-
+      if (!id || id === 'undefined') return;
       try {
         const response = await api.get(`/animais/${id}`);
         setAnimal(response.data);
@@ -65,222 +67,130 @@ export default function PerfilAnimal() {
         setLoading(false);
       }
     }
-
     fetchAnimal();
   }, [id]);
 
-  // --- QUERO ADOTAR (DISPONÍVEL) ---
+  // 2. Verifica se já pedi
+  useEffect(() => {
+    if (user && animal && animal.id) {
+        api.get('/pedidos-adocao/meus-pedidos') 
+           .then(response => {
+               const pedido = response.data.find((p: any) => p.animalId === animal.id);
+               if (pedido) {
+                   setPedidoExistente(pedido);
+               }
+           })
+           .catch(err => console.log("Erro ao checar pedidos:", err));
+    }
+  }, [user, animal]);
+
   const handleQueroAdotar = () => {
-    // 1. Verifica se está logado
     if (!user) {
-      // Salva a intenção para redirecionar depois do login (opcional)
-      alert("Você precisa fazer login para preencher o formulário de adoção!");
+      alert("Você precisa fazer login para adotar!");
       navigate("/login");
       return;
     }
-
-    // 2. Verifica se é dono do animal
     if (user.id === animal?.accountId) {
-      alert("Você não pode adotar seu próprio animal. Edite as informações no painel de controle.");
+      alert("Você não pode adotar seu próprio animal.");
       return;
     }
-
-    // 3. REDIRECIONA PARA O FORMULÁRIO COM O ID DO ANIMAL
-    // Agora o formulário vai abrir sabendo quem é o animal e preenchendo os dados do usuário
-    navigate(`/formulario-adotar/${animal?.id}`);
+    navigate(`/formulario-adotar?animalId=${animal?.id}`);
   };
 
-  // --- ENTRAR EM CONTATO (ENCONTRADO) ---
   const handleEntrarEmContato = () => {
-    if (!animal?.account.telefone) {
-      alert("O responsável não cadastrou telefone para contato.");
-      return;
+    if (!animal?.account?.telefone) {
+        alert(`Contato: ${animal?.account.email}`);
+        return;
     }
-
-    const telefone = animal.account.telefone.replace(/\D/g, "");
-    const mensagem = `Olá! Vi o animal "${animal.nome}" listado como ENCONTRADO no PetResc. Acredito ser meu. Podemos falar?`;
-
-    window.open(
-      `https://wa.me/55${telefone}?text=${encodeURIComponent(mensagem)}`,
-      "_blank"
-    );
+    const phone = animal.account.telefone.replace(/\D/g, '');
+    window.open(`https://wa.me/55${phone}?text=Olá, vi o pet ${animal.nome} no site.`, '_blank');
   };
 
-  // --- LOADING ---
-  if (loading) {
-     return (
-      <Layout>
-        <div style={{ textAlign: "center", padding: "4rem", color: "#666" }}>
-          <h2>Carregando perfil do pet...</h2>
-        </div>
-      </Layout>
-    );
-  }
-
-  // --- ANIMAL NÃO EXISTE ---
-  if (!animal) {
-    return (
-      <Layout>
-        <div style={{ textAlign: "center", padding: "4rem" }}>
-          <h1 style={{ color: "#2b6b99" }}>Animal não encontrado</h1>
-          <button
-            onClick={() => navigate("/central-adocao")}
-            style={{ marginTop: 20, padding: 10, cursor: "pointer" }}
-          >
-            Voltar para o Feed
-          </button>
-        </div>
-      </Layout>
-    );
-  }
-
+  if (loading) return <Layout><div style={{textAlign: "center", padding: "4rem"}}>Carregando...</div></Layout>;
+  if (!animal) return <Layout><div>Animal não encontrado</div></Layout>;
+  
   return (
     <Layout>
       <main className={styles.container}>
         <div className={styles.profileWrapper}>
           
-          {/* FOTO */}
           <div className={styles.imagemContainer}>
             <div className={styles.imagem}>
               <img
-                src={
-                  animal.photoURL ||
-                  "https://placehold.co/400x400/f8f8f8/ccc?text=Sem+Foto"
-                }
+                src={animal.photoURL || "https://placehold.co/400x400/f8f8f8/ccc?text=Sem+Foto"}
                 alt={animal.nome}
-                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  e.currentTarget.src =
-                    "https://placehold.co/400x400/f8f8f8/ccc?text=Erro+Imagem";
-                }}
               />
             </div>
           </div>
 
-          {/* INFORMAÇÕES PRINCIPAIS */}
           <div className={styles.infoContainer}>
             <h1 className={styles.nome}>{animal.nome}</h1>
-
-            <p className={styles.status}>
-              {animal.status === "DISPONIVEL" ? "Para Adoção" : "Encontrado"}
+            
+            <p className={styles.status} style={{ 
+                color: animal.status === 'DISPONIVEL' ? '#28a745' : '#e0a800',
+                fontWeight: 'bold'
+            }}>
+               {animal.status === 'DISPONIVEL' ? 'Para Adoção' : 'Encontrado / Perdido'}
             </p>
-
+            
             <section className={styles.dados}>
               <p className={styles.infoLine}>
-                <strong>
-                  {animal.sexo === "MACHO" ? "Macho" : "Fêmea"}
-                </strong>{" "}
-                • {animal.idade ? `${animal.idade} anos` : "Idade desconhecida"}{" "}
-                • {animal.raca || "SRD"}
+                <strong>{animal.sexo === 'MACHO' ? 'Macho' : 'Fêmea'}</strong> • {animal.idade ? `${animal.idade} anos` : 'Idade?'} • {animal.raca || 'SRD'}
               </p>
-
               <p className={styles.infoLine}>
                 Responsável: <strong>{animal.account.nome}</strong>
-                {animal.account.ong && (
-                  <span>
-                    {" "}
-                    ({animal.account.ong.cidade} -{" "}
-                    {animal.account.ong.estado})
-                  </span>
-                )}
               </p>
             </section>
 
-            {/* BOTÃO PRINCIPAL — ATUALIZADO */}
-            {animal.status === "DISPONIVEL" ? (
-              <button
-                className={styles.botaoAdotar}
-                onClick={handleQueroAdotar}
-              >
-                QUERO ADOTAR {animal.nome.toUpperCase()}!
-              </button>
+            {/* --- BOTÕES --- */}
+            {pedidoExistente ? (
+                // ✅ CORREÇÃO AQUI: Redireciona para a Home (Dashboard)
+                <button 
+                    className={styles.botaoAdotar}
+                    style={{ backgroundColor: '#6c757d', cursor: 'pointer' }} 
+                    onClick={() => navigate('/')} 
+                    title="Ver meus pedidos na página inicial"
+                >
+                    <FaCheckCircle style={{marginRight: 8}}/>
+                    JÁ SOLICITADO ({pedidoExistente.status})
+                </button>
+            ) : animal.status === 'DISPONIVEL' ? (
+                <button 
+                    className={styles.botaoAdotar} 
+                    onClick={handleQueroAdotar}
+                >
+                    QUERO ADOTAR!
+                </button>
             ) : (
-              <button
-                className={styles.botaoAdotar}
-                style={{ background: "#f6a21a" }}
-                onClick={handleEntrarEmContato}
-              >
-                ENTRAR EM CONTATO
-              </button>
+                <button 
+                    className={styles.botaoAdotar} 
+                    style={{ backgroundColor: '#25D366' }} 
+                    onClick={handleEntrarEmContato}
+                >
+                    <FaWhatsapp size={20} style={{ marginRight: 8 }} />
+                    ENTRAR EM CONTATO
+                </button>
             )}
-          </div>
 
-          {/* DESCRIÇÃO */}
+          </div>
+        
           <div className={styles.comentarioContainer}>
             <h2>Sobre o {animal.nome}</h2>
-            <p>
-              {animal.descricao ||
-                "O responsável não forneceu uma descrição detalhada."}
-            </p>
-
-            {animal.ficha?.observacoes && (
-              <p style={{ marginTop: 10 }}>
-                <strong>Obs:</strong> {animal.ficha.observacoes}
-              </p>
-            )}
+            <p>{animal.descricao || "Sem descrição."}</p>
           </div>
         </div>
 
         <hr className={styles.divider} />
-
-        {/* CARACTERÍSTICAS */}
         <div className={styles.caracteristicasGrid}>
-          
-          <div className={styles.caracteristicaColuna}>
-            <h3>Características</h3>
-            <ul>
-              <li>
-                <strong>Espécie:</strong> {animal.especie}
-              </li>
-              <li>
-                <strong>Raça:</strong> {animal.raca || "SRD"}
-              </li>
-              <li>
-                <strong>Porte:</strong> {animal.porte}
-              </li>
-              <li>
-                <strong>Cor:</strong>{" "}
-                {animal.corPredominante || "Não informada"}
-              </li>
-            </ul>
-          </div>
-
-          <div className={styles.caracteristicaColuna}>
-            <h3>Cuidados Veterinários</h3>
-            <ul className={styles.tagsList}>
-              {animal.ficha ? (
-                <>
-                  <li>
-                    {animal.ficha.vacinado ? "✅ Vacinado" : "❌ Não Vacinado"}
-                  </li>
-                  <li>
-                    {animal.ficha.castrado ? "✅ Castrado" : "❌ Não Castrado"}
-                  </li>
-                  <li>
-                    {animal.ficha.vermifugado
-                      ? "✅ Vermifugado"
-                      : "❌ Não Vermifugado"}
-                  </li>
-                </>
-              ) : (
-                <li>Informações não cadastradas</li>
-              )}
-            </ul>
-          </div>
-
-          <div className={styles.caracteristicaColuna}>
-            <h3>Temperamento</h3>
-            <ul className={styles.tagsList}>
-              <li>{animal.ficha?.temperamento || "Não informado"}</li>
-            </ul>
-          </div>
-
-          <div className={styles.caracteristicaColuna}>
-            <h3>Saúde Geral</h3>
-            <ul className={styles.tagsList}>
-              <li>{animal.ficha?.saude || "Sem histórico médico detalhado"}</li>
-            </ul>
-          </div>
+             <div className={styles.caracteristicaColuna}>
+                <h3>Características</h3>
+                <ul>
+                    <li>Espécie: {animal.especie}</li>
+                    <li>Raça: {animal.raca}</li>
+                </ul>
+             </div>
         </div>
+
       </main>
     </Layout>
   );

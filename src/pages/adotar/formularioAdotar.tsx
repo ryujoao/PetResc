@@ -3,15 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./formularioAdotar.module.css";
 import Layout from "../../components/layout"; 
 import Sucesso from "../../components/sucesso";
-
-// Importação dos passos do formulário
 import StepIntro from "./stepIntro";
 import StepPersonal from "./stepPersonal";
 import StepQuestionsGroup from "./stepQuestionsGroup";
 import StepFinal from "./stepFinal";
 import StepTermo from "./stepTermo";
 import { useAuth } from "../../auth/AuthContext";
-
 import api from "../../services/api"; 
 import { AxiosError } from "axios";
 
@@ -25,17 +22,23 @@ type IconWrapProps = {
   state: "done" | "active" | "idle";
 };
 
-const progressIconStyle = { width: "20px", height: "20px" };
+const progressIconStyle = {
+  width: "20px",
+  height: "20px",
+};
 
 const IconWrap = ({ state }: IconWrapProps) => {
   switch (state) {
-    case "done": return <FaRegCheckCircle style={progressIconStyle} />;
-    case "active": return <FaRegDotCircle style={progressIconStyle} />;
-    case "idle": default: return <FaRegCircle style={progressIconStyle} />;
+    case "done":
+      return <FaRegCheckCircle style={progressIconStyle} />;
+    case "active":
+      return <FaRegDotCircle style={progressIconStyle} />;
+    case "idle":
+    default:
+      return <FaRegCircle style={progressIconStyle} />;
   }
 };
 
-// --- TIPAGEM DOS DADOS ---
 export type FormData = {
   nome: string;
   email: string;
@@ -63,7 +66,6 @@ export type FormData = {
   alergia?: string;
   aceitaTermo?: boolean;
   
-  // Campos extras para o backend
   quintalTelado?: string;
   janelasTeladas?: string;
   moradiaPropria?: string;
@@ -84,7 +86,6 @@ export default function FormularioAdotar() {
   const location = useLocation();
   const { user } = useAuth();
 
-  // Tenta pegar o ID, mas não bloqueia se não achar agora
   const queryParams = new URLSearchParams(location.search);
   const animalId = location.state?.animalId || queryParams.get("animalId");
 
@@ -108,11 +109,8 @@ export default function FormularioAdotar() {
     tipoMoradia: "",
     quintal: "",
     aceitaTermo: false,
-    idAnimal: id || "", // Se tiver ID na URL, já começa preenchido
-    jaViuPet: id ? "Sim, já vi" : "", // Se tem ID, a resposta é automaticamente Sim
   });
 
-  // Preencher dados do usuário logado (Facilitador)
   useEffect(() => {
     if (user) {
       setData((prev) => ({
@@ -124,8 +122,6 @@ export default function FormularioAdotar() {
     }
   }, [user]);
 
-  
-
   const majorSteps = [
     { id: 0, title: "Introdução", pages: 1 },
     { id: 1, title: "Informações Pessoais", pages: 1 },
@@ -133,68 +129,8 @@ export default function FormularioAdotar() {
     { id: 3, title: "Preferências", pages: 3 },
     { id: 4, title: "Recursos & Lar", pages: 3 },
     { id: 5, title: "Termo de Responsabilidade", pages: 1 },
-    { id: 6, title: "Concluído", pages: 1 },
+    { id: 6, title: "Concluído", pages: 1 }, // Passo de Revisão
   ];
-
-  // --- BUSCA DADOS DO USUÁRIO (Autopreenchimento) ---
-  useEffect(() => {
-    async function carregarPerfil() {
-      // Se não tiver usuário logado, para o loading e deixa o form vazio
-      if (!user || !token) {
-        setLoadingDados(false);
-        return;
-      }
-
-      try {
-        // Tenta buscar o perfil completo salvo no backend
-        const response = await fetch("https://petresc.onrender.com/api/usuario/perfil-adocao", {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-            const perfil = await response.json();
-            // Mescla os dados salvos com o estado atual
-            setData(prev => ({
-                ...prev,
-                nome: user.nome || prev.nome,
-                email: user.email || prev.email,
-                telefone: perfil.telefone || prev.telefone,
-                cep: perfil.cep || prev.cep,
-                rua: perfil.rua || prev.rua,
-                numero: perfil.numero || prev.numero,
-                complemento: perfil.complemento || prev.complemento,
-                bairro: perfil.bairro || prev.bairro,
-                cidade: perfil.cidade || prev.cidade,
-                estado: perfil.estado || prev.estado,
-                tipoMoradia: perfil.tipo_moradia || prev.tipoMoradia,
-                quintal: perfil.quintal || prev.quintal,
-                // Mantém o ID do animal que veio da URL ou do estado anterior
-                idAnimal: id || prev.idAnimal
-            }));
-        } else {
-            // Se não tem perfil salvo, preenche apenas o básico do login
-            setData(prev => ({
-                ...prev,
-                nome: user.nome || "",
-                email: user.email || "",
-                idAnimal: id || prev.idAnimal
-            }));
-        }
-      } catch (error) {
-        console.log("Perfil não encontrado ou erro, seguindo com dados básicos.");
-        setData(prev => ({
-            ...prev,
-            nome: user.nome || "",
-            email: user.email || "",
-            idAnimal: id || prev.idAnimal
-        }));
-      } finally {
-        setLoadingDados(false);
-      }
-    }
-
-    carregarPerfil();
-  }, [user, token, id]); // Executa quando o usuário muda ou o ID da URL muda
 
   const update = (patch: Partial<FormData>) =>
     setData((d) => ({ ...d, ...patch }));
@@ -203,23 +139,18 @@ export default function FormularioAdotar() {
     if (!canProceed) return;
     const block = majorSteps[majorStep];
     
-    // REMOVA OU COMENTE ESTE BLOCO ANTIGO:
-    /* if (majorStep === majorSteps.length - 2 && subStep === block.pages - 1) {
+    // Se estivermos no passo 6 (Revisão), o botão deve chamar o Submit
+    if (majorStep === 6) {
         handleSubmit();
         return;
-    } 
-    */
+    }
 
-    // LÓGICA PADRÃO (Apenas avança, o submit será chamado pelo botão no JSX)
     if (subStep < block.pages - 1) {
       setSubStep((s) => s + 1);
     } else {
       if (majorStep < majorSteps.length - 1) {
         setMajorStep((m) => m + 1);
         setSubStep(0);
-      } else {
-         // Se estivermos na ÚLTIMA etapa (StepFinal), aí sim envia
-         handleSubmit();
       }
     }
     setCanProceed(true);
@@ -236,7 +167,6 @@ export default function FormularioAdotar() {
     setCanProceed(true);
   };
 
-  // ENVIO DE DADOS PARA O BACKEND
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
@@ -245,10 +175,8 @@ export default function FormularioAdotar() {
       return;
     }
 
-    // AQUI verificamos se temos o animalId. 
-    // Como é um pedido de adoção, precisamos saber QUAL animal o usuário quer.
     if (!animalId) {
-        alert("Erro: O sistema não identificou qual animal você quer adotar. Por favor, volte ao perfil do animal e clique em 'Quero Adotar' novamente.");
+        alert("Erro: ID do animal não encontrado. Volte e selecione um animal.");
         return;
     }
 
@@ -286,21 +214,18 @@ export default function FormularioAdotar() {
             }
         };
 
-        console.log("Enviando pedido com dados do usuário:", payload);
-        
+        console.log("Enviando...", payload);
         await api.post('/pedidos-adocao', payload);
 
         setSucessoOpen(true);
-        // Avança visualmente para a etapa de "Concluído"
-        setMajorStep(6); 
-        setSubStep(0);
+        // Não precisamos mudar o step aqui, o modal já vai aparecer
 
     } catch (error) {
-        console.error("Erro ao enviar formulário:", error);
+        console.error("Erro no envio:", error);
         if (error instanceof AxiosError && error.response) {
-            alert(error.response.data.error || "Erro ao processar pedido.");
+            alert(error.response.data.error || "Erro ao processar o pedido.");
         } else {
-            alert("Erro de conexão ao enviar formulário.");
+            alert("Erro de conexão.");
         }
     } finally {
         setIsSubmitting(false);
@@ -311,57 +236,22 @@ export default function FormularioAdotar() {
 
   const renderCurrent = () => {
     switch (majorStep) {
-      case 0:
-        return <StepIntro data={data} onChange={update} setCanProceed={setCanProceed} />;
-      case 1:
-        return <StepPersonal data={data} onChange={update} setCanProceed={setCanProceed} />;
-      case 2:
-        return <StepQuestionsGroup groupId={2} subStep={subStep} onAnswer={update} data={data} />;
-      case 3:
-        return <StepQuestionsGroup groupId={3} subStep={subStep} onAnswer={update} data={data} />;
-      case 4:
-        return <StepQuestionsGroup groupId={4} subStep={subStep} onAnswer={update} data={data} />;
-      case 5:
-        return <StepTermo data={data} onChange={update} setCanProceed={setCanProceed} />;
-      case 6:
-        return <StepFinal data={data} />;
-      default:
-        return null;
+      case 0: return <StepIntro onChange={update} setCanProceed={setCanProceed} />;
+      case 1: return <StepPersonal data={data} onChange={update} setCanProceed={setCanProceed} />;
+      case 2: return <StepQuestionsGroup groupId={2} subStep={subStep} onAnswer={update} data={data} />;
+      case 3: return <StepQuestionsGroup groupId={3} subStep={subStep} onAnswer={update} data={data} />;
+      case 4: return <StepQuestionsGroup groupId={4} subStep={subStep} onAnswer={update} data={data} />;
+      case 5: return <StepTermo data={data} onChange={update} setCanProceed={setCanProceed} />;
+      case 6: return <StepFinal data={data} />; // Tela de Revisão
+      default: return null;
     }
   };
 
-  if (loadingDados) {
-      return (
-          <Layout>
-              <div style={{ padding: '80px', textAlign: 'center', color: '#666' }}>
-                  <h3>Carregando suas informações...</h3>
-                  <p>Estamos buscando seu perfil para agilizar o processo.</p>
-              </div>
-          </Layout>
-      );
-  }
-
   return (
     <Layout>
-      <div className={styles.pageFormulario}>
+      <div className={styles.pageFormularioAdotar}>
         
-        {/* BANNER CONDICIONAL: Avisa o usuário o que ele está fazendo */}
-        <div style={{
-            backgroundColor: id ? '#e3f2fd' : '#fef9e7', // Azul se tem animal, Amarelo se é geral
-            padding: '12px', 
-            textAlign: 'center', 
-            color: id ? '#2b6b99' : '#b58900',
-            borderBottom: '1px solid #ddd',
-            fontSize: '0.95rem',
-            fontWeight: 600
-        }}>
-            {id ? (
-                <>🐾 Você está solicitando a adoção para o animal <strong>#{id}</strong></>
-            ) : (
-                <>📋 Formulário de Cadastro Geral (Banco de Adotantes)</>
-            )}
-        </div>
-
+        {/* Barra de Progresso */}
         <div className={`${styles.barraProgresso} topBar`}>
           <div className={styles.progressoContainer}>
             <div className={styles.progressoLinha} />
@@ -372,8 +262,7 @@ export default function FormularioAdotar() {
             <div className={styles.steps}>
               {majorSteps.map((s, i) => {
                 const state = i < majorStep ? "done" : i === majorStep ? "active" : "idle";
-                const stateClass =
-                  state === "done" ? styles.done : state === "active" ? styles.active : styles.idle;
+                const stateClass = state === "done" ? styles.done : state === "active" ? styles.active : styles.idle;
                 return (
                   <div key={s.id} className={`${styles.step} ${stateClass}`}>
                     <div className={styles.iconWrap} aria-hidden>
@@ -387,17 +276,14 @@ export default function FormularioAdotar() {
           </div>
         </div>
 
-        <main className={`${styles.conteudo} ${majorStep === 6 ? styles.conteudoFullWidth : ""}`}>
+        <main className={`${styles.conteudo} ${majorStep === 5 || majorStep === 6 ? styles.conteudoFullWidth : ""}`}>
           {majorStep === 0 && subStep === 0 && (
-            <h1 className={styles.titulo}>
-                {id ? "Finalizar Pedido de Adoção" : "Cadastro de Interesse em Adoção"}
-            </h1>
+            <h1 className={styles.titulo}>Formulário de Interesse em Adoção</h1>
           )}
           
           {majorStep === 0 && subStep === 0 && (
             <p className={styles.introducaoFormulario}>
-              Bem-vindo(a) ao nosso Formulário de Interesse. Ficamos muito
-              felizes por você ter dado o primeiro passo para adotar um pet...
+              Bem-vindo(a) ao nosso Formulário de Interesse...
             </p>
           )}
 
@@ -410,9 +296,8 @@ export default function FormularioAdotar() {
           >
             {renderCurrent()}
             
-            {/* CONTROLES (BOTÕES) */}
-            {majorStep < 6 && ( // Esconde botões na etapa Final (Concluído)
-                <div className={styles.controls}>
+            {/* ⭐️ AQUI ESTAVA O PROBLEMA: AGORA APARECE NO PASSO 6 (REVISÃO) */}
+            <div className={styles.controls}>
                 <button
                     type="button"
                     onClick={goPrev}
@@ -422,19 +307,18 @@ export default function FormularioAdotar() {
                     Voltar
                 </button>
                 
-                {/* Botão Próximo / Enviar */}
                 <button
                     type="button"
                     onClick={goNext}
                     className={styles.botoesAvancar}
                     disabled={!canProceed || isSubmitting}
                 >
-                    {isSubmitting ? "Enviando..." : (
-                        majorStep === 5 ? "Enviar" : "Próximo"
-                    )}
+                    {isSubmitting 
+                        ? "Enviando..." 
+                        : (majorStep === 6 ? "Confirmar Envio" : "Próximo") 
+                    }
                 </button>
-                </div>
-            )}
+            </div>
           </form>
         </main>
       </div>
@@ -443,7 +327,7 @@ export default function FormularioAdotar() {
         isOpen={sucessoOpen} 
         onClose={() => { 
             setSucessoOpen(false); 
-            navigate('/central-adocao'); 
+            navigate('/meus-animais'); 
         }} 
       />
     </Layout>

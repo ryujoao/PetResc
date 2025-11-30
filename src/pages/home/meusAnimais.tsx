@@ -1,51 +1,53 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styles from "./meusAnimais.module.css";
 import { useAuth } from "../../auth/AuthContext";
 import api from "../../services/api";
-import { useNavigate } from "react-router-dom";
 
-// Tipagens
+// --- Tipagens ---
 interface Animal {
-    id: string;
-    nome: string;
-    raca: string;
-    idade: string; 
-    status: 'PERDIDO' | 'ENCONTRADO' | 'DISPONIVEL' | 'EM_TRATAMENTO' | 'ADOTADO';
-    photoURL: string;
+  id: number; // Ajustado para number (conforme seu banco)
+  nome: string;
+  raca: string;
+  idade: string;
+  status: string;
+  photoURL: string;
 }
 
 interface Adocao {
-    id: string;
-    animal: Animal;
-    status_adocao: string;
+  id: number;
+  animal: Animal;
+  status: string;
 }
 
 // --- Card de Animal ---
 interface AnimalCardProps {
-    animal: Animal;
-    statusAdocao?: string;
-    tipoStatus: 'CADASTRO' | 'ADOCAO';
+  animal: Animal;
+  statusAdocao?: string;
+  tipoStatus: 'CADASTRO' | 'ADOCAO';
 }
 
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatus }) => {
-  
   const navigate = useNavigate();
 
   const handleClick = () => {
-   navigate(`/animal/${animal.id}`);
-};
+    if (tipoStatus === 'CADASTRO') {
+      // Vai para gerenciar animal
+      navigate(`/gerenciar-adocao/${animal.id}`);
+    } else {
+      // Vai para perfil do animal
+      navigate(`/animal/${animal.id}`);
+    }
+  };
 
-  const formatStatus = (status: string) => 
-    status ? status.replace(/_/g, " ") : "Desconhecido";
+  const formatStatus = (status: string) => status ? status.replace(/_/g, " ") : "Desconhecido";
 
-  const statusSuperior = 
-    tipoStatus === "CADASTRO" ? formatStatus(animal.status) : "Adoção Solicitada";
+  const statusSuperior = tipoStatus === "CADASTRO" ? formatStatus(animal.status) : "Adoção Solicitada";
 
-  const statusInferior = 
-    tipoStatus === "ADOCAO" ? `Status: ${statusAdocao}` : "";
+  const statusInferior = tipoStatus === "ADOCAO" ? `Status: ${statusAdocao}` : "";
 
-  const imagemSrc =
-    animal.photoURL || "https://placehold.co/300x300/f8f8f8/ccc?text=Sem+Foto";
+  const imagemSrc = animal.photoURL || "https://placehold.co/300x300/f8f8f8/ccc?text=Sem+Foto";
 
   return (
     <div className={styles.card} onClick={handleClick} style={{ cursor: "pointer" }}>
@@ -54,8 +56,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatu
           src={imagemSrc}
           alt={animal.nome || "Animal"}
           onError={(e) => {
-            e.currentTarget.src =
-              "https://placehold.co/300x300/f8f8f8/ccc?text=Erro+Imagem";
+            e.currentTarget.src = "https://placehold.co/300x300/f8f8f8/ccc?text=Erro+Imagem";
           }}
         />
       </div>
@@ -71,7 +72,14 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatu
       <div className={styles.statusSuperior}>{statusSuperior}</div>
 
       {statusInferior && (
-        <div className={styles.statusInferior}>{statusInferior}</div>
+        <div
+          className={styles.statusInferior}
+          style={{
+            color: statusAdocao === 'APROVADO' ? 'green' : (statusAdocao === 'RECUSADO' ? 'red' : 'orange')
+          }}
+        >
+          {statusInferior}
+        </div>
       )}
     </div>
   );
@@ -80,12 +88,11 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatu
 // --- Página Principal ---
 export default function MeusAnimais() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [animaisCadastrados, setAnimaisCadastrados] = useState<Animal[]>([]);
   const [adocoesEmProcesso, setAdocoesEmProcesso] = useState<Adocao[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const token = localStorage.getItem("@AuthData:token");
 
   useEffect(() => {
     if (!user) {
@@ -95,8 +102,6 @@ export default function MeusAnimais() {
 
     const fetchMeusDados = async () => {
       setLoading(true);
-      setError(null);
-
       try {
         const [resAnimais, resAdocoes] = await Promise.all([
           api.get("/animais/gerenciar/lista"),
@@ -105,10 +110,8 @@ export default function MeusAnimais() {
 
         setAnimaisCadastrados(resAnimais.data);
         setAdocoesEmProcesso(resAdocoes.data);
-
       } catch (err) {
         console.error("Erro ao buscar dados:", err);
-        setError("Falha ao carregar seus registros. Tente novamente.");
       } finally {
         setLoading(false);
       }
@@ -120,7 +123,7 @@ export default function MeusAnimais() {
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
-        <p>Carregando seus registros...</p>
+        <p>Carregando...</p>
       </div>
     );
   }
@@ -129,29 +132,24 @@ export default function MeusAnimais() {
     return (
       <div className={styles.containerPrincipal}>
         <p>Faça login para ver seus animais.</p>
+        <button onClick={() => navigate('/login')}>Ir para Login</button>
       </div>
     );
   }
 
   return (
     <div className={styles.containerPrincipal}>
-      
-      {/* ANIMAIS CADASTRADOS */}
+
+      {/* BOX ESQUERDA: ANIMAIS CADASTRADOS */}
       <div className={styles.containerMeusAnimais}>
         <h2 className={styles.titulo}>Animais Cadastrados</h2>
 
         {animaisCadastrados.length === 0 ? (
-          <p className={styles.mensagemVazio}>
-            Você não possui animais cadastrados.
-          </p>
+          <p className={styles.mensagemVazio}>Você não possui animais cadastrados.</p>
         ) : (
           <div className={styles.gridAnimais}>
             {animaisCadastrados.map((animal) => (
-              <AnimalCard 
-                key={animal.id} 
-                animal={animal} 
-                tipoStatus="CADASTRO" 
-              />
+              <AnimalCard key={animal.id} animal={animal} tipoStatus="CADASTRO" />
             ))}
           </div>
         )}
@@ -159,21 +157,19 @@ export default function MeusAnimais() {
 
       <hr className={styles.divisor} />
 
-      {/* ADOÇÕES EM PROCESSO */}
+      {/* BOX DIREITA: ADOÇÕES EM PROCESSO */}
       <div className={styles.adocaoProcesso}>
         <h2 className={styles.titulo}>Adoção em Processo</h2>
 
         {adocoesEmProcesso.length === 0 ? (
-          <p className={styles.mensagemVazio}>
-            Você não possui pedidos de adoção em análise.
-          </p>
+          <p className={styles.mensagemVazio}>Você não possui pedidos de adoção em análise.</p>
         ) : (
           <div className={styles.gridAnimais}>
             {adocoesEmProcesso.map((adocao) => (
               <AnimalCard
                 key={adocao.id}
                 animal={adocao.animal}
-                statusAdocao={adocao.status_adocao}
+                statusAdocao={adocao.status}
                 tipoStatus="ADOCAO"
               />
             ))}

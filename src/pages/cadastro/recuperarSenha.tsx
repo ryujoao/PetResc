@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./cadastro.module.css"; // Reutilizando o CSS de cadastro
-import api from "../../services/api"; // Sua conexão com o back-end
+import api from "../../services/api";
 
 export default function RecuperarSenha() {
   const navigate = useNavigate();
@@ -27,14 +27,12 @@ export default function RecuperarSenha() {
     setIsLoading(true);
 
     try {
-      // Substitua pela rota real do seu backend
-      // await api.post("/api/auth/forgot-password", { email });
+      await api.post("/auth/forgot-password", { email });
 
-      // Simulação para testar o front:
       console.log("Enviando código para:", email);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setEtapa(2); // Vai para tela do código
+      setEtapa(2); 
     } catch (err) {
       setError("E-mail não encontrado ou erro no servidor.");
     } finally {
@@ -76,8 +74,7 @@ export default function RecuperarSenha() {
 
     setIsLoading(true);
     try {
-      // await api.post("/api/auth/verify-code", { email, code: codigoCompleto });
-
+      await api.post("/auth/verify-code", { email, code: codigoCompleto });
       console.log("Verificando código:", codigoCompleto);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -101,7 +98,14 @@ export default function RecuperarSenha() {
 
     setIsLoading(true);
     try {
-      // await api.post("/api/auth/reset-password", { email, code: codigo.join(""), password: novaSenha });
+        await api.post("/auth/reset-password", { 
+         email, 
+         code: codigo.join(""), 
+          newPassword: novaSenha 
+         });  
+
+
+
 
       console.log("Alterando senha...");
       await new Promise((resolve) => setTimeout(resolve, 1000));

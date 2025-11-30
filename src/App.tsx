@@ -51,7 +51,7 @@ function App() {
       
       <Route path="/formulario-lar-temporario" element={<FormularioLarTemporario />} />
       <Route path="/nova-campanha" element={<NovaCampanha />} />
-      <Route path="/gerenciar-adocao" element={<GerenciarAdocao />} />
+      <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} />
       
       <Route path="/config" element={<ConfigMenu />} />
       <Route element={<ConfigLayout />}>

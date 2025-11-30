@@ -1,127 +1,66 @@
+import { useEffect, useState } from "react";
+import api from "../../services/api";
 import styles from "./animaisCadastrados.module.css";
 
+interface Animal {
+  id: number;
+  nome?: string;
+  raca?: string;
+  idade?: number;
+  status: string;
+  photoURL?: string;
+}
+
 export default function AnimaisCadastrados() {
+  const [animais, setAnimais] = useState<Animal[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get("/animais/gerenciar/lista", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(res => setAnimais(res.data))
+      .catch(err => console.error("Erro ao buscar animais:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p>Carregando animais...</p>;
+  if (animais.length === 0) return <p>Você ainda não cadastrou nenhum animal.</p>;
+
   return (
     <div className={styles.containerPrincipal}>
       <div className={styles.containerMeusAnimais}>
-        <h2 className={styles.titulo}>Pedidos de adoção</h2>
-        <h2 className={styles.titulo}>Pedidos de adoção pendentes: 5</h2>
+        <h2 className={styles.titulo}>Animais Cadastrados</h2>
+        <h2 className={styles.titulo}>Total de animais: {animais.length}</h2>
 
-        <div className={styles.card}>
-          <div className={styles.imgCard}>
-            <img src="../../../public/animais/animalSemNome.png" alt="Animal Sem Nome" />
-          </div>
-
-          <div className={styles.infoCard}>
-            <div className={styles.cardNome}>
-              <h1>Não possui nome</h1>
-              <p className={styles.descricaoCard}>Sem raça definida, AD.</p>
-              <p className={styles.descricaoCard}>(SRD)</p>
-            </div>
-          </div>
-
-          <div className={styles.statusSuperior}>Animal cadastrado</div>
-          <div className={styles.statusInferior}>Status: Em tratamento</div>
-        </div>
-
-        <div className={styles.card}>
-          <div className={styles.imgCard}>
-            <img src="../../../public/animais/amendoim.png" alt="Amendoim" />
-          </div>
-
-          <div className={styles.infoCard}>
-            <div className={styles.cardNome}>
-              <h1>Amendoim</h1>
+        {animais.map(animal => (
+          <div key={animal.id} className={styles.card}>
+            <div className={styles.imgCard}>
+              <img
+                src={animal.photoURL || "/animais/animalSemNome.png"}
+                alt={animal.nome || "Animal Sem Nome"}
+              />
             </div>
 
-            <p className={styles.descricaoCard}>Sem raça definida, FI.</p>
-            <p className={styles.descricaoCard}>(SRD)</p>
-
-            <div className={styles.statusSuperior}>Lar temporário</div>
-            <div className={styles.statusInferior}>Status: Disponível</div>
-          </div>
-        </div>
-        <button className={styles.verMais}>
-          <a href="/perfilOng">Ver Mais</a>
-        </button>
-      </div>
-
-      <div className={styles.adocaoProcesso}>
-        <h2 className={styles.titulo}>Animais em Lares Temporários</h2>
-        <h2 className={styles.titulo}>Animais em lares temporários ativos: 6</h2>
-
-        <div className={styles.card}>
-          <div className={styles.imgCard}>
-            <img src="../../../public/animais/estrela.png" alt="Estrela" />
-          </div>
-
-          <div className={styles.infoCard}>
-            <div className={styles.cardNome}>
-              <h1>Estrela</h1>
+            <div className={styles.infoCard}>
+              <div className={styles.cardNome}>
+                <h1>{animal.nome || "Não possui nome"}</h1>
+                <p className={styles.descricaoCard}>
+                  {animal.raca || "Sem raça definida"}
+                </p>
+                <p className={styles.descricaoCard}>
+                  {animal.idade !== undefined ? `${animal.idade} anos` : "(SRD)"}
+                </p>
+              </div>
             </div>
 
-            <p className={styles.descricaoCard}>Sem raça definida, AD.</p>
-            <p className={styles.descricaoCard}>(SRD)</p>
-
-            <div className={styles.statusInferior}>
-              Status: Documentação em Análise
-            </div>
+            <div className={styles.statusSuperior}>Animal cadastrado</div>
+            <div className={styles.statusInferior}>Status: {animal.status}</div>
           </div>
-        </div>
-        <button className={styles.verMais}>
-          <a href="/perfilOng">Ver Mais</a>
-        </button>
-      </div>
+        ))}
 
-      <div className={styles.adocaoProcesso}>
-        <h2 className={styles.titulo}>Animais registrados recentemente</h2>
-        <h2 className={styles.titulo}> Animais aguardando vaga: 8</h2>
-
-        <div className={styles.card}>
-          <div className={styles.imgCard}>
-            <img src="../../../public/animais/estrela.png" alt="Estrela" />
-          </div>
-
-          <div className={styles.infoCard}>
-            <div className={styles.cardNome}>
-              <h1>Estrela</h1>
-            </div>
-
-            <p className={styles.descricaoCard}>Sem raça definida, AD.</p>
-            <p className={styles.descricaoCard}>(SRD)</p>
-
-            <div className={styles.statusInferior}>
-              Status: Documentação em Análise
-            </div>
-          </div>
-        </div>
-        <button className={styles.verMais}>
-          <a href="/perfilOng">Ver Mais</a>
-        </button>
-      </div>
-
-      <div className={styles.adocaoProcesso}>
-        <h2 className={styles.titulo}>Adoções concluídas</h2>
-        <h2 className={styles.titulo}> Adoções concluídas este mês: 7</h2>
-
-        <div className={styles.card}>
-          <div className={styles.imgCard}>
-            <img src="../../../public/animais/estrela.png" alt="Estrela" />
-          </div>
-
-          <div className={styles.infoCard}>
-            <div className={styles.cardNome}>
-              <h1>Estrela</h1>
-            </div>
-
-            <p className={styles.descricaoCard}>Sem raça definida, AD.</p>
-            <p className={styles.descricaoCard}>(SRD)</p>
-
-            <div className={styles.statusInferior}>
-              Status: Documentação em Análise
-            </div>
-          </div>
-        </div>
         <button className={styles.verMais}>
           <a href="/perfilOng">Ver Mais</a>
         </button>

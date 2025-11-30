@@ -1,164 +1,164 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styles from "./gerenciarAdocao.module.css";
 import Layout from "../../components/layout";
-// Importando os ícones necessários, incluindo o do WhatsApp
+import api from "../../services/api"; 
 import { FaCheck, FaTimes, FaPaw, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 
-// --- TIPAGEM (Baseada no seu formulário de adoção) ---
-type FormData = {
-  nome: string;
-  email: string;
-  telefone: string;
+// --- TIPAGEM DO QUE VEM DO BACKEND ---
+interface Formulario {
+  id: number;
+  tipoMoradia: string;
+  possuiQuintal: boolean; // No banco é boolean
+  pessoasNaCasa: number;
+  outrosAnimaisLocal: boolean;
+  historicoAnimais: string; // JSON String guardada no banco
+  alergia: boolean;
+  aceitaTermo: boolean;
   cep: string;
   rua: string;
   numero: string;
-  complemento?: string;
+  complemento: string;
   bairro: string;
-  estado?: string;
-  cidade?: string;
-  tipoMoradia: string;
-  quintal: string;
-  tipoMoradiaChoice?: string;
-  portesAceitos?: string;
-  animaisAceitos?: string;
-  jaViuPet?: string;
-  qualTipoPet?: string;
-  preferenciaPet?: string;
-  pessoasNoLar?: string;
-  outrosAnimaisLocal?: {
-    Quantidade: string;
-    "Tipo de Animal": string;
+  cidade: string;
+  estado: string;
+  // Adicione outros campos se necessário
+}
+
+interface Candidato {
+  id: number; // ID do Pedido
+  status: string; // PENDENTE, APROVADO, RECUSADO
+  dataPedido: string;
+  account: {
+    nome: string;
+    email: string;
+    telefone: string;
   };
-  alergia?: string;
-  aceitaTermo?: boolean;
-};
+  formulario: Formulario | null;
+}
 
-// --- MOCK DO ANIMAL (Simulando dados do Banco) ---
-const animalReal = {
-  id: 42,
-  nome: "Branquinho",
-  foto: "/image_972ff3.png", // Use o caminho da sua imagem real ou um placeholder
-  status: "Avaliando Formulários",
-  raca: "Sem raça definida (SRD)",
-  idade: "Filhote",
-  sexo: "Macho",
-  porte: "Médio",
-  cor: "Branco",
-  historia: "Branquinho foi encontrado miando muito em uma caixa de papelão. É muito brincalhão e precisa de um lar seguro (apartamento telado ou casa sem rota de fuga).",
-  local: "Cotia - SP"
-};
-
-// --- MOCK DOS CANDIDATOS (Simulando respostas do formulário) ---
-const candidatosMock: { id: number; dataEnvio: string; dados: FormData }[] = [
-  {
-    id: 101,
-    dataEnvio: "27/11/2025",
-    dados: {
-      nome: "Ricardo Lerner",
-      email: "ricardo.lerner@email.com",
-      telefone: "(11) 99999-9999", // Telefone fictício para teste
-      cep: "06700-000",
-      rua: "Rua Direita",
-      numero: "955",
-      complemento: "Apto 32",
-      bairro: "Vila Santo Antônio",
-      cidade: "Cotia",
-      estado: "SP",
-      // Dados de Moradia
-      tipoMoradia: "Apartamento", 
-      tipoMoradiaChoice: "Apartamento", 
-      quintal: "Não", 
-      // Preferências
-      portesAceitos: "Pequeno, Médio",
-      animaisAceitos: "Gato",
-      jaViuPet: "Sim, já vi",
-      qualTipoPet: "Gato",
-      preferenciaPet: "Macho",
-      // Lar
-      pessoasNoLar: "2",
-      outrosAnimaisLocal: {
-        Quantidade: "0",
-        "Tipo de Animal": "-"
-      },
-      alergia: "Não",
-      aceitaTermo: true
-    }
-  },
-  {
-    id: 102,
-    dataEnvio: "26/11/2025",
-    dados: {
-      nome: "Ana Souza",
-      email: "ana.souza@email.com",
-      telefone: "(11) 98888-8888",
-      cep: "01000-000",
-      rua: "Av. Paulista",
-      numero: "100",
-      bairro: "Bela Vista",
-      cidade: "São Paulo",
-      estado: "SP",
-      // Dados de Moradia
-      tipoMoradia: "Casa",
-      tipoMoradiaChoice: "Casa",
-      quintal: "Sim",
-      // Preferências
-      portesAceitos: "Todos",
-      animaisAceitos: "Gato, Cachorro",
-      jaViuPet: "Não, quero achar um",
-      qualTipoPet: "Gato",
-      preferenciaPet: "Tanto faz",
-      // Lar
-      pessoasNoLar: "3",
-      outrosAnimaisLocal: {
-        Quantidade: "1",
-        "Tipo de Animal": "Cachorro"
-      },
-      alergia: "Sim (Leve)",
-      aceitaTermo: true
-    }
-  }
-];
+interface Animal {
+  id: number;
+  nome: string;
+  photoURL: string | null;
+  status: string;
+  raca: string;
+  idade: number | null;
+  sexo: string;
+  porte: string;
+  corPredominante: string;
+  descricao: string;
+  local_cidade?: string;
+  local_estado?: string;
+}
 
 export default function GerenciarAdocao() {
-  const [candidatoSelecionado, setCandidatoSelecionado] = useState(candidatosMock[0]);
+  const { id } = useParams<{ id: string }>(); // ID do Animal na URL
+  const navigate = useNavigate();
 
-  // Função para APROVAR
-  const handleAprovar = () => {
-    if (window.confirm(`Tem certeza que deseja APROVAR a adoção de ${animalReal.nome} para ${candidatoSelecionado.dados.nome}?`)) {
-      alert(`Adoção aprovada com sucesso! O status do animal será atualizado.`);
-      // Aqui entraria a chamada para sua API (PUT /api/adocao/aprovar)
+  const [animal, setAnimal] = useState<Animal | null>(null);
+  const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+  const [selecionado, setSelecionado] = useState<Candidato | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // 1. BUSCAR DADOS (ANIMAL E CANDIDATOS)
+  useEffect(() => {
+    async function fetchData() {
+      if (!id) return;
+      try {
+        // Busca detalhes do animal
+        const resAnimal = await api.get(`/animais/${id}`);
+        setAnimal(resAnimal.data);
+
+        // Busca pedidos para este animal
+        const resCandidatos = await api.get(`/pedidos-adocao/animal/${id}`);
+        setCandidatos(resCandidatos.data);
+        
+        // Seleciona o primeiro da lista automaticamente
+        if (resCandidatos.data.length > 0) {
+            setSelecionado(resCandidatos.data[0]);
+        }
+
+      } catch (error) {
+        console.error("Erro ao carregar gerenciamento:", error);
+        alert("Erro ao carregar dados. Verifique se você é o dono deste animal.");
+        navigate('/'); // Volta para home se der erro
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id, navigate]);
+
+  // 2. FUNÇÃO DE APROVAR
+  const handleAprovar = async () => {
+    if (!selecionado) return;
+    if (window.confirm(`Tem certeza que deseja APROVAR a adoção para ${selecionado.account.nome}? O animal ficará indisponível para outros.`)) {
+      try {
+        await api.patch(`/pedidos-adocao/${selecionado.id}/status`, { status: 'APROVADO' });
+        alert("Adoção Aprovada com Sucesso!");
+        
+        // Atualiza a lista e o animal localmente
+        setCandidatos(prev => prev.map(c => c.id === selecionado.id ? {...c, status: 'APROVADO'} : c));
+        setSelecionado({...selecionado, status: 'APROVADO'});
+        if(animal) setAnimal({...animal, status: 'ADOTADO'});
+
+      } catch (err) {
+        alert("Erro ao aprovar pedido.");
+      }
     }
   };
 
-  // Função para RECUSAR
-  const handleRecusar = () => {
-    if (window.confirm(`Deseja recusar esta solicitação e arquivar o formulário?`)) {
-      alert("Solicitação recusada.");
-      // Aqui entraria a chamada para sua API (PUT /api/adocao/recusar)
+  // 3. FUNÇÃO DE RECUSAR
+  const handleRecusar = async () => {
+    if (!selecionado) return;
+    if (window.confirm(`Deseja recusar esta solicitação de ${selecionado.account.nome}?`)) {
+      try {
+        await api.patch(`/pedidos-adocao/${selecionado.id}/status`, { status: 'RECUSADO' });
+        alert("Solicitação recusada.");
+        
+        // Atualiza a lista localmente
+        setCandidatos(prev => prev.map(c => c.id === selecionado.id ? {...c, status: 'RECUSADO'} : c));
+        setSelecionado({...selecionado, status: 'RECUSADO'});
+
+      } catch (err) {
+        alert("Erro ao recusar pedido.");
+      }
     }
   };
 
-  // --- LÓGICA DO WHATSAPP (Igual à página de animal encontrado, mas invertida) ---
+  // 4. FUNÇÃO DO WHATSAPP
   const handleWhatsApp = () => {
-    // 1. Limpa o telefone (remove tudo que não é número)
-    const telefoneLimpo = candidatoSelecionado.dados.telefone.replace(/\D/g, '');
+    if (!selecionado || !animal) return;
     
-    // 2. Monta a mensagem personalizada da ONG para o Candidato
-    const nomeCandidato = candidatoSelecionado.dados.nome;
-    const nomePet = animalReal.nome;
-    const texto = `Olá ${nomeCandidato}! Sou responsável pelo pet "${nomePet}" no PetResc. Analisei seu formulário de adoção e gostaria de conversar para te conhecer melhor. Podemos falar?`;
+    const telefoneLimpo = selecionado.account.telefone.replace(/\D/g, '');
+    const nomeCandidato = selecionado.account.nome;
+    const nomePet = animal.nome;
+    const texto = `Olá ${nomeCandidato}! Sou responsável pelo pet "${nomePet}" no PetResc. Analisei seu formulário e gostaria de conversar.`;
     
-    // 3. Gera o link da API do WhatsApp
-    // Adiciona o DDI 55 do Brasil se não estiver incluso
+    // Adiciona DDI 55 se não tiver
     const numeroFinal = telefoneLimpo.length <= 11 ? `55${telefoneLimpo}` : telefoneLimpo;
     
-    const url = `https://api.whatsapp.com/send?phone=${numeroFinal}&text=${encodeURIComponent(texto)}`;
-    
-    // 4. Abre em nova aba
-    window.open(url, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=${numeroFinal}&text=${encodeURIComponent(texto)}`, '_blank');
   };
 
-  const d = candidatoSelecionado.dados; 
+  // Helper para formatar o JSON de animais
+  const formatOutrosAnimais = (jsonString: string) => {
+      try {
+          const obj = JSON.parse(jsonString);
+          if (obj && obj.Quantidade && obj.Quantidade !== "0") {
+              return `${obj.Quantidade} - ${obj["Tipo de Animal"]}`;
+          }
+          return "Não possui";
+      } catch (e) { return "Não informado"; }
+  };
+
+  if (loading) return <Layout><div style={{padding: '4rem', textAlign: 'center'}}>Carregando gerenciamento...</div></Layout>;
+  if (!animal) return <Layout><div>Animal não encontrado.</div></Layout>;
+
+  // Atalhos para renderizar
+  const form = selecionado?.formulario;
+  const usuario = selecionado?.account;
 
   return (
     <Layout>
@@ -167,161 +167,185 @@ export default function GerenciarAdocao() {
         {/* CABEÇALHO DO ANIMAL */}
         <section className={styles.animalHeader}>
           <div className={styles.animalImageWrapper}>
-            {/* Imagem do animal */}
             <img 
-              src={animalReal.foto} 
-              alt={animalReal.nome} 
+              src={animal.photoURL || "https://placehold.co/300"} 
+              alt={animal.nome} 
               className={styles.animalImg}
-              onError={(e) => e.currentTarget.src = "https://via.placeholder.com/300?text=Foto+do+Pet"} 
             />
           </div>
           
           <div className={styles.animalContent}>
             <div className={styles.animalTitleRow}>
-              <h1 className={styles.animalName}>{animalReal.nome}</h1>
-              {/* Botão de mudar status rápido do animal */}
-              <button className={styles.btnStatus}>{animalReal.status}</button>
+              <h1 className={styles.animalName}>{animal.nome}</h1>
+              {/* Badge de Status do Animal */}
+              <button className={styles.btnStatus} style={{
+                  backgroundColor: animal.status === 'ADOTADO' ? '#28a745' : '#007bff'
+              }}>
+                  {animal.status}
+              </button>
             </div>
             
             <div className={styles.animalTags}>
-              <span><FaPaw /> {animalReal.raca}</span>
-              <span>• {animalReal.idade}</span>
-              <span>• {animalReal.sexo}</span>
-              <span>• {animalReal.porte}</span>
-              <span>• {animalReal.cor}</span>
+              <span><FaPaw /> {animal.raca || "SRD"}</span>
+              <span>• {animal.idade ? `${animal.idade} anos` : "?"}</span>
+              <span>• {animal.sexo}</span>
+              <span>• {animal.porte}</span>
             </div>
             
-            <p className={styles.animalStory}>{animalReal.historia}</p>
+            <p className={styles.animalStory}>{animal.descricao || "Sem descrição."}</p>
             
             <div className={styles.animalLocation}>
-              <FaMapMarkerAlt color="#d9534f" /> {animalReal.local}
+              <FaMapMarkerAlt color="#d9534f" /> {animal.local_cidade} - {animal.local_estado}
             </div>
           </div>
         </section>
 
-        <h2 className={styles.sectionTitle}>Informações dos Candidatos à Adoção</h2>
+        <h2 className={styles.sectionTitle}>Candidatos à Adoção ({candidatos.length})</h2>
 
         <div className={styles.mainGrid}>
           
           {/* COLUNA ESQUERDA: LISTA DE CANDIDATOS */}
           <aside className={styles.candidatesList}>
-            {candidatosMock.map((cand) => (
+            {candidatos.length === 0 && (
+                <div style={{padding: '2rem', textAlign: 'center', color: '#666', background: '#fff', borderRadius: '8px'}}>
+                    Nenhum pedido de adoção recebido ainda.
+                </div>
+            )}
+
+            {candidatos.map((cand) => (
               <div 
                 key={cand.id}
-                className={`${styles.candidateCard} ${candidatoSelecionado.id === cand.id ? styles.active : ''}`}
-                onClick={() => setCandidatoSelecionado(cand)}
+                className={`${styles.candidateCard} ${selecionado?.id === cand.id ? styles.active : ''}`}
+                onClick={() => setSelecionado(cand)}
               >
                 <div className={styles.cardHeader}>
-                  <span className={styles.cardName}>{cand.dados.nome}</span>
+                  <span className={styles.cardName}>{cand.account.nome}</span>
+                  {/* Badge de Status do Pedido */}
+                  <span style={{
+                      fontSize: '0.75rem', 
+                      padding: '2px 8px', 
+                      borderRadius: '12px',
+                      fontWeight: 'bold',
+                      backgroundColor: cand.status === 'APROVADO' ? '#d4edda' : (cand.status === 'RECUSADO' ? '#f8d7da' : '#fff3cd'),
+                      color: cand.status === 'APROVADO' ? '#155724' : (cand.status === 'RECUSADO' ? '#721c24' : '#856404')
+                  }}>
+                      {cand.status}
+                  </span>
                 </div>
                 <div className={styles.cardSummary}>
                   <p style={{fontSize: '0.85rem', color: '#666', marginBottom: '4px'}}>
-                     Enviado em: {cand.dataEnvio}
+                     Recebido em: {new Date(cand.dataPedido).toLocaleDateString()}
                   </p>
                   <p style={{fontSize: '0.9rem', color: '#555'}}>
-                    {cand.dados.tipoMoradiaChoice} • {cand.dados.cidade}-{cand.dados.estado}
+                    {cand.formulario?.tipoMoradia || "Formulário incompleto"}
                   </p>
                 </div>
               </div>
             ))}
           </aside>
 
-          {/* COLUNA DIREITA: DETALHES DO FORMULÁRIO SELECIONADO */}
-          <section className={styles.detailsPanel}>
-            
-            <div className={styles.detailsHeader}>
-              <div className={styles.headerTitleBlock}>
-                <h3>Informações Pessoais</h3>
-                <p className={styles.subInfo}>Nome Completo: <strong>{d.nome}</strong></p>
-                <p className={styles.subInfo}>E-mail: {d.email}</p>
-                <p className={styles.subInfo}>Telefone: {d.telefone}</p>
-              </div>
-            </div>
-
-            <div className={styles.dataGrid}>
-              {/* Coluna 1: Endereço e Moradia */}
-              <div className={styles.dataColumn}>
-                <h4 className={styles.columnTitle}>Endereço & Moradia</h4>
+          {/* COLUNA DIREITA: DETALHES */}
+          {selecionado && form && usuario ? (
+            <section className={styles.detailsPanel}>
                 
-                <div className={styles.dataItem}>
-                  <label>Endereço Completo:</label>
-                  <p>{d.rua}, {d.numero} {d.complemento ? `- ${d.complemento}` : ""}</p>
-                  <p>{d.bairro} - {d.cidade}/{d.estado}</p>
-                  <p>CEP: {d.cep}</p>
+                <div className={styles.detailsHeader}>
+                  <div className={styles.headerTitleBlock}>
+                    <h3>{usuario.nome}</h3>
+                    <p className={styles.subInfo}>E-mail: {usuario.email}</p>
+                    <p className={styles.subInfo}>Telefone: {usuario.telefone}</p>
+                  </div>
                 </div>
 
-                <div className={styles.dataItem}>
-                  <label>Tipo de Moradia:</label>
-                  <p>{d.tipoMoradiaChoice}</p>
+                <div className={styles.dataGrid}>
+                  {/* Coluna 1 */}
+                  <div className={styles.dataColumn}>
+                    <h4 className={styles.columnTitle}>Endereço & Moradia</h4>
+                    
+                    <div className={styles.dataItem}>
+                      <label>Localização:</label>
+                      <p>{form.cidade} - {form.estado}</p>
+                      <p>{form.bairro}</p>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                      <label>Moradia:</label>
+                      <p>{form.tipoMoradia}</p>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                      <label>Possui Quintal?</label>
+                      {/* O banco retorna true/false, ajustamos para visualização */}
+                      <p>{form.possuiQuintal ? "Sim" : "Não"}</p>
+                    </div>
+                  </div>
+
+                  {/* Coluna 2 */}
+                  <div className={styles.dataColumn}>
+                    <h4 className={styles.columnTitle}>Detalhes do Lar</h4>
+                    
+                    <div className={styles.dataItem}>
+                      <label>Pessoas no Lar:</label>
+                      <p>{form.pessoasNaCasa}</p>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                      <label>Outros Animais:</label>
+                      <p>{formatOutrosAnimais(form.historicoAnimais)}</p>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                      <label>Alergias:</label>
+                      <p className={form.alergia ? styles.alertText : ""}>
+                        {form.alergia ? "Sim" : "Não"}
+                      </p>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                      <label>Termo Aceito:</label>
+                      <p style={{color: 'green'}}>Sim</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className={styles.dataItem}>
-                  <label>Possui Quintal?</label>
-                  <p>{d.quintal || "Não informado"}</p>
-                </div>
-              </div>
+                {/* BARRA DE AÇÕES */}
+                <div className={styles.actionButtons}>
+                  
+                  <button className={styles.btnWhatsapp} onClick={handleWhatsApp}>
+                    <FaWhatsapp size={20} /> Conversar
+                  </button>
 
-              {/* Coluna 2: Detalhes do Lar */}
-              <div className={styles.dataColumn}>
-                <h4 className={styles.columnTitle}>Detalhes do Lar</h4>
-                
-                <div className={styles.dataItem}>
-                  <label>Número de Residentes:</label>
-                  <p>{d.pessoasNoLar}</p>
-                </div>
+                  <div className={styles.dividerVertical}></div>
 
-                <div className={styles.dataItem}>
-                  <label>Outros Animais:</label>
-                  {d.outrosAnimaisLocal && d.outrosAnimaisLocal.Quantidade !== "0" ? (
-                    <p>{d.outrosAnimaisLocal.Quantidade} - {d.outrosAnimaisLocal["Tipo de Animal"]}</p>
-                  ) : (
-                    <p>Não possui outros animais.</p>
+                  {/* Só mostra Aprovar/Recusar se estiver PENDENTE */}
+                  {selecionado.status === 'PENDENTE' && (
+                      <>
+                        <button className={styles.btnReject} onClick={handleRecusar}>
+                            <FaTimes /> Recusar
+                        </button>
+                        
+                        <button className={styles.btnApprove} onClick={handleAprovar}>
+                            <FaCheck /> Aprovar Adoção
+                        </button>
+                      </>
+                  )}
+                  
+                  {/* Mensagem se já foi finalizado */}
+                  {selecionado.status !== 'PENDENTE' && (
+                      <span style={{fontStyle: 'italic', color: '#666', marginLeft: '10px'}}>
+                          Pedido já {selecionado.status.toLowerCase()}.
+                      </span>
                   )}
                 </div>
 
-                <div className={styles.dataItem}>
-                  <label>Alergias na família?</label>
-                  <p className={d.alergia?.includes("Sim") ? styles.alertText : ""}>
-                    {d.alergia || "Não"}
-                  </p>
-                </div>
-
-                <div className={styles.dataItem}>
-                  <label>Termo de Responsabilidade:</label>
-                  <p style={{color: d.aceitaTermo ? 'green' : 'red'}}>
-                    {d.aceitaTermo ? "Aceito" : "Pendente"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* BARRA DE AÇÕES (BOTÕES) */}
-            <div className={styles.actionButtons}>
-              
-              {/* Botão de WhatsApp (Estilo Entrevista) */}
-              <button 
-                className={styles.btnWhatsapp} 
-                onClick={handleWhatsApp}
-                title="Conversar com o candidato no WhatsApp"
-              >
-                <FaWhatsapp size={20} /> Conversar
-              </button>
-
-              {/* Divisor Visual */}
-              <div className={styles.dividerVertical}></div>
-
-              {/* Recusar */}
-              <button className={styles.btnReject} onClick={handleRecusar}>
-                <FaTimes /> Recusar
-              </button>
-              
-              {/* Aprovar (Botão Principal) */}
-              <button className={styles.btnApprove} onClick={handleAprovar}>
-                Aprovar Adoção
-              </button>
-            </div>
-
-          </section>
+            </section>
+          ) : (
+             // Estado vazio (se não tiver candidato selecionado ou lista vazia)
+             <div className={styles.detailsPanel} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '300px'}}>
+                 <p style={{color: '#999'}}>
+                    {candidatos.length === 0 ? "Aguardando interessados..." : "Selecione um candidato ao lado."}
+                 </p>
+             </div>
+          )}
         </div>
       </div>
     </Layout>
