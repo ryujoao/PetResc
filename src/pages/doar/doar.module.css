@@ -1,292 +1,361 @@
+/* ============================================================
+   1. ESTILOS DO LAYOUT ORIGINAL (VISÃO USUÁRIO)
+   ============================================================ */
+
 .pagDoar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; removido para o topo não ficar descendo */
   min-height: 100vh;
-  background: url("/public/banners/banner4.png") no-repeat center;
-  padding: 2rem;
+  width: 100%; /* GARANTE LARGURA TOTAL */
+  
+  background: url("/public/banners/banner4.png") no-repeat top center;
   background-size: cover;
-  margin-top: -9rem;
-  padding: 11rem 2rem 2rem 2rem;
+  
+  /* Mantém o hack do menu transparente, mas ajustado */
+  margin-top: -9rem; 
+  padding: 11rem 2rem 4rem 2rem; /* Padding inferior maior */
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
 
 .tituloDoar {
-  font-size: 2.5rem;
+  font-size: 3rem; /* Fonte maior para preencher melhor */
   color: #fff;
   margin-bottom: 1rem;
   text-align: center;
-  font-family: "More Sugar";
-  -webkit-text-stroke: 2px #fff;
-}
-
-.cardContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.card {
-  background: #94b9d8;
-  border-radius: 12px;
-  width: 220px;
-  height: 349px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.cardImage {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 0.8rem;
-}
-
-.cardText {
-  font-size: 2rem;
-  color: #fff;
-}
-
-.cardSubtext {
-  color: #fff;
+  font-family: "More Sugar", sans-serif;
+  max-width: 1200px;
 }
 
 .subtitle {
   font-size: 1.5rem;
   color: #fff;
   font-weight: normal;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   text-align: center;
-  width: 85%;
+  width: 90%; /* Usa mais espaço horizontal */
+  max-width: 1000px;
+  line-height: 1.6;
 }
 
-/* Este é o container cinza (reutilizado para a ONG) */
-.pagInstituicoes {
-  background-color: #f5f5f5;
-  padding: 3rem 2rem;
-}
-
-/* Este título é reutilizado na view da ONG */
-.tituloInstituicoes {
-  font-size: 1.5rem;
-  color: #000;
-  margin-bottom: 2rem;
-}
-
-/* Este container de cards é reutilizado na view da ONG */
-.cardInstituicoes {
+/* CARDS DO USUÁRIO */
+.cardContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-/* Este card é reutilizado na view da ONG */
-.instituicoes {
-  background-color: #fff;
-  border-radius: 12px;
-  width: 500px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
-
-.imgInstituicoes {
+  justify-content: center;
+  gap: 2.5rem; /* Espaço maior entre cards */
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  max-width: 1400px; /* Permite que os cards se espalhem mais */
+  margin-top: 1rem;
+}
+
+.card {
+  background: #94b9d8;
+  border-radius: 12px;
+  width: 240px; /* Cards um pouco mais largos */
+  height: 360px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra mais marcada */
+  text-align: center;
+  transition: transform 0.3s ease;
+  padding-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
   border-radius: 8px;
   margin-bottom: 1rem;
 }
 
+.cardText {
+  font-size: 2.2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.cardSubtext {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* LISTA DE INSTITUIÇÕES (USUÁRIO) */
+.pagInstituicoes {
+  background-color: #f5f5f5;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* GARANTE O FUNDO CINZA DE PONTA A PONTA */
+  box-sizing: border-box;
+}
+
+.tituloInstituicoes {
+  font-size: 1.8rem;
+  color: #000;
+  margin-bottom: 2.5rem;
+  align-self: flex-start;
+  /* Centraliza o título em relação ao conteúdo interno */
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+}
+
+.cardInstituicoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin-bottom: 5rem;
+  justify-content: center; /* Centraliza os cards na tela */
+  width: 100%;
+  max-width: 1300px; /* Limite para não ficar esticado demais em telas 4k */
+}
+
+.instituicoes {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 550px; /* Card mais largo */
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+}
+
+.instituicoes:hover {
+  transform: translateY(-5px);
+}
+
+.imgInstituicoes {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
 .nomeInstituicoes {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #000;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .enderecoInstituicoes {
-  font-size: 1.2rem;
-  color: #000;
-  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
 }
 
 .valorInstituicoes {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #286699;
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
+  font-weight: bold;
 }
 
 progress {
   width: 100%;
-  height: 20px;
-  appearance: none;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-progress::-webkit-progress-bar {
-  background-color: #eee;
+  height: 12px;
   border-radius: 10px;
 }
 
-progress::-webkit-progress-value {
-  background-color: #286699;
-  border-radius: 10px;
-}
+/* ============================================================
+   2. ESTILOS VISÃO ONG (MANTIDOS IGUAIS)
+   ============================================================ */
 
-.iconLocal {
-  margin-right: 4px;
-  display: inline-block;
-}
-
-/* --- ESTILOS CORRIGIDOS PARA A PÁGINA DA ONG (Imagem 1) --- */
-
-.ongHeader {
+.ongPageWrapper {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+}
+
+/* --- SEÇÃO SUPERIOR (AZUL) --- */
+.ongTopSection {
+  background-color: #2c6491; 
+  padding: 8rem 2rem 6rem 2rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  width: 100%; /* Garante largura total */
+}
+
+/* GRID MOSAICO */
+.mosaicGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1300px;
+  margin-top: 2rem;
+}
+
+.mosaicCol {
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-.ongTitulo {
-  color: #0f4979;
-  font-size: 2.5rem;
-  font-weight: 700;
-  flex-grow: 1; /* Faz o título ocupar o espaço */
-  margin-bottom: 0;
-}
-
-/* (Estilos .ongStatsGrid e .ongStatCard removidos pois reutilizamos .cardContainer) */
-
-.ongCampaignActions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.botaoEditar,
-.botaoEncerrar {
-  background-color: transparent;
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.botaoEditar {
-  border: 1px solid #286699;
-  color: #286699;
-}
-.botaoEditar:hover {
-  background-color: #f0f9ff;
-}
-
-.botaoEncerrar {
-  border: 1px solid #c0392b;
-  color: #c0392b;
-}
-.botaoEncerrar:hover {
-  background-color: #fdf2f2;
-}
-
-/* BANNER DA ONG */
-
-.bannerNovaCampanha {
-  position: relative;
+.mosaicImg {
   width: 100%;
-  height: 80vh;
-  background: url("../../../public/banners/cachorroDoar.png") no-repeat center
-    bottom;
-  background-size: cover;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.tallImg {
+  height: 100%;
+  min-height: 450px;
+}
+
+.mosaicCard {
+  background-color: #7daed4;
+  border-radius: 12px;
+  padding: 1.5rem;
+  flex-grow: 1;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-height: 160px;
+}
+
+.mosaicValue {
+  font-size: 3.5rem;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.mosaicLabel {
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  opacity: 0.9;
+}
+
+/* --- SEÇÃO INFERIOR (BRANCA + CACHORRO GIGANTE) --- */
+
+.ongBottomSection {
+  background-color: #fff;
+  padding: 3rem 1rem 0 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Garante largura total */
   overflow: hidden;
-  gap: 20rem;
-  align-items: flex-start;
-  padding-top: 20vh;
-  box-sizing: border-box; /* NOVO: Garante que o padding não aumente a altura total */
+  min-height: auto;
+  align-items: flex-end;
 }
 
-.textoEsquerda {
-  color: #286699;
-  font-size: 2rem;
-  text-align: center;
+.bottomContent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 0;
+  position: relative;
+  padding-bottom: 0;
+}
+
+/* --- LADOS (Textos) --- */
+.bottomSide {
+  flex: 0 0 340px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Alinha o botão ao centro */
-  max-width: 550px;
-  gap: 4rem; /* Espaço entre o <p> e o <button> */
-}
-
-.textoDireita {
+  gap: 1.5rem;
   color: #286699;
-  font-size: 2rem;
+  font-size: 1.4rem;
+  line-height: 1.3;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Alinha o botão ao centro */
-  max-width: 550px;
-  gap: 4rem; /* Espaço entre o <p> e o <button> */
+  padding-bottom: 180px;
+  z-index: 10;
 }
 
-.botoes {
+.textLeft {
+  order: 1;
+  margin-right: -50px;
+}
+
+.textRight {
+  order: 3;
+  margin-left: -50px;
+}
+
+.btnBlue {
   background-color: #286699;
   color: #fff;
-  font-size: 1.7rem;
-  font-weight: 600;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 120px;
-  cursor: pointer;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  font-weight: bold;
   text-decoration: none;
-  transition: background-color 0.2s;
+  text-transform: uppercase;
+  transition: background-color 0.3s;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(40, 102, 153, 0.2);
+  align-self: center;
+  white-space: nowrap;
 }
 
-.botoes:hover {
-  background-color: #1e527a;
+.btnBlue:hover {
+  background-color: #1e4b75;
 }
 
-/* Media query para os stats da ONG */
-@media (max-width: 600px) {
-  .ongHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* --- CACHORRO CENTRAL --- */
+.centerDogContainer {
+  order: 2;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: -1px;
+  z-index: 1;
 }
 
-/* Media query para o novo banner da ONG */
+.centerDogImg {
+  height: 520px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1200px) {
+  /* Ong */
+  .mosaicGrid { grid-template-columns: repeat(2, 1fr); }
+  .centerDogImg { height: 450px; }
+  .bottomSide { flex: 0 0 280px; font-size: 1.2rem; padding-bottom: 150px; }
+  .textLeft { margin-right: -20px; }
+  .textRight { margin-left: -20px; }
+  
+  /* User */
+  .pagDoar { padding-top: 10rem; }
+}
+
 @media (max-width: 900px) {
-  .bannerNovaCampanha {
-    flex-direction: column; /* Empilha as colunas em telas pequenas */
-    height: auto; /* Altura automática */
-    padding: 3rem 2rem;
-    align-items: center; /* Centraliza no mobile, sobrepõe o flex-start */
-  }
-  .textoEsquerda,
-  .textoDireita,
-  .imagemCentralContainer {
-    flex-basis: 100%; /* Cada coluna ocupa 100% */
-    max-width: 600px; /* Limita a largura do texto */
-    text-align: center; /* Centraliza o texto no mobile */
-  }
-  .textoDireita {
-    align-items: center; /* Centraliza o botão no mobile */
-  }
-  .imagemCentral {
-    max-height: 40vh; /* Diminui a imagem no mobile */
-  }
+  /* User */
+  .pagDoar { padding: 8rem 1rem 2rem 1rem; }
+  .cardContainer { flex-direction: column; align-items: center; }
+  .instituicoes { width: 100%; }
+  
+  /* Ong */
+  .mosaicGrid { grid-template-columns: 1fr; }
+  .ongBottomSection { padding: 3rem 1rem 2rem 1rem; }
+  .bottomContent { flex-direction: column; align-items: center; gap: 3rem; }
+  .bottomSide { order: unset; flex: auto; width: 100%; max-width: 450px; padding-bottom: 0; margin: 0; font-size: 1.2rem; }
+  .textLeft, .textRight { margin: 0; }
+  .centerDogContainer { order: -1; width: 100%; }
+  .centerDogImg { height: auto; width: 80%; max-width: 380px; }
+  .ongTopSection { padding-top: 9rem; }
 }

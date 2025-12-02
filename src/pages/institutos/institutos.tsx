@@ -2,55 +2,11 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react"; 
 import styles from "./institutos.module.css";
 import Layout from "../../components/layout";
-import { FaMapMarkerAlt, FaCheckCircle, FaQrcode, FaCalendarAlt } from "react-icons/fa"; 
-// import { useAuth } from "../../auth/AuthContext"; // Opcional: Se quiser registrar QUEM doou
+import { FaMapMarkerAlt, FaCalendarAlt, FaCheckCircle, FaQrcode } from "react-icons/fa"; 
 
-// --- DADOS MOCKADOS (Mantidos para fallback) ---
-type InstitutoMock = {
-  id: string;
-  nome: string;
-  endereco: string;
-  descricao: string;
-  itensDescricao: string[];
-  logoUrl: string;
-  arrecadado: number;
-  meta: number;
-};
-
-const dadosInstitutos: Record<string, InstitutoMock> = {
-  suipa: {
-    id: "suipa",
-    nome: "SUIPA",
-    endereco: "Av. Dom Hélder Câmara, 1801 – Benfica, Rio de Janeiro – RJ",
-    logoUrl: "/institutos/suipa.png", 
-    descricao: "Todos os dias, milhares de animais resgatados pela SUIPA recebem cuidados...",
-    itensDescricao: ["Alimentação de cães e gatos", "Tratamento médico", "Abrigo seguro"],
-    arrecadado: 7613.0,
-    meta: 15000.0,
-  },
-  caramelo: {
-    id: "caramelo",
-    nome: "Instituto Caramelo",
-    endereco: "Rua José Felix de Oliveira, 1234 – Granja Viana, Cotia – SP",
-    logoUrl: "/institutos/institutoCaramelo.png",
-    descricao: "O Instituto Caramelo atua no resgate e reabilitação...",
-    itensDescricao: ["Resgate de animais", "Reabilitação física", "Adoção responsável"],
-    arrecadado: 8104.64,
-    meta: 16000.0,
-  },
-  ampara: {
-      id: "ampara",
-      nome: "Instituto Ampara Animal",
-      endereco: "Rua Exemplo, 123 - São Paulo - SP",
-      logoUrl: "/ampara.png",
-      descricao: "Ampara Animal trabalha em prol dos animais abandonados.",
-      itensDescricao: ["Apoio a abrigos", "Castração", "Educação"],
-      arrecadado: 4500,
-      meta: 10000
-  }
-};
-
+// --- TIPAGEM ---
 type CampanhaExibicao = {
+  id: string;
   titulo: string;
   endereco: string;
   descricao: string;
@@ -59,16 +15,69 @@ type CampanhaExibicao = {
   arrecadado: number;
   meta: number;
   realizadoPor: string;
-  dataLimite?: string; 
+  dataLimite?: string;
+};
+
+// --- BANCO DE DADOS SIMULADO (MOCK) ---
+// Adicionei aqui as informações do Ampara e Patas Dadas
+const DADOS_MOCK: Record<string, CampanhaExibicao> = {
+  "caramelo": {
+    id: "caramelo",
+    titulo: "Instituto Caramelo",
+    endereco: "Rua José Felix de Oliveira, 1234 – Cotia – SP",
+    descricao: "O Instituto Caramelo atua no resgate e reabilitação de animais em situação de risco. Esta campanha visa arrecadar fundos para a reforma do canil principal e compra de ração especial.",
+    itensDescricao: ["Reforma de 10 canis", "Compra de 500kg de ração", "Medicamentos veterinários"],
+    imagemUrl: "../../../public/institutos/institutoCaramelo.png",
+    arrecadado: 8104.64,
+    meta: 16000.00,
+    realizadoPor: "Instituto Caramelo",
+    dataLimite: "2025-01-20"
+  },
+  "suipa": {
+    id: "suipa",
+    titulo: "SUIPA",
+    endereco: "Av. Dom Hélder Câmara, 1801 – Rio de Janeiro – RJ",
+    descricao: "Todos os dias, milhares de animais resgatados recebem cuidados, alimentação e muito amor através do nosso trabalho. Precisamos da sua ajuda para continuar oferecendo abrigo.",
+    itensDescricao: ["Alimentação diária", "Tratamento médico", "Manutenção do abrigo"],
+    imagemUrl: "../../../public/institutos/suipa.png",
+    arrecadado: 7813.00,
+    meta: 15000.00,
+    realizadoPor: "SUIPA",
+    dataLimite: "2024-12-31"
+  },
+  "ampara": {
+    id: "ampara",
+    titulo: "Instituto Ampara Animal",
+    endereco: "Av. Paulista, 1000 - São Paulo - SP",
+    descricao: "A Ampara Animal trabalha em parceria com abrigos e protetores independentes. Sua doação será direcionada para campanhas de castração e vacinação em comunidades carentes.",
+    itensDescricao: ["Castração de 50 animais", "Campanha de vacinação V10", "Apoio a protetores locais"],
+    imagemUrl: "../../../public/institutos/ampara.png", // Ajuste o caminho se necessário (ex: ../../../public/ampara.png)
+    arrecadado: 4500.00,
+    meta: 10000.00,
+    realizadoPor: "Ampara Animal",
+    dataLimite: "2025-02-15"
+  },
+  "patasdadas": {
+    id: "patasdadas",
+    titulo: "Patas Dadas",
+    endereco: "Rua dos Voluntários, 500 - Porto Alegre - RS",
+    descricao: "Resgatamos cães e gatos em situação de abandono e maus-tratos. Nossos recursos estão escassos e precisamos de ajuda urgente para custear cirurgias ortopédicas.",
+    itensDescricao: ["Cirurgias ortopédicas", "Fisioterapia animal", "Alimentação especial"],
+    imagemUrl: "../../../public/institutos/patasDadas.png", // Ajuste o caminho se necessário
+    arrecadado: 2100.00,
+    meta: 8000.00,
+    realizadoPor: "Associação Patas Dadas",
+    dataLimite: "2025-01-10"
+  }
 };
 
 export default function Institutos() {
   const { id } = useParams(); 
+  
   const [campanha, setCampanha] = useState<CampanhaExibicao | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Estados de Pagamento
+  // Estados do Formulário
   const [valorSelecionado, setValorSelecionado] = useState("");
   const [formaPagamento, setFormaPagamento] = useState("");
   const [loadingPagamento, setLoadingPagamento] = useState(false);
@@ -76,129 +85,30 @@ export default function Institutos() {
 
   // --- CARREGAMENTO DE DADOS ---
   useEffect(() => {
-    const carregarDados = async () => {
-      setLoading(true);
-      setError(null);
-      const idNormalizado = id ? id.toLowerCase() : "";
-
-      // 1. MOCK
-      if (dadosInstitutos[idNormalizado]) {
-        const mock = dadosInstitutos[idNormalizado];
-        setCampanha({
-            titulo: mock.nome,
-            endereco: mock.endereco,
-            descricao: mock.descricao,
-            itensDescricao: mock.itensDescricao,
-            imagemUrl: mock.logoUrl,
-            arrecadado: mock.arrecadado,
-            meta: mock.meta,
-            realizadoPor: mock.nome,
-            dataLimite: "2024-12-30" 
-        });
-        setLoading(false);
-        return; 
-      }
-
-      // 2. API REAL
-      try {
-        const response = await fetch(`https://petresc.onrender.com/api/campanhas/${id}`);
+    setLoading(true);
+    // Simula delay de rede
+    setTimeout(() => {
+        // Tenta pegar o ID da URL (em minúsculo). Se não achar, usa 'suipa' como padrão.
+        const chave = id?.toLowerCase();
+        const dados = chave && DADOS_MOCK[chave] ? DADOS_MOCK[chave] : DADOS_MOCK["suipa"];
         
-        if (!response.ok) {
-          throw new Error("Campanha não encontrada.");
-        }
-
-        const data = await response.json();
-        
-        let itensLista = ["Apoio à causa", "Transparência"];
-        if (data.itens_descricao) {
-            if (Array.isArray(data.itens_descricao)) {
-                itensLista = data.itens_descricao;
-            } else if (typeof data.itens_descricao === 'string') {
-                try { itensLista = JSON.parse(data.itens_descricao); } catch(e) {}
-            }
-        }
-
-        setCampanha({
-            titulo: data.titulo,
-            endereco: data.ong?.endereco || "Endereço da ONG",
-            descricao: data.descricao,
-            itensDescricao: itensLista,
-            imagemUrl: data.imagem_url || "https://via.placeholder.com/400x150",
-            arrecadado: parseFloat(data.arrecadado) || 0,
-            meta: parseFloat(data.meta_financeira) || 0,
-            realizadoPor: data.ong?.nome || "ONG Parceira",
-            dataLimite: data.data_limite 
-        });
-
-      } catch (err) {
-        console.error(err);
-        setError("Não foi possível carregar a campanha.");
-      } finally {
+        setCampanha(dados);
         setLoading(false);
-      }
-    };
-
-    if (id) {
-        carregarDados();
-    }
+    }, 500);
   }, [id]);
 
-
-  // --- LÓGICA DE PAGAMENTO REAL ---
-  const handleOutroValorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValorSelecionado(e.target.value);
-    const radioOutro = document.querySelector('input[name="valor"][value="outro"]') as HTMLInputElement;
-    if (radioOutro) radioOutro.checked = true;
-  };
-
-  const handleFinalizar = async () => {
+  // --- LÓGICA DE PAGAMENTO ---
+  const handleFinalizar = () => {
     if (!valorSelecionado || !formaPagamento) {
       alert("Por favor, selecione um valor e uma forma de pagamento.");
       return;
     }
-    
     setLoadingPagamento(true);
-
-    try {
-        // Preparando payload para salvar doação no banco
-        const payload = {
-            campanha_id: id, 
-            valor: parseFloat(valorSelecionado),
-            metodo_pagamento: formaPagamento,
-            // Se tiver user logado: usuario_id: user.id 
-        };
-
-        const response = await fetch("https://petresc.onrender.com/api/doacoes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-            // SUCESSO: Atualiza visualmente o valor arrecadado (Feedback imediato)
-            const valorDoado = parseFloat(valorSelecionado);
-            setCampanha((prev) => prev ? {
-                ...prev,
-                arrecadado: prev.arrecadado + valorDoado
-            } : null);
-
-            // Abre modal correspondente
-            if (formaPagamento === "Pix") setFasePagamento("pix");
-            else setFasePagamento("sucesso");
-
-        } else {
-            const errData = await response.json();
-            alert(`Erro ao processar doação: ${errData.message || "Tente novamente."}`);
-        }
-
-    } catch (error) {
-        console.error("Erro na doação:", error);
-        alert("Erro de conexão. Verifique sua internet.");
-    } finally {
+    setTimeout(() => {
         setLoadingPagamento(false);
-    }
+        if (formaPagamento === "Pix") setFasePagamento("pix");
+        else setFasePagamento("sucesso");
+    }, 1000);
   };
 
   const confirmarPix = () => setFasePagamento("sucesso");
@@ -207,86 +117,36 @@ export default function Institutos() {
       setFasePagamento("fechado");
       setValorSelecionado("");
       setFormaPagamento("");
-      // Opcional: Desmarcar radios visualmente
-      const radios = document.querySelectorAll('input[type="radio"]');
-      radios.forEach((r) => (r as HTMLInputElement).checked = false);
   };
 
-  // --- RENDERIZAÇÃO ---
+  if (loading) return <Layout><div style={{textAlign:'center', padding:'8rem'}}>Carregando...</div></Layout>;
+  if (!campanha) return <Layout><div style={{textAlign:'center', padding:'8rem'}}>Campanha não encontrada</div></Layout>;
 
-  if (loading) return <Layout><div style={{textAlign:'center', padding:'4rem'}}>Carregando...</div></Layout>;
-  
-  if (error || !campanha) {
-    return (
-      <Layout>
-        <div style={{ textAlign: "center", padding: "4rem" }}>
-          <h1>Campanha não encontrada</h1>
-          <p>Verifique o link ou tente novamente.</p>
-        </div>
-      </Layout>
-    );
-  }
-
-  const dataFormatada = campanha.dataLimite 
-    ? new Date(campanha.dataLimite).toLocaleDateString('pt-BR') 
-    : "Indeterminado";
+  const dataFormatada = campanha.dataLimite ? new Date(campanha.dataLimite).toLocaleDateString('pt-BR') : "Indeterminado";
 
   return (
     <Layout>
-      <div className={styles.paginstitutos}>
+      <div className={styles.containerPagina}>
         
-        {/* MODAL */}
-        {fasePagamento !== "fechado" && (
-            <div style={{
-                position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-                backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center',
-                alignItems: 'center', zIndex: 1000
-            }}>
-                <div style={{
-                    backgroundColor: 'white', padding: '40px', borderRadius: '12px',
-                    textAlign: 'center', maxWidth: '400px', width: '90%',
-                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
-                }}>
-                    {fasePagamento === "pix" && (
-                        <>
-                            <h2 style={{color: '#2b6b99', marginBottom: '1rem'}}>Pague com Pix</h2>
-                            <FaQrcode size={150} style={{margin: '20px 0', color: '#333'}} />
-                            <p style={{marginBottom: '1rem'}}>Valor: <strong>R$ {valorSelecionado},00</strong></p>
-                            <small style={{display:'block', marginBottom:'10px', color:'#666'}}>Este QR Code é simulado.</small>
-                            <button onClick={confirmarPix} style={{backgroundColor: '#28a745', color: 'white', padding: '10px 20px', border:'none', borderRadius:'5px', cursor:'pointer', fontSize:'1rem'}}>Já paguei</button>
-                        </>
-                    )}
-                    {fasePagamento === "sucesso" && (
-                        <>
-                            <FaCheckCircle size={60} color="#28a745" style={{marginBottom: '1rem'}} />
-                            <h2 style={{color: '#2b6b99'}}>Doação Registrada!</h2>
-                            <p style={{margin:'10px 0'}}>Obrigado por apoiar: <strong>{campanha.titulo}</strong></p>
-                            <p style={{fontSize:'0.9rem', color:'#555'}}>Seu apoio ajuda a atingir a meta de {campanha.meta.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}.</p>
-                            <button onClick={fecharModal} style={{marginTop:'20px', backgroundColor: '#2b6b99', color: 'white', padding: '10px 20px', border:'none', borderRadius:'5px', cursor:'pointer'}}>Fechar</button>
-                        </>
-                    )}
-                </div>
-            </div>
-        )}
-
+        {/* === 1. IMAGEM E CABEÇALHO === */}
         <div className={styles.logoContainer}>
           <img
             src={campanha.imagemUrl}
             alt={campanha.titulo}
             className={styles.logo}
-            onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/400x150?text=Campanha")}
+            onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/600x250?text=Imagem+da+Campanha")}
           />
         </div>
 
         <div className={styles.cabecalho}>
           <h1 className={styles.nome}>{campanha.titulo}</h1>
-          <p style={{fontSize: '1.2rem', color: '#666'}}>Realizado por: <strong>{campanha.realizadoPor}</strong></p>
+          <p className={styles.realizadoPor}>Realizado por: <strong>{campanha.realizadoPor}</strong></p>
           
-          <div style={{display:'flex', gap:'2rem', marginTop:'0.5rem', flexWrap:'wrap'}}>
+          <div className={styles.infoRow}>
             <p className={styles.endereco}>
                 <FaMapMarkerAlt /> {campanha.endereco}
             </p>
-            <p className={styles.endereco} style={{color:'#d9534f'}}>
+            <p className={styles.dataLimite}>
                 <FaCalendarAlt /> Encerra em: <strong>{dataFormatada}</strong>
             </p>
           </div>
@@ -294,10 +154,11 @@ export default function Institutos() {
 
         <hr className={styles.divider} />
 
+        {/* === 2. DESCRIÇÃO === */}
         <div className={styles.descricaoContainer}>
           <p className={styles.descricao}>{campanha.descricao}</p>
           
-          <p className={styles.descricao}><strong>Com a sua doação, você garante:</strong></p>
+          <p className={styles.tituloItens}>Com a sua doação, você garante:</p>
           <ul className={styles.listaBeneficios}>
             {campanha.itensDescricao.map((item, index) => (
               <li key={index}>{item}</li>
@@ -307,80 +168,85 @@ export default function Institutos() {
 
         <hr className={styles.divider} />
 
+        {/* === 3. ÁREA DE DOAÇÃO === */}
         <div className={styles.areaDoacao}>
-          {/* Coluna Esquerda: Valores */}
-          <div className={`${styles.colunaOpcoes} ${styles.colunaEsquerda}`}>
-            <h3 className={styles.tituloOpcao}>Escolha um valor:</h3>
-            <div className={styles.listaRadios}>
-              <label className={styles.radioItem}>
-                <input type="radio" name="valor" value="20" onChange={(e) => setValorSelecionado(e.target.value)} /> 
-                <span>R$ 20</span>
-              </label>
-              <label className={styles.radioItem}>
-                <input type="radio" name="valor" value="50" onChange={(e) => setValorSelecionado(e.target.value)} /> 
-                <span>R$ 50</span>
-              </label>
-              <label className={styles.radioItem}>
-                <input type="radio" name="valor" value="100" onChange={(e) => setValorSelecionado(e.target.value)} /> 
-                <span>R$ 100</span>
-              </label>
-              <label className={styles.radioItem}>
-                <input type="radio" name="valor" value="200" onChange={(e) => setValorSelecionado(e.target.value)} /> 
-                <span>R$ 200</span>
-              </label>
-              <label className={styles.radioItem}>
-                <input type="radio" name="valor" value="outro" /> 
-                <span>Outro: 
-                    <input type="number" className={styles.outroValorInput} onChange={handleOutroValorChange} onClick={() => { const r = document.querySelector('input[value="outro"]') as HTMLInputElement; if(r) r.checked = true; }} />
-                </span>
-              </label>
-            </div>
-          </div>
-
-          {/* Coluna Direita: Pagamento */}
-          <div className={styles.colunaOpcoes}>
-            <h3 className={styles.tituloOpcao}>Pagamento:</h3>
-            <div className={styles.listaRadios}>
-              <label className={styles.radioItem}><input type="radio" name="pagamento" value="Pix" onChange={(e) => setFormaPagamento(e.target.value)} /> <span>Pix</span></label>
-              <label className={styles.radioItem}><input type="radio" name="pagamento" value="Cartao" onChange={(e) => setFormaPagamento(e.target.value)} /> <span>Cartão</span></label>
-              <label className={styles.radioItem}><input type="radio" name="pagamento" value="Boleto" onChange={(e) => setFormaPagamento(e.target.value)} /> <span>Boleto</span></label>
-            </div>
             
-            <button 
-                className={styles.botaoFinalizar} 
-                onClick={handleFinalizar}
-                disabled={loadingPagamento}
-            >
-                {loadingPagamento ? "Processando..." : "Doar Agora"}
-            </button>
-          </div>
+            {/* Coluna Valores */}
+            <div className={`${styles.colunaOpcoes} ${styles.colunaEsquerda}`}>
+                <h3 className={styles.tituloOpcao}>Escolha um valor:</h3>
+                <div className={styles.listaRadios}>
+                    {['20', '50', '100', '200'].map(val => (
+                        <label key={val} className={styles.radioItem}>
+                            <input type="radio" name="valor" value={val} onChange={(e) => setValorSelecionado(e.target.value)} /> 
+                            <span className={styles.radioCustom}></span>
+                            <span className={styles.radioText}>R$ {val},00</span>
+                        </label>
+                    ))}
+                    <label className={styles.radioItem}>
+                        <input type="radio" name="valor" value="outro" /> 
+                        <span className={styles.radioCustom}></span>
+                        <span className={styles.radioText}>
+                             Outro: <input type="number" className={styles.outroValorInput} onChange={(e) => setValorSelecionado(e.target.value)} />
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            {/* Coluna Pagamento */}
+            <div className={styles.colunaOpcoes}>
+                <h3 className={styles.tituloOpcao}>Pagamento:</h3>
+                <div className={styles.listaRadios}>
+                    {['Pix', 'Cartão de Crédito', 'Boleto'].map(forma => (
+                         <label key={forma} className={styles.radioItem}>
+                            <input type="radio" name="pagamento" value={forma} onChange={(e) => setFormaPagamento(e.target.value)} /> 
+                            <span className={styles.radioCustom}></span>
+                            <span className={styles.radioText}>{forma}</span>
+                        </label>
+                    ))}
+                </div>
+                <button className={styles.botaoFinalizar} onClick={handleFinalizar} disabled={loadingPagamento}>
+                    {loadingPagamento ? "Processando..." : "Doar Agora"}
+                </button>
+            </div>
         </div>
 
+        {/* === 4. RODAPÉ DE PROGRESSO === */}
         <div className={styles.barraFooter}>
-          <div className={styles.infoArrecadado}>
-            <h3>Arrecadado</h3>
-            <p className={styles.valoresArrecadado}>
-              <strong>
-                {campanha.arrecadado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-              </strong>{" "}
-              /{" "}
-              {campanha.meta.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-            </p>
-            {/* Barra de progresso visual opcional */}
-            <div style={{width: '100%', height:'10px', backgroundColor:'#ddd', borderRadius:'5px', marginTop:'5px'}}>
-                 <div style={{
-                     width: `${Math.min((campanha.arrecadado / campanha.meta) * 100, 100)}%`, 
-                     height:'100%', 
-                     backgroundColor:'#28a745', 
-                     borderRadius:'5px',
-                     transition: 'width 0.5s ease'
-                 }}></div>
+            <div className={styles.infoArrecadado}>
+                <h3>Arrecadado</h3>
+                <p className={styles.valoresArrecadado}>
+                    <strong>{campanha.arrecadado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong> 
+                    {' / '} {campanha.meta.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </p>
+                <div className={styles.barraContainer}>
+                    <div className={styles.barraFill} style={{width: `${Math.min((campanha.arrecadado / campanha.meta) * 100, 100)}%`}}></div>
+                </div>
             </div>
-          </div>
-          <p className={styles.textoFooterDireita}>
-            Todos os valores arrecadados são destinados a: {campanha.titulo}.
-          </p>
+            <p className={styles.textoFooterDireita}>Todos os valores arrecadados são destinados a: {campanha.titulo}.</p>
         </div>
+
+        {/* === MODAL DE PAGAMENTO === */}
+        {fasePagamento !== "fechado" && (
+            <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                    {fasePagamento === "pix" ? (
+                        <>
+                            <h2 style={{color:'#2b6b99'}}>Pague com Pix</h2>
+                            <FaQrcode size={120} style={{margin: '20px 0', color: '#333'}} />
+                            <p className={styles.textoModal}>Valor: <strong>R$ {valorSelecionado},00</strong></p>
+                            <button onClick={confirmarPix} className={styles.btnModal}>Já paguei</button>
+                        </>
+                    ) : (
+                        <>
+                            <FaCheckCircle size={70} color="#28a745" style={{marginBottom:'1rem'}} />
+                            <h2 style={{color:'#2b6b99'}}>Doação Registrada!</h2>
+                            <p className={styles.textoModal}>Obrigado por apoiar: <strong>{campanha.titulo}</strong></p>
+                            <button onClick={fecharModal} className={styles.btnModal}>Fechar</button>
+                        </>
+                    )}
+                </div>
+            </div>
+        )}
 
       </div>
     </Layout>
