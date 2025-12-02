@@ -11,7 +11,7 @@
 /* ========================================= */
 .colunaUm {
   flex: 1;
-  padding: 2rem;
+  padding: 3  rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,22 +66,38 @@
 }
 
 .label {
-  margin-bottom: 0.25rem;
   text-align: left;
   width: 100%;
   display: block;
   font-size: 1.3rem;
-  font-weight: 600;
+  margin: 0.5rem 0;
+  font-weight: 700;
+  color: #286699;
 }
 
 .barraInfos {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #6487a3;
-  border-radius: 5px;
-  background-color: white;
-  color: #0f4979;
-  margin-bottom: 0;
+  padding: 0.75rem 0.9rem;
+  background-color: #fff;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #123347;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+select option {
+  color: #123347;
+  font-weight: 600;
+}
+
+
+.barraInfos:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
 }
 
 /* ============================ */
@@ -89,7 +105,7 @@
 /* ============================ */
 .colunaDois {
   flex: 1;
-  padding: 2rem;
+  padding: 3rem;
 }
 
 .titulo {
@@ -134,8 +150,9 @@
   font-size: 1.3rem;
   font-weight: 600;
   /* Joga o botão para a direita */
-  align-self: flex-end; 
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  align-self: flex-end;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .botao:hover {
@@ -323,7 +340,7 @@
 }
 
 .modalTexto {
-  color: #555;
+  color: #0f4979;
   font-size: 1.1rem;
   line-height: 1.5;
 }
@@ -347,18 +364,24 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ============================ */
-/* === RESPONSIVIDADE === */
-/* ============================ */
-@media (max-width: 768px) {
-  .pageRegistroAnimal {
-    flex-direction: column;
-    padding-top: 80px;
-  }
+/* === RESPONSIVIDADE === */    
+/* ============================ */    
+@media (max-width: 768px) {   
+  .pageRegistroAnimal {   
+    flex-direction: column;   
+    padding-top: 80px;    
+  }   
   /* Garante que o form da ONG também vire coluna no mobile */
   .formOng {
     flex-direction: column;
@@ -368,11 +391,11 @@
   .colunaDois {
     padding: 1rem;
   }
-  
+
   .titulo {
     font-size: 2rem;
   }
-  
+
   .imagemContainer {
     width: 100%;
   }
@@ -382,6 +405,4 @@
   }
 }
 
-select {
-  color: #666;
-}
+
