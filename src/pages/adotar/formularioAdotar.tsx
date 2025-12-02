@@ -118,6 +118,13 @@ export default function FormularioAdotar() {
         nome: user.nome || "",
         email: user.email || "",
         telefone: user.telefone || "",
+        cep: user.cep || "",
+        rua: user.rua || "",
+        numero: user.numero || "",
+        complemento: user.complemento || "",
+        bairro: user.bairro || "",
+        cidade: user.cidade || "",
+        estado: user.estado || "",
       }));
     }
   }, [user]);
@@ -327,7 +334,7 @@ export default function FormularioAdotar() {
         isOpen={sucessoOpen} 
         onClose={() => { 
             setSucessoOpen(false); 
-            navigate('/meus-animais'); 
+            navigate('/central-adocao'); 
         }} 
       />
     </Layout>
