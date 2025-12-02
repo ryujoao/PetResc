@@ -58,7 +58,7 @@
 
 .status {
     display: inline-block;
-    background-color: #ff9900; /* Laranja/Amarelo */
+    background-color: #0F4979;
     color: white;
     padding: 6px 15px;
     border-radius: 5px;
@@ -163,7 +163,7 @@
 /* ---------------------------------------------------- */
 
 .botaoAdotar {
-    background: linear-gradient(to right, #ff9900, #ffc04d); 
+    background: #0F4979; 
     color: white;
     border: none;
     padding: 15px 30px;
@@ -178,5 +178,5 @@
 }
 
 .botaoAdotar:hover {
-    background: linear-gradient(to right, #ffb347, #ff9900);
+    background-color: #0F4979;
 }

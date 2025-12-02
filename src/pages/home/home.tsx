@@ -8,15 +8,15 @@ import Estatisticas from "../estatisticas";
 import NossaMissao from "./nossaMissao";
 import SaibaMais from "./saibaMais";
 
-// Componentes específicos para cada tipo de usuário
-import MeusAnimais from "./meusAnimais";           // Usuário público
-import OngsProximas from "./ongsProximas";         // Usuário público
-import AnimaisCadastrados from "./animaisCadastrados"; // ONG/Admin
+// Componentes específicos
+import MeusAnimais from "./meusAnimais";
+import OngsProximas from "./ongsProximas";
+import AnimaisCadastrados from "./animaisCadastrados";
 
 export default function Home() {
   const { isAuthenticated, user } = useAuth();
 
-  // ------------------- Banner -------------------
+  // ------------------- Banner Principal (Topo) -------------------
   const renderBanner = () => {
     if (!isAuthenticated) {
       return (
@@ -57,7 +57,7 @@ export default function Home() {
     return <div className={styles.bannerEspera}></div>;
   };
 
-  // ------------------- Conteúdo -------------------
+  // ------------------- Conteúdo (Abaixo do Banner) -------------------
   const renderContent = () => {
     if (!isAuthenticated) {
       return (
@@ -80,13 +80,11 @@ export default function Home() {
               </h2>
               <p>
                 Com sua ajuda, conseguimos garantir alimento, cuidados médicos e
-                abrigo seguro para animais em situação de abandono. Cada
-                contribuição é essencial para que eles tenham uma nova chance de
-                vida cheia de carinho e dignidade.
+                abrigo seguro para animais em situação de abandono.
               </p>
               <div className={styles.divBotaoDoar}>
                 <button className={styles.botaoDoar}>
-                  <a href="/doar">Doe agora!</a>
+                  <Link to="/doar">Doe agora!</Link>
                 </button>
               </div>
             </div>
@@ -100,21 +98,29 @@ export default function Home() {
       return (
         <>
           <AnimaisCadastrados />
+          {/* BANNER DOIS (ONDE O GATINHO DEVE FICAR) */}
           <section className={styles.bannerDois}>
+            
+            {/* IMAGEM DO GATINHO (Movi para cá) */}
+            <img 
+              src="/banners/banner2.png" 
+              alt="Gatinho Curioso" 
+              className={styles.catImage} 
+            />
+
             <div className={styles.paginaDoar}>
               <h2 className={styles.tituloDoar}>Minhas Campanhas</h2>
               <p>
                 Crie novas campanhas para arrecadar doações e ajude a
                 transformar a vida de mais animais. Aqui você também encontra
-                todas as suas campanhas anteriores, com relatórios e histórico
-                de contribuições.
+                todas as suas campanhas anteriores.
               </p>
               <div className={styles.botaoWrapper}>
                 <button className={styles.botaoDoar}>
-                  <a href="/nova-campanha">Nova Campanha</a>
+                  <Link to="/nova-campanha">Nova Campanha</Link>
                 </button>
                 <button className={styles.botaoDoar}>
-                  <a href="/campanhas-anteriores">Campanhas Anteriores</a>
+                  <Link to="/campanhas-anteriores">Campanhas Anteriores</Link>
                 </button>
               </div>
             </div>

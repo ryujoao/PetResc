@@ -126,10 +126,7 @@ export default function PerfilAnimal() {
           <div className={styles.infoContainer}>
             <h1 className={styles.nome}>{animal.nome}</h1>
             
-            <p className={styles.status} style={{ 
-                color: animal.status === 'DISPONIVEL' ? '#28a745' : '#e0a800',
-                fontWeight: 'bold'
-            }}>
+            <p className={styles.status}>
                {animal.status === 'DISPONIVEL' ? 'Para Adoção' : 'Encontrado / Perdido'}
             </p>
             
@@ -144,7 +141,6 @@ export default function PerfilAnimal() {
 
             {/* --- BOTÕES --- */}
             {pedidoExistente ? (
-                // ✅ CORREÇÃO AQUI: Redireciona para a Home (Dashboard)
                 <button 
                     className={styles.botaoAdotar}
                     style={{ backgroundColor: '#6c757d', cursor: 'pointer' }} 

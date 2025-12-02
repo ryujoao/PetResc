@@ -25,8 +25,9 @@ import FAQ from "./pages/configuracoes/ajuda/faq";
 import Contato from "./pages/configuracoes/ajuda/contato";
 import Cadastro from "./pages/cadastro/cadastro";
 import RecuperarSenha from "./pages/cadastro/recuperarSenha";
-import NovaCampanha from "./pages/novaCampanha/novaCampanha";
+import NovaCampanha from "./pages/campanhas/novaCampanha";
 import GerenciarAdocao from "./pages/gerenciarAdocao/gerenciarAdocao";
+import CampanhasAnteriores from "./pages/campanhas/campanhasAnteriores";
 
 function App() {
   return (
@@ -41,11 +42,10 @@ function App() {
       <Route path="/registrar-animal" element={<RegistrarAnimal />} />
       <Route path="/central-adocao" element={<CentralAdocao />} />
       <Route path="/perfil" element={<Perfil />} />
+      <Route path="/campanhas-anteriores" element={<CampanhasAnteriores />} />
       
       <Route path="/animal/:id" element={<PerfilAnimal />} />
       <Route path="/instituto/:id" element={<Institutos />} />
-      
-      {/* --- ALTERAÇÃO AQUI: Rota para o formulário com ID do animal --- */}
       <Route path="/formulario-adotar" element={<FormularioAdotar />} />
       <Route path="/formulario-adotar/:id" element={<FormularioAdotar />} />
       

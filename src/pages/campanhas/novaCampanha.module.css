@@ -166,6 +166,76 @@
   pointer-events: none;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Garante que fique por cima de tudo */
+  backdrop-filter: blur(4px); /* Desfoque bonito no fundo */
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  color: #333;
+}
+
+.modalContent h2 {
+  font-size: 2rem;
+  color: #286699;
+  margin: 1rem 0 0.5rem 0;
+  font-family: "More Sugar", sans-serif; /* Ou sua fonte padrão */
+}
+
+.modalContent p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.btnModal {
+  background-color: #286699;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 10px rgba(40, 102, 153, 0.3);
+}
+
+.btnModal:hover {
+  background-color: #1e4b75;
+  transform: translateY(-2px);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
   .tituloPrincipal {

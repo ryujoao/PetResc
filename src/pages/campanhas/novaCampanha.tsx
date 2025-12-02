@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styles from "./novaCampanha.module.css";
 import Layout from "../../components/layout";
 import { BsImage } from "react-icons/bs";
+import { FaCheckCircle } from "react-icons/fa"; // NOVO: Ícone de sucesso
 import { useAuth } from "../../auth/AuthContext"; 
 
 export default function NovaCampanha() {
-  // Agora o TypeScript reconhece 'token' vindo do useAuth
   const { token } = useAuth(); 
 
   const [formData, setFormData] = useState({
@@ -19,6 +19,9 @@ export default function NovaCampanha() {
   const [imagemArquivo, setImagemArquivo] = useState<File | null>(null);
   const [imagemPreview, setImagemPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  
+  // NOVO: Estado para controlar o Pop-up
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -38,7 +41,6 @@ export default function NovaCampanha() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Verificação se usuário está logado
     if (!token) {
         alert("Sessão expirada ou não iniciada. Por favor, faça login novamente.");
         return;
@@ -63,17 +65,17 @@ export default function NovaCampanha() {
       const response = await fetch("https://petresc.onrender.com/api/campanhas", {
         method: "POST",
         headers: {
-            // Header de Autorização
             "Authorization": `Bearer ${token}` 
         },
         body: data,
       });
 
       if (response.ok) {
-        alert("Campanha criada com sucesso!");
+        // SUCESSO: Limpa o form e abre o Modal em vez do alert
         setFormData({ nome: "", descricao: "", dataLimite: "", meta: "", itens: "" });
         setImagemPreview(null);
         setImagemArquivo(null);
+        setShowModal(true); // <--- AQUI
       } else {
         const errData = await response.json();
         alert(`Erro: ${errData.message || "Falha ao criar campanha"}`);
@@ -98,6 +100,7 @@ export default function NovaCampanha() {
           </div>
 
           <form className={styles.formCampanha} onSubmit={handleSubmit}>
+            {/* ... (Todo o seu formulário continua igual) ... */}
             
             {/* Coluna Esquerda */}
             <div className={styles.colunaEsquerda}>
@@ -197,6 +200,23 @@ export default function NovaCampanha() {
         </div> 
 
         <img src="/cachorroFofo.png" alt="Cachorro Fofo" className={styles.dogImage} />
+
+        {/* --- NOVO: MODAL (POP-UP) DE SUCESSO --- */}
+        {showModal && (
+            <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                    <FaCheckCircle size={60} color="#28a745" className={styles.iconSuccess} />
+                    <h2>Sucesso!</h2>
+                    <p>Sua campanha foi criada e já está disponível para receber doações.</p>
+                    <button 
+                        className={styles.btnModal} 
+                        onClick={() => setShowModal(false)}
+                    >
+                        Continuar
+                    </button>
+                </div>
+            </div>
+        )}
 
       </div>
     </Layout>

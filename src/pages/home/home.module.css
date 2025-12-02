@@ -10,13 +10,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   width: 100%;
-  background-color: #fff; /* ou a cor que você quiser */
-  display: block; /* garante que o body ocupe 100% */
-  overflow-x: hidden; /* impede rolagem horizontal */
+  background-color: #fff;
+  display: block;
+  overflow-x: hidden;
   font-family: "Darker Grotesque", sans-serif;
 }
 
-/* Banner com imagem de fundo */
+/* Banner 1 (Topo) */
 .bannerUm {
   width: 100%;
   height: 100vh;
@@ -32,16 +32,28 @@ body {
 }
 
 .bannerDois {
-  position: relative;
+  position: relative; /* Contexto para o position absolute */
   width: 100%;
   height: 80vh;
   background: url("/banner2.png") no-repeat center bottom;
   background-size: cover;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Conteúdo alinhado à direita */
   overflow: hidden;
   padding-right: 20vw;
+}
+
+/* --- IMAGEM DO GATINHO --- */
+.catImage {
+  position: absolute;
+  bottom: 0;
+  left: 2%; /* Posiciona na ESQUERDA, já que o texto está na direita */
+  width: 1800px; /* Tamanho padrão */
+  height: auto;
+  z-index: 1; /* Fica na frente do fundo */
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 .bannerTres {
@@ -54,19 +66,19 @@ body {
   justify-content: flex-start;
   margin-top: -9rem;
   padding-top: 9rem;
-
-  /* padding-left: 5vw; */
   box-sizing: border-box;
 }
 
 /* Título e botão */
 .homeTitulo {
-  max-width: 550px;
+  max-width: 600px;
   text-align: left;
   margin-left: 17rem;
   margin-top: 7rem;
   font-size: 3.2em;
   line-height: 1.1;
+  position: relative;
+  z-index: 2;
 }
 
 .titulo {
@@ -91,9 +103,6 @@ body {
   display: inline-block;
   margin-top: 10px;
   margin-right: 3rem;
-
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .subtitulo:hover {
@@ -102,25 +111,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Conteúdo abaixo do banner */
-.mainContent {
-  margin-bottom: 0;
-  border-bottom: none;
-}
-
-.bannerDois {
-  position: relative;
-  width: 100%;
-  height: 80vh;
-  background: url("../../../public/banners/banner2.png") no-repeat center bottom;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow: hidden;
-  padding-right: 20vw; /* aumente para afastar do canto direito */
-}
-
+/* Conteúdo da caixa azul */
 .paginaDoar {
   background: #0f4979;
   color: #fff;
@@ -134,10 +125,12 @@ body {
   margin-right: 2vw;
   font-size: 1.2rem;
   min-height: 350px;
+  z-index: 2; /* Garante que fique acima se o gato encostar */
+  position: relative;
 }
 
 .tituloDoar {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
   margin: 1.2rem 0;
 }
@@ -145,7 +138,7 @@ body {
 .paginaDoar p {
   margin-bottom: 1.5rem;
   text-align: left;
-  font-size: 19px;
+  font-size: 1.4rem;
   padding: 0 4.5rem 0 4.5rem;
 }
 
@@ -166,8 +159,12 @@ body {
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.3s ease;
+}
+
+.botaoDoar a {
+  color: #000;
+  text-decoration: none;
 }
 
 .botaoDoar:hover {
@@ -181,45 +178,68 @@ body {
   gap: 1.5rem;
 }
 
-.paginaDoar button a {
-  color: #000;
-  text-decoration: none;
+/* --- MEDIA QUERIES (Ajustes para Notebooks) --- */
+
+@media (max-width: 1835px) { .homeTitulo { margin-left: 13rem; } }
+@media (max-width: 1653px) { .homeTitulo { margin-left: 10rem; } }
+
+/* Notebooks Grandes (1600px) */
+@media (max-width: 1600px) {
+  .catImage { width: 400px; } /* Reduz levemente */
+  .homeTitulo { margin-left: 8rem; }
 }
 
+@media (max-width: 1560px) { .homeTitulo { margin-left: 7rem; } }
+@media (max-width: 1443px) { .homeTitulo { margin-left: 5rem; } }
 
-/* Responsividade do Título da Home */
-@media (max-width: 1835px) {
-  .homeTitulo {
-    margin-left: 13rem;
-  }
+/* Notebooks Padrão (1374px) */
+@media (max-width: 1374px) { 
+  .homeTitulo { margin-left: 3rem; }
+  .catImage { width: 350px; } /* Reduz para não invadir o texto */
 }
-@media (max-width: 1653px) {
-  .homeTitulo {
-    margin-left: 10rem;
+
+@media (max-width: 1300px) { .homeTitulo { margin-left: 1.5rem; } }
+
+/* Mobile e Tablets */
+@media (max-width: 900px) {
+  .bannerUm {
+    justify-content: center;
+    padding-left: 0;
+    text-align: center;
   }
-}
-@media (max-width: 1560px) {
+
   .homeTitulo {
-    margin-left: 7rem;
+    margin-left: 0;
+    margin-top: 0;
+    max-width: 90%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
-}
-@media (max-width: 1443px) {
-  .homeTitulo {
-    margin-left: 5rem;
+
+  .catImage {
+    /* No mobile, esconde ou ajusta posição para não atrapalhar o texto */
+    width: 250px; 
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -20px;
+    z-index: 0;
+    opacity: 0.5;
   }
-}
-@media (max-width: 1374px) {
-  .homeTitulo {
-    margin-left: 3rem;
+
+  .bannerDois {
+    padding-right: 0;
+    justify-content: center;
   }
-}
-@media (max-width: 1300px) {
-  .homeTitulo {
-    margin-left: 1.5rem;
+
+  .paginaDoar {
+    margin-right: 0;
+    width: 95%;
+    padding: 2rem 1rem;
   }
-}
-@media (max-width: 1300px) {
-  .homeTitulo {
-    margin-left: 1.5rem;
+  
+  .paginaDoar p {
+    padding: 0 1rem;
+    text-align: center;
   }
 }
