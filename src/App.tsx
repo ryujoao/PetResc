@@ -26,17 +26,17 @@ import Contato from "./pages/configuracoes/ajuda/contato";
 import Cadastro from "./pages/cadastro/cadastro";
 import RecuperarSenha from "./pages/cadastro/recuperarSenha";
 import NovaCampanha from "./pages/campanhas/novaCampanha";
-import GerenciarAdocao from "./pages/gerenciarAdocao/gerenciarAdocao";
+import GerenciarAdocao from "./pages/gerenciar/gerenciarAdocao";
 import CampanhasAnteriores from "./pages/campanhas/campanhasAnteriores";
 import AdminGerenciamento from "./pages/admin/adminGerenciamento";
 import AdminHome from "./pages/admin/admin";
 import AdminOngs from "./pages/admin/adminOngs";
 import AdminPets from "./pages/admin/adminPets";
 import AdminUsuarios from "./pages/admin/adminUsuarios";
-import AdminPeriodoCadastro from "./pages/admin/adminPetsHistorico";
 import AdminOngsDetalhes from "./pages/admin/adminOngDetalhes";
 import AdminGerenciarPetsOng from "./pages/admin/adminOngPets";
 import AdminHistoricoPets from "./pages/admin/adminPetsHistorico";
+import GerenciarRegistro from "./pages/gerenciar/gerenciarRegistro";
 
 function App() {
   return (
@@ -62,6 +62,7 @@ function App() {
       />
       <Route path="/nova-campanha" element={<NovaCampanha />} />
       <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} />
+      <Route path="/gerenciar-registro" element={<GerenciarRegistro/>} />
       /* Admin */
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/gerenciamento" element={<AdminGerenciamento />} />

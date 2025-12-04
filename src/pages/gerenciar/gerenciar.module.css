@@ -1,0 +1,402 @@
+.pageContainer {
+  padding: 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.btnVoltar {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.btnVoltar:hover {
+  color: #2b6b99;
+}
+
+/* === CABEÇALHO (Animal Header) === */
+.animalHeader {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+  align-items: flex-start;
+}
+
+.animalImageWrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+}
+
+.animalImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.animalContent {
+  flex-grow: 1;
+}
+
+.animalTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.animalName {
+  font-size: 2.5rem;
+  color: #2b6b99;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btnStatus, .statusBadge {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: default;
+}
+
+.animalTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  color: #2b6b99;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.animalStory {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  max-width: 800px;
+}
+
+.animalLocation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* === TÍTULOS E PAINÉIS === */
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #2b6b99;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.detailsPanel {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-bottom: 30px;
+}
+
+/* === LAYOUTS DE GRID === */
+
+/* Grid Principal (Usado no Gerenciar Adoção: Lista Esq + Detalhe Dir) */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Grid de Informações (Usado no Gerenciar Registro: 4 Colunas) */
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+}
+
+/* Grid de Dados Duplo (Usado no Gerenciar Adoção dentro do painel) */
+.dataGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+/* === COLUNAS E ESTILOS DE TEXTO === */
+.column {
+  padding: 0 30px;
+}
+
+.column:first-child {
+  padding-left: 0;
+}
+
+.columnBorderLeft {
+  border-left: 1px solid #e0e0e0;
+}
+
+.columnHeader {
+  font-size: 1.1rem;
+  color: #2b6b99;
+  margin-bottom: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Blocos de Informação */
+.infoBlock, .dataItem {
+  margin-bottom: 20px;
+}
+
+.infoBlock label, .dataItem label {
+  display: block;
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.infoBlock p, .dataItem p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* === BADGES E TAGS === */
+.tagsContainer, .tagsVertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.badgeBlue {
+  background-color: #eaf6ff;
+  color: #2b6b99;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.badgeLight {
+  background-color: #f8f9fa;
+  color: #444;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.badgeBlueOutline {
+  background-color: #fff;
+  color: #2b6b99;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid #cce0ee;
+  font-size: 0.9rem;
+}
+
+/* === LISTA DE CANDIDATOS (Específico do Gerenciar Adoção) === */
+.candidatesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.candidateCard {
+  background-color: #dbe9f3;
+  border-radius: 10px;
+  padding: 15px 20px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.candidateCard:hover {
+  background-color: #cce0ee;
+}
+
+.candidateCard.active {
+  background-color: #cce0ee;
+  border-color: #2b6b99;
+  box-shadow: 0 2px 8px rgba(43, 107, 153, 0.2);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.cardName {
+  font-weight: 700;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* === AÇÕES E BOTÕES (Onde fizemos as correções) === */
+.footerActions, .actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 50px;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.dividerVertical {
+  width: 1px;
+  height: 30px;
+  background-color: #ddd;
+  margin: 0 5px;
+}
+
+/* Botão Whatsapp (Extra do Gerenciar Adoção) */
+.btnWhatsapp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 2px solid #25D366;
+  background-color: #fff;
+  color: #25D366;
+  cursor: pointer;
+}
+
+.btnWhatsapp:hover {
+  background-color: #25D366;
+  color: white;
+}
+
+/* Botão NEGAR/RECUSAR (Transparente + Vermelho) */
+.btnNegar, .btnReject {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid transparent;
+}
+
+.btnNegar:hover, .btnReject:hover {
+  background-color: #fff5f5;
+  color: #a71d2a;
+}
+
+/* Botão ACEITAR/APROVAR (Sólido + Azul) */
+.btnAceitar, .btnApprove {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: #2b6b99;
+  color: white;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.btnAceitar:hover, .btnApprove:hover {
+  background-color: #1a4f75;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(43, 107, 153, 0.3);
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 900px) {
+  .animalHeader {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .animalTitleRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .mainGrid, .infoGrid, .dataGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .candidatesList {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .column {
+    padding: 0;
+  }
+  
+  .columnBorderLeft {
+    border-left: none;
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+  }
+
+  .footerActions, .actionButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .dividerVertical {
+    display: none;
+  }
+
+  .btnNegar, .btnAceitar, .btnReject, .btnApprove, .btnWhatsapp {
+    width: 100%;
+    justify-content: center;
+  }
+}

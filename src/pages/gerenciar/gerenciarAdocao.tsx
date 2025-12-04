@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./gerenciarAdocao.module.css";
+import styles from "./gerenciar.module.css";
 import Layout from "../../components/layout";
 import api from "../../services/api"; 
-import { FaCheck, FaTimes, FaPaw, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
+import { FaCheck, FaTimes, FaPaw, FaMapMarkerAlt, FaWhatsapp, FaArrowLeft } from "react-icons/fa";
 
 // --- TIPAGEM DO QUE VEM DO BACKEND ---
 export interface Formulario {
@@ -208,6 +208,11 @@ export default function GerenciarAdocao() {
   return (
     <Layout>
       <div className={styles.pageContainer}>
+
+        {/* Botão Voltar */}
+        <button onClick={() => navigate(-1)} className={styles.btnVoltar}>
+          <FaArrowLeft /> Voltar para lista
+        </button>
 
         {/* CABEÇALHO DO ANIMAL */}
         <section className={styles.animalHeader}>
