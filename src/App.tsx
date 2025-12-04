@@ -33,11 +33,10 @@ import AdminHome from "./pages/admin/admin";
 import AdminOngs from "./pages/admin/adminOngs";
 import AdminPets from "./pages/admin/adminPets";
 import AdminUsuarios from "./pages/admin/adminUsuarios";
+import AdminPeriodoCadastro from "./pages/admin/adminPetsHistorico";
 import AdminOngsDetalhes from "./pages/admin/adminOngDetalhes";
 import AdminGerenciarPetsOng from "./pages/admin/adminOngPets";
 import AdminHistoricoPets from "./pages/admin/adminPetsHistorico";
-import AdminLogs from "./pages/admin/adminLogs";
-import AdminMonitoramento from "./pages/admin/adminMonitoramento";
 
 function App() {
   return (
@@ -72,8 +71,6 @@ function App() {
       <Route path="/admin/ongs/:id/pets" element={<AdminGerenciarPetsOng />} />
       <Route path="/admin/usuarios" element={<AdminUsuarios />} />
       <Route path="/admin/historico-pets" element={<AdminHistoricoPets />} />
-      <Route path="/admin/logs" element={<AdminLogs />} />
-      <Route path="/admin/monitoramento" element={<AdminMonitoramento />} />
       
       <Route path="/config" element={<ConfigMenu />} />
       <Route element={<ConfigLayout />}>

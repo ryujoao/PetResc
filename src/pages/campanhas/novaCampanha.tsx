@@ -62,7 +62,7 @@ export default function NovaCampanha() {
         data.append("imagem", imagemArquivo);
       }
 
-      const response = await fetch("https://petresc.onrender.com/api/campanhas", {
+      const response = await fetch("https://petresc.onrender.com/api/campanha", {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}` 
