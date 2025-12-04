@@ -587,7 +587,7 @@
   text-align: right;
   word-break: break-word; /* Quebra palavras longas (ex: email) */
   flex-grow: 1; /* Ocupa o espaço restante */
-  font-weight: 400;
+  
 }
 
 /* Ajuste para mobile: label em cima, valor embaixo */

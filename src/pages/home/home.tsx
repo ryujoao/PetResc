@@ -10,7 +10,6 @@ import SaibaMais from "./saibaMais";
 
 // Componentes específicos
 import MeusAnimais from "./meusAnimais";
-import OngsProximas from "./ongsProximas";
 import AnimaisCadastrados from "./animaisCadastrados";
 
 export default function Home() {
@@ -89,7 +88,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <OngsProximas />
         </>
       );
     }

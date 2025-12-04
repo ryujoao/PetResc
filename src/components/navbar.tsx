@@ -11,7 +11,7 @@ export default function Nav() {
 
   // --- MODO DE TESTE PARA VOCÊ VER A NAV DE ADMIN ---
   // Mude para FALSE quando tiver o login real funcionando
-  const MODO_TESTE_ADMIN = false; 
+  const MODO_TESTE_ADMIN = true; 
 
   // --- LÓGICA DE ROLES ---
   const isAdmin = MODO_TESTE_ADMIN || (isAuthenticated && user && user.role === "ADMIN");
@@ -90,4 +90,4 @@ export default function Nav() {
       </div>
     </>
   );
-}
+} 

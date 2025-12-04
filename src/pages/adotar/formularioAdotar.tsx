@@ -50,13 +50,16 @@ export type FormData = {
   bairro: string;
   estado?: string;
   cidade?: string;
+  
+  // Preferências e Perguntas
   tipoMoradia: string;
   quintal: string;
   tipoMoradiaChoice?: string;
-  portesAceitos?: string;
-  animaisAceitos?: string;
+  portesAceitos?: string[]; 
+  animaisAceitos?: string[];
   jaViuPet?: string;
-  qualTipoPet?: string;
+  idAnimal?: string;
+  qualTipoPet?: string[];
   preferenciaPet?: string;
   pessoasNoLar?: string;
   outrosAnimaisLocal?: {
@@ -64,8 +67,9 @@ export type FormData = {
     "Tipo de Animal": string;
   };
   alergia?: string;
-  aceitaTermo?: boolean;
   
+  // Termo e Legado
+  aceitaTermo?: boolean;
   quintalTelado?: string;
   janelasTeladas?: string;
   moradiaPropria?: string;
@@ -84,12 +88,14 @@ export type FormData = {
 export default function FormularioAdotar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth(); // Importante: setUser para atualizar contexto
 
   const queryParams = new URLSearchParams(location.search);
   const animalId = location.state?.animalId || queryParams.get("animalId");
 
   const [sucessoOpen, setSucessoOpen] = useState(false);
+  const [msgSucesso, setMsgSucesso] = useState("Operação realizada com sucesso!");
+
   const [majorStep, setMajorStep] = useState(0);
   const [subStep, setSubStep] = useState(0);
   const [canProceed, setCanProceed] = useState(true);
@@ -111,32 +117,111 @@ export default function FormularioAdotar() {
     aceitaTermo: false,
   });
 
+  // --- 1. CARREGAR DADOS E PREENCHER AUTOMATICAMENTE ---
   useEffect(() => {
-    if (user) {
-      setData((prev) => ({
-        ...prev,
-        nome: user.nome || "",
-        email: user.email || "",
-        telefone: user.telefone || "",
-        cep: user.cep || "",
-        rua: user.rua || "",
-        numero: user.numero || "",
-        complemento: user.complemento || "",
-        bairro: user.bairro || "",
-        cidade: user.cidade || "",
-        estado: user.estado || "",
-      }));
-    }
-  }, [user]);
+    // Função para buscar os dados completos do usuário no banco
+    const fetchDadosCompletos = async () => {
+      if (!user?.id) return;
+
+      try {
+        // Forçamos uma busca atualizada no backend para pegar as preferências salvas
+        const response = await api.get(`/usuarios/${user.id}`);
+        const dadosSalvos = response.data;
+
+        // Função auxiliar para tentar fazer o parse de JSON com segurança
+        const safeJsonParse = (valor: any) => {
+            try {
+                // Se já for array, retorna. Se for string, faz parse.
+                return Array.isArray(valor) ? valor : JSON.parse(valor);
+            } catch {
+                return []; // Se der erro, retorna array vazio
+            }
+        };
+
+        const safeObjParse = (valor: any) => {
+            try {
+                return typeof valor === 'object' ? valor : JSON.parse(valor);
+            } catch {
+                return { Quantidade: "0", "Tipo de Animal": "" };
+            }
+        };
+
+        setData((prev) => ({
+          ...prev,
+          // 1. Dados Pessoais Básicos
+          nome: dadosSalvos.nome || user.nome || "",
+          email: dadosSalvos.email || user.email || "",
+          telefone: dadosSalvos.telefone || user.telefone || "",
+          cep: dadosSalvos.cep || user.cep || "",
+          rua: dadosSalvos.rua || user.rua || "",
+          numero: dadosSalvos.numero || user.numero || "",
+          complemento: dadosSalvos.complemento || user.complemento || "",
+          bairro: dadosSalvos.bairro || user.bairro || "",
+          cidade: dadosSalvos.cidade || user.cidade || "",
+          estado: dadosSalvos.estado || user.estado || "",
+
+          // 2. Preferências e Moradia (Se existirem no banco)
+          // O backend deve retornar esses campos. Se não retornar, fica vazio.
+          tipoMoradia: dadosSalvos.tipoMoradia || prev.tipoMoradia,
+          tipoMoradiaChoice: dadosSalvos.tipoMoradia || prev.tipoMoradiaChoice, // Mapeia para o mesmo valor
+          quintal: dadosSalvos.possuiQuintal === 'sim' ? 'sim' : 'nao',
+          
+          // 3. Arrays (Checkbox) - Precisam de Parse se o banco salvar como String
+          portesAceitos: safeJsonParse(dadosSalvos.portesAceitos),
+          animaisAceitos: safeJsonParse(dadosSalvos.animaisAceitos),
+          qualTipoPet: safeJsonParse(dadosSalvos.tipoPetInteresse),
+          
+          // 4. Outros campos
+          preferenciaPet: dadosSalvos.preferenciaSexo || prev.preferenciaPet,
+          jaViuPet: dadosSalvos.idAnimalInteresse ? "Sim, já vi" : "Não, quero achar um",
+          idAnimal: dadosSalvos.idAnimalInteresse || "",
+          
+          pessoasNoLar: dadosSalvos.pessoasNaCasa || "",
+          alergia: dadosSalvos.alergias === 'sim' ? 'sim' : 'nao',
+          
+          // Objeto complexo (Outros animais)
+          outrosAnimaisLocal: safeObjParse(dadosSalvos.historicoAnimais),
+          
+          // 5. Demais campos booleanos/texto
+          quintalTelado: dadosSalvos.quintalTelado,
+          janelasTeladas: dadosSalvos.janelasTeladas,
+          moradiaPropria: dadosSalvos.moradiaPropria,
+          todosConcordam: dadosSalvos.todosConcordam,
+          criancasEmCasa: dadosSalvos.criancasEmCasa,
+          horasSozinho: dadosSalvos.horasSozinho,
+          rotinaPasseios: dadosSalvos.rotinaPasseios,
+          quemCuidara: dadosSalvos.quemCuidara,
+          teveAnimaisAntes: dadosSalvos.teveAnimaisAntes,
+          temVeterinario: dadosSalvos.temVeterinario,
+          cienteCustos: dadosSalvos.cienteCustos,
+          motivoAdocao: dadosSalvos.motivoAdocao,
+          observacoes: dadosSalvos.observacoes,
+        }));
+        
+        // --- PULO DO GATO ---
+        // Se detectarmos que os dados essenciais já estão preenchidos,
+        // podemos setar o "canProceed" como true automaticamente para todas as etapas.
+        if (dadosSalvos.tipoMoradia && dadosSalvos.pessoasNaCasa) {
+            setCanProceed(true);
+        }
+
+      } catch (error) {
+        console.error("Erro ao carregar dados do usuário:", error);
+      }
+    };
+
+    fetchDadosCompletos();
+  }, [user?.id]); // Roda quando o ID do usuário estiver disponível
+
 
   const majorSteps = [
     { id: 0, title: "Introdução", pages: 1 },
     { id: 1, title: "Informações Pessoais", pages: 1 },
     { id: 2, title: "Sobre espaço", pages: 3 },
-    { id: 3, title: "Preferências", pages: 3 },
+    { id: 3, title: "Preferências", pages: 2 },
     { id: 4, title: "Recursos & Lar", pages: 3 },
     { id: 5, title: "Termo de Responsabilidade", pages: 1 },
-    { id: 6, title: "Concluído", pages: 1 }, // Passo de Revisão
+    { id: 6, title: "Concluído", pages: 1 },
   ];
 
   const update = (patch: Partial<FormData>) =>
@@ -144,9 +229,10 @@ export default function FormularioAdotar() {
 
   const goNext = () => {
     if (!canProceed) return;
+
     const block = majorSteps[majorStep];
     
-    // Se estivermos no passo 6 (Revisão), o botão deve chamar o Submit
+    // Se estiver na tela de revisão (passo 6), o botão chama o Submit
     if (majorStep === 6) {
         handleSubmit();
         return;
@@ -174,6 +260,7 @@ export default function FormularioAdotar() {
     setCanProceed(true);
   };
 
+  // --- 2. LÓGICA INTELIGENTE DE ENVIO ---
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
@@ -182,55 +269,82 @@ export default function FormularioAdotar() {
       return;
     }
 
-    if (!animalId) {
-        alert("Erro: ID do animal não encontrado. Volte e selecione um animal.");
-        return;
-    }
-
     setIsSubmitting(true);
 
     try {
-        const payload = {
-            animalId: parseInt(animalId),
-            respostasFormulario: {
-                tipoMoradia: data.tipoMoradiaChoice || data.tipoMoradia || "Não informado",
-                possuiQuintal: data.quintal === 'sim' ? 'sim' : 'nao', 
-                quintalTelado: data.quintalTelado || 'nao',
-                janelasTeladas: data.janelasTeladas || 'nao',
-                moradiaPropria: data.moradiaPropria || 'nao',
+        // PASSO A: Sempre salvar/atualizar os dados do usuário
+        if (user?.id) {
+            const dadosAtualizados = {
+                // Dados básicos
+                nome: data.nome,
+                telefone: data.telefone,
+                cep: data.cep,
+                rua: data.rua,
+                numero: data.numero,
+                complemento: data.complemento,
+                bairro: data.bairro,
+                cidade: data.cidade,
+                estado: data.estado,
                 
-                pessoasNaCasa: data.pessoasNoLar || "1",
-                todosConcordam: data.todosConcordam || 'sim',
-                criancasEmCasa: data.criancasEmCasa || 'nao',
-                alergias: data.alergia === 'sim' ? 'sim' : 'nao',
+                // Se o seu backend suportar salvar preferências no perfil do usuário,
+                // adicione aqui os campos extras (ex: tipoMoradia, portesAceitos, etc)
+                // Se não suportar, ele vai apenas atualizar o endereço, o que já ajuda muito.
+            };
 
-                horasSozinho: data.horasSozinho || "0",
-                rotinaPasseios: data.rotinaPasseios || "Não informado",
-                quemCuidara: data.quemCuidara || "Eu mesmo",
+            await api.put(`/usuarios/${user.id}`, dadosAtualizados);
+            
+            // Atualiza o contexto global para não precisar recarregar página
+            setUser({ ...user, ...dadosAtualizados });
+        }
 
-                possuiOutrosAnimais: data.outrosAnimaisLocal?.Quantidade !== "0" && data.outrosAnimaisLocal?.Quantidade !== undefined ? 'sim' : 'nao',
-                historicoAnimais: JSON.stringify(data.outrosAnimaisLocal),
+        // PASSO B: Se tiver animal, cria o pedido
+        if (animalId) {
+            const payload = {
+                animalId: parseInt(animalId),
+                respostasFormulario: {
+                    // Mapeamento dos campos
+                    tipoMoradia: data.tipoMoradiaChoice || data.tipoMoradia || "Não informado",
+                    possuiQuintal: data.quintal === 'sim' ? 'sim' : 'nao', 
+                    quintalTelado: data.quintalTelado || 'nao',
+                    janelasTeladas: data.janelasTeladas || 'nao',
+                    moradiaPropria: data.moradiaPropria || 'nao',
+                    pessoasNaCasa: data.pessoasNoLar || "1",
+                    todosConcordam: data.todosConcordam || 'sim',
+                    criancasEmCasa: data.criancasEmCasa || 'nao',
+                    alergias: data.alergia === 'sim' ? 'sim' : 'nao',
+                    horasSozinho: data.horasSozinho || "0",
+                    rotinaPasseios: data.rotinaPasseios || "Não informado",
+                    quemCuidara: data.quemCuidara || "Eu mesmo",
+                    possuiOutrosAnimais: data.outrosAnimaisLocal?.Quantidade !== "0" && data.outrosAnimaisLocal?.Quantidade !== undefined ? 'sim' : 'nao',
+                    historicoAnimais: JSON.stringify(data.outrosAnimaisLocal),
+                    teveAnimaisAntes: data.teveAnimaisAntes || 'nao',
+                    temVeterinario: data.temVeterinario || 'nao',
+                    cienteCustos: data.cienteCustos || 'sim',
+                    motivoAdocao: data.motivoAdocao || "Interesse em adoção",
+                    observacoes: data.observacoes || "",
+                    
+                    // Arrays convertidos para string
+                    portesAceitos: JSON.stringify(data.portesAceitos),
+                    animaisAceitos: JSON.stringify(data.animaisAceitos),
+                    tipoPetInteresse: JSON.stringify(data.qualTipoPet),
+                    preferenciaSexo: data.preferenciaPet,
+                    idAnimalInteresse: data.idAnimal
+                }
+            };
 
-                teveAnimaisAntes: data.teveAnimaisAntes || 'nao',
-                temVeterinario: data.temVeterinario || 'nao',
-
-                cienteCustos: data.cienteCustos || 'sim',
-
-                motivoAdocao: data.motivoAdocao || "Interesse em adoção",
-                observacoes: data.observacoes || ""
-            }
-        };
-
-        console.log("Enviando...", payload);
-        await api.post('/pedidos-adocao', payload);
+            await api.post('/pedidos-adocao', payload);
+            setMsgSucesso("Pedido de adoção enviado com sucesso!");
+        } else {
+            // Se NÃO tem animal, apenas atualizou o perfil
+            setMsgSucesso("Suas preferências foram salvas! Agora você pode escolher um pet.");
+        }
 
         setSucessoOpen(true);
-        // Não precisamos mudar o step aqui, o modal já vai aparecer
 
     } catch (error) {
         console.error("Erro no envio:", error);
         if (error instanceof AxiosError && error.response) {
-            alert(error.response.data.error || "Erro ao processar o pedido.");
+            alert(error.response.data.error || "Erro ao processar.");
         } else {
             alert("Erro de conexão.");
         }
@@ -243,22 +357,38 @@ export default function FormularioAdotar() {
 
   const renderCurrent = () => {
     switch (majorStep) {
-      case 0: return <StepIntro onChange={update} setCanProceed={setCanProceed} />;
-      case 1: return <StepPersonal data={data} onChange={update} setCanProceed={setCanProceed} />;
-      case 2: return <StepQuestionsGroup groupId={2} subStep={subStep} onAnswer={update} data={data} />;
-      case 3: return <StepQuestionsGroup groupId={3} subStep={subStep} onAnswer={update} data={data} />;
-      case 4: return <StepQuestionsGroup groupId={4} subStep={subStep} onAnswer={update} data={data} />;
-      case 5: return <StepTermo data={data} onChange={update} setCanProceed={setCanProceed} />;
-      case 6: return <StepFinal data={data} />; // Tela de Revisão
-      default: return null;
+      case 0: 
+        return <StepIntro onChange={update} setCanProceed={setCanProceed} />;
+      case 1: 
+        return <StepPersonal data={data} onChange={update} setCanProceed={setCanProceed} />;
+      case 2: 
+        return <StepQuestionsGroup groupId={2} subStep={subStep} onAnswer={update} data={data} setCanProceed={setCanProceed} />;
+      case 3: 
+        return <StepQuestionsGroup groupId={3} subStep={subStep} onAnswer={update} data={data} setCanProceed={setCanProceed} />;
+      case 4: 
+        return <StepQuestionsGroup groupId={4} subStep={subStep} onAnswer={update} data={data} setCanProceed={setCanProceed} />;
+      case 5: 
+        return <StepTermo data={data} onChange={update} setCanProceed={setCanProceed} />;
+      case 6: 
+        return <StepFinal data={data} />;
+      default: 
+        return null;
     }
+  };
+
+  // Texto dinâmico do botão final
+  const getButtonText = () => {
+    if (isSubmitting) return "Enviando...";
+    if (majorStep === 6) {
+        return animalId ? "Confirmar Pedido" : "Salvar Preferências";
+    }
+    return "Próximo";
   };
 
   return (
     <Layout>
       <div className={styles.pageFormularioAdotar}>
         
-        {/* Barra de Progresso */}
         <div className={`${styles.barraProgresso} topBar`}>
           <div className={styles.progressoContainer}>
             <div className={styles.progressoLinha} />
@@ -285,13 +415,14 @@ export default function FormularioAdotar() {
 
         <main className={`${styles.conteudo} ${majorStep === 5 || majorStep === 6 ? styles.conteudoFullWidth : ""}`}>
           {majorStep === 0 && subStep === 0 && (
-            <h1 className={styles.titulo}>Formulário de Interesse em Adoção</h1>
-          )}
-          
-          {majorStep === 0 && subStep === 0 && (
-            <p className={styles.introducaoFormulario}>
-              Bem-vindo(a) ao nosso Formulário de Interesse...
-            </p>
+            <>
+                <h1 className={styles.titulo}>Formulário de Interesse</h1>
+                <p className={styles.introducaoFormulario}>
+                {animalId 
+                    ? "Preencha seus dados para enviar o pedido de adoção." 
+                    : "Preencha seus dados para agilizar suas futuras adoções."}
+                </p>
+            </>
           )}
 
           <form
@@ -303,7 +434,6 @@ export default function FormularioAdotar() {
           >
             {renderCurrent()}
             
-            {/* ⭐️ AQUI ESTAVA O PROBLEMA: AGORA APARECE NO PASSO 6 (REVISÃO) */}
             <div className={styles.controls}>
                 <button
                     type="button"
@@ -319,11 +449,9 @@ export default function FormularioAdotar() {
                     onClick={goNext}
                     className={styles.botoesAvancar}
                     disabled={!canProceed || isSubmitting}
+                    style={{ opacity: !canProceed ? 0.5 : 1, cursor: !canProceed ? 'not-allowed' : 'pointer' }}
                 >
-                    {isSubmitting 
-                        ? "Enviando..." 
-                        : (majorStep === 6 ? "Confirmar Envio" : "Próximo") 
-                    }
+                    {getButtonText()}
                 </button>
             </div>
           </form>
@@ -331,10 +459,12 @@ export default function FormularioAdotar() {
       </div>
       
       <Sucesso 
-        isOpen={sucessoOpen} 
+        isOpen={sucessoOpen}
+        // Se quiser exibir a mensagem customizada no modal, teria que passar a prop
+        // message={msgSucesso} (Se seu componente Sucesso aceitar)
         onClose={() => { 
             setSucessoOpen(false); 
-            navigate('/central-adocao'); 
+            navigate(animalId ? '/pedidos' : '/central-adocao'); 
         }} 
       />
     </Layout>

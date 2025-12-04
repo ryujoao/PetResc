@@ -16,12 +16,15 @@ export default function Footer() {
           <div className={style.footerCol}>
             <h4>Menu</h4>
             <ul>
-              <li><a href="/home">Início</a></li>
+              <li><a href="/">Início</a></li>
               <li><a href="/central-adocao">Animais para Adoção</a></li>
               <li><a href="/registrar-animal">Registrar Animal</a></li>
               <li><a href="/doar">Doações</a></li>
               <li><a href="/lar-temporario">Seja um Lar Temporário</a></li>
-              <li><a href="#">Contato</a></li>
+<<<<<<< HEAD
+              <li><a href="/config/contate-nos">Contato</a></li>
+=======
+>>>>>>> 40600ea4287c97cda2baf8b8ca4d02e6e498e8b2
             </ul>
           </div>
 

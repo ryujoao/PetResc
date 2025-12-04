@@ -1,4 +1,5 @@
 import styles from "./formularioAdotar.module.css";
+// Certifique-se de que o caminho do import está correto para o seu projeto
 import type { FormData } from "./formularioAdotar";
 import { BsCheckCircleFill } from "react-icons/bs";
 
@@ -30,7 +31,6 @@ export default function StepFinal({ data }: Props) {
     });
   };
 
-  
   const formatOutrosAnimais = () => {
     if (
       data.outrosAnimaisLocal && 
@@ -40,6 +40,15 @@ export default function StepFinal({ data }: Props) {
         return `${data.outrosAnimaisLocal.Quantidade} - ${data.outrosAnimaisLocal["Tipo de Animal"] || ''}`;
     }
     return "Não possui";
+  };
+
+  // --- NOVA FUNÇÃO AUXILIAR ---
+  // Se for uma lista (Array), junta com vírgulas. Se for texto, devolve o texto.
+  const formatValue = (val: string | string[] | undefined | null): string => {
+    if (Array.isArray(val)) {
+      return val.join(", "); // Ex: "Gato, Cachorro"
+    }
+    return val || ""; // Retorna o valor ou string vazia se for null/undefined
   };
 
   return (
@@ -87,24 +96,22 @@ export default function StepFinal({ data }: Props) {
 
           {/* Sobre o Espaço */}
           <h3 className={styles.reviewSubheader}>Sobre o Espaço</h3>
-          {/* Usa o 'choice' se existir, senão usa o padrão */}
           <ReviewItem label="Tipo de moradia" value={data.tipoMoradiaChoice || data.tipoMoradia} />
           <ReviewItem label="Possui quintal?" value={data.quintal} />
           
-          {/* Preferências */}
+          {/* Preferências - AQUI USAMOS A NOVA FUNÇÃO */}
           <h3 className={styles.reviewSubheader}>Preferências</h3>
-          <ReviewItem label="Portes que aceita" value={data.portesAceitos} />
-          <ReviewItem label="Animais que aceita" value={data.animaisAceitos} />
+          <ReviewItem label="Portes que aceita" value={formatValue(data.portesAceitos)} />
+          <ReviewItem label="Animais que aceita" value={formatValue(data.animaisAceitos)} />
           <ReviewItem label="Já viu o pet?" value={data.jaViuPet} />
 
           {/* Recursos & Lar */}
           <h3 className={styles.reviewSubheader}>Recursos e Lar</h3>
-          <ReviewItem label="Tipo de pet preferido" value={data.qualTipoPet} />
+          <ReviewItem label="Tipo de pet preferido" value={formatValue(data.qualTipoPet)} />
           <ReviewItem label="Prefere..." value={data.preferenciaPet} />
           <ReviewItem label="Pessoas no lar" value={data.pessoasNoLar} />
           <ReviewItem label="Alguém alérgico?" value={data.alergia} />
           
-          {/* 🛠️ AQUI: Usando a função formatada para não quebrar o React */}
           <ReviewItem label="Outros animais" value={formatOutrosAnimais()} />
           
         </div>

@@ -136,7 +136,7 @@ export default function AnimaisCadastrados() {
         <div className={styles.listaScroll}>
             {listas.pedidos.length > 0 ? listas.pedidos.map(a => renderCard(a, 'Pendente', '#fff8e1')) : <EmptyList msg="Nenhuma solicitação pendente." />}
         </div>
-        <Link to="/gerenciar-adocao" className={styles.verMais}>Ver Solicitações</Link>
+        <Link to="/gerenciar-adocao/" className={styles.verMais}>Ver Solicitações</Link>
       </div>
 
       {/* 4. ADOÇÕES CONCLUÍDAS */}
