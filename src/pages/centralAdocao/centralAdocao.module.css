@@ -1,0 +1,255 @@
+.pageCentralAdocao {
+color: #0f4979;
+width: 100%;
+background-color: #fff;
+display: grid;
+}
+
+.titulo {
+font-size: 3rem; 
+font-weight: 700;
+text-align: center;
+margin: 1.5rem 0 0.5rem 0;
+}
+
+.subtitulo {
+text-align: center;
+font-weight: 600;
+font-size: 1.4rem; 
+margin-bottom: 3rem; 
+}
+
+.containerFiltrosPets {
+display: flex;
+gap: 7rem; 
+align-items: flex-start;
+width: 100%; 
+padding: 0 4rem 4rem 4rem;
+}
+
+/* --- ESTILOS DO PAINEL DE FILTROS --- */
+.filtros {
+width: 280px; 
+flex-shrink: 0; 
+border-right: 1px solid #eee;
+padding-right: 2rem;
+margin-right: 2rem;
+  
+}
+
+.tituloFiltro {
+display: flex;
+justify-content: flex-start; 
+font-size: 1.5rem; 
+font-weight: bold;
+padding-left: 0.5rem;
+}
+
+.filtroGrupo {
+display: flex;
+flex-direction: column;
+gap: 0.2rem; 
+padding: 1rem 0.5rem; 
+}
+
+.filtroGrupo h3 {
+font-size: 1.1rem; 
+font-weight: bold;
+color: #0f4979; 
+padding-bottom: 1rem;
+}
+
+/* --- Selects (Dropdowns) --- */
+.selectFiltro {
+padding: 0.6rem 0.5rem; 
+border-radius: 6px;
+border: 1px solid #ccc;
+background-color: white;
+font-size: 1rem;
+min-height: 40px; 
+}
+
+
+/* --- ESTILOS DE CAIXAS CUSTOMIZADAS (Radio e Checkbox) --- */
+
+/* Classe para o contêiner (label) do filtro. */
+.radioCustomizado,
+.checkboxCustomizado {
+    display: block; 
+    position: relative;
+    padding-left: 25px; /* Cria o espaço para o checkmark/radio customizado */
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+    user-select: none;
+}
+
+/* **CRUCIAL:** Esconde o input nativo */
+.radioCustomizado input,
+.checkboxCustomizado input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* O elemento span que será o checkmark/radio visual */
+.checkmark {
+    position: absolute;
+    top: 2px; 
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: white;
+    border: 1px solid #0f4979; 
+    border-radius: 4px; /* Quadrado padrão */
+    box-sizing: border-box;
+    flex-shrink: 0; 
+}
+
+/* Estilo para Radio Buttons (Faz o círculo) */
+.radioCustomizado .checkmark {
+    border-radius: 50%; 
+}
+
+/* Ícone de Checkbox (o "V") */
+.checkboxCustomizado input:checked ~ .checkmark::after {
+    content: "✔";
+    color: #0f4979;
+    font-size: 0.8rem;
+    position: absolute;
+    left: 3px;
+    top: -1px;
+}
+
+/* Ícone de Radio (o ponto central) */
+.radioCustomizado input:checked ~ .checkmark::after {
+    content: "";
+    position: absolute;
+    top: 4px; 
+    left: 4px; 
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0f4979; 
+    display: block;
+}
+
+
+/* --- ESTILOS DA GRADE DE CORES --- */
+.gradeCores {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 0.5rem 1rem;
+}
+
+.itemCor {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+font-size: 1rem;
+cursor: pointer;
+position: relative;
+}
+
+/* **CRUCIAL:** Esconde o input nativo para Cor */
+.itemCor input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+height: 0;
+width: 0;
+}
+
+/* O elemento que será o indicador de seleção (circulo de seleção da cor) */
+.caixaCheckbox {
+width: 18px;
+height: 18px;
+border: 1px solid #0f4979;
+border-radius: 50%; 
+background-color: white;
+transition: all 0.2s ease;
+position: relative;
+flex-shrink: 0; 
+}
+
+/* Ícone de preenchimento quando marcado (Cor) */
+.itemCor input:checked + .caixaCheckbox::after {
+content: "";
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background-color: #0f4979;
+position: absolute;
+top: 3px;
+left: 3px;
+display: block;
+}
+
+/* --- ESTILOS DAS BOLINHAS DE COR (Nome da classe deve corresponder ao valor do filtro em MINÚSCULO) --- */
+.bolinhaCor {
+width: 18px; 
+height: 18px; 
+border-radius: 50%;
+flex-shrink: 0; 
+border: 1px solid rgba(0, 0, 0, 0.15); 
+}
+
+.preto { background-color: black; }
+.branco { background-color: white; } 
+.marrom { background-color: #8B4513; }
+.cinza { background-color: gray; }
+.caramelo { background-color: #d2a679; }
+.azul { background-color: blue; } 
+.vermelho { background-color: red; }
+.verde { background-color: green; }
+.laranja { background-color: orange; }
+.amarelo { background-color: yellow; }
+
+
+/* --- ESTILOS DA LISTA DE PETS --- */
+.listaPets {
+flex-grow: 1;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+gap: 30px;  
+}
+
+.cardPet {
+display: flex;
+flex-direction: column;
+border-radius: 8px;
+padding: 0.5rem;
+height: auto;
+width: 100%;
+text-decoration: none;
+color: inherit;
+}
+
+.cardPet img {
+width: 100%;
+height: 200px; 
+object-fit: cover;
+border-radius: 6px;
+margin-bottom: 0.5rem;
+}
+
+.cardPet h3 {
+font-size: 1.5rem; 
+margin: 0;
+}
+
+.cardPet p {
+font-size: 1.2rem;
+margin: 0;
+color: #666;
+}
+
+.doadorNome {
+ font-size: 1rem;
+ font-weight: bold;
+ color: #0f4979;
+ margin-top: 0.25rem !important;
+}

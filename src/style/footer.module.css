@@ -1,0 +1,108 @@
+
+.footer {
+  width: 100%;
+  background-color: #286699;
+  padding: 50px 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.containerFooter {
+  width: 100%;
+  max-width: 1400px; 
+  margin: 0 auto;    
+  padding: 0 2rem;
+}
+
+.rowFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footerCol {
+  flex: 1;
+  min-width: 200px;
+  padding: 0 20px;
+  border-left: 1px solid #ffffff50;
+  
+}
+
+.footerCol:first-child {
+  border-left: none;
+}
+
+.footerCol h4 {
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 30px;
+  
+}
+
+.footerCol ul {
+  list-style: none;
+  padding: 0;
+  
+}
+
+.footerCol ul li {
+  margin: 10px 0;
+
+}
+
+.footerCol ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #cdd5db;
+  text-decoration: none;
+  font-weight: 300;
+  display: block;
+  transition: all 0.3s ease;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.footerCol ul li a:hover {
+  color: white;
+  padding-left: 10px;
+}
+
+.animaFooter {
+  font-family: "More Sugar", cursive;
+  font-size: 70px;
+  color: #fff;
+  -webkit-text-stroke: 1px #fff;
+  margin-bottom: 10px;
+}
+
+.animaDescricao {
+  font-size: 15px;
+  color: #cdd5db;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .rowFooter {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footerCol {
+    width: 100%;
+    text-align: center;
+    border-left: none;
+    border-top: 1px solid #ffffff30;
+    padding-top: 20px;
+  }
+
+  .petcoDescricao {
+    text-align: center;
+  }
+}

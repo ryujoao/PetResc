@@ -1,0 +1,251 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%;
+  padding: 2rem 1rem;
+}
+
+.formHeader {
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 2rem;
+}
+
+.titulo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f4979;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; 
+  width: 100%;
+  max-width: 750px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.inputGroup label {
+  font-size: 1.3rem;   
+  font-weight: 700;
+  color: #0f4979;
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.inputGroup input, .inputGroup textarea {
+  
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #333;
+  background-color: #f3f8fc; 
+  border: 1px solid #dcecf7; 
+  border-radius: 8px;
+  box-sizing: border-box; 
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input:hover, .inputGroup textarea:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
+}
+
+.inputGroup input:focus, .inputGroup textarea:focus {
+  outline: none;
+  border-color: #286699; 
+  box-shadow: 0 0 0 3px rgba(40, 102, 153, 0.2);
+}
+
+
+.inputGroup input[readOnly] {
+  background-color: #e9ecef;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.inputGroup input[readOnly]:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.botaoSalvar {
+  background-color: #286699; 
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px; 
+  padding: 0.9rem 2rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  align-self: center; 
+  
+  
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
+}
+
+.botaoSalvar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #1e527a; 
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1.5rem; 
+}
+
+.rowItem {
+  flex: 1; 
+  min-width: 150px; 
+}
+
+.rowItemShort {
+  flex: 0 1 100px; 
+}
+
+
+
+.gridForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 1.5rem 2.5rem; 
+  width: 100%;
+}
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end; 
+  width: 100%;
+  margin-top: 1.5rem; 
+}
+
+
+.botaoSalvar {
+  
+  align-self: initial; 
+}
+
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 750px; 
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+
+.btnVoltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #0f4979;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 1rem;
+  transition: transform 0.2s;
+}
+
+.btnVoltar:hover {
+  transform: translateX(-5px);
+}
+
+
+.headerRow .titulo {
+  margin-bottom: 0; 
+  flex: 1; 
+  text-align: center;
+  padding-right: 2rem; 
+}
+
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+.inputWrapper input {
+  width: 100%;
+  padding: 0.75rem 3rem 0.75rem 0.9rem; 
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #333;
+  background-color: #f3f8fc;
+  border: 1px solid #dcecf7;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputWrapper input:focus {
+  outline: none;
+  border-color: #286699;
+  box-shadow: 0 0 0 3px rgba(40, 102, 153, 0.2);
+}
+
+
+.eyeIcon {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0f4979;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+
+.eyeIcon:hover {
+  opacity: 1;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .gridForm {
+    grid-template-columns: 1fr; /* Coluna única em telas pequenas */
+    gap: 1.5rem;
+  }
+
+  .buttonContainer {
+    justify-content: center; /* Centraliza o botão no mobile */
+  }
+  
+  .botaoSalvar {
+     width: 100%; /* Botão ocupa largura total no mobile */
+     align-self: center; /* Centraliza no mobile */
+  }
+
+  .formRow {
+    flex-direction: column; /* Empilha em telas pequenas */
+    gap: 1.5rem;
+  }
+  
+  .rowItemShort {
+    flex: 1; /* Ocupa 100% no mobile */
+  }
+}

@@ -1,0 +1,138 @@
+.containerPrincipal {
+    background: #fff;
+    min-height: 80vh;
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center; /* Centraliza as duas colunas */
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+}
+
+/* Colunas (Esquerda e Direita) */
+.containerMeusAnimais,
+.adocaoProcesso {
+    flex: 1; /* Ocupam o mesmo espaço */
+    min-width: 350px; /* Largura mínima */
+    max-width: 600px;
+    background-color: #F0F9FF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    padding-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.titulo {
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #B5D2E9;
+    border-radius: 8px;
+    width: 90%;
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- CARD --- */
+.card {
+    position: relative; /* Para os status absolutos */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #fff; /* Fundo branco destaca mais no azul claro */
+    border: 1px solid #B5D2E9;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    width: 90%;
+    padding: 1rem;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Imagem */
+.imgWrapper {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* Impede a imagem de esmagar */
+    border-radius: 50%; /* Imagem redonda fica elegante */
+    overflow: hidden;
+    border: 2px solid #eee;
+}
+
+.imgWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Informações */
+.infoCard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.cardNome {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.descricaoCard {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+.tagId {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Status Flutuantes */
+.statusSuperior {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #2b6b99;
+    background: #e6f2ff;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.statusInferior {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #e67e22; /* Laranja para status de pedido */
+}
+
+/* Divisor (se necessário) */
+.divisor {
+    border: 0;
+    border-left: 2px solid #ccc;
+    height: auto;
+    margin: 0 1rem;
+    display: none; /* Escondido por padrão, flex gap já resolve */
+}
+
+.mensagemVazio {
+    color: #666;
+    font-style: italic;
+    margin-top: 2rem;
+}

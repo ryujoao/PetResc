@@ -1,0 +1,373 @@
+.pagCadastro {
+  display: flex;
+}
+
+.containerForms {
+  width: 50%;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../../public/banners/cadastroBanner.png") no-repeat center
+    center;
+  padding: 2rem;
+  background-size: cover;
+  position: relative;
+}
+
+.bannerPadrao {
+  width: 50%;
+  background: #f0f9ff url("../../../public/banners/cadastroImagem.png")
+    no-repeat right;
+}
+
+.bannerUsuario {
+  width: 50%;
+  background: #f0f9ff url("../../../public/banners/cadastroUsuario.png")
+    no-repeat right;
+}
+
+.bannerOng {
+  width: 50%;
+  background: #f0f9ff url("../../../public/banners/cadastroOng.png");
+}
+
+.bannerLogin {
+  width: 50%;
+  background: #f0f9ff url("../../../public/banners/loginImagem.png") no-repeat
+    center bottom;
+  background-size: 600px;
+}
+
+.logoHeader a {
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #286699;
+  font-family: "More Sugar", cursive;
+  z-index: 10;
+  -webkit-text-stroke: 2px #286699;
+}
+
+.form {
+  background: transparent;
+  padding: 3 2 2 2;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.titulo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #286699;
+  text-align: center;
+}
+
+.subTitulo {
+  text-align: center;
+  color: #286699;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.botoesRedes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.botaoRede {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  max-width: 100%;
+  width: 480px;
+  height: 56px;
+  background-color: #fff;
+  color: #000000;
+  border: 1px solid #286699;
+}
+
+.botaoRede:hover {
+  color: #fff;
+  background: #286699;
+  transition: 0.3s;
+}
+
+.google {
+  width: 1.3rem;
+  margin-right: 5px;
+}
+
+.apple {
+  width: 1.3rem;
+  margin-right: 13px;
+}
+
+.divisoria {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 1rem 0;
+  color: #286699;
+  width: 100%;
+}
+
+.linhaEsquerda,
+.linhaDireita {
+  flex: 1;
+  height: 2px;
+  background-color: #286699;
+  opacity: 0.5;
+}
+
+.linhaEsquerda {
+  margin-right: 2rem;
+}
+
+.linhaDireita {
+  margin-left: 2rem;
+}
+
+.texto {
+  font-size: 1.5rem;
+  color: #286699;
+  white-space: nowrap;
+}
+
+.grupoInput {
+  display: block;
+  margin: 0.5rem 0;
+  color: #286699;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.linhaCampos {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.campoMetade {
+  flex: 1;
+  min-width: 0;
+}
+
+.inputLogin {
+  width: 100%;
+  background-color: #fff;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #123347;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+.inputLogin:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
+}
+
+.inputLoginSenha {
+  margin-bottom: 0px;
+}
+
+.botaoProx {
+  width: 100%;
+  background: #286699;
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  cursor: pointer;
+  font-size: 1.3rem;
+  border: 1px solid #286699;
+}
+
+.botaoProx:hover {
+  background: #fff;
+  color: #286699;
+  transition: 0.3s;
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #286699;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.loginLink a {
+  color: #286699;
+  text-decoration: none;
+}
+
+.loginLink a:hover {
+  text-decoration: underline;
+}
+
+.tituloEscolha {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #286699;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.escolhaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.navButton {
+  background: #286699;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border: 1px solid #286699;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.navButton:hover {
+  background: #fff;
+  color: #286699;
+}
+
+.navButtonBack {
+  background: #e0e0e0;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  flex: 0.5;
+}
+
+.navButtonBack:hover {
+  background: #d0d0d0;
+  color: #333;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.rowInputs {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.colInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.esqueciSenhaContainer {
+  display: flex;
+  justify-content: flex-end;  
+}
+
+.esqueciSenhaLink {
+  color: #286699;
+  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.esqueciSenhaLink:hover {
+  text-decoration: underline;
+  color: #1e4d75;
+}
+
+.instrucaoTexto {
+  text-align: center;
+  color: #5480aa;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+
+.otpContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+
+.otpInput {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  color: #123347;
+  font-weight: bold;
+  background-color: #fff;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.otpInput:focus {
+  outline: none;
+  border-color: #4baef2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
+}
+
+
+.reenviarLink {
+  display: block;
+  text-align: center;
+  color: #286699;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: none;
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.reenviarLink:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+

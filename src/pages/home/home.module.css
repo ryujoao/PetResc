@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #fff;
+  display: block;
+  overflow-x: hidden;
+  font-family: "Darker Grotesque", sans-serif;
+}
+
+/* Banner 1 (Topo) */
+.bannerUm {
+  width: 100%;
+  height: 100vh;
+  background: url("/banners/banner1.png") no-repeat bottom;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5vw;
+  box-sizing: border-box;
+  margin-top: -9rem;
+  padding-top: 9rem;
+}
+
+.bannerDois {
+  position: relative; /* Contexto para o position absolute */
+  width: 100%;
+  height: 80vh;
+  background: url("/banner2.png") no-repeat center bottom;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Conteúdo alinhado à direita */
+  overflow: hidden;
+  padding-right: 20vw;
+}
+
+/* --- IMAGEM DO GATINHO --- */
+.catImage {
+  position: absolute;
+  bottom: 0;
+  left: 2%; /* Posiciona na ESQUERDA, já que o texto está na direita */
+  width: 1800px; /* Tamanho padrão */
+  height: auto;
+  z-index: 1; /* Fica na frente do fundo */
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.bannerTres {
+  width: 100%;
+  height: 100vh;
+  background: url("../../../public/banners/banner3.png") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: -9rem;
+  padding-top: 9rem;
+  box-sizing: border-box;
+}
+
+/* Título e botão */
+.homeTitulo {
+  max-width: 600px;
+  text-align: left;
+  margin-left: 17rem;
+  margin-top: 7rem;
+  font-size: 3.2em;
+  line-height: 1.1;
+  position: relative;
+  z-index: 2;
+}
+
+.titulo {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  font-family: "More Sugar", cursive;
+  color: #286699;
+  margin-bottom: 20px;
+  -webkit-text-stroke: 2px #286699;
+}
+
+.subtitulo {
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.75rem 3rem;
+  border-radius: 15px;
+  border: none;
+  background-color: #4baef2;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 3rem;
+}
+
+.subtitulo:hover {
+  background-color: #1976d2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Conteúdo da caixa azul */
+.paginaDoar {
+  background: #0f4979;
+  color: #fff;
+  border-radius: 15px;
+  padding: 2.5rem 0;
+  max-width: 700px;
+  min-width: 40vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 2vw;
+  font-size: 1.2rem;
+  min-height: 350px;
+  z-index: 2; /* Garante que fique acima se o gato encostar */
+  position: relative;
+}
+
+.tituloDoar {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 1.2rem 0;
+}
+
+.paginaDoar p {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  font-size: 1.4rem;
+  padding: 0 4.5rem 0 4.5rem;
+}
+
+.divBotaoDoar {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.botaoDoar {
+  background: #fff;
+  border: none;
+  border-radius: 15px;
+  padding: 0.7rem 2rem;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botaoDoar a {
+  color: #000;
+  text-decoration: none;
+}
+
+.botaoDoar:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.botaoWrapper {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* --- MEDIA QUERIES (Ajustes para Notebooks) --- */
+
+@media (max-width: 1835px) { .homeTitulo { margin-left: 13rem; } }
+@media (max-width: 1653px) { .homeTitulo { margin-left: 10rem; } }
+
+/* Notebooks Grandes (1600px) */
+@media (max-width: 1600px) {
+  .catImage { width: 400px; } /* Reduz levemente */
+  .homeTitulo { margin-left: 8rem; }
+}
+
+@media (max-width: 1560px) { .homeTitulo { margin-left: 7rem; } }
+@media (max-width: 1443px) { .homeTitulo { margin-left: 5rem; } }
+
+/* Notebooks Padrão (1374px) */
+@media (max-width: 1374px) { 
+  .homeTitulo { margin-left: 3rem; }
+  .catImage { width: 350px; } /* Reduz para não invadir o texto */
+}
+
+@media (max-width: 1300px) { .homeTitulo { margin-left: 1.5rem; } }
+
+/* Mobile e Tablets */
+@media (max-width: 900px) {
+  .bannerUm {
+    justify-content: center;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .homeTitulo {
+    margin-left: 0;
+    margin-top: 0;
+    max-width: 90%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .catImage {
+    /* No mobile, esconde ou ajusta posição para não atrapalhar o texto */
+    width: 250px; 
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -20px;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .bannerDois {
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .paginaDoar {
+    margin-right: 0;
+    width: 95%;
+    padding: 2rem 1rem;
+  }
+  
+  .paginaDoar p {
+    padding: 0 1rem;
+    text-align: center;
+  }
+}

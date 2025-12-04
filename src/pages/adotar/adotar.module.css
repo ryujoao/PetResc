@@ -1,0 +1,227 @@
+.bannerAdotar {
+ width: 100%;
+ min-height: 100vh; 
+ background: url("../../../public/banners/animaisAdocao.png") no-repeat bottom;
+ background-size: cover;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ padding-left: 5vw;
+ box-sizing: border-box;
+}
+
+.homeTitulo {
+ max-width: 550px;
+ text-align: left;
+ margin-left: 17rem;
+ margin-top: 7rem;
+ font-size: 3.2em;
+ line-height: 1.1;
+}
+
+.titulo {
+ font-size: clamp(2.5rem, 6vw, 4rem);
+ font-weight: 700;
+ font-family: "More Sugar", cursive;
+ color: #286699;
+ margin-bottom: 20px;
+ -webkit-text-stroke: 2px #286699;
+}
+
+.subtitulo {
+ font-size: 1.4rem;
+ color: #fff;
+ cursor: pointer;
+ padding: 0.75rem 3rem;
+ border-radius: 15px;
+ border: none;
+ background-color: #4baef2;
+ transition: background-color 0.3s ease;
+ font-weight: bold;
+ display: inline-block;
+ margin-top: 10px;
+ margin-right: 3rem;
+ transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subtitulo:hover {
+ background-color: #1976d2;
+ transform: translateY(-3px);
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.secaoComoFunciona {
+ background-color: #f0f6fa;
+ padding: 4rem;
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.tituloSecao {
+ color: #0f4979;
+ font-size: 2.8rem;
+ font-weight: 700;
+ margin-bottom: 1.5rem;
+}
+
+.textoSecao {
+ max-width: 1400px;
+ font-size: 1.7rem;
+ line-height: 1.6;
+ color: #0f4979;
+}
+
+/* === SEÇÃO 3: ETAPAS (ICONES) === */
+.secaoEtapas {
+ background-color: white;
+ padding: 4rem;
+}
+
+.containerEtapas {
+ display: flex;
+ justify-content: space-around;
+ flex-wrap: wrap;
+ gap: 2rem;
+}
+
+.cartaoEtapa {
+ flex: 1;
+ min-width: 250px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ text-align: center;
+}
+
+.circuloIcone {
+ width: 80px;
+ height: 80px;
+ background-color: #0f4979;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 1.5rem;
+ color: white;
+ font-size: 2rem;
+}
+
+.tituloEtapa {
+ font-weight: 700;
+ font-size: 1.6rem;
+ margin-bottom: 0.5rem;
+ color: #000;
+}
+
+.descricaoEtapa {
+ font-size: 1.5rem;
+ line-height: 1.4;
+ color: #555;
+}
+
+@media (max-width: 1024px) {
+    .secaoComoFunciona,
+    .secaoEtapas {
+        padding: 3rem 1rem;
+    }
+
+    .textoSecao {
+        font-size: 1.5rem;
+    }
+
+    /* Ajuste para o homeTitulo em telas maiores que mobile, mas menores que desktop */
+    .homeTitulo {
+        margin-left: 5rem; /* Reduz a margem para caber mais na tela */
+        font-size: 2.8em;
+    }
+}
+
+/* Ajustes para Tablets e Celulares (Max 768px) */
+@media (max-width: 768px) {
+    
+    /* 🎯 BANNER PRINCIPAL - Ajusta altura para "diminuir" a imagem */
+    .bannerAdotar {
+        height: 60vh; /* Reduz a altura do banner em telas de tablet */
+        background-position: center; /* Centraliza a imagem no fundo */
+        justify-content: center; /* Centraliza o conteúdo horizontalmente */
+        padding-left: 0;
+        text-align: center; /* Centraliza o texto */
+    }
+
+    .homeTitulo {
+        text-align: center; /* Centraliza o texto */
+        margin-left: 0; /* Remove margem lateral */
+        margin-top: 0; /* Remove margem superior */
+        max-width: 90%;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.7); /* Adiciona um fundo para melhor leitura */
+        border-radius: 10px;
+        font-size: 2.5em; 
+    }
+
+    .titulo {
+        font-size: 2.5rem; /* Reduz o tamanho da fonte */
+        -webkit-text-stroke: 1.5px #286699;
+    }
+    
+    .subtitulo {
+        margin-right: 0; /* Remove margem lateral */
+        width: 80%; /* Ocupa quase a largura total */
+        text-align: center;
+        margin: 10px auto; /* Centraliza o botão */
+        display: block;
+    }
+    
+    /* SEÇÃO DE COMO FUNCIONA E ETAPAS */
+    .tituloSecao {
+        font-size: 2.2rem;
+    }
+
+    .textoSecao {
+        font-size: 1.3rem;
+    }
+    
+    /* ETAPAS (ÍCONES) */
+    .containerEtapas {
+        flex-direction: column; /* Coloca os cartões em coluna */
+        gap: 2.5rem;
+    }
+    
+    .cartaoEtapa {
+        min-width: unset; /* Permite que ocupe a largura total */
+    }
+
+    .tituloEtapa {
+        font-size: 1.5rem;
+    }
+
+    .descricaoEtapa {
+        font-size: 1.3rem;
+    }
+}
+
+/* Ajustes finos para Celulares muito pequenos (Max 480px) */
+@media (max-width: 480px) {
+    .bannerAdotar {
+        height: 50vh; /* 🎯 Reduz ainda mais a altura em celulares pequenos */
+    }
+    .homeTitulo {
+        font-size: 2em; /* Fonte do homeTitulo ainda menor */
+    }
+    .titulo {
+        font-size: 2rem;
+    }
+    .subtitulo {
+        font-size: 1.2rem;
+        padding: 0.75rem 1rem;
+    }
+    .secaoComoFunciona,
+    .secaoEtapas {
+        padding: 2rem 0.5rem;
+    }
+    .tituloSecao {
+        font-size: 1.8rem;
+    }
+}

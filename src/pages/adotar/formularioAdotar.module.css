@@ -1,0 +1,611 @@
+.pageFormulario {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  color: #0f4979;
+  box-sizing: border-box;
+  display: flex; 
+  flex-direction: column;
+}
+
+.barraProgresso {
+  padding: 1.2rem 0;
+}
+
+@media (max-width: 600px) {
+  .barraProgresso {
+    margin-top: 6rem; 
+  }
+}
+
+.progressoContainer {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.progressoLinha {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26px;
+  height: 6px;
+  background: #e6eef6;
+  border-radius: 6px;
+  z-index: 1;
+}
+.progressoPreenchido {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  height: 6px;
+  background: linear-gradient(90deg, #2b6b99, #4b9ad1);
+  border-radius: 6px;
+  z-index: 2;
+  transition: width 300ms ease;
+}
+
+.steps {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 3;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  padding-top: 5px;
+}
+
+.steps::-webkit-scrollbar {
+  height: 8px;
+}
+.steps::-webkit-scrollbar-thumb {
+  background: rgba(43, 107, 153, 0.2);
+  border-radius: 8px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+  color: #9fb6cf;
+  transition: color 200ms;
+}
+.iconWrap {
+  background: #f3f8fc;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9fb6cf;
+  transition: all 200ms;
+  margin-bottom: 8px;
+}
+.stepTitle {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.active {
+  color: #0f4979;
+}
+.active .iconWrap {
+  background: #2b6b99;
+  color: #fff;
+  transform: scale(1.05);
+}
+.done {
+  color: #0f4979;
+}
+.done .iconWrap {
+  background: #2b6b99;
+  color: #fff;
+}
+
+/* conteudo */
+.conteudo {
+  width: 100%; 
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 600px;
+  
+}
+
+.titulo {
+  color: #0f4979;
+  margin-bottom: 3rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  display: flex;
+  justify-content: center;
+}
+
+.introducaoFormulario {
+  color: #000;
+  margin-bottom: 1.25rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+  
+}
+
+.form {
+  background: #fff;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 300px;
+  flex-grow: 1; 
+  
+}
+
+.stepSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stepSectionIntro {
+  margin-bottom: 16px;
+}
+
+/* Colunas adaptáveis */
+.twoColumns {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+.twoColumns > * {
+  flex: 1 
+}
+
+.label {
+  margin: 0.5rem 0;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #286699;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background-color: #fff;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #123347;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+.input:hover {
+  transform: translateY(-3px); /* O pulinho */
+  /* Sombra suave azulada para combinar com o tema */
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1); 
+}
+
+.inputFinal {
+  width: 60%;
+  background-color: #e5eef5;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  height: 4rem;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+.inputFinal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.questionTitle {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.listaTermos {
+  list-style: none; /* Remove bolinhas padrão */
+  padding: 0;
+  margin: 0 0 2rem 0; /* Espaço maior abaixo da lista */
+  width: 100%;
+  max-width: 900px;
+  text-align: left;
+}
+
+.termoText {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem; /* Tamanho grande garantido */
+  width: 100%;
+  max-width: 900px;
+  text-align: left;
+}
+
+.termoItem {
+  color: #333;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  font-size: 1.6rem; /* MESMO TAMANHO do .termoText */
+  width: 100%;
+  display: block;
+  font-weight: 500; 
+}
+
+.termoStrong {
+  display: block; /* Faz ocupar a linha toda se necessário */
+  color: #0f4979; /* Cor de destaque */
+  font-size: 1.6rem; /* MESMO TAMANHO */
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.introducaoCheckBox {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Checkbox corrigido */
+.checkboxCustomizado {
+  display: flex;
+  align-items: center; 
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #333;
+  position: relative;
+  user-select: none;
+  margin-top: 0.75rem;
+}
+
+.checkboxCustomizado input {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkmark {
+  position: relative;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #0f4979;
+  border-radius: 4px;
+  background-color: #fff;
+  display: inline-block;
+  flex-shrink: 0; /* Impede que encolha */
+  margin-top: 0.2rem; /* Leve ajuste para alinhar com o texto */
+}
+.checkboxCustomizado input:checked ~ .checkmark {
+  background-color: #286699;
+  border-color: #286699;
+}
+.checkboxCustomizado .checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 3px;
+  width: 7px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+.checkboxCustomizado input:checked ~ .checkmark::after {
+  display: block;
+}
+
+/* controls */
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: auto; /* Empurra para o final */
+  flex-wrap: wrap;
+}
+
+
+.botoesVoltar,
+.botoesAvancar {
+  width: auto;
+  min-width: 160px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.botoesVoltar:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.botoesAvancar:hover {
+  background-color: #0f4979;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.botoesVoltar {
+  padding: 0.7rem 1rem;
+  font-size: 1.2rem;
+  background: transparent;
+  border: 1px solid #cddfe9;
+  color: #0f4979;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.botoesAvancar {
+  padding: 0.7rem 1.4rem;
+  font-size: 1.2rem;
+  background: #2b6b99;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.optionButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin: 0;
+  width: 50%;
+  max-width: 700px;
+  background: #eef7fb;
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.optionButton:not(.selectedOption):hover {
+  background-color: #dcecf7; /* A cor intermediária */
+  transform: translateY(-3px); /* O pulinho discreto */
+  box-shadow: 0 4px 8px rgba(43, 107, 153, 0.15); /* Uma sombra leve */
+}
+
+.optionButton input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 0;
+  outline: none;
+}
+
+.optionLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #e5eef5;
+  color: #8a8989;
+  font-size: 1.5rem;
+  border-radius: 20%;
+}
+
+.optionLabel {
+  display: block;
+  width: auto;
+  flex: 1;
+  text-align: left;
+  color: #0f4979;
+  font-weight: 600;
+  z-index: 1;
+  pointer-events: none;
+  line-height: 1.5;
+  font-size: 1.4rem;
+}
+
+.optionButton.selectedOption,
+.optionButton input:checked ~ .optionLabel,
+.optionButton input:checked + .optionLabel {
+  background: #2b6b99;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(11, 35, 51, 0.12);
+}
+
+.multiTextContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.finalHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+
+
+.finalTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #0f4979;
+  margin: 0;
+}
+
+.finalSubtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.finalReviewButton {
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid #2b6b99;
+  color: #2b6b99;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.finalReviewButton:hover {
+  background: #eef7fb;
+  transform: translateY(-2px);
+}
+
+.finalDivider {
+  border: 0;
+  height: 1px;
+  background-color: #e6eef6;
+  margin: 1.5rem 0;
+}
+
+.finalTermTitle {
+  font-size: 1.8rem; /* Aumentei um pouco para destaque */
+  font-weight: 700;
+  color: #0f4979;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.idle {
+  color: #9fb6cf;
+}
+.idle .iconWrap {
+  background: #f3f8fc;
+  color: #9fb6cf;
+}
+
+/* --- ADICIONADO: CLASSE PARA LARGURA TOTAL --- */
+.conteudoFullWidth {
+  max-width: none;
+}
+
+/* --- ADICIONADO: NOVOS ESTILOS PARA A PÁGINA DE REVISÃO --- */
+
+.reviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza a lista */
+  width: 100%;
+  padding: 0 1rem; /* Adiciona um padding lateral */
+  box-sizing: border-box;
+}
+
+.reviewTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0f4979;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 900px; /* Limita a largura do título */
+  text-align: left;
+}
+
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Espaço pequeno entre os itens */
+  width: 100%;
+  max-width: 900px; /* Mesmo max-width do título */
+  background: #fdfdfd;
+  border: 1px solid #e6eef6;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  overflow: hidden; /* Para o border-radius funcionar nos filhos */
+}
+
+.reviewSubheader {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f4979;
+  background: #f3f8fc;
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+  border-bottom: 1px solid #e6eef6;
+}
+
+.reviewItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem; /* Espaço entre label e valor */
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #f0f4f8;
+  flex-wrap: wrap; /* Para telas pequenas */
+}
+/* Remove a borda do último item */
+.reviewItem:last-child {
+  border-bottom: none;
+}
+
+.reviewLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  flex-shrink: 0; /* Impede que o label encolha */
+}
+
+.reviewValue {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: right;
+  word-break: break-word; /* Quebra palavras longas (ex: email) */
+  flex-grow: 1; /* Ocupa o espaço restante */
+  font-weight: 400;
+}
+
+/* Ajuste para mobile: label em cima, valor embaixo */
+@media (max-width: 560px) {
+  .reviewItem {
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+  }
+  .reviewValue {
+    text-align: left;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+  }
+}
+
+.finalIcon {
+  width: 80px;
+  height: 80px;
+  color: #3b9a6f;
+}

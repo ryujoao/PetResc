@@ -1,0 +1,66 @@
+.containerNotificacoes {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 15px;
+  width: 320px;
+  z-index: 50;
+  background-color: white;
+  border-radius: 0.5rem; 
+  border: 1px solid #e5e7eb; 
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.cabecalho {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.tituloCabecalho {
+  font-weight: 600; 
+  color: #1f2937; 
+}
+
+/* Lista de notificações */
+.lista {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  max-height: 24rem; 
+  overflow-y: auto; /* Adiciona scroll se a lista for longa */
+}
+
+.itemLista {
+  padding: 1rem; 
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease-in-out;
+  font-weight: 600;
+}
+
+/* Remove a borda do último item */
+.itemLista:last-child {
+  border-bottom: none;
+}
+
+.itemLista:hover {
+  background-color: #f9fafb; 
+}
+
+.mensagem {
+  font-size: 1.1rem; 
+  color: #374151; 
+}
+
+.horario {
+  font-size: 0.9rem; 
+  color: #9ca3af; 
+  margin-top: 4px;
+}
+
+.semNotificacoes {
+  padding: 1rem;
+  text-align: center;
+  color: #6b7280; 
+  font-size: 1.1rem
+}

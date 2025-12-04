@@ -1,0 +1,254 @@
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: url("../../../public/banners/banner4.png") no-repeat center center fixed; 
+  background-size: cover;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.contentWrapper {
+    position: relative;
+    z-index: 2; 
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+/* --- HEADER --- */
+.headerSection {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #fff;
+  width: 100%;
+}
+
+.tituloPrincipal {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Sombra para leitura na imagem */
+}
+
+.subtitulo {
+  font-size: 1.6rem;
+  font-weight: 400;
+  opacity: 0.95;
+  color: #fff;
+}
+
+/* --- FORMULÁRIO --- */
+.formCampanha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.colunaEsquerda, .colunaDireita {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- INPUTS --- */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.inputField,
+.textareaField {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.95); 
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.textareaField {
+  resize: none;
+  height: 150px;
+}
+
+.helperText {
+  color: #eee;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+/* --- UPLOAD BOX --- */
+.uploadBox {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.2s;
+  border: 2px dashed transparent;
+}
+
+.uploadBox:hover {
+  background-color: #fff;
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #286699;
+  gap: 0.5rem;
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- BOTÃO CRIAR --- */
+.botaoCriar {
+  background-color: #fff;
+  color: #286699;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  width: 100%;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.botaoCriar:hover {
+  transform: translateY(-2px);
+  background-color: #f0f0f0;
+}
+
+/* --- IMAGEM DO CACHORRO --- */
+.dogImage {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 350px; 
+  height: auto;
+  z-index: 1; 
+  pointer-events: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Garante que fique por cima de tudo */
+  backdrop-filter: blur(4px); /* Desfoque bonito no fundo */
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  color: #333;
+}
+
+.modalContent h2 {
+  font-size: 2rem;
+  color: #286699;
+  margin: 1rem 0 0.5rem 0;
+  font-family: "More Sugar", sans-serif; /* Ou sua fonte padrão */
+}
+
+.modalContent p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.btnModal {
+  background-color: #286699;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 10px rgba(40, 102, 153, 0.3);
+}
+
+.btnModal:hover {
+  background-color: #1e4b75;
+  transform: translateY(-2px);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .tituloPrincipal {
+    font-size: 2rem;
+  }
+  
+  .formCampanha {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .dogImage {
+    width: 150px;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,167 @@
+.containerPrincipal {
+  background: #fff;
+  min-height: 70vh;
+  display: flex;
+  flex-wrap: wrap; /* Permite que os blocos quebrem linha */
+  gap: 2rem;
+  padding: 0 2rem 4rem 2rem;
+  justify-content: space-between; 
+  width: 100%;
+}
+
+/* Cada um dos 4 Blocos */
+.containerSection {
+  width: 48%; /* Ocupa quase metade da tela (2 por linha) */
+  background-color: #F0F9FF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  min-height: 400px;
+}
+
+.titulo {
+  color: #000;
+  font-size: 1.4rem;
+  background-color: #B5D2E9;
+  border-radius: 8px;
+  width: 90%;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  font-weight: 700;
+}
+
+/* Área de rolagem para os animais */
+.listaScroll {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px; /* Espaço para scrollbar */
+  font-size: 1.3rem;
+}
+
+/* Estiliza scrollbar fina */
+.listaScroll::-webkit-scrollbar {
+  width: 6px;
+}
+.listaScroll::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* CARD DO ANIMAL */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+  background-color: #fff;
+  border-radius: 12px;
+  width: 95%;
+  padding: 0.8rem;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.imgCard {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #eee;
+}
+
+.imgCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoCard {
+  flex: 1;
+}
+
+.cardNome h1 {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+  color: #286699;
+  font-weight: 700;
+}
+
+.descricaoCard {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Badge de Status */
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #444;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Estado Vazio */
+.emptyBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100%;
+  color: #888;
+  font-style: italic;
+}
+
+/* Botões do Rodapé */
+.verMais {
+  background-color: #286699;
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 2rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin-top: 1.5rem;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.verMais:hover {
+  background-color: #1a4f75;
+}
+
+.verMaisDisable {
+  background-color: #ccc;
+  color: #fff;
+  padding: 0.6rem 2rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  cursor: default;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 900px) {
+  .containerPrincipal {
+    padding: 1rem;
+  }
+  
+  .containerSection {
+    width: 100%; /* No mobile fica um embaixo do outro */
+    margin-bottom: 1rem;
+  }
+}

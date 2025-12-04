@@ -1,0 +1,183 @@
+.container {
+  width: 100%;
+  max-width: 900px; /* Largura ideal para formulários de leitura confortável */
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #286699;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.subtitulo {
+  font-size: 1.2rem;
+  color: #5480aa;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.secao {
+  margin-bottom: 2.5rem;
+  background-color: #fff;
+  /* Opcional: se quiser um card branco com sombra */
+  /* padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); */
+}
+
+.tituloSecao {
+  font-size: 1.5rem;
+  color: #0f4979;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e6eef6;
+  padding-bottom: 0.5rem;
+}
+
+/* Labels e Inputs */
+.label {
+  margin: 0.5rem 0;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #286699;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background-color: #fff;
+  border: 1px solid #286699;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #123347;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+}
+
+.input:hover {
+  transform: translateY(-3px); /* O pulinho */
+  /* Sombra suave azulada para combinar com o tema */
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1); 
+}
+
+/* Grid para colocar campos lado a lado (ex: CPF e Data) */
+.row {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.col {
+  flex: 1; /* Cada coluna ocupa espaço igual */
+  min-width: 0; /* Evita quebra de layout flex */
+}
+
+/* Estilo para Perguntas e Checkboxes */
+.tituloQuestao {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f4979;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.grupoOpcoes {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.checkboxCustomizado {
+  display: flex;
+  align-items: center;
+  width: auto;
+  min-width: 80px;
+  max-width: 100%;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #333;
+  user-select: none;
+}
+
+.checkboxCustomizado input {
+  display: none; /* Esconde o input padrão feio */
+}
+
+/* O quadrado desenhado */
+.checkmark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #286699;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: #fff;
+}
+
+/* Quando marcado */
+.checkboxCustomizado input:checked + .checkmark {
+  background-color: #286699;
+}
+
+/* O "check" dentro do quadrado (feito com CSS) */
+.checkmark::after {
+  content: "";
+  display: none;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.checkboxCustomizado input:checked + .checkmark::after {
+  display: block;
+}
+
+.spanCheckmark {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+/* Botão Finalizar */
+.botaoEnviar {
+  background-color: #286699;
+  color: white;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 3rem;
+  width: 100%;
+  transition: background-color 0.3s;
+  max-width: 300px;
+}
+
+.botaoEnviar:hover {
+  background-color: #1e5a85;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .titulo {
+    font-size: 2rem;
+  }
+}

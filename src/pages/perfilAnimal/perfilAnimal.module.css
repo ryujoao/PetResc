@@ -1,0 +1,182 @@
+/* Container principal para centralizar e limitar a largura */
+.container {
+    max-width: 1200px; /* Largura máxima do conteúdo */
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* ---------------------------------------------------- */
+/* --- 1. SEÇÃO PRINCIPAL (FOTO | INFO | COMENTÁRIO) --- */
+/* ---------------------------------------------------- */
+
+.profileWrapper {
+    display: grid;
+    /* 3 colunas: Foto (350px) | Info (flexível) | Comentário (flexível) */
+    grid-template-columns: 350px 1fr 1fr; 
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* --- COLUNA DA IMAGEM --- */
+
+.imagemContainer {
+    grid-column: 1 / 2;
+    display: flex;
+    justify-content: center;
+}
+
+.imagem {
+    width: 350px;
+    height: 350px;
+    border-radius: 15px; /* Bordas arredondadas */
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+.imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- COLUNA DE INFORMAÇÕES BÁSICAS --- */
+
+.infoContainer {
+    grid-column: 2 / 3; 
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.nome {
+    font-size: 2.8em;
+    font-weight: 700;
+    color: #2b6b99; /* Cor principal (Azul PetResc) */
+    margin-bottom: 5px;
+}
+
+.status {
+    display: inline-block;
+    background-color: #0F4979;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    width: fit-content;
+}
+
+.dados {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.infoLine {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* --- COLUNA DE COMENTÁRIO/DESCRIÇÃO --- */
+
+.comentarioContainer {
+    grid-column: 3 / 4; 
+    background-color: #f7f7f7; /* Fundo cinza claro */
+    padding: 30px;
+    border-radius: 15px;
+    height: fit-content;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.comentarioContainer h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-top: 0;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.comentarioContainer p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* ---------------------------------------------------- */
+/* --- 2. SEÇÃO DE CARACTERÍSTICAS (GRID INFERIOR) --- */
+/* ---------------------------------------------------- */
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 40px 0;
+}
+
+.caracteristicasGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais */
+    gap: 30px;
+}
+
+.caracteristicaColuna {
+    padding: 10px 0;
+}
+
+.caracteristicaColuna h3 {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #2b6b99;
+    margin-bottom: 20px;
+}
+
+.caracteristicaColuna ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.caracteristicaColuna ul li {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.tagsList li {
+    background-color: #e6f7ff; /* Cor de fundo suave para tags */
+    color: #2b6b99;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+/* ---------------------------------------------------- */
+/* --- BOTÃO DE AÇÃO --- */
+/* ---------------------------------------------------- */
+
+.botaoAdotar {
+    background: #0F4979; 
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+    width: 100%; /* Ocupa a largura da coluna de informações */
+    margin-top: auto; /* Empurra o botão para baixo na coluna 2 */
+}
+
+.botaoAdotar:hover {
+    background-color: #0F4979;
+}

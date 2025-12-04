@@ -1,0 +1,73 @@
+.containerSaibaMais {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13rem;
+
+  background-color: transparent;
+}
+
+.card {
+  border: 2px solid #286699;
+  border-radius: 12px;
+  min-height: 17rem;
+  width: 20%;
+  min-width: 300px;
+  color: black;
+  padding: 2rem;
+  position: relative;
+
+  padding-top: 4rem;
+}
+
+.iconCircle {
+  position: absolute;
+  top: -30px;
+  left: 15%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #286699; 
+
+  background-color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #286699;
+  font-size: 1.8rem;
+}
+
+.card h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.card p {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  text-align: left;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.card a {
+  color: #4baef2;
+  position: absolute;
+  bottom: 30px;
+
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card a:hover {
+  transform: translateY(-3px);
+  color: #286699;
+}

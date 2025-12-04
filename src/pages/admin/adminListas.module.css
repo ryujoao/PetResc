@@ -1,0 +1,275 @@
+.container {
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cabecalhoGestao {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.tituloPagina {
+  color: #004080;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtituloPagina {
+  color: #3f688d;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  
+}
+
+.linkVoltar {
+  font-size: 1.2rem;
+  color: #004080;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.linkVoltar:hover {
+  transform: translateX(-5px);
+}
+
+.conteudoGestao {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.listaCartoes {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cartaoItemGestao,
+.cartaoOng {
+  background-color: #dcebf6; 
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: #004080;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.cartaoOng {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+} 
+
+.linhaCabecalhoCartao {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.nomeItem {
+  font-weight: 700;
+  color: #0f2d4a;
+  font-size: 1.3rem;
+}
+
+.statusItem {
+  font-size: 1.2rem;
+}
+
+.donoPet,
+.detalhesOng {
+  font-size: 1.2rem;
+  color: #3f688d;
+  margin-bottom: 1rem;
+}
+
+.dataCadastro{
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.detalhesOng {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.iconeDetalhe {
+  margin-right: 5px;
+  color: #2c6893;
+}
+
+
+.linhaProgresso {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rotuloProgresso {
+  font-size: 1.2rem;
+  min-width: 80px;
+}
+
+.fundoBarraProgresso {
+  flex: 1;
+  height: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.preenchimentoBarra {
+  height: 100%;
+  background-color: #5ccb68;
+}
+
+.valorProgresso {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+
+.rodapeAcoesCartao {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #cce0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btnAcaoPequeno {
+  background: transparent;
+  border: 1px solid #2c6893;
+  color: #2c6893;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.btnAcaoPequeno:hover {
+  background-color: #eef7fb;
+}
+
+.btnPerigo {
+  border-color: #eb5757;
+  color: #eb5757;
+}
+
+.btnPerigo:hover {
+  background-color: #fff0f0;
+}
+
+/* Filtros */
+.barraLateralFiltros {
+  flex: 1;
+  min-width: 250px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.tituloFiltro {
+  color: #004080;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.grupoFiltro {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f5f5f5;
+  padding-bottom: 0.8rem;
+  font-size: 1.5rem;
+}
+
+.rotuloFiltro {
+  display: flex;
+  justify-content: space-between;
+  color: #004080;
+  cursor: pointer;
+}
+
+.listaSubItens {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.subItem {
+  font-size: 1.3rem;
+  color: #555;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+}
+
+.subItem:hover {
+  color: #2f80ed;
+  text-decoration: underline;
+}
+
+.inputFiltro {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-sizing: border-box; 
+}
+
+
+.tagData {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #555;
+  border: 1px solid #e0e0e0;
+  margin-top: 5px;
+}
+
+.itemFiltroAtivo {
+  color: #2f80ed;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  background-color: #f0f7ff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.itemFiltroAtivo::before {
+  content: "•";
+  margin-right: 8px;
+  color: #2f80ed;
+  font-size: 1.5rem;
+  line-height: 0.5;
+}
+
+@media (max-width: 900px) {
+  .conteudoGestao {
+    flex-direction: column;
+  }
+}

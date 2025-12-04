@@ -1,0 +1,219 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: #333;
+  font-family: sans-serif;
+  margin-top: -2rem;
+}
+
+/* === SEÇÃO 1: DESTAQUE (HERO) === */
+.secaoHero {
+  /* Define a imagem banner4.png como fundo */
+  background-image: url('/banners/banner4.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 5%;
+  height: 80vh;
+  position: relative;
+}
+
+.conteudoHero {
+  flex: 1;
+  padding-right: 2rem;
+  z-index: 2;
+}
+
+.tituloHero{
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 1.3rem;
+  text-align: center;
+  font-family: "More Sugar";
+  -webkit-text-stroke: 2px #fff;
+}
+
+.textoHero {
+  font-size: 1.7rem;
+  color: #fff;
+  font-weight: normal;
+  text-align: center;
+}
+
+.containerImagemHero {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.imagemHero {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px; 
+  object-fit: cover;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* SEÇÃO 2: O QUE É */
+.secaoOQueE {
+  background-color: white;
+  padding: 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tituloSecao {
+  color: #0f4979;
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.textoSecao {
+  max-width: 1400px;
+  font-size: 1.7rem;
+  line-height: 1.6;
+  color: #0f4979;
+}
+
+/* === SEÇÃO 3: ETAPAS (ICONES) === */
+.secaoEtapas {
+  background-color: #f0f6fa;
+  padding: 4rem;
+}
+
+.containerEtapas {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.cartaoEtapa {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.circuloIcone {
+  width: 80px;
+  height: 80px;
+  background-color: #0f4979;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: white;
+  font-size: 2rem;
+}
+
+.tituloEtapa {
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+
+.descricaoEtapa {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* SEÇÃO 4: PERGUNTAS (FAQ) */
+.secaoPerguntas {
+  background-color: white;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gradePerguntas {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.cartaoPergunta {
+  background-color: #e8f1f8;
+  padding: 2rem;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+  flex-direction: column;
+}
+
+.perguntaTexto {
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.respostaTexto {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* Botão de Ação */
+.botaoAcao {
+  background-color: #2b6b99;
+  color: white;
+  margin-top: 3rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.botaoAcao:hover {
+  background-color: #0f4979;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .secaoHero {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .conteudoHero {
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .containerImagemHero {
+    justify-content: center;
+  }
+  
+  .botaoAcao {
+    align-self: center;
+    width: 100%;
+  }
+
+  .gradePerguntas {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,193 @@
+.container {
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cabecalhoGestao {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.tituloPagina {
+  color: #004080;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtituloPagina {
+  color: #3f688d;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  
+}
+
+.linkVoltar {
+  font-size: 1.2rem;
+  color: #004080;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.linkVoltar:hover {
+  transform: translateX(-5px);
+}
+
+/* Card de Detalhes Grande */
+.cartaoDetalhes {
+  background-color: #dcebf6;
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.colunaInfoDetalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 65%;
+  flex: 1;
+}
+
+
+.cabecalhoNomeOng {
+  margin-bottom: 1.5rem;
+}
+
+.nomeOng {
+  margin: 0;
+  color: #004080;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.linhaDetalhe {
+  font-size: 1.3rem;
+  color: #333;
+  display: flex;
+  align-items: baseline;
+}
+
+.rotuloDetalhe {
+  color: #2c6893;
+  font-size: 1.3rem;
+  min-width: 140px;
+  display: flex;
+  align-items: center; 
+}
+
+.iconeTexto {
+  margin-right: 5px;
+}
+
+.valorDetalhe {
+  color: #444;
+}
+
+.statusDetalhe {
+  font-weight: 700;
+  color: #219653;
+  background-color: #e6fff4;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 1rem;
+  margin-left: 10px;
+  border: 1px solid #b7ebc7;
+}
+
+/* Logo */
+.containerLogoOng {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 4px solid #fff;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.imgLogoOng {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ações */
+.tituloAcoesAdmin {
+  color: #004080;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.acoesDetalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.botaoAcaoGrande {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  width: 100%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+
+.botaoAcaoGrande:hover {
+  transform: translateY(-2px);
+}
+
+.btnAzul {
+  background-color: #2c6893;
+  color: #fff;
+}
+
+.btnAmarelo {
+  background-color: #f2c94c;
+  color: #004080;
+}
+
+.btnVermelho {
+  background-color: #eb5757;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .cartaoDetalhes {
+    flex-direction: column;
+  }
+  .containerLogoOng {
+    margin-top: 2rem;
+  }
+}

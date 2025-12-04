@@ -1,0 +1,361 @@
+/* ============================================================
+   1. ESTILOS DO LAYOUT ORIGINAL (VISÃO USUÁRIO)
+   ============================================================ */
+
+.pagDoar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; removido para o topo não ficar descendo */
+  min-height: 100vh;
+  width: 100%; /* GARANTE LARGURA TOTAL */
+  
+  background: url("/public/banners/banner4.png") no-repeat top center;
+  background-size: cover;
+  
+  /* Mantém o hack do menu transparente, mas ajustado */
+  margin-top: -9rem; 
+  padding: 11rem 2rem 4rem 2rem; /* Padding inferior maior */
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+.tituloDoar {
+  font-size: 3rem; /* Fonte maior para preencher melhor */
+  color: #fff;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: "More Sugar", sans-serif;
+  max-width: 1200px;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: normal;
+  margin-bottom: 4rem;
+  text-align: center;
+  width: 90%; /* Usa mais espaço horizontal */
+  max-width: 1000px;
+  line-height: 1.6;
+}
+
+/* CARDS DO USUÁRIO */
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem; /* Espaço maior entre cards */
+  width: 100%;
+  max-width: 1400px; /* Permite que os cards se espalhem mais */
+  margin-top: 1rem;
+}
+
+.card {
+  background: #94b9d8;
+  border-radius: 12px;
+  width: 240px; /* Cards um pouco mais largos */
+  height: 360px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra mais marcada */
+  text-align: center;
+  transition: transform 0.3s ease;
+  padding-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cardText {
+  font-size: 2.2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.cardSubtext {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* LISTA DE INSTITUIÇÕES (USUÁRIO) */
+.pagInstituicoes {
+  background-color: #f5f5f5;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* GARANTE O FUNDO CINZA DE PONTA A PONTA */
+  box-sizing: border-box;
+}
+
+.tituloInstituicoes {
+  font-size: 1.8rem;
+  color: #000;
+  margin-bottom: 2.5rem;
+  align-self: flex-start;
+  /* Centraliza o título em relação ao conteúdo interno */
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+}
+
+.cardInstituicoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin-bottom: 5rem;
+  justify-content: center; /* Centraliza os cards na tela */
+  width: 100%;
+  max-width: 1300px; /* Limite para não ficar esticado demais em telas 4k */
+}
+
+.instituicoes {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 550px; /* Card mais largo */
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+}
+
+.instituicoes:hover {
+  transform: translateY(-5px);
+}
+
+.imgInstituicoes {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.nomeInstituicoes {
+  font-size: 1.5rem;
+  color: #000;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.enderecoInstituicoes {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.valorInstituicoes {
+  font-size: 1.2rem;
+  color: #286699;
+  margin-top: 0.8rem;
+  font-weight: bold;
+}
+
+progress {
+  width: 100%;
+  height: 12px;
+  border-radius: 10px;
+}
+
+/* ============================================================
+   2. ESTILOS VISÃO ONG (MANTIDOS IGUAIS)
+   ============================================================ */
+
+.ongPageWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- SEÇÃO SUPERIOR (AZUL) --- */
+.ongTopSection {
+  background-color: #2c6491; 
+  padding: 8rem 2rem 6rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Garante largura total */
+}
+
+/* GRID MOSAICO */
+.mosaicGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1300px;
+  margin-top: 2rem;
+}
+
+.mosaicCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mosaicImg {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.tallImg {
+  height: 100%;
+  min-height: 450px;
+}
+
+.mosaicCard {
+  background-color: #7daed4;
+  border-radius: 12px;
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-height: 160px;
+}
+
+.mosaicValue {
+  font-size: 3.5rem;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.mosaicLabel {
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  opacity: 0.9;
+}
+
+/* --- SEÇÃO INFERIOR (BRANCA + CACHORRO GIGANTE) --- */
+
+.ongBottomSection {
+  background-color: #fff;
+  padding: 3rem 1rem 0 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Garante largura total */
+  overflow: hidden;
+  min-height: auto;
+  align-items: flex-end;
+}
+
+.bottomContent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 0;
+  position: relative;
+  padding-bottom: 0;
+}
+
+/* --- LADOS (Textos) --- */
+.bottomSide {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: #286699;
+  font-size: 1.7rem;
+  line-height: 1.3;
+  text-align: center;
+  padding-bottom: 180px;
+  z-index: 10;
+}
+
+.textLeft {
+  order: 1;
+  margin-right: -200px;
+}
+
+.textRight {
+  order: 3;
+  margin-left: -200px;
+}
+
+.btnBlue {
+  background-color: #286699;
+  color: #fff;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.4rem;
+  border-radius: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.3s;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(40, 102, 153, 0.2);
+  align-self: center;
+  white-space: nowrap;
+}
+
+.btnBlue:hover {
+  background-color: #1e4b75;
+}
+
+/* --- CACHORRO CENTRAL --- */
+.centerDogContainer {
+  order: 2;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: -1px;
+  z-index: 1;
+}
+
+.centerDogImg {
+  height: 520px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1200px) {
+  /* Ong */
+  .mosaicGrid { grid-template-columns: repeat(2, 1fr); }
+  .centerDogImg { height: 450px; }
+  .bottomSide { flex: 0 0 280px; font-size: 1.2rem; padding-bottom: 150px; }
+  .textLeft { margin-right: -20px; }
+  .textRight { margin-left: -20px; }
+  
+  /* User */
+  .pagDoar { padding-top: 10rem; }
+}
+
+@media (max-width: 900px) {
+  /* User */
+  .pagDoar { padding: 8rem 1rem 2rem 1rem; }
+  .cardContainer { flex-direction: column; align-items: center; }
+  .instituicoes { width: 100%; }
+  
+  /* Ong */
+  .mosaicGrid { grid-template-columns: 1fr; }
+  .ongBottomSection { padding: 3rem 1rem 2rem 1rem; }
+  .bottomContent { flex-direction: column; align-items: center; gap: 3rem; }
+  .bottomSide { order: unset; flex: auto; width: 100%; max-width: 450px; padding-bottom: 0; margin: 0; font-size: 1.2rem; }
+  .textLeft, .textRight { margin: 0; }
+  .centerDogContainer { order: -1; width: 100%; }
+  .centerDogImg { height: auto; width: 80%; max-width: 380px; }
+  .ongTopSection { padding-top: 9rem; }
+}
