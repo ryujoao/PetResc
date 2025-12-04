@@ -290,8 +290,8 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
           {/* Lado Esquerdo */}
           <div className={`${styles.bottomSide} ${styles.textLeft}`}>
             {/* Link para uma campanha específica onde a ONG pode doar */}
-            <Link to="/instituto/suipa" className={styles.btnBlue}>
-              DOE AGORA
+            <Link to="/campanhas-anteriores" className={styles.btnBlue}>
+              VER CAMPANHAS ANTERIORES
             </Link>
             <p>
               Sua doação é muito mais do que um simples gesto de solidariedade —

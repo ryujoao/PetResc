@@ -68,6 +68,10 @@ export default function CampanhasAnteriores() {
   const [termoBusca, setTermoBusca] = useState("");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       // Filtra pelo ID da ONG logada
       const minhasCampanhas = MOCK_CAMPANHAS.filter(
