@@ -4,7 +4,8 @@ import Layout from "../../components/layout";
 import styles from "./perfilAnimal.module.css";
 import { useAuth } from "../../auth/AuthContext";
 import api from '../../services/api';
-import { FaWhatsapp, FaCheckCircle } from "react-icons/fa";
+// Adicione FaHeart (Cheio) e FaRegHeart (Vazio)
+import { FaWhatsapp, FaCheckCircle, FaHeart, FaRegHeart } from "react-icons/fa"; 
 
 // ... (Interfaces FichaTecnica, AccountInfo, Animal mantidas iguais) ...
 interface FichaTecnica {
@@ -52,7 +53,10 @@ export default function PerfilAnimal() {
 
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [loading, setLoading] = useState(true);
-  const [pedidoExistente, setPedidoExistente] = useState<any>(null); 
+  const [pedidoExistente, setPedidoExistente] = useState<any>(null);
+  
+  // 🆕 ESTADO DO FAVORITO
+  const [isFavorito, setIsFavorito] = useState(false); 
 
   // 1. Busca dados do Animal
   useEffect(() => {
@@ -70,19 +74,51 @@ export default function PerfilAnimal() {
     fetchAnimal();
   }, [id]);
 
-  // 2. Verifica se já pedi
+  // 2. Verifica Pedidos E Favoritos
   useEffect(() => {
     if (user && animal && animal.id) {
+        // Verifica Pedidos
         api.get('/pedidos-adocao/meus-pedidos') 
            .then(response => {
                const pedido = response.data.find((p: any) => p.animalId === animal.id);
-               if (pedido) {
-                   setPedidoExistente(pedido);
-               }
+               if (pedido) setPedidoExistente(pedido);
            })
-           .catch(err => console.log("Erro ao checar pedidos:", err));
+           .catch(err => console.log("Erro pedidos:", err));
+
+        // 🆕 Verifica se já é Favorito
+        api.get('/favoritar/meus')
+           .then(response => {
+               // response.data é uma lista de favoritos. Verificamos se este animal está lá.
+               const jaFavoritou = response.data.some((fav: any) => fav.animalId === animal.id);
+               setIsFavorito(jaFavoritou);
+           })
+           .catch(err => console.log("Erro favoritos:", err));
     }
   }, [user, animal]);
+
+  // 🆕 FUNÇÃO DE FAVORITAR
+  const handleToggleFavorito = async () => {
+      if (!user) {
+          alert("Faça login para favoritar!");
+          return;
+      }
+      if (!animal) return;
+
+      // Mudança Otimista (Visual muda na hora)
+      const novoStatus = !isFavorito;
+      setIsFavorito(novoStatus);
+
+      try {
+          if (novoStatus) {
+              await api.post(`/favoritar/${animal.id}`);
+          } else {
+              await api.delete(`/favoritar/${animal.id}`);
+          }
+      } catch (error) {
+          console.error("Erro ao favoritar", error);
+          setIsFavorito(!novoStatus); // Desfaz se der erro
+      }
+  };
 
   const handleQueroAdotar = () => {
     if (!user) {
@@ -124,7 +160,24 @@ export default function PerfilAnimal() {
           </div>
 
           <div className={styles.infoContainer}>
-            <h1 className={styles.nome}>{animal.nome}</h1>
+            
+            {/* Título + Coração na mesma linha */}
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <h1 className={styles.nome}>{animal.nome}</h1>
+                
+                {/* 🆕 ÍCONE DE FAVORITO */}
+                <button 
+                    onClick={handleToggleFavorito}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    title={isFavorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                >
+                    {isFavorito ? (
+                        <FaHeart size={32} color="#FF3B30" />
+                    ) : (
+                        <FaRegHeart size={32} color="#2D68A6" />
+                    )}
+                </button>
+            </div>
             
             <p className={styles.status}>
                {animal.status === 'DISPONIVEL' ? 'Para Adoção' : 'Encontrado / Perdido'}
@@ -139,7 +192,7 @@ export default function PerfilAnimal() {
               </p>
             </section>
 
-            {/* --- BOTÕES --- */}
+            {/* --- BOTÕES DE AÇÃO (MANTIDOS IGUAIS) --- */}
             {pedidoExistente ? (
                 <button 
                     className={styles.botaoAdotar}

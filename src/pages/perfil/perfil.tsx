@@ -306,7 +306,7 @@ export default function Perfil() {
         // Se não for ONG, busca favoritos
         if (!isOng) {
           try {
-            const resSalvos = await api.get("/favoritos/meus");
+            const resSalvos = await api.get("favoritar/meus");
             const salvosFormatados = resSalvos.data.map((item: any) => ({
               ...item.animal,
               favorito: true,
@@ -372,8 +372,12 @@ export default function Perfil() {
   const petsExibidos = getDisplayedPets();
   const displayNome =
     user?.role === "ONG" && user?.nomeOng ? user.nomeOng : user?.nome;
-  const userCity = user?.cep ? "Cotia/SP" : "Brasil"; // Exemplo
-
+    const userCity =
+  user?.cidade && user?.estado
+    ? `${user.cidade}, ${user.estado}`
+    : user?.cidade
+    ? user.cidade
+    : "Localização não definida";
   if (!user)
     return (
       <Layout>
