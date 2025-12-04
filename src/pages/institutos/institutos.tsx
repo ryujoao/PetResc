@@ -18,59 +18,6 @@ type CampanhaExibicao = {
   dataLimite?: string;
 };
 
-// --- BANCO DE DADOS SIMULADO (MOCK) ---
-// Adicionei aqui as informações do Ampara e Patas Dadas
-const DADOS_MOCK: Record<string, CampanhaExibicao> = {
-  "caramelo": {
-    id: "caramelo",
-    titulo: "Instituto Caramelo",
-    endereco: "Rua José Felix de Oliveira, 1234 – Cotia – SP",
-    descricao: "O Instituto Caramelo atua no resgate e reabilitação de animais em situação de risco. Esta campanha visa arrecadar fundos para a reforma do canil principal e compra de ração especial.",
-    itensDescricao: ["Reforma de 10 canis", "Compra de 500kg de ração", "Medicamentos veterinários"],
-    imagemUrl: "../../../public/institutos/institutoCaramelo.png",
-    arrecadado: 8104.64,
-    meta: 16000.00,
-    realizadoPor: "Instituto Caramelo",
-    dataLimite: "2025-01-20"
-  },
-  "suipa": {
-    id: "suipa",
-    titulo: "SUIPA",
-    endereco: "Av. Dom Hélder Câmara, 1801 – Rio de Janeiro – RJ",
-    descricao: "Todos os dias, milhares de animais resgatados recebem cuidados, alimentação e muito amor através do nosso trabalho. Precisamos da sua ajuda para continuar oferecendo abrigo.",
-    itensDescricao: ["Alimentação diária", "Tratamento médico", "Manutenção do abrigo"],
-    imagemUrl: "../../../public/institutos/suipa.png",
-    arrecadado: 7813.00,
-    meta: 15000.00,
-    realizadoPor: "SUIPA",
-    dataLimite: "2024-12-31"
-  },
-  "ampara": {
-    id: "ampara",
-    titulo: "Instituto Ampara Animal",
-    endereco: "Av. Paulista, 1000 - São Paulo - SP",
-    descricao: "A Ampara Animal trabalha em parceria com abrigos e protetores independentes. Sua doação será direcionada para campanhas de castração e vacinação em comunidades carentes.",
-    itensDescricao: ["Castração de 50 animais", "Campanha de vacinação V10", "Apoio a protetores locais"],
-    imagemUrl: "../../../public/institutos/ampara.png", // Ajuste o caminho se necessário (ex: ../../../public/ampara.png)
-    arrecadado: 4500.00,
-    meta: 10000.00,
-    realizadoPor: "Ampara Animal",
-    dataLimite: "2025-02-15"
-  },
-  "patasdadas": {
-    id: "patasdadas",
-    titulo: "Patas Dadas",
-    endereco: "Rua dos Voluntários, 500 - Porto Alegre - RS",
-    descricao: "Resgatamos cães e gatos em situação de abandono e maus-tratos. Nossos recursos estão escassos e precisamos de ajuda urgente para custear cirurgias ortopédicas.",
-    itensDescricao: ["Cirurgias ortopédicas", "Fisioterapia animal", "Alimentação especial"],
-    imagemUrl: "../../../public/institutos/patasDadas.png", // Ajuste o caminho se necessário
-    arrecadado: 2100.00,
-    meta: 8000.00,
-    realizadoPor: "Associação Patas Dadas",
-    dataLimite: "2025-01-10"
-  }
-};
-
 export default function Institutos() {
   const { id } = useParams(); 
   
@@ -83,18 +30,45 @@ export default function Institutos() {
   const [loadingPagamento, setLoadingPagamento] = useState(false);
   const [fasePagamento, setFasePagamento] = useState<"fechado" | "pix" | "sucesso">("fechado");
 
-  // --- CARREGAMENTO DE DADOS ---
+  // --- CARREGAMENTO DO BACKEND ---
   useEffect(() => {
-    setLoading(true);
-    // Simula delay de rede
-    setTimeout(() => {
-        // Tenta pegar o ID da URL (em minúsculo). Se não achar, usa 'suipa' como padrão.
-        const chave = id?.toLowerCase();
-        const dados = chave && DADOS_MOCK[chave] ? DADOS_MOCK[chave] : DADOS_MOCK["suipa"];
-        
-        setCampanha(dados);
+    async function carregarCampanha() {
+      try {
+        setLoading(true);
+
+        const response = await fetch(`https://petresc.onrender.com/api/campanha/${id}`);
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar campanha");
+        }
+
+        const dados = await response.json();
+
+        // MAPEAMENTO: transformar dados do backend no formato esperado pelo front
+        const campanhaFormatada: CampanhaExibicao = {
+          id: String(dados.id),
+          titulo: dados.titulo,
+          endereco: dados.ong?.nome || "Instituição não informada",
+          descricao: dados.descricao,
+          itensDescricao: dados.itensDescricao || [],
+          imagemUrl: dados.imagemUrl || "https://via.placeholder.com/600x250?text=Sem+Imagem",
+          arrecadado: dados.arrecadado || 0, // O backend ainda não tem esse campo
+          meta: dados.metaFinanceira,
+          realizadoPor: dados.ong?.nome || "Instituição",
+          dataLimite: dados.dataLimite
+        };
+
+        setCampanha(campanhaFormatada);
+
+      } catch (err) {
+        console.error("Erro:", err);
+        setCampanha(null);
+      } finally {
         setLoading(false);
-    }, 500);
+      }
+    }
+
+    if (id) carregarCampanha();
   }, [id]);
 
   // --- LÓGICA DE PAGAMENTO ---
@@ -105,24 +79,27 @@ export default function Institutos() {
     }
     setLoadingPagamento(true);
     setTimeout(() => {
-        setLoadingPagamento(false);
-        if (formaPagamento === "Pix") setFasePagamento("pix");
-        else setFasePagamento("sucesso");
+      setLoadingPagamento(false);
+      if (formaPagamento === "Pix") setFasePagamento("pix");
+      else setFasePagamento("sucesso");
     }, 1000);
   };
 
   const confirmarPix = () => setFasePagamento("sucesso");
   
   const fecharModal = () => {
-      setFasePagamento("fechado");
-      setValorSelecionado("");
-      setFormaPagamento("");
+    setFasePagamento("fechado");
+    setValorSelecionado("");
+    setFormaPagamento("");
   };
 
+  // ---- LOADING / ERRO ----
   if (loading) return <Layout><div style={{textAlign:'center', padding:'8rem'}}>Carregando...</div></Layout>;
   if (!campanha) return <Layout><div style={{textAlign:'center', padding:'8rem'}}>Campanha não encontrada</div></Layout>;
 
-  const dataFormatada = campanha.dataLimite ? new Date(campanha.dataLimite).toLocaleDateString('pt-BR') : "Indeterminado";
+  const dataFormatada = campanha.dataLimite
+      ? new Date(campanha.dataLimite).toLocaleDateString("pt-BR")
+      : "Indeterminado";
 
   return (
     <Layout>
@@ -134,7 +111,7 @@ export default function Institutos() {
             src={campanha.imagemUrl}
             alt={campanha.titulo}
             className={styles.logo}
-            onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/600x250?text=Imagem+da+Campanha")}
+            onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/600x250?text=Imagem+Indisponível")}
           />
         </div>
 

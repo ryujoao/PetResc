@@ -152,9 +152,10 @@ const DoarUsuarioView = () => {
               meta: 20000,
             },
           ].map((inst, index) => (
+            /* CORREÇÃO AQUI: Link dinâmico para /instituto/:id */
             <Link
               key={index}
-              to="/institutos"
+              to={`/instituto/${inst.id}`} 
               className={styles.instituicoes}
             >
               <img
@@ -195,9 +196,10 @@ const DoarUsuarioView = () => {
                   campanha.imagemUrl || "/institutos/default.png";
 
                 return (
+                  /* CORREÇÃO AQUI: Link dinâmico para /instituto/:id */
                   <Link
                     key={campanha.id}
-                    to="/institutos"
+                    to={`/instituto/${campanha.id}`}
                     className={styles.instituicoes}
                   >
                     <img
@@ -249,9 +251,10 @@ const DoarUsuarioView = () => {
                   meta: 16000,
                 },
               ].map((inst, index) => (
+                /* CORREÇÃO AQUI: Link dinâmico para /instituto/:id */
                 <Link
                   key={index}
-                  to="/institutos"
+                  to={`/instituto/${inst.id}`}
                   className={styles.instituicoes}
                 >
                   <img
@@ -303,6 +306,10 @@ const DoarOngView = ({ ongId }: { ongId: string }) => {
   return (
     <div className={styles.ongPageWrapper}>
       {/* Conteúdo mantido igual */}
+      <div style={{ padding: "20px", textAlign: "center" }}>
+          <h2>Painel da ONG</h2>
+          <p>Estatísticas carregadas...</p>
+      </div>
     </div>
   );
 };
