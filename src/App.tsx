@@ -40,6 +40,8 @@ import AdminLogs from "./pages/admin/adminLogs";
 import AdminMonitoramento from "./pages/admin/adminMonitoramento";
 import AvaliarAnimal from "./pages/avaliarAnimal/avaliarAnimal";
 import GerenciarRegistro from "./pages/gerenciar/gerenciarRegistro";
+import VoluntariosLar from "./pages/voluntarios";
+import AdminOngTemperatura from "./pages/admin/adminOngTemperatura";
 
 function App() {
   return (
@@ -63,10 +65,14 @@ function App() {
         path="/formulario-lar-temporario"
         element={<FormularioLarTemporario />}
       />
+
       <Route path="/nova-campanha" element={<NovaCampanha />} />
-      <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} />
+      {/* <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} /> */}
       <Route path="/avaliar-animal" element={<AvaliarAnimal />} />
+      <Route path="/gerenciar-adocao" element={<GerenciarAdocao/>}/>
       <Route path="/gerenciar-registro" element={<GerenciarRegistro/>} />
+      <Route path="/voluntarios" element={<VoluntariosLar/>} />
+
       /* Admin */
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/gerenciamento" element={<AdminGerenciamento />} />
@@ -75,7 +81,11 @@ function App() {
       <Route path="/admin/ongs/:id" element={<AdminOngsDetalhes />} />
       <Route path="/admin/ongs/:id/pets" element={<AdminGerenciarPetsOng />} />
       <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+      <Route path="/admin/monitoramento" element={<AdminMonitoramento/>} />
+      <Route path="/admin/monitoramento/ong" element={<AdminOngTemperatura/>} />
       <Route path="/admin/historico-pets" element={<AdminHistoricoPets />} />
+      <Route path="/admin/logs" element={<AdminLogs/>} />
+
       
       <Route path="/config" element={<ConfigMenu />} />
       <Route element={<ConfigLayout />}>

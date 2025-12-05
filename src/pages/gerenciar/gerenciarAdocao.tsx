@@ -1,439 +1,220 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styles from "./gerenciar.module.css";
+import React, { useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import styles from "./gerenciar.module.css"; // Usando O MESMO arquivo CSS
 import Layout from "../../components/layout";
-import api from "../../services/api"; 
-import { FaCheck, FaTimes, FaPaw, FaMapMarkerAlt, FaWhatsapp, FaArrowLeft } from "react-icons/fa";
 
-// --- TIPAGEM DO QUE VEM DO BACKEND ---
-export interface Formulario {
-  id: number;
-  pedidoAdocaoId: number;
+// --- DADOS MOCKADOS ---
+const ANIMAL_INFO = {
+  nome: "Branquinho",
+  fotoUrl: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=1887&auto=format&fit=crop",
+  status: "Avaliando Formulários",
+  codigo: "000000",
+  ultimaAtualizacao: "05/10/2023",
+};
 
-  tipoMoradia: string;
-  possuiQuintal: boolean;
-  quintalTelado?: boolean;
-  janelasTeladas?: boolean;
-  moradiaPropria: boolean;
+const CANDIDATOS = [
+  {
+    id: 1,
+    nome: "Ricardo Lerner",
+    dataNascimento: "15/03/1985",
+    dataEnvio: "04/10/2023",
+    cpf: "123.456.789-00",
+    telefone: "+55 (11) 98765-4321",
+    email: "ricardo.lerner@email.com",
+    endereco: {
+      cep: "06700-000",
+      rua: "Rua das Acácias",
+      numero: "955",
+      complemento: "Apto 101",
+      bairro: "Vila Santo Antônio",
+      cidade: "Cotia",
+      estado: "SP"
+    },
+    moradia: {
+      tipo: "Apartamento",
+      outrosAnimais: "Não possui",
+      residentes: "1 adulto"
+    }
+  },
+  {
+    id: 2,
+    nome: "Ana Silva",
+    dataNascimento: "12/05/1990",
+    dataEnvio: "01/10/2023",
+    cpf: "111.222.333-44",
+    telefone: "+55 (11) 99999-8888",
+    email: "ana.silva@email.com",
+    endereco: {
+      cep: "01310-100",
+      rua: "Av. Paulista",
+      numero: "1000",
+      complemento: "Bloco B",
+      bairro: "Bela Vista",
+      cidade: "São Paulo",
+      estado: "SP"
+    },
+    moradia: {
+      tipo: "Casa",
+      outrosAnimais: "Sim (1 Gato)",
+      residentes: "2 adultos, 1 criança"
+    }
+  }
+];
 
-  pessoasNaCasa: number;
-  todosConcordam: boolean;
-  criancasEmCasa: boolean;
-  alergias: boolean;
 
-  horasSozinho: number;
-  rotinaPasseios?: string;
-  quemCuidara: string;
-
-  possuiOutrosAnimais: boolean;
-  historicoAnimais?: string;
-
-  teveAnimaisAntes: boolean;
-  temVeterinario?: boolean;
-
-  cienteCustos: boolean;
-
-  motivoAdocao: string;
-  observacoes?: string;
-
- 
-
-  createdAt: string;
-}
-
-interface Candidato {
-  id: number;
-  status: string;
-  dataPedido: string;
-  account: {
-    nome: string;
-    email: string;
-    telefone: string;
-
-    // Endereço do usuário
-    cep?: string;
-    rua?: string;
-    numero?: string;
-    complemento?: string;
-    bairro?: string;
-    cidade?: string;
-    estado?: string;
-  };
-  formulario: Formulario | null;
-}
-interface Animal {
-  id: number;
-  nome: string;
-  photoURL: string | null;
-  status: string;
-  raca: string;
-  idade: number | null;
-  sexo: string;
-  porte: string;
-  corPredominante: string;
-  descricao: string;
-  local_cidade?: string;
-  local_estado?: string;
-}
 
 export default function GerenciarAdocao() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-
-  const [animal, setAnimal] = useState<Animal | null>(null);
-  const [candidatos, setCandidatos] = useState<Candidato[]>([]);
-  const [selecionado, setSelecionado] = useState<Candidato | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // BUSCAR DADOS
-  useEffect(() => {
-    async function fetchData() {
-      if (!id) return;
-      try {
-        const resAnimal = await api.get(`/animais/${id}`);
-        setAnimal(resAnimal.data);
-
-        const resCandidatos = await api.get(`/pedidos-adocao/animal/${id}`);
-        setCandidatos(resCandidatos.data);
-
-        if (resCandidatos.data.length > 0) {
-          setSelecionado(resCandidatos.data[0]);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar gerenciamento:", error);
-        alert("Erro ao carregar dados. Verifique se você é o dono deste animal.");
-        navigate('/');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [id, navigate]);
-
-  // APROVAR
-  const handleAprovar = async () => {
-    if (!selecionado) return;
-
-    if (window.confirm(`Tem certeza que deseja APROVAR a adoção para ${selecionado.account.nome}?`)) {
-      try {
-        await api.patch(`/pedidos-adocao/${selecionado.id}/status`, { status: 'APROVADO' });
-
-        alert("Adoção Aprovada!");
-
-        setCandidatos(prev =>
-          prev.map(c => c.id === selecionado.id ? { ...c, status: 'APROVADO' } : c)
-        );
-
-        setSelecionado({ ...selecionado, status: 'APROVADO' });
-
-        if (animal) setAnimal({ ...animal, status: 'ADOTADO' });
-
-      } catch {
-        alert("Erro ao aprovar pedido.");
-      }
-    }
-  };
-
-  // RECUSAR
-  const handleRecusar = async () => {
-    if (!selecionado) return;
-
-    if (window.confirm(`Deseja recusar esta solicitação de ${selecionado.account.nome}?`)) {
-      try {
-        await api.patch(`/pedidos-adocao/${selecionado.id}/status`, { status: 'RECUSADO' });
-
-        alert("Solicitação recusada.");
-
-        setCandidatos(prev =>
-          prev.map(c => c.id === selecionado.id ? { ...c, status: 'RECUSADO' } : c)
-        );
-
-        setSelecionado({ ...selecionado, status: 'RECUSADO' });
-
-      } catch {
-        alert("Erro ao recusar pedido.");
-      }
-    }
-  };
-
-  // WHATSAPP
-  const handleWhatsApp = () => {
-    if (!selecionado || !animal) return;
-
-    const telefoneLimpo = selecionado.account.telefone.replace(/\D/g, '');
-    const nomeCandidato = selecionado.account.nome;
-    const nomePet = animal.nome;
-
-    const texto = `Olá ${nomeCandidato}! Sou responsável pelo pet "${nomePet}" no PetResc.`;
-
-    const numeroFinal = telefoneLimpo.length <= 11 ? `55${telefoneLimpo}` : telefoneLimpo;
-
-    window.open(`https://api.whatsapp.com/send?phone=${numeroFinal}&text=${encodeURIComponent(texto)}`, '_blank');
-  };
-
-  // PARSE DE OUTROS ANIMAIS
-  const formatOutrosAnimais = (jsonString?: string) => {
-    if (!jsonString) return "Não informado";
-
-    try {
-      const obj = JSON.parse(jsonString);
-      if (obj?.Quantidade && obj.Quantidade !== "0") {
-        return `${obj.Quantidade} - ${obj["Tipo de Animal"]}`;
-      }
-      return "Não possui";
-    } catch {
-      return "Não informado";
-    }
-  };
-
-  if (loading)
-    return (
-      <Layout>
-        <div style={{ padding: "4rem", textAlign: "center" }}>
-          Carregando gerenciamento...
-        </div>
-      </Layout>
-    );
-
-  if (!animal)
-    return (
-      <Layout>
-        <div>Animal não encontrado.</div>
-      </Layout>
-    );
-
-  const form = selecionado?.formulario;
-  const usuario = selecionado?.account;
+  const [candidatoSelecionado, setCandidatoSelecionado] = useState(CANDIDATOS[0]);
 
   return (
     <Layout>
-      <div className={styles.pageContainer}>
-
-        {/* Botão Voltar */}
-        <button onClick={() => navigate(-1)} className={styles.btnVoltar}>
-          <FaArrowLeft /> Voltar para lista
+      <div className={styles.container}>
+        
+        {/* BOTÃO VOLTAR */}
+        <button className={styles.btnVoltar} onClick={() => console.log("Voltar")}>
+          <FaArrowLeft size={20} /> Voltar
         </button>
 
-        {/* CABEÇALHO DO ANIMAL */}
-        <section className={styles.animalHeader}>
-          <div className={styles.animalImageWrapper}>
-            <img
-              src={animal.photoURL || "https://placehold.co/300"}
-              alt={animal.nome}
-              className={styles.animalImg}
+        {/* --- CABEÇALHO (REUTILIZADO DO REGISTRO) --- */}
+        <div className={styles.secaoCabecalho}>
+          <div className={styles.moldeFoto}>
+            <img 
+              src={ANIMAL_INFO.fotoUrl} 
+              alt={ANIMAL_INFO.nome} 
+              className={styles.fotoAnimal} 
             />
           </div>
 
-          <div className={styles.animalContent}>
-            <div className={styles.animalTitleRow}>
-              <h1 className={styles.animalName}>{animal.nome}</h1>
+          <div className={styles.painelInfoPrincipal}>
+            <h1 className={styles.nomeAnimal}>{ANIMAL_INFO.nome}</h1>
+            <div className={styles.linhaStatus}>
+              Status: <strong>{ANIMAL_INFO.status}</strong>
+              <br />
+              Última atualização: {ANIMAL_INFO.ultimaAtualizacao}
+            </div>
+            
+            <button className={styles.btnMudarStatus}>Mudar Status</button>
+            <span className={styles.codigoAnimal}>Código: {ANIMAL_INFO.codigo}</span>
+          </div>
+        </div>
 
-              <button
-                className={styles.btnStatus}
-                style={{
-                  backgroundColor: animal.status === "ADOTADO" ? "#28a745" : "#007bff"
-                }}
+        {/* --- TÍTULO PRINCIPAL --- */}
+        <h2 className={styles.tituloSecao}>Informações dos Candidatos à Adoção</h2>
+        <div className={styles.divisorAzul}></div>
+
+        {/* --- ÁREA MESTRE-DETALHE --- */}
+        <div className={styles.layoutCandidatos}>
+          
+          {/* LADO ESQUERDO: LISTA DE CANDIDATOS */}
+          <div className={styles.listaLateral}>
+            {CANDIDATOS.map((candidato) => (
+              <div 
+                key={candidato.id}
+                className={`${styles.cardCandidato} ${candidatoSelecionado.id === candidato.id ? styles.cardAtivo : ''}`}
+                onClick={() => setCandidatoSelecionado(candidato)}
               >
-                {animal.status}
+                <span className={styles.nomeCandidatoLista}>{candidato.nome}</span>
+                <span className={styles.resumoCandidato}>Enviado em: {candidato.dataEnvio}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* LADO DIREITO: DETALHES DO CANDIDATO */}
+          <div className={styles.painelDetalhes}>
+            
+            {/* Bloco: Info Pessoal */}
+            <h3 className={styles.subtituloDetalhes}>Informações Pessoais</h3>
+            <div className={styles.gridDetalhes}>
+              <div className={styles.blocoDado}>
+                <span className={styles.rotulo}>Nome Completo</span>
+                <p className={styles.valor}>{candidatoSelecionado.nome}</p>
+              </div>
+              <div className={styles.blocoDado}>
+                <span className={styles.rotulo}>CPF</span>
+                <p className={styles.valor}>{candidatoSelecionado.cpf}</p>
+              </div>
+              <div className={styles.blocoDado}>
+                <span className={styles.rotulo}>Data de Nascimento</span>
+                <p className={styles.valor}>{candidatoSelecionado.dataNascimento}</p>
+              </div>
+              <div className={styles.blocoDado}>
+                <span className={styles.rotulo}>Telefone</span>
+                <p className={styles.valor}>{candidatoSelecionado.telefone}</p>
+              </div>
+              <div className={styles.blocoDado}>
+                <span className={styles.rotulo}>E-mail</span>
+                <p className={styles.valor}>{candidatoSelecionado.email}</p>
+              </div>
+            </div>
+
+            {/* Bloco: Endereço & Moradia */}
+            <div className={styles.gridDetalhes}>
+              {/* Coluna 1: Endereço */}
+              <div>
+                <h3 className={styles.subtituloDetalhes}>Endereço</h3>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>CEP</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.cep}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Rua</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.rua}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Número</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.numero}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Complemento</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.complemento}</p>
+                </div>
+                 <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Bairro</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.bairro}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Cidade / Estado</span>
+                  <p className={styles.valor}>{candidatoSelecionado.endereco.cidade} - {candidatoSelecionado.endereco.estado}</p>
+                </div>
+              </div>
+
+              {/* Coluna 2: Moradia */}
+              <div>
+                <h3 className={styles.subtituloDetalhes}>Moradia</h3>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Tipo de Imóvel</span>
+                  <p className={styles.valor}>{candidatoSelecionado.moradia.tipo}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Outros Animais</span>
+                  <p className={styles.valor}>{candidatoSelecionado.moradia.outrosAnimais}</p>
+                </div>
+                <div className={styles.blocoDado}>
+                  <span className={styles.rotulo}>Residentes</span>
+                  <p className={styles.valor}>{candidatoSelecionado.moradia.residentes}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Botões de Ação */}
+            <div className={styles.rodapeAcoes}>
+              <button 
+                className={`${styles.btnAcao} ${styles.negativo}`}
+                onClick={() => alert(`Adoção recusada para ${candidatoSelecionado.nome}`)}
+              >
+                Reprovar
+              </button>
+              <button 
+                className={`${styles.btnAcao} ${styles.positivo}`}
+                onClick={() => alert(`Adoção aprovada para ${candidatoSelecionado.nome}`)}
+              >
+                Aprovar Adoção
               </button>
             </div>
 
-            <div className={styles.animalTags}>
-              <span><FaPaw /> {animal.raca || "SRD"}</span>
-              <span>• {animal.idade ? `${animal.idade} anos` : "?"}</span>
-              <span>• {animal.sexo}</span>
-              <span>• {animal.porte}</span>
-            </div>
-
-            <p className={styles.animalStory}>
-              {animal.descricao || "Sem descrição."}
-            </p>
-
-            <div className={styles.animalLocation}>
-              <FaMapMarkerAlt color="#d9534f" /> {animal.local_cidade} - {animal.local_estado}
-            </div>
           </div>
-        </section>
-
-        <h2 className={styles.sectionTitle}>
-          Candidatos à Adoção ({candidatos.length})
-        </h2>
-
-        <div className={styles.mainGrid}>
-
-          {/* LISTA DE CANDIDATOS */}
-          <aside className={styles.candidatesList}>
-            {candidatos.length === 0 && (
-              <div
-                style={{
-                  padding: "2rem",
-                  textAlign: "center",
-                  color: "#666",
-                  background: "#fff",
-                  borderRadius: "8px"
-                }}
-              >
-                Nenhum pedido de adoção recebido ainda.
-              </div>
-            )}
-
-            {candidatos.map(cand => (
-              <div
-                key={cand.id}
-                className={`${styles.candidateCard} ${
-                  selecionado?.id === cand.id ? styles.active : ""
-                }`}
-                onClick={() => setSelecionado(cand)}
-              >
-                <div className={styles.cardHeader}>
-                  <span className={styles.cardName}>{cand.account.nome}</span>
-
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      padding: "2px 8px",
-                      borderRadius: "12px",
-                      fontWeight: "bold",
-                      backgroundColor:
-                        cand.status === "APROVADO"
-                          ? "#d4edda"
-                          : cand.status === "RECUSADO"
-                          ? "#f8d7da"
-                          : "#fff3cd",
-                      color:
-                        cand.status === "APROVADO"
-                          ? "#155724"
-                          : cand.status === "RECUSADO"
-                          ? "#721c24"
-                          : "#856404"
-                    }}
-                  >
-                    {cand.status}
-                  </span>
-                </div>
-
-                <div className={styles.cardSummary}>
-                  <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "4px" }}>
-                    Recebido em: {new Date(cand.dataPedido).toLocaleDateString()}
-                  </p>
-                  <p style={{ fontSize: "0.9rem", color: "#555" }}>
-                    {cand.formulario?.tipoMoradia || "Formulário incompleto"}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </aside>
-
-          {/* DETALHES DO USUÁRIO */}
-          {selecionado && form && usuario ? (
-            <section className={styles.detailsPanel}>
-
-              <div className={styles.detailsHeader}>
-                <div className={styles.headerTitleBlock}>
-                  <h3>{usuario.nome}</h3>
-                  <p className={styles.subInfo}>E-mail: {usuario.email}</p>
-                  <p className={styles.subInfo}>Telefone: {usuario.telefone}</p>
-                </div>
-              </div>
-
-              <div className={styles.dataGrid}>
-
-                {/* COLUNA 1 */}
-                <div className={styles.dataColumn}>
-                  <h4 className={styles.columnTitle}>Endereço & Moradia</h4>
-
-
-                  {usuario?.rua && (
-                   <div className={styles.infoBloco}>
-                     <p>{usuario.rua}, {usuario.numero} {usuario.complemento && `- ${usuario.complemento}`}</p>
-                     <p>{usuario.bairro} - {usuario.cidade}/{usuario.estado}</p>
-                     <p>CEP: {usuario.cep}</p>
-                   </div>
-                    )}
-
-                  <div className={styles.dataItem}>
-                    <label>Moradia:</label>
-                    <p>{form?.tipoMoradia}</p>
-                  </div>
-
-                  <div className={styles.dataItem}>
-                    <label>Possui Quintal?</label>
-                    <p>{form?.possuiQuintal ? "Sim" : "Não"}</p>
-                  </div>
-                </div>
-
-                {/* COLUNA 2 */}
-                <div className={styles.dataColumn}>
-                  <h4 className={styles.columnTitle}>Detalhes do Lar</h4>
-
-                  <div className={styles.dataItem}>
-                    <label>Pessoas no Lar:</label>
-                    <p>{form?.pessoasNaCasa}</p>
-                  </div>
-
-                  <div className={styles.dataItem}>
-                    <label>Outros Animais:</label>
-                    <p>{formatOutrosAnimais(form?.historicoAnimais)}</p>
-                  </div>
-
-                  <div className={styles.dataItem}>
-                    <label>Alergias:</label>
-                    <p className={form?.alergias ? styles.alertText : ""}>
-                      {form?.alergias ? "Sim" : "Não"}
-                    </p>
-                  </div>
-
-                  <div className={styles.dataItem}>
-                    <label>Termo Aceito:</label>
-                    <p style={{ color: "green" }}>Sim</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* AÇÕES */}
-              <div className={styles.actionButtons}>
-                <button className={styles.btnWhatsapp} onClick={handleWhatsApp}>
-                  <FaWhatsapp size={20} /> Conversar
-                </button>
-
-                <div className={styles.dividerVertical}></div>
-
-                {selecionado.status === "PENDENTE" ? (
-                  <>
-                    <button className={styles.btnReject} onClick={handleRecusar}>
-                      <FaTimes /> Recusar
-                    </button>
-
-                    <button className={styles.btnApprove} onClick={handleAprovar}>
-                      <FaCheck /> Aprovar Adoção
-                    </button>
-                  </>
-                ) : (
-                  <span style={{ fontStyle: "italic", color: "#666", marginLeft: "10px" }}>
-                    Pedido já {selecionado.status.toLowerCase()}.
-                  </span>
-                )}
-              </div>
-
-            </section>
-          ) : (
-            <div
-              className={styles.detailsPanel}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: "300px"
-              }}
-            >
-              <p style={{ color: "#999" }}>
-                {candidatos.length === 0
-                  ? "Aguardando interessados..."
-                  : "Selecione um candidato ao lado."}
-              </p>
-            </div>
-          )}
         </div>
+
       </div>
     </Layout>
   );

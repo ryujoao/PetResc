@@ -137,7 +137,7 @@ const DoarUsuarioView = () => {
               id: "caramelo",
               nome: "Instituto Caramelo",
               endereco:
-                "Rua José Felix de Oliveira, 1234 – Granja Viana, Cotia – SP",
+                "Rua José Felix de Oliveira, 1234 - Granja Viana, Cotia - SP",
               imagem: "/institutos/institutoCaramelo.png",
               arrecadado: 8104.64,
               meta: 16000,
@@ -146,7 +146,7 @@ const DoarUsuarioView = () => {
               id: "suipa",
               nome: "SUIPA",
               endereco:
-                "Av. Dom Hélder Câmara, 1801 – Benfica, Rio de Janeiro – RJ",
+                "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
               imagem: "/institutos/suipa.png",
               arrecadado: 12000,
               meta: 20000,
@@ -236,7 +236,7 @@ const DoarUsuarioView = () => {
                   id: "ampara",
                   nome: "Instituto Ampara Animal",
                   endereco:
-                    "Rua José Felix de Oliveira, 1234 – Granja Viana, Cotia – SP",
+                    "Rua José Felix de Oliveira, 1234 - Granja Viana, Cotia - SP",
                   imagem: "/institutos/ampara.png",
                   arrecadado: 4500,
                   meta: 10000,
@@ -245,7 +245,7 @@ const DoarUsuarioView = () => {
                   id: "patasdadas",
                   nome: "Patas Dadas",
                   endereco:
-                    "Av. Dom Hélder Câmara, 1801 – Benfica, Rio de Janeiro – RJ",
+                    "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
                   imagem: "/institutos/patasDadas.png",
                   arrecadado: 8104.64,
                   meta: 16000,

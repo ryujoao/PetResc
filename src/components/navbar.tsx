@@ -39,7 +39,9 @@ export default function Nav() {
             <>
               <li><Link to="/admin/" className={styles.navLink}>Dashboard</Link></li>
               <li><Link to="/admin/gerenciamento" className={styles.navLink}>Gerenciamento</Link></li>
+              <li><Link to="/admin/monitoramento" className={styles.navLink}>Monitoramento</Link></li>
               <li><Link to="/admin/historico-pets" className={styles.navLink}>Histórico de Cadastro</Link></li>
+              <li><Link to="/admin/logs" className={styles.navLink}>Histórico de Logs</Link></li>
             </>
           )}
 

@@ -1,236 +1,210 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./gerenciar.module.css"; 
-import Layout from "../../components/layout";
-import { FaArrowLeft, FaPaw, FaMapMarkerAlt, FaCheck, FaTimes } from "react-icons/fa";
+import styles from "./gerenciar.module.css";
+import Layout from "../../components/layout"; // Ajuste o caminho conforme seu projeto
+import { FaArrowLeft } from "react-icons/fa";
 
-// Tipagem completa baseada no seu backend/mock
-interface AnimalDetalhado {
-  id: number;
-  nome: string;
-  fotoUrl: string;
-  status: string;
-  codigo: string;
-  ultimaAtualizacao: string;
-  descricao: string;
-  local_cidade: string;
-  local_estado: string;
-  
-  // Características Físicas
-  genero: string;
-  porte: string;
-  cor: string;
-  raca: string;
-  idade: string; // Ex: "Adulto" ou número
-
-  // Ficha Médica
+// Dados mockados de UM animal específico
+const MOCK_DADOS = {
+  id: 1,
+  animal: {
+    nome: "Branquinho",
+    fotoUrl: "https://placehold.co/400x400/png", // Placeholder
+    status: "Aguardando Vaga",
+    codigo: "000000",
+    ultimaAtualizacao: "00/00/0000",
+  },
+  caracteristicas: {
+    nome: "Sem Nome Definida (SND)",
+    genero: "Macho",
+    porte: "Não informado",
+    cor: "Branca",
+    raca: "Sem Raça Definida (SRD)",
+    idade: "Adulto",
+  },
   fichaMedica: {
-    vacinado: boolean;
-    castrado: boolean;
-    vermifugado: boolean;
-  };
-
-  // Comportamento
-  comportamento: {
-    docil: boolean;
-    brincalhao: boolean;
-    sociavel: boolean;
-    carente: boolean;
-    independente: boolean;
-  };
-
-  // Sociabilidade
+    vacinado: true,
+    castrado: false, // Exemplo falso para testar visualização
+    vermifugado: false,
+  },
+  temperamento: {
+    docil: true,
+    brincalhao: true,
+    sociavel: true,
+    carente: true,
+    independente: true,
+  },
   sociabilidade: {
-    comEstranhos: boolean;
-    comCriancas: boolean;
-    comGatos: boolean;
-    comCachorros: boolean;
-  };
-}
+    comEstranhos: true,
+    comCriancas: true,
+    comGatos: true,
+    comCachorros: true,
+  },
+};
 
 export default function GerenciarRegistro() {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [dados, setDados] = useState<AnimalDetalhado | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const [dados, setDados] = useState(null);
 
-  // MOCK DE DADOS (Substitua pela chamada API real depois)
   useEffect(() => {
+    // Simula carregamento
     setTimeout(() => {
-      setDados({
-        id: 1,
-        nome: "Branquinho",
-        fotoUrl: "https://placehold.co/400x400",
-        status: "Aguardando Aprovação",
-        codigo: "BR00123",
-        ultimaAtualizacao: "04/12/2025",
-        descricao: "Resgatado próximo à rodovia. Muito dócil e precisa de cuidados especiais na pata esquerda.",
-        local_cidade: "São Paulo",
-        local_estado: "SP",
-        
-        genero: "Macho",
-        porte: "Médio",
-        cor: "Branca",
-        raca: "SRD",
-        idade: "Adulto",
-
-        fichaMedica: {
-          vacinado: true,
-          castrado: false,
-          vermifugado: true
-        },
-        comportamento: {
-          docil: true,
-          brincalhao: true,
-          sociavel: true,
-          carente: false,
-          independente: false
-        },
-        sociabilidade: {
-          comEstranhos: true,
-          comCriancas: true,
-          comGatos: false,
-          comCachorros: true
-        }
-      });
-      setLoading(false);
-    }, 600);
+      setDados(MOCK_DADOS);
+    }, 500);
   }, [id]);
 
-  const handleNegar = () => {
-    if (window.confirm("Deseja NEGAR este registro?")) {
-      alert("Registro Negado.");
-      navigate(-1);
-    }
-  };
-
-  const handleAceitar = () => {
-    if (window.confirm("Deseja APROVAR este registro?")) {
-      alert("Registro Aceito com Sucesso!");
-      navigate(-1);
-    }
-  };
-
-  if (loading) return <Layout><div style={{padding:'40px'}}>Carregando...</div></Layout>;
-  if (!dados) return <Layout><div style={{padding:'40px'}}>Registro não encontrado.</div></Layout>;
+  if (!dados)
+    return (
+      <Layout>
+        <div>Carregando...</div>
+      </Layout>
+    );
 
   return (
     <Layout>
-      <div className={styles.pageContainer}>
-        
-        {/* Botão Voltar */}
+      <div className={styles.container}>
         <button onClick={() => navigate(-1)} className={styles.btnVoltar}>
-          <FaArrowLeft /> Voltar para lista
+          <FaArrowLeft /> Voltar
         </button>
 
-        {/* === CABEÇALHO (Estilo idêntico ao Gerenciar Adoção) === */}
-        <section className={styles.animalHeader}>
-          <div className={styles.animalImageWrapper}>
-            <img src={dados.fotoUrl} alt={dados.nome} className={styles.animalImg} />
+        {/* --- CABEÇALHO: FOTO À ESQUERDA, CARD AZUL À DIREITA --- */}
+        <div className={styles.secaoCabecalho}>
+          <div className={styles.moldeFoto}>
+            <img
+              src={dados.animal.fotoUrl}
+              alt={dados.animal.nome}
+              className={styles.fotoAnimal}
+            />
           </div>
 
-          <div className={styles.animalContent}>
-            <div className={styles.animalTitleRow}>
-              <h1 className={styles.animalName}>{dados.nome}</h1>
-              <span className={styles.statusBadge}>{dados.status}</span>
+          <div className={styles.painelInfoPrincipal}>
+            <h1 className={styles.nomeAnimal}>{dados.animal.nome}</h1>
+            <div className={styles.linhaStatus}>
+              Status: <strong>{dados.animal.status}</strong>
+              <br />
+              Última atualização: {dados.animal.ultimaAtualizacao}
             </div>
 
-            <div className={styles.animalTags}>
-              <span><FaPaw /> {dados.raca}</span>
-              <span>• {dados.idade}</span>
-              <span>• {dados.genero}</span>
-              <span>• {dados.porte}</span>
-            </div>
+            <button className={styles.btnMudarStatus}>Mudar Status</button>
 
-            <p className={styles.animalStory}>{dados.descricao}</p>
-
-            <div className={styles.animalLocation}>
-              <FaMapMarkerAlt color="#d9534f" /> {dados.local_cidade} - {dados.local_estado}
-              <span style={{marginLeft: '15px', color:'#2b6b99'}}>Código: {dados.codigo}</span>
-            </div>
+            <span className={styles.codigoAnimal}>
+              Código: {dados.animal.codigo}
+            </span>
           </div>
-        </section>
-
-        {/* === ÁREA DE CONTEÚDO (Substituindo o Grid de Candidatos pelo Grid de Características) === */}
-        
-        <div className={styles.detailsPanel}>
-            <h2 className={styles.sectionTitle}>Características Técnicas</h2>
-            <div className={styles.separator}></div>
-
-            {/* GRID DE 4 COLUNAS */}
-            <div className={styles.infoGrid}>
-
-                {/* COLUNA 1: DADOS BÁSICOS */}
-                <div className={styles.column}>
-                    <div className={styles.infoBlock}>
-                        <label>Gênero</label>
-                        <p>{dados.genero}</p>
-                    </div>
-                    <div className={styles.infoBlock}>
-                        <label>Porte</label>
-                        <p>{dados.porte}</p>
-                    </div>
-                    <div className={styles.infoBlock}>
-                        <label>Cor Predominante</label>
-                        <p>{dados.cor}</p>
-                    </div>
-                    <div className={styles.infoBlock}>
-                        <label>Raça</label>
-                        <p>{dados.raca}</p>
-                    </div>
-                    <div className={styles.infoBlock}>
-                        <label>Idade</label>
-                        <p>{dados.idade}</p>
-                    </div>
-                </div>
-
-                {/* COLUNA 2: CUIDADOS VETERINÁRIOS */}
-                <div className={`${styles.column} ${styles.columnBorderLeft}`}>
-                    <h3 className={styles.columnHeader}>Cuidados Veterinários</h3>
-                    <div className={styles.tagsContainer}>
-                        {dados.fichaMedica.vacinado && <span className={styles.badgeBlue}>Vacinado</span>}
-                        {dados.fichaMedica.castrado && <span className={styles.badgeBlue}>Castrado</span>}
-                        {dados.fichaMedica.vermifugado && <span className={styles.badgeBlue}>Vermifugado</span>}
-                        {!dados.fichaMedica.vacinado && !dados.fichaMedica.castrado && !dados.fichaMedica.vermifugado && <span style={{color:'#999'}}>Nenhum registro</span>}
-                    </div>
-                </div>
-
-                {/* COLUNA 3: TEMPERAMENTO */}
-                <div className={`${styles.column} ${styles.columnBorderLeft}`}>
-                    <h3 className={styles.columnHeader}>Temperamento</h3>
-                    <div className={styles.tagsVertical}>
-                        {dados.comportamento.docil && <span className={styles.badgeLight}>Dócil</span>}
-                        {dados.comportamento.brincalhao && <span className={styles.badgeLight}>Brincalhão</span>}
-                        {dados.comportamento.sociavel && <span className={styles.badgeLight}>Sociável</span>}
-                        {dados.comportamento.carente && <span className={styles.badgeLight}>Carente</span>}
-                        {dados.comportamento.independente && <span className={styles.badgeLight}>Independente</span>}
-                    </div>
-                </div>
-
-                {/* COLUNA 4: SOCIABILIDADE */}
-                <div className={`${styles.column} ${styles.columnBorderLeft}`}>
-                    <h3 className={styles.columnHeader}>Sociabilidade</h3>
-                    <div className={styles.tagsVertical}>
-                        {dados.sociabilidade.comEstranhos && <span className={styles.badgeBlueOutline}>Sociável com estranhos</span>}
-                        {dados.sociabilidade.comCriancas && <span className={styles.badgeBlueOutline}>Sociável com crianças</span>}
-                        {dados.sociabilidade.comGatos && <span className={styles.badgeBlueOutline}>Sociável com gatos</span>}
-                        {dados.sociabilidade.comCachorros && <span className={styles.badgeBlueOutline}>Sociável com cachorros</span>}
-                    </div>
-                </div>
-            </div>
-
-            {/* BOTÕES DE AÇÃO NO RODAPÉ DO CARD */}
-            <div className={styles.footerActions}>
-                <button className={styles.btnNegar} onClick={handleNegar}>
-                    <FaTimes /> Negar Registro
-                </button>
-
-                <button className={styles.btnAceitar} onClick={handleAceitar}>
-                    <FaCheck /> Aceitar Registro
-                </button>
-            </div>
         </div>
 
+        {/* --- TÍTULO E DIVISOR --- */}
+        <h2 className={styles.tituloSecao}>Características</h2>
+        <div className={styles.divisorAzul}></div>
+
+        {/* --- GRID DE 4 COLUNAS --- */}
+        <div className={styles.gradeInfos}>
+          {/* COLUNA 1: DADOS BÁSICOS (TEXTO) */}
+          <div className={styles.coluna}>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>Nome</span>
+              <p className={styles.valor}>{dados.caracteristicas.nome}</p>
+            </div>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>Gênero</span>
+              <p className={styles.valor}>{dados.caracteristicas.genero}</p>
+            </div>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>PORTE</span>
+              <p className={styles.valor}>{dados.caracteristicas.porte}</p>
+            </div>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>COR PREDOMINANTE</span>
+              <p className={styles.valor}>{dados.caracteristicas.cor}</p>
+            </div>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>RAÇA</span>
+              <p className={styles.valor}>{dados.caracteristicas.raca}</p>
+            </div>
+            <div className={styles.blocoDado}>
+              <span className={styles.rotulo}>IDADE</span>
+              <p className={styles.valor}>{dados.caracteristicas.idade}</p>
+            </div>
+          </div>
+
+          {/* COLUNA 2: CUIDADOS VETERINÁRIOS (BADGES) */}
+          <div className={`${styles.coluna} ${styles.comBordaEsquerda}`}>
+            <h3 className={styles.tituloColuna}>Cuidados Veterinários</h3>
+            <div className={styles.wrapperEtiquetas}>
+              {dados.fichaMedica.vacinado && (
+                <div className={styles.etiquetaAzul}>Vacinado</div>
+              )}
+              {dados.fichaMedica.castrado && (
+                <div className={styles.etiquetaAzul}>Castrado</div>
+              )}
+              {dados.fichaMedica.vermifugado && (
+                <div className={styles.etiquetaAzul}>Vermifugado</div>
+              )}
+            </div>
+          </div>
+
+          {/* COLUNA 3: TEMPERAMENTO (BADGES) */}
+          <div className={`${styles.coluna} ${styles.comBordaEsquerda}`}>
+            <h3 className={styles.tituloColuna}>Temperamento</h3>
+            <div className={styles.wrapperEtiquetas}>
+              {dados.temperamento.docil && (
+                <div className={styles.etiquetaAzul}>Dócil</div>
+              )}
+              {dados.temperamento.brincalhao && (
+                <div className={styles.etiquetaAzul}>Brincalhão</div>
+              )}
+              {dados.temperamento.sociavel && (
+                <div className={styles.etiquetaAzul}>Sociável</div>
+              )}
+              {dados.temperamento.carente && (
+                <div className={styles.etiquetaAzul}>Carente</div>
+              )}
+              {dados.temperamento.independente && (
+                <div className={styles.etiquetaAzul}>Independente</div>
+              )}
+            </div>
+          </div>
+
+          {/* COLUNA 4: SOCIABILIDADE (BADGES) */}
+          <div className={`${styles.coluna} ${styles.comBordaEsquerda}`}>
+            <h3 className={styles.tituloColuna}>Sociabilidade</h3>
+            <div className={styles.wrapperEtiquetas}>
+              {dados.sociabilidade.comEstranhos && (
+                <div className={styles.etiquetaAzul}>
+                  Sociável com estranhos
+                </div>
+              )}
+              {dados.sociabilidade.comCriancas && (
+                <div className={styles.etiquetaAzul}>Sociável com crianças</div>
+              )}
+              {dados.sociabilidade.comGatos && (
+                <div className={styles.etiquetaAzul}>Sociável com gatos</div>
+              )}
+              {dados.sociabilidade.comCachorros && (
+                <div className={styles.etiquetaAzul}>
+                  Sociável com cachorros
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* --- BOTÕES DO RODAPÉ --- */}
+        <div className={styles.rodapeAcoes}>
+          <button
+            className={`${styles.btnAcao} ${styles.negativo}`}
+            onClick={() => alert("Negado")}
+          >
+            Negar Registro
+          </button>
+          <button
+            className={`${styles.btnAcao} ${styles.positivo}`}
+            onClick={() => alert("Aceito")}
+          >
+            Aceitar Registro
+          </button>
+        </div>
       </div>
     </Layout>
   );

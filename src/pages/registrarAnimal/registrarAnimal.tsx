@@ -642,7 +642,7 @@ const RegistrarAnimalOng = () => {
                 <option key={opt.valor} value={opt.valor}>{opt.label}</option>
               ))}
             </select>
-            <small style={{display:'block', marginTop:'5px', color:'#666'}}>
+            <small style={{display:'block', marginTop:'5px', color:'#666', fontSize:'1.2rem', fontWeight:'700'}}>
                 * Selecione "Precisa de Lar Temporário" para que ele apareça na coluna de Lar Temporário no painel.
             </small>
           </div>
