@@ -317,7 +317,7 @@ export default function Perfil() {
         // Se não for ONG, busca favoritos
         if (!isOng) {
           try {
-            const resSalvos = await api.get("favoritos/meus");
+            const resSalvos = await api.get("favoritar/meus");
             const salvosFormatados = resSalvos.data.map((item: any) => ({
               ...item.animal,
               favorito: true,
@@ -341,10 +341,10 @@ export default function Perfil() {
     try {
       const isFavoritoNow = outrosSalvos.some((p) => p.id === id);
       if (isFavoritoNow) {
-        await api.delete(`/favoritos/toggle/${id}`);
+        await api.delete(`/favoritar/${id}`);
         setOutrosSalvos((prev) => prev.filter((p) => p.id !== id));
       } else {
-        await api.post(`/favoritos/toggle/${id}`);
+        await api.post(`/favoritar/${id}`);
       }
     } catch (error) {
       alert("Erro ao atualizar favorito.");

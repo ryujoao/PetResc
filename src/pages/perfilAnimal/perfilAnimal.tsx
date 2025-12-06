@@ -103,7 +103,7 @@ export default function PerfilAnimal() {
             })
             .catch(console.error);
         }
-        api.get('/favoritos/meus')
+        api.get('/favoritar/meus')
            .then(res => {
                setIsFavorito(res.data.some((fav: any) => fav.animalId === animal.id));
            })
@@ -118,7 +118,7 @@ export default function PerfilAnimal() {
       const novoStatus = !isFavorito;
       setIsFavorito(novoStatus);
       try {
-          await api.post(`/favoritos/toggle/${animal.id}`);
+          await api.post(`/favoritar/${animal.id}`);
       } catch {
           setIsFavorito(!novoStatus); 
       }

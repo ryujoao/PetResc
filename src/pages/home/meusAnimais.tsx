@@ -77,7 +77,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, statusAdocao, tipoStatu
       <div className={styles.infoCard}>
         <h3 className={styles.cardNome}>{animal.nome || "Sem Nome"}</h3>
         <p className={styles.descricaoCard}>
-          {animal.raca } • {animal.idade ? `${animal.idade} anos` : "?"}
+          {animal.raca || "SRD"} • {animal.idade ? `${animal.idade} anos` : "?"}
         </p>
         <span className={styles.tagId}>#{animal.id}</span>
       </div>

@@ -67,7 +67,7 @@ function App() {
       />
 
       <Route path="/nova-campanha" element={<NovaCampanha />} />
-      {/* <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} /> */}
+       <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} /> 
       <Route path="/avaliar-animal" element={<AvaliarAnimal />} />
       <Route path="/gerenciar-adocao" element={<GerenciarAdocao/>}/>
       <Route path="/gerenciar-registro" element={<GerenciarRegistro/>} />

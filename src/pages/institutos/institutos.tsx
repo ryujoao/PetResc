@@ -44,17 +44,16 @@ export default function Institutos() {
 
         const dados = await response.json();
 
-        // MAPEAMENTO: transformar dados do backend no formato esperado pelo front
         const campanhaFormatada: CampanhaExibicao = {
           id: String(dados.id),
           titulo: dados.titulo,
-          endereco: dados.ong?.nome || "Instituição não informada",
+          endereco: dados.ong ? `${dados.ong.cidade} - ${dados.ong.estado}` : "Localização não informada",
           descricao: dados.descricao,
           itensDescricao: dados.itensDescricao || [],
           imagemUrl: dados.imagemUrl || "https://via.placeholder.com/600x250?text=Sem+Imagem",
           arrecadado: dados.arrecadado || 0, // O backend ainda não tem esse campo
           meta: dados.metaFinanceira,
-          realizadoPor: dados.ong?.nome || "Instituição",
+          realizadoPor: dados.ong?.nome || dados.usuarioCriador?.nome || "ONG Parceira",
           dataLimite: dados.dataLimite
         };
 

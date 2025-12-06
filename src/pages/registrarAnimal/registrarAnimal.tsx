@@ -282,13 +282,16 @@ const RegistrarAnimalUsuario = () => {
             </select>
           </div>
 
-          <div className={styles.campoForm}>
+           <div className={styles.campoForm}>
             <label className={styles.label}>Idade</label>
-            <select className={styles.barraInfos} required value={idade} onChange={(e) => setIdade(e.target.value)}>
-              <option value="" disabled>Selecione</option>
-              {OPCOES_IDADE.map(opt => <option key={opt} value={opt}>{formatOption(opt)}</option>)}
-            </select>
-          </div>
+            <input 
+             className={styles.barraInfos} 
+             type="text" 
+             placeholder="Ex: 2 anos, 5 meses, Adulto..." 
+             value={idade} 
+             onChange={(e) => setIdade(e.target.value)}
+             required/>
+            </div>
 
           <button type="submit" className={styles.botao} disabled={loadingEnvio}>
             {loadingEnvio ? "Enviando..." : "Enviar Formulário"}
