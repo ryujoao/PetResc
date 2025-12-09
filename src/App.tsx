@@ -36,13 +36,10 @@ import AdminUsuarios from "./pages/admin/adminUsuarios";
 import AdminOngsDetalhes from "./pages/admin/adminOngDetalhes";
 import AdminGerenciarPetsOng from "./pages/admin/adminOngPets";
 import AdminHistoricoPets from "./pages/admin/adminPetsHistorico";
-<<<<<<< HEAD
 import AdminLogs from "./pages/admin/adminLogs";
 import AdminMonitoramento from "./pages/admin/adminMonitoramento";
 import AvaliarAnimal from "./pages/avaliarAnimal/avaliarAnimal";
-=======
 import GerenciarRegistro from "./pages/gerenciar/gerenciarRegistro";
->>>>>>> 9ae4a98f9df617527311292cd84dd95fa5c55b33
 
 function App() {
   return (
@@ -68,11 +65,8 @@ function App() {
       />
       <Route path="/nova-campanha" element={<NovaCampanha />} />
       <Route path="/gerenciar-adocao/:id" element={<GerenciarAdocao />} />
-<<<<<<< HEAD
       <Route path="/avaliar-animal" element={<AvaliarAnimal />} />
-=======
       <Route path="/gerenciar-registro" element={<GerenciarRegistro/>} />
->>>>>>> 9ae4a98f9df617527311292cd84dd95fa5c55b33
       /* Admin */
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/gerenciamento" element={<AdminGerenciamento />} />

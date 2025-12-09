@@ -33,13 +33,10 @@ const RegistrarAnimalUsuario = () => {
   const [imagemPreview, setImagemPreview] = useState<string | null>(null);
   const [imagemArquivo, setImagemArquivo] = useState<File | null>(null);
 
-<<<<<<< HEAD
-=======
   // IA
   const [gerandoIA, setGerandoIA] = useState(false);
 
   // Campos
->>>>>>> 9ae4a98f9df617527311292cd84dd95fa5c55b33
   const [nome, setNome] = useState("");
   const [historia, setHistoria] = useState("");
   const [cuidado, setCuidado] = useState("");
