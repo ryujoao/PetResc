@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import styles from "../conta/conta.module.css"; 
 import { useAuth } from "../../../auth/AuthContext";
-import Modal from "../../../components/modal"; // <--- IMPORTADO
+import Modal from "../../../components/modal";
+
 
 export default function Endereco() {
   const { user, setUser } = useAuth();
