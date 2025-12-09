@@ -20,7 +20,7 @@ export default function Sucesso({ isOpen, onClose, mensagem }: Props) {
         <span className={styles.sairPopUp} onClick={onClose}>
           x
         </span>
-        <h2 className={styles.titulo}>
+        <h2 className={styles.titulo} style={{color: '#28a745'}}>
             {mensagem ? "Sucesso!" : "Formulário enviado"}
         </h2>
 

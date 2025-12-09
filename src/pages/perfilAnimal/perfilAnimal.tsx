@@ -178,7 +178,7 @@ export default function PerfilAnimal() {
   
   const statusMap: Record<string, string> = {
       'DISPONIVEL': 'Para Adoção',
-      'PERDIDO': 'DESAPARECIDO ⚠️',
+      'PERDIDO': 'DESAPARECIDO',
       'ENCONTRADO': 'Encontrado',
       'ADOTADO': 'Adotado',
       'LAR_TEMPORARIO': 'Precisa de Lar',
@@ -218,9 +218,9 @@ export default function PerfilAnimal() {
                   <strong>{animal.sexo}</strong> 
                   
                   {/* --- MUDANÇA 1: PONTO NA IDADE --- */}
-                  • {animal.idade ? (isNaN(Number(animal.idade)) ? animal.idade : `${animal.idade} anos`) : 'Idade não inf.'}
+                  &bull; {animal.idade ? (isNaN(Number(animal.idade)) ? animal.idade : `${animal.idade} anos`) : 'Idade não inf.'}
                   
-                  • {animal.raca }
+                  &bull; {animal.raca }
               </p>
               <p className={styles.infoLine}>Responsável: <strong>{animal.account.nome}</strong></p>
               

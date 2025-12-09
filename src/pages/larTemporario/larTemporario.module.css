@@ -197,6 +197,9 @@
   .secaoHero {
     flex-direction: column;
     text-align: center;
+    height: auto;     
+    min-height: 80vh;   
+    padding-bottom: 4rem; 
   }
   
   .conteudoHero {

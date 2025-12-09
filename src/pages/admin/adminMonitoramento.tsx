@@ -105,7 +105,7 @@ export default function AdminMonitoramento() {
                 {/* Detalhes / Mensagem de Status */}
                 <div className={styles.detalhesLog}>
                   <span className={styles.textoDetalhe}>
-                    Status: <strong>{sensor.status}</strong> — {sensor.mensagem}
+                    Status: <strong>{sensor.status}</strong> - {sensor.mensagem}
                   </span>
                 </div>
               </div>

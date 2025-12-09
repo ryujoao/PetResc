@@ -88,7 +88,7 @@ export default function AdminLogs() {
                         <div className={styles.detalhesLog}>
                             {log.detalhes.map((detalhe, index) => (
                             <span key={index} className={styles.textoDetalhe}>
-                                • {detalhe}
+                                - {detalhe}
                             </span>
                             ))}
                         </div>

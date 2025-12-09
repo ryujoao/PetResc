@@ -200,13 +200,13 @@ const RegistrarAnimalUsuario = () => {
         </div>
 
         <div className={styles.campoForm}>
-          <label className={styles.label}>Nome</label>
+          <label className={styles.label}>Nome (Opcional)</label>
           <input className={styles.barraInfos} type="text" placeholder="Nome do pet" value={nome} onChange={(e) => setNome(e.target.value)} />
         </div>
         <div className={styles.campoForm}>
           <div className={styles.campoForm}>
           <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', width:'100%', marginBottom:'5px'}}>
-              <label className={styles.label} style={{margin:0}}>História</label>
+              <label className={styles.label} style={{margin:0}}>História (Opcional)</label>
               <button 
                   type="button"
                   onClick={gerarDescricaoIA}
@@ -216,25 +216,24 @@ const RegistrarAnimalUsuario = () => {
                       padding: '5px 15px', fontSize: '0.85rem', fontWeight: 'bold', cursor: gerandoIA ? 'wait' : 'pointer'
                   }}
               >
-                 {gerandoIA ? "✨ Criando..." : "✨ Gerar com IA"}
+                 {gerandoIA ? "Criando..." : "Gerar com IA"}
               </button>
           </div>
           <textarea className={styles.barraInfos} placeholder="História..." value={historia} onChange={(e) => setHistoria(e.target.value)} />
         </div>
-          <textarea className={styles.barraInfos} placeholder="História..." value={historia} onChange={(e) => setHistoria(e.target.value)} />
         </div>
         <div className={styles.campoForm}>
-          <label className={styles.label}>Cuidados</label>
+          <label className={styles.label}>Cuidados Veterinários (Opcional)</label>
           <textarea className={styles.barraInfos} placeholder="Cuidados..." value={cuidado} onChange={(e) => setCuidado(e.target.value)} />
         </div>
         <div className={styles.campoForm}>
-          <label className={styles.label}>Sociabilidade</label>
+          <label className={styles.label}>Sociabilidade (Opcional)</label>
           <textarea className={styles.barraInfos} placeholder="Sociabilidade..." value={sociabilidade} onChange={(e) => setSociabilidade(e.target.value)} />
         </div>
       </div>
 
       <div className={styles.colunaDois}>
-        <h1 className={styles.titulo}>Criar Registro (Usuário)</h1>
+        <h1 className={styles.titulo}>Criar Registro</h1>
         <form className={styles.formulario} onSubmit={handleSubmit}>
           
           <div className={styles.campoForm}>
@@ -262,7 +261,7 @@ const RegistrarAnimalUsuario = () => {
           </div>
 
           <div className={styles.campoForm}>
-            <label className={styles.label}>Raça</label>
+            <label className={styles.label}>Raça (Opcional)</label>
             <input className={styles.barraInfos} type="text" value={raca} onChange={(e) => setRaca(e.target.value)} />
           </div>
 
@@ -283,7 +282,7 @@ const RegistrarAnimalUsuario = () => {
           </div>
 
            <div className={styles.campoForm}>
-            <label className={styles.label}>Idade</label>
+            <label className={styles.label}>Idade (Opcional)</label>
             <input 
              className={styles.barraInfos} 
              type="text" 
@@ -499,7 +498,7 @@ const RegistrarAnimalOng = () => {
     appendIf("resultados_testes", resultados);
 
     // --- DEBUG: LOG NO CONSOLE ---
-    console.log("📤 Enviando os seguintes dados:");
+    console.log("Enviando os seguintes dados:");
     for (const pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
     }
@@ -514,7 +513,7 @@ const RegistrarAnimalOng = () => {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("❌ Erro do Backend:", data);
+            console.error("Erro do Backend:", data);
             throw new Error(data.error || data.message || "Erro 500: Verifique os dados enviados");
         }
 
@@ -661,11 +660,11 @@ const RegistrarAnimalOng = () => {
 
         {/* COLUNA DIREITA (Dados e Saúde) */}
         <div className={styles.colunaDois}>
-          <h1 className={styles.titulo}>Registro Completo (ONG)</h1>
+          <h1 className={styles.titulo}>Criar Registro </h1>
           <p className={styles.subtitulo}>Preencha os dados de saúde e perfil</p>
 
           <div className={styles.campoForm}>
-            <label className={styles.label}>Nome</label>
+            <label className={styles.label}>Nome (Opcional)</label>
             <input className={styles.barraInfos} type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
           </div>
 
@@ -685,12 +684,12 @@ const RegistrarAnimalOng = () => {
           </div>
 
           <div className={styles.campoForm}>
-            <label className={styles.label}>Raça</label>
+            <label className={styles.label}>Raça (Opcional)</label>
             <input className={styles.barraInfos} type="text" value={raca} onChange={(e) => setRaca(e.target.value)} />
           </div>
 
              <div className={styles.campoForm}>
-                <label className={styles.label}>Idade Aproximada</label>
+                <label className={styles.label}>Idade Aproximada (Opcional)</label>
                 <input  type="text"  className={styles.barraInfos}  value={idadeAprox}  onChange={(e) => setIdadeAprox(e.target.value)} placeholder="Ex: 2 anos, 5 meses, Adulto..." />
              </div>
 
@@ -717,7 +716,7 @@ const RegistrarAnimalOng = () => {
 
           <div className={styles.campoForm}>
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', width:'100%', marginBottom:'5px'}}>
-              <label className={styles.label} style={{margin:0}}>História</label>
+              <label className={styles.label} style={{margin:0}}>História (Opcional)</label>
               <button 
                   type="button"
                   onClick={gerarDescricaoIA}
@@ -727,7 +726,7 @@ const RegistrarAnimalOng = () => {
                       padding: '5px 15px', fontSize: '0.85rem', fontWeight: 'bold', cursor: gerandoIA ? 'wait' : 'pointer'
                   }}
               >
-                 {gerandoIA ? "✨ Criando..." : "✨ Gerar com IA"}
+                 {gerandoIA ? "Criando..." : "Gerar com IA"}
               </button>
           </div>
           {/* Mantenha o textarea aqui embaixo */}
@@ -735,7 +734,7 @@ const RegistrarAnimalOng = () => {
           </div>
 
           <div className={styles.campoForm}>
-            <label className={styles.label}>Observações</label>
+            <label className={styles.label}>Observações (Opcional)</label>
             <textarea className={styles.barraInfos} value={obs} onChange={(e) => setObs(e.target.value)} />
           </div>
 

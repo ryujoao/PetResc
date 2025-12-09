@@ -59,8 +59,8 @@ useEffect(() => {
     try {
       const params = new URLSearchParams();
       
-      // ❌ REMOVIDO: params.append("status", "DISPONIVEL");
-      // ✅ AGORA: Não enviamos status fixo. 
+      //  REMOVIDO: params.append("status", "DISPONIVEL");
+      //  AGORA: Não enviamos status fixo. 
       // O Backend (já configurado) vai entender que "sem status" = trazer TUDO (Disponível + Encontrado).
 
       if (filtroEspecie) params.append("especie", filtroEspecie);

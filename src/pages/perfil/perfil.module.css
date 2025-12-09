@@ -569,3 +569,44 @@
   margin-top: 2rem;
   font-size: 1.3rem; 
 }
+
+@media (max-width: 900px) {
+  /* 1. Larguras Totais */
+  .perfilContainer { padding: 1rem 0; }
+  .banner { width: 95%; height: 150px; }
+  .contentArea, .btnContainerWide, .ongCard, .filterContainer, .chartsSection {
+    width: 95%; 
+    max-width: 100%;
+  }
+
+  /* 2. Avatar e Info */
+  .avatar {
+    width: 100px; height: 100px;
+    margin-top: -50px; 
+  }
+  
+  .infoContainer {
+    width: 90%;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .infoBox { font-size: 1rem; } 
+  
+  /* 3. Abas e Botões */
+  .btnContainer { width: 90%; min-width: auto; }
+  
+  /* 4. Gráficos (Empilhar) */
+  .chartsSection {
+    flex-direction: column; 
+    height: auto;
+    gap: 2rem;
+  }
+  
+  .chartBox {
+    min-width: 100%; 
+  }
+  
+  /* 5. Header da lista de pets */
+  .petsHeader { width: 90%; }
+}

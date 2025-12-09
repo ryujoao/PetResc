@@ -27,27 +27,27 @@ export default function Contato() {
           
           <div className={styles.contatoItem}>
             <h3 className={styles.contatoSubtitle}>1. E-mail</h3>
-            <span className={styles.contatoText}>• petresc@email.com</span>
+            <span className={styles.contatoText}>&bull; petresc@email.com</span>
           </div>
 
           <div className={styles.contatoItem}>
             <h3 className={styles.contatoSubtitle}>3. Chat online</h3>
-            <span className={styles.contatoText}>• Disponível: 09:00 - 18:00</span>
+            <span className={styles.contatoText}>&bull; Disponível: 09:00 - 18:00</span>
           </div>
 
           <div className={styles.contatoItem}>
             <h3 className={styles.contatoSubtitle}>2. Telefone/WhatsApp</h3>
             <div className={styles.contatoItem}> 
-              <span className={styles.contatoText}>• (11) 90000 - 0009</span>
-              <span className={styles.contatoText}>• 4009 - 9004</span>
+              <span className={styles.contatoText}>&bull; (11) 90000 - 0009</span>
+              <span className={styles.contatoText}>&bull; 4009 - 9004</span>
             </div>
           </div>
 
           <div className={styles.contatoItem}>
             <h3 className={styles.contatoSubtitle}>4. Redes sociais</h3>
             <div className={styles.contatoItem}>
-              <span className={styles.contatoText}>• Instagram: @petco</span>
-              <span className={styles.contatoText}>• Facebook: /petco</span>
+              <span className={styles.contatoText}>&bull; Instagram: @petco</span>
+              <span className={styles.contatoText}>&bull; Facebook: /petco</span>
             </div>
           </div>
 

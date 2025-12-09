@@ -116,7 +116,7 @@ min-height: 40px;
 
 /* Ícone de Checkbox (o "V") */
 .checkboxCustomizado input:checked ~ .checkmark::after {
-    content: "✔";
+    content: "\2713";
     color: #0f4979;
     font-size: 0.8rem;
     position: absolute;

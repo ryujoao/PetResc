@@ -58,7 +58,7 @@
 }
 
 .input:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px); 
   box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1); 
 }
 
@@ -70,8 +70,8 @@
 }
 
 .col {
-  flex: 1;
-  min-width: 0;
+  flex: 1; 
+  min-width: 0; 
 }
 
 /* Estilo para Perguntas e Checkboxes */
@@ -106,7 +106,7 @@
 }
 
 .checkboxCustomizado input {
-  display: none;
+  display: none; 
 }
 
 /* O quadrado desenhado */

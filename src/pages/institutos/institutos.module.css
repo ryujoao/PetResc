@@ -72,7 +72,7 @@
 }
 
 .listaItens li::before {
-  content: "•";
+  content: "\2022";
   position: absolute;
   left: 0;
   font-weight: bold;
@@ -173,7 +173,7 @@
 }
 
 .listaBeneficios li::before {
-  content: "•";
+  content: "\2022";
   position: absolute;
   left: 0;
   color: #2b6b99;

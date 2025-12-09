@@ -158,7 +158,7 @@ export default function Cadastro() {
     }
 
     try {
-      // ✅ CORRETO: Usa a URL dinâmica e envia os dados
+      // CORRETO: Usa a URL dinâmica e envia os dados
       await api.post(url, payload);
       
       setModalInfo({ title: "Sucesso!", msg: "Cadastro realizado com sucesso! Faça login para continuar.", type: "success" });

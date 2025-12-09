@@ -186,7 +186,7 @@ export default function NovaCampanha() {
                   )}
                 </label>
               </div>
-              
+
               <button 
                 type="submit" 
                 className={styles.botaoCriar} 

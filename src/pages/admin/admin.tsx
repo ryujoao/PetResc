@@ -9,7 +9,7 @@ import { PiConfettiFill } from "react-icons/pi";
 
 interface Activity {
   id: string;
-  tipo: 'USUARIO' | 'ANIMAL' | 'ADOCAO';
+  tipo: "USUARIO" | "ANIMAL" | "ADOCAO";
   texto: string;
   data: string;
   link: string;
@@ -23,7 +23,7 @@ export default function AdminHome() {
     usuarios: { total: 0 },
     animais: { total: 0, disponiveis: 0, adotados: 0, encontrados: 0 },
     pedidos: { pendentes: 0 },
-    financeiro: { totalArrecadado: 0 }
+    financeiro: { totalArrecadado: 0 },
   });
 
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -33,13 +33,12 @@ export default function AdminHome() {
     async function fetchData() {
       try {
         const [resStats, resActivity] = await Promise.all([
-          api.get('/admin/stats'),
-          api.get('/admin/activity')
+          api.get("/admin/stats"),
+          api.get("/admin/activity"),
         ]);
 
         if (resStats.data) setStats(resStats.data);
         if (resActivity.data) setActivities(resActivity.data);
-
       } catch (error) {
         console.error("Erro dashboard:", error);
       } finally {
@@ -57,26 +56,54 @@ export default function AdminHome() {
   const calcPercent = (val: number) => Math.round((val / divisorGrafico) * 100);
 
   const petsData = [
-    { label: `${calcPercent(disponiveis)}%`, val: calcPercent(disponiveis), color: "#2f80ed", name: "Disponíveis" },
-    { label: `${calcPercent(pendentes)}%`, val: calcPercent(pendentes), color: "#6fcf97", name: "Aguardando Aprovação" },
-    { label: `${calcPercent(encontrados)}%`, val: calcPercent(encontrados), color: "#bb6bd9", name: "Encontrados (Comunidade)" },
+    {
+      label: `${calcPercent(disponiveis)}%`,
+      val: calcPercent(disponiveis),
+      color: "#2f80ed",
+      name: "Disponíveis",
+    },
+    {
+      label: `${calcPercent(pendentes)}%`,
+      val: calcPercent(pendentes),
+      color: "#6fcf97",
+      name: "Aguardando Aprovação",
+    },
+    {
+      label: `${calcPercent(encontrados)}%`,
+      val: calcPercent(encontrados),
+      color: "#bb6bd9",
+      name: "Encontrados (Comunidade)",
+    },
   ];
 
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.linha}>
-
           <div className={styles.cartao}>
             <h2 className={styles.tituloCartao}>Status da plataforma</h2>
-            <div className={styles.iconeCanto}><PiConfettiFill color="#db3b3b" /></div>
+            <div className={styles.iconeCanto}>
+              <PiConfettiFill color="#db3b3b" />
+            </div>
             <div className={styles.infoPlataforma}>
-              {loading ? <p>Carregando...</p> : (
+              {loading ? (
+                <p>Carregando...</p>
+              ) : (
                 <>
-                  <p><strong>{stats.usuarios?.total || 0}</strong> Usuários Cadastrados</p>
-                  <p><strong>{stats.animais?.total || 0}</strong> Animais na Plataforma</p>
-                  <p className={styles.textoDestaque} style={{ marginTop: '15px' }}>
-                    🎉 <strong>{stats.animais?.adotados || 0}</strong> Adoções Concluídas!
+                  <p>
+                    <strong>{stats.usuarios?.total || 0}</strong> Usuários
+                    Cadastrados
+                  </p>
+                  <p>
+                    <strong>{stats.animais?.total || 0}</strong> Animais na
+                    Plataforma
+                  </p>
+                  <p
+                    className={styles.textoDestaque}
+                    style={{ marginTop: "15px" }}
+                  >
+                    <strong>{stats.animais?.adotados || 0}</strong> Adoções
+                    Concluídas!
                   </p>
                 </>
               )}
@@ -108,7 +135,15 @@ export default function AdminHome() {
 
             <div className={styles.graficoContainer}>
               {totalSoma === 0 ? (
-                <div style={{ width: '100%', textAlign: 'center', color: '#999', fontSize: '0.8rem', marginTop: '20px' }}>
+                <div
+                  style={{
+                    width: "100%",
+                    textAlign: "center",
+                    color: "#999",
+                    fontSize: "0.8rem",
+                    marginTop: "20px",
+                  }}
+                >
                   Sem dados para gráfico
                 </div>
               ) : (
@@ -119,10 +154,12 @@ export default function AdminHome() {
                       style={{
                         height: `${d.val}%`,
                         backgroundColor: d.color,
-                        minHeight: d.val > 0 ? '4px' : '0'
+                        minHeight: d.val > 0 ? "4px" : "0",
                       }}
                     />
-                    <span className={styles.barraRotulo}>{d.val > 0 ? d.label : ''}</span>
+                    <span className={styles.barraRotulo}>
+                      {d.val > 0 ? d.label : ""}
+                    </span>
                   </div>
                 ))
               )}
@@ -131,7 +168,6 @@ export default function AdminHome() {
         </div>
 
         <div className={styles.linha}>
-
           <div className={styles.cartao}>
             <h2 className={styles.tituloCartao}>Últimas atualizações</h2>
 
@@ -139,15 +175,22 @@ export default function AdminHome() {
               {loading ? (
                 <p>Carregando atividades...</p>
               ) : activities.length === 0 ? (
-                <p style={{ color: '#888', fontStyle: 'italic' }}>Nenhuma atividade recente.</p>
+                <p style={{ color: "#888", fontStyle: "italic" }}>
+                  Nenhuma atividade recente.
+                </p>
               ) : (
                 activities.map((acao) => (
                   <div key={acao.id} className={styles.itemAcao}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span className={styles.textoAcao} dangerouslySetInnerHTML={{
-                        __html: acao.texto.replace(':', ': <strong>').replace('(', '</strong>(')
-                      }} />
-                      <span style={{ fontSize: '0.75rem', color: '#999' }}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span
+                        className={styles.textoAcao}
+                        dangerouslySetInnerHTML={{
+                          __html: acao.texto
+                            .replace(":", ": <strong>")
+                            .replace("(", "</strong>("),
+                        }}
+                      />
+                      <span style={{ fontSize: "0.75rem", color: "#999" }}>
                         {new Date(acao.data).toLocaleString()}
                       </span>
                     </div>
@@ -155,7 +198,7 @@ export default function AdminHome() {
                     <div className={styles.botoesAcao}>
                       <button
                         className={styles.btnAprovar}
-                        style={{ fontSize: '0.8rem', padding: '4px 10px' }}
+                        style={{ fontSize: "0.8rem", padding: "4px 10px" }}
                         onClick={() => navigate(acao.link)}
                       >
                         Ver
@@ -169,7 +212,9 @@ export default function AdminHome() {
 
           <div className={styles.colunaVertical}>
             <div className={styles.cartao}>
-              <h2 className={styles.tituloCartao}>Distribuição de doações (Exemplo)</h2>
+              <h2 className={styles.tituloCartao}>
+                Distribuição de doações (Exemplo)
+              </h2>
               <div className={styles.donutWrapper}>
                 <div className={styles.donutLegenda}>
                   <div className={styles.legendaItem}>
@@ -177,7 +222,9 @@ export default function AdminHome() {
                     PIX: 65%
                   </div>
                   <div className={styles.legendaItem}>
-                    <div className={`${styles.ponto} ${styles.pontoCredito}`}></div>
+                    <div
+                      className={`${styles.ponto} ${styles.pontoCredito}`}
+                    ></div>
                     Cartão: 25%
                   </div>
                 </div>
@@ -187,13 +234,16 @@ export default function AdminHome() {
 
             <Link to="/admin/pets" className={styles.cartaoGerenciamento}>
               <div>
-                <div className={styles.tituloGerenciar}>Gerenciamento de Pets</div>
-                <div className={styles.linkTextoGerenciar}>&rarr; Ir para lista completa</div>
+                <div className={styles.tituloGerenciar}>
+                  Gerenciamento de Pets
+                </div>
+                <div className={styles.linkTextoGerenciar}>
+                  &rarr; Ir para lista completa
+                </div>
               </div>
               <FaPaw className={styles.iconePata} />
             </Link>
           </div>
-
         </div>
       </div>
     </Layout>

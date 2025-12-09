@@ -158,3 +158,45 @@
     transform: translateX(120px);
   }
 }
+
+@media (max-width: 768px) {
+  .tableHeader { display: none; }
+
+  .tableRow {
+    display: flex; 
+    flex-direction: column;
+    border-radius: 12px; 
+    padding: 1.5rem;
+    gap: 0.8rem;
+    align-items: flex-start; 
+    text-align: left;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+  }
+
+  /* TRUQUE DOS RÓTULOS (Labels) */
+  .colId::before { content: "ID: "; font-weight: bold; color: #2b6b99; }
+  .colNome::before { content: "Nome: "; font-weight: bold; color: #2b6b99; }
+  .colTipo::before { content: "Função: "; font-weight: bold; color: #2b6b99; }
+  .colData::before { content: "Data: "; font-weight: bold; color: #2b6b99; }
+
+  /* Ajuste do Checkbox para ficar no topo direito do card */
+  .colCheck {
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: -20px;
+  }
+
+  /* Texto alinhado */
+  .colId, .colNome, .colTipo, .colData {
+    width: 100%;
+    text-align: left;
+    font-size: 1.1rem;
+  }
+  
+  .colNome {
+    font-size: 1.3rem; 
+    font-weight: 700;
+    white-space: normal; 
+  }
+}

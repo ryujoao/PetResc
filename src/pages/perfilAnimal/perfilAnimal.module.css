@@ -1,248 +1,264 @@
 /* Container principal */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .profileWrapper {
-    display: grid;
-    /* Foto (350px) | Info (flexível) | Comentário (flexível) */
-    grid-template-columns: 350px 1fr 1fr; 
-    gap: 30px;
-    margin-bottom: 40px;
+  display: grid;
+  /* Foto (350px) | Info (flexível) | Comentário (flexível) */
+  grid-template-columns: 350px 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
 /* IMAGEM */
 .imagemContainer {
-    grid-column: 1 / 2;
-    display: flex;
-    justify-content: center;
+  grid-column: 1 / 2;
+  display: flex;
+  justify-content: center;
 }
 
 .imagem {
-    width: 350px;
-    height: 350px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  height: 350px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .imagem img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* INFO BÁSICA */
 .infoContainer {
-    grid-column: 2 / 3; 
-    display: flex;
-    flex-direction: column;
-    padding-top: 10px;
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
 }
 
 .nome {
-    font-size: 2.8em;
-    font-weight: 700;
-    color: #2b6b99;
-    margin-bottom: 5px;
+  font-size: 2.8em;
+  font-weight: 700;
+  color: #2b6b99;
+  margin-bottom: 5px;
 }
 
 /* STATUS BADGES */
 .statusBadge {
-    display: inline-block;
-    padding: 6px 15px;
-    border-radius: 5px;
-    font-size: 1em;
-    font-weight: 600;
-    margin-bottom: 25px;
-    width: fit-content;
+  display: inline-block;
+  padding: 6px 15px;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: 600;
+  margin-bottom: 25px;
+  width: fit-content;
 }
 
 .statusNormal {
-    background-color: #0F4979;
-    color: white;
+  background-color: #0f4979;
+  color: white;
 }
 
 /* Cor Vermelha para chamar atenção de que está perdido */
 .statusPerdido {
-    background-color: #d32f2f; 
-    color: white;
-    box-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
+  background-color: #d32f2f;
+  color: white;
+  box-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
 }
 
 .dados {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
 }
 
 .infoLine {
-    font-size: 1.1em;
-    color: #555;
-    margin-bottom: 8px;
+  font-size: 1.3rem;
+  color: #555;
+  margin-bottom: 8px;
 }
 
 /* BOX DE AJUDA PARA QUEM VÊ O ANIMAL PERDIDO */
 .boxAjuda {
-    background-color: #ffebee; /* Fundo vermelho bem claro */
-    border: 1px solid #ffcdd2;
-    color: #c62828;
-    padding: 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+  background-color: #ffebee; /* Fundo vermelho bem claro */
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .boxAjuda strong {
-    display: block;
-    font-size: 1.1em;
-    margin-bottom: 4px;
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 4px;
 }
 
 .boxAjuda p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #b71c1c;
+  margin: 0;
+  font-size: 0.9em;
+  color: #b71c1c;
 }
 
 /* COMENTÁRIOS */
 .comentarioContainer {
-    grid-column: 3 / 4; 
-    background-color: #f7f7f7;
-    padding: 30px;
-    border-radius: 15px;
-    height: fit-content;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  grid-column: 3 / 4;
+  background-color: #f7f7f7;
+  padding: 30px;
+  border-radius: 15px;
+  height: fit-content;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .comentarioContainer h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin-top: 0;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
+  margin-top: 0;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .comentarioContainer p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #555;
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #555;
 }
 
 .alertBox {
-    margin-top: 20px;
-    background: #fff3cd;
-    border: 1px solid #ffeeba;
-    color: #856404;
-    padding: 15px;
-    border-radius: 5px;
+  margin-top: 20px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 15px;
+  border-radius: 5px;
 }
 
 /* BOTÕES */
 .botaoAdotar {
-    background: #0F4979; 
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #0f4979;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .botaoAdotar:hover {
-    background-color: #0c3b61;
+  background-color: #0c3b61;
 }
 
 /* BOTÃO DE REPORTAR (COR DESTAQUE - LARANJA) */
 /* Botão para quem VIU o animal e quer avisar o dono */
 .botaoReportar {
-    background: #ff9800; 
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.1em;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
 }
 
 .botaoReportar:hover {
-    background-color: #f57c00;
+  background-color: #f57c00;
 }
 
 /* CARACTERÍSTICAS */
 .divider {
-    border: 0;
-    height: 1px;
-    background-color: #ddd;
-    margin: 40px 0;
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 40px 0;
 }
 
 .caracteristicasGrid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
 }
 
 .caracteristicaColuna h3 {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #2b6b99;
-    margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2b6b99;
+  margin-bottom: 20px;
 }
 
 .caracteristicaColuna ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .caracteristicaColuna ul li {
-    font-size: 1em;
-    color: #333;
-    margin-bottom: 8px;
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 8px;
 }
 
 /* RESPONSIVIDADE PARA TELAS MENORES */
 @media (max-width: 1024px) {
-    .profileWrapper {
-        grid-template-columns: 1fr; /* Tudo em uma coluna */
-        gap: 20px;
-    }
-    
-    .imagemContainer {
-        grid-column: 1 / -1;
-    }
-    
-    .infoContainer {
-        grid-column: 1 / -1;
-    }
-    
-    .comentarioContainer {
-        grid-column: 1 / -1;
-    }
-    
+  .profileWrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .imagemContainer {
+    grid-column: 1 / -1;
+  }
+
+  .infoContainer {
+    grid-column: 1 / -1;
+  }
+
+  .comentarioContainer {
+    grid-column: 1 / -1;
+  }
+
+  .caracteristicasGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .imagem {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    aspect-ratio: 1/1;
+    margin: 0 auto;
+  }
+  .caracteristicasGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
     .caracteristicasGrid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr; 
     }
 }

@@ -143,7 +143,7 @@ const DoarUsuarioView = () => {
               meta: 16000,
             },
             {
-              id: "suipa",
+              id: "5",
               nome: "SUIPA",
               endereco:
                 "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
@@ -155,7 +155,7 @@ const DoarUsuarioView = () => {
             /* CORREÇÃO AQUI: Link dinâmico para /instituto/:id */
             <Link
               key={index}
-              to={`/instituto/${inst.id}`} 
+              to={`/instituto/${inst.id}`}
               className={styles.instituicoes}
             >
               <img

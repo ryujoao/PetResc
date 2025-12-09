@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./campanhasAnteriores.module.css";
 import { useAuth } from "../../auth/AuthContext";
@@ -22,6 +22,7 @@ export default function CampanhasAnteriores() {
   const [campanhas, setCampanhas] = useState<Campanha[]>([]);
   const [loading, setLoading] = useState(true);
   const [termoBusca, setTermoBusca] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -184,10 +185,13 @@ export default function CampanhasAnteriores() {
                   </div>
 
                   {/* Botões de Ação */}
+                  
                   <div className={styles.cardActions}>
+                    <Link to={`/instituto/${campanha.id}`}>
                     <button className={styles.btnEdit} title="Editar">
                         <FaEdit /> Editar
                     </button>
+                    </Link>
                     <button 
                         className={styles.btnDelete} 
                         onClick={() => handleDelete(campanha.id)}

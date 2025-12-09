@@ -22,7 +22,7 @@ export default function Denuncie({ isOpen, onClose }: Props) {
     <div className={styles.overlay} onClick={handleOverlayClick}>
       <div className={styles.modal}>
         <span className={styles.sairPopUp} onClick={onClose}>×</span>
-        <h2 className={styles.titulo}>🚨 Denuncie!</h2>
+        <h2 className={styles.titulo}>Denuncie!</h2>
         <p className={styles.subtitulo}>Faça uma Denúncia</p>
         <ul>
           <li className={styles.vermelhoPopUp}><strong>Polícia Militar:</strong> 190</li>

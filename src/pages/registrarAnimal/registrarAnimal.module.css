@@ -275,7 +275,7 @@ select option {
   border-color: #286699;
 }
 
-/* O check (✔) - CORREÇÃO DE ALINHAMENTO */
+/* O check - CORREÇÃO DE ALINHAMENTO */
 .checkmark::after {
   content: "";
   position: absolute;
@@ -393,6 +393,33 @@ select option {
   }
 
   .botao {
-    align-self: center; /* Centraliza botão no mobile */
+    align-self: center; 
+  }
+}
+
+@media (max-width: 600px) {
+  /* 1. Ajuste do container de imagem para não ficar gigante */
+  .imagemContainer {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1; 
+    max-height: 300px; 
+  }
+
+  /* 2. Permite que o texto do checkbox quebre linha */
+  .checkboxCustomizado {
+    width: 100% !important; 
+    white-space: normal; 
+    align-items: flex-start !important; 
+  }
+  
+  .checkmark {
+    margin-top: 3px; 
+  }
+
+  /* 3. Botão full width no mobile para facilitar o clique */
+  .botao {
+    width: 100%;
+    align-self: center;
   }
 }

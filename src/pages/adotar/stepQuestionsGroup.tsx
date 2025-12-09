@@ -182,7 +182,7 @@ export default function StepQuestionsGroup({
       <h3 className={styles.questionTitle}>
         {q.title}
         {!q.required && (
-          <span style={{ fontSize: "0.8rem", fontWeight: "normal", color: "#666" }}>
+          <span style={{ fontSize: "1.2rem", fontWeight: "normal", color: "#666" }}>
             {" "}
             (Opcional)
           </span>
@@ -190,7 +190,7 @@ export default function StepQuestionsGroup({
       </h3>
       
       {q.multiple && (
-        <p style={{ fontSize: "0.8rem", marginBottom: "10px", color: "#555" }}>
+        <p style={{ fontSize: "1.2rem", marginBottom: "10px", color: "#555" }}>
           Selecione todas as opções que desejar.
         </p>
       )}
@@ -226,7 +226,7 @@ export default function StepQuestionsGroup({
               <span className={styles.optionLetter}>{letter}</span>
               <span className={styles.optionLabel}>{opt}</span>
               {q.multiple && isSelected && (
-                <span style={{ marginLeft: "auto", fontWeight: "bold" }}>✓</span>
+                <span style={{ marginLeft: "auto", fontWeight: "bold" }}></span>
               )}
             </label>
           );
