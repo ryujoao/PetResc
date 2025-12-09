@@ -45,7 +45,7 @@ const MOCK_DADOS = {
 export default function GerenciarRegistro() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [dados, setDados] = useState(null);
+  const [dados, setDados] = useState<typeof MOCK_DADOS | null>(null);
 
   useEffect(() => {
     // Simula carregamento
