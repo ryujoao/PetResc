@@ -3,8 +3,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 13rem;
-
+  
+  /* Permite que os itens quebrem linha se a tela for menor */
+  flex-wrap: wrap; 
+  
+  /* Adiciona um respiro nas laterais e em cima/baixo */
+  padding: 4rem 2rem; 
+  
+  gap: 13rem; /* Mantido o gap original para telas gigantes */
   background-color: transparent;
 }
 
@@ -12,13 +18,19 @@
   border: 2px solid #286699;
   border-radius: 12px;
   min-height: 17rem;
-  width: 20%;
-  min-width: 300px;
+  
+  /* Flexibilidade do card */
+  width: 20%; 
+  min-width: 300px; /* Garante que não fique muito espremido */
+  max-width: 400px; /* Garante que não fique gigante ao quebrar linha */
+  
   color: black;
   padding: 2rem;
   position: relative;
-
   padding-top: 4rem;
+  
+  /* Garante espaçamento vertical se houver quebra de linha */
+  margin-bottom: 1rem; 
 }
 
 .iconCircle {
@@ -30,13 +42,10 @@
   height: 60px;
   border-radius: 50%;
   border: 2px solid #286699; 
-
   background-color: #fff;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #286699;
   font-size: 1.8rem;
 }
@@ -60,7 +69,6 @@
   color: #4baef2;
   position: absolute;
   bottom: 30px;
-
   font-weight: 700;
   text-decoration: none;
   display: inline-block;
@@ -70,4 +78,25 @@
 .card a:hover {
   transform: translateY(-3px);
   color: #286699;
+}
+
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
+
+/* Para Laptops menores (ex: 1366px, 1440px) */
+@media (max-width: 1500px) {
+  .containerSaibaMais {
+    gap: 6rem; /* Reduz o gap drasticamente */
+  }
+}
+
+/* Para Tablets ou telas menores (ex: 1024px e abaixo) */
+@media (max-width: 1100px) {
+  .containerSaibaMais {
+    gap: 3rem; /* Gap ainda menor */
+  }
+  
+  .card {
+    width: 45%; /* Os cards passam a ocupar mais espaço e podem ficar 2 por linha ou 1 por linha */
+    min-width: 280px;
+  }
 }

@@ -6,9 +6,8 @@
   color: #0f4979;
 }
 
-/* ========================================= */
-/* === COLUNA 1: FOTO E TEXTOS LATERAIS === */
-/* ========================================= */
+/* COLUNA 1: FOTO E TEXTOS LATERAIS  */
+
 .colunaUm {
   flex: 1;
   padding: 3rem;
@@ -84,9 +83,8 @@
   margin-bottom: 0.75rem;
   font-size: clamp(1rem, 2.2vw, 1.2rem);
   color: #123347;
-  transition: border-color 150ms, box-shadow 150ms;
-  box-sizing: border-box;
   transition: border-color 150ms, box-shadow 150ms, transform 0.2s ease;
+  box-sizing: border-box;
 }
 
 select option {
@@ -94,15 +92,13 @@ select option {
   font-weight: 600;
 }
 
-
 .barraInfos:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
 }
 
-/* ============================ */
 /* === COLUNA 2: FORMULÁRIO === */
-/* ============================ */
+
 .colunaDois {
   flex: 1;
   padding: 3rem;
@@ -161,9 +157,8 @@ select option {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* ============================ */
 /* === UPLOAD ARQUIVO === */
-/* ============================ */
+
 .formularioUploadArquivo {
   width: 100%;
   height: 100%;
@@ -208,22 +203,22 @@ select option {
   margin-bottom: 10px;
 }
 
-.botaoNavegar {
-  background-color: rgb(82, 82, 82);
-  padding: 5px 15px;
-  border-radius: 10px;
-  color: white;
-  transition: all 0.3s ease-in-out;
-  font-size: 1.1rem;
+.previewContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.botaoNavegar:hover {
-  background-color: rgb(14, 14, 14);
+.botaoTrocarImagem {
+  margin-top: 10px;
+  color: #2b6b99;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
-/* ====================================================== */
 /* === CHECKBOXES (Correção "Blindada") === */
-/* ====================================================== */
 
 .grupoOpcoes {
   display: flex !important;
@@ -248,7 +243,7 @@ select option {
   gap: 10px;
 }
 
-/* Remove bolinha preta */
+/* Remove bolinha preta original */
 .checkboxCustomizado input {
   position: absolute;
   opacity: 0;
@@ -280,30 +275,28 @@ select option {
   border-color: #286699;
 }
 
-/* O check (✔) */
+/* O check (✔) - CORREÇÃO DE ALINHAMENTO */
 .checkmark::after {
   content: "";
   position: absolute;
   display: none;
+  /* Lógica de centralização geométrica perfeita */
+  left: 50%;
+  top: 45%; 
+  transform: translate(-50%, -50%) rotate(45deg);
+  
+  /* Tamanho do "L" do check */
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
 }
 
 .checkboxCustomizado input:checked + .checkmark::after {
   display: block;
 }
 
-.checkmark::after {
-  left: 7px;
-  top: 3px;
-  width: 6px;
-  height: 12px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-
-/* ========================================= */
 /* === ESTILOS DO POP-UP (MODAL) === */
-/* ========================================= */
 
 .modalOverlay {
   position: fixed;
@@ -374,9 +367,8 @@ select option {
   }
 }
 
-/* ============================ */
 /* === RESPONSIVIDADE === */    
-/* ============================ */    
+
 @media (max-width: 768px) {   
   .pageRegistroAnimal {   
     flex-direction: column;   
@@ -404,5 +396,3 @@ select option {
     align-self: center; /* Centraliza botão no mobile */
   }
 }
-
-

@@ -1,40 +1,51 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
-import api from '../../services/api'; 
 import styles from "./cadastro.module.css";
-
-
-
+import Modal from "../../components/modal"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+
+  // Agora vamos usar o navigate!
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     try {
       await login(email, password);
-
+      // Se o seu AuthContext não redirecionar automaticamente, 
+      // você pode descomentar a linha abaixo:
+      // navigate("/central-adocao"); 
     } catch (error: any) {
       console.error("Login error:", error);
-      setError(error?.message || "Erro ao fazer login");
+      setModalMsg(error?.message || "E-mail ou senha incorretos.");
+      setModalOpen(true);
     } finally {
       setIsLoading(false);
     }
   };
 
-  
-
   return (
     <div className={styles.pagCadastro}>
+      <Modal 
+        isOpen={modalOpen} 
+        title="Erro no Login" 
+        message={modalMsg} 
+        type="error"
+        onClose={() => setModalOpen(false)} 
+      />
+
       <div className={styles.containerForms}>
         <div className={styles.logoHeader}>
           <a href="/">PetResc</a>
@@ -58,7 +69,7 @@ export default function Login() {
           <div>
             <label className={styles.grupoInput}>Senha</label>
             <input
-            className={`${styles.inputLogin} ${styles.inputLoginSenha}`}
+              className={`${styles.inputLogin} ${styles.inputLoginSenha}`}
               type="password"
               placeholder="Digite sua senha"
               value={password}
@@ -66,17 +77,16 @@ export default function Login() {
               required
             />
             <div className={styles.esqueciSenhaContainer}>
-              <a href="/recuperar-senha" className={styles.esqueciSenhaLink}>
+              {/* CORREÇÃO 1: Usando navigate em vez de href */}
+              <span 
+                className={styles.esqueciSenhaLink} 
+                onClick={() => navigate("/recuperar-senha")}
+                style={{ cursor: "pointer" }}
+              >
                 Esqueci minha senha
-              </a>
+              </span>
             </div>
           </div>
-
-          {error && (
-            <p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
-              {error}
-            </p>
-          )}
 
           <button 
             type="submit" 
@@ -87,7 +97,14 @@ export default function Login() {
           </button>
 
           <p className={styles.loginLink}>
-            Não tem conta? <a href="/cadastro">Cadastre-se</a>
+            Não tem conta?{" "}
+            {/* CORREÇÃO 2: Usando navigate em vez de href */}
+            <span 
+                onClick={() => navigate("/cadastro")} 
+                style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+            >
+                Cadastre-se
+            </span>
           </p>
         </form>
       </div>

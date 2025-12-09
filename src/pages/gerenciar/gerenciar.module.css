@@ -1,0 +1,282 @@
+.container {
+  width: 90%; /* Ajustei levemente para caber melhor as duas colunas */
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px;
+  color: #333;
+  background-color: #fff;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.btnVoltar {
+  background: none;
+  border: none;
+  color: #2b6b99;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 25px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btnVoltar:hover {
+  transform: translateY(-3px);
+  color: #1e4d70;
+}
+
+/* --- SEÇÃO DO CABEÇALHO (FOTO + CARD AZUL) --- */
+.secaoCabecalho {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 50px;
+  align-items: flex-start;
+}
+
+.moldeFoto {
+  width: 280px;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.fotoAnimal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.painelInfoPrincipal {
+  flex: 1;
+  background-color: #f0f8ff;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 280px;
+  position: relative;
+}
+
+.nomeAnimal {
+  font-size: 2.5rem;
+  color: #2b6b99;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+
+.linhaStatus {
+  font-size: 1.3rem;
+  color: #5a7b94;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.btnMudarStatus {
+  background-color: #2b6b99;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+  transition: background-color 0.2s;
+}
+
+.btnMudarStatus:hover {
+  background-color: #1e4d70;
+}
+
+.codigoAnimal {
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  font-size: 1rem;
+  color: #8dacc7;
+}
+
+/* --- TÍTULOS --- */
+.tituloSecao {
+  font-size: 1.8rem;
+  color: #2b6b99;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.divisorAzul {
+  width: 100%;
+  height: 2px;
+  background-color: #b3d7ff;
+  margin-bottom: 40px;
+}
+
+/* --- GRID DO REGISTRO (Mantido para compatibilidade) --- */
+.gradeInfos {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.coluna { padding: 0 15px; }
+.comBordaEsquerda { border-left: 2px solid #dbeafe; }
+.tituloColuna { color: #2b6b99; font-size: 1.5rem; margin-bottom: 25px; font-weight: 600; }
+
+/* --- ESTILOS DE DADOS (Rotulo e Valor) --- */
+.blocoDado { margin-bottom: 20px; }
+
+.rotulo {
+  display: block;
+  font-size: 1rem; /* Ajustado para ficar elegante na lista */
+  color: #2b6b99;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.valor {
+  margin: 0;
+  color: #4a5568;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+/* --- BADGES --- */
+.wrapperEtiquetas { display: flex; flex-direction: column; gap: 12px; }
+.etiquetaAzul {
+  background-color: #f0f9ff;
+  color: #1a365d;
+  padding: 12px 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* --- BOTÕES GERAIS --- */
+.rodapeAcoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btnAcao {
+  border: none;
+  padding: 12px 35px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  min-width: 160px;
+  color: white;
+}
+
+.btnAcao:active { transform: scale(0.98); }
+.negativo { background-color: #ef4444; }
+.negativo:hover { background-color: #dc2626; }
+.positivo { background-color: #22c55e; }
+.positivo:hover { background-color: #16a34a; }
+
+
+/* ==========================================================================
+   NOVO: ÁREA DE CANDIDATOS (LAYOUT ESPECÍFICO PARA ADOÇÃO)
+   ========================================================================== */
+
+/* Layout Mestre-Detalhe (Lista Esquerda | Info Direita) */
+.layoutCandidatos {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Lista fixa, conteúdo flexível */
+  gap: 40px;
+  align-items: start;
+  min-height: 500px;
+}
+
+/* --- LISTA LATERAL --- */
+.listaLateral {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-right: 1px solid #eee;
+  padding-right: 20px;
+  height: 100%;
+}
+
+.cardCandidato {
+  background-color: #fff;
+  border: 2px solid #e2e8f0;
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cardCandidato:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.cardAtivo {
+  background-color: #f0f9ff; /* Azul bem clarinho */
+  border-color: #2b6b99; /* Borda Azul da marca */
+  box-shadow: 0 4px 12px rgba(43, 107, 153, 0.15);
+}
+
+.nomeCandidatoLista {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2b6b99;
+  margin-bottom: 5px;
+}
+
+.resumoCandidato {
+  display: block;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* --- PAINEL DE DETALHES (DIREITA) --- */
+.painelDetalhes {
+  padding-left: 20px;
+}
+
+.subtituloDetalhes {
+  color: #2b6b99;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  margin-top: 40px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+.subtituloDetalhes:first-child { margin-top: 0; }
+
+/* Grid para Dados Pessoais e Endereço */
+.gridDetalhes {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas */
+  gap: 25px;
+}
+
+/* Responsividade do Layout de Candidatos */
+@media (max-width: 900px) {
+  .secaoCabecalho { flex-direction: column; align-items: center; text-align: center; }
+  .painelInfoPrincipal { width: 100%; align-items: center; }
+  .codigoAnimal { position: static; margin-top: 20px; }
+  
+  .layoutCandidatos { grid-template-columns: 1fr; }
+  .listaLateral { border-right: none; border-bottom: 1px solid #eee; padding-bottom: 20px; padding-right: 0; height: auto; }
+  .gridDetalhes { grid-template-columns: 1fr; }
+  .painelDetalhes { padding-left: 0; padding-top: 20px; }
+  .rodapeAcoes { flex-direction: column; }
+  .btnAcao { width: 100%; }
+}

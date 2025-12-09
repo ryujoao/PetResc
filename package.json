@@ -16,14 +16,18 @@
     "expo": "^54.0.20",
     "firebase": "^12.5.0",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.9.3",
     "router": "^2.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/leaflet": "^1.9.21",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.2",

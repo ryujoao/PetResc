@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import styles from "./conta.module.css"; 
-import { useAuth } from "../../auth/AuthContext";
+import styles from "../conta/conta.module.css"; 
+import { useAuth } from "../../../auth/AuthContext";
+import Modal from "../../../components/modal"; // <--- IMPORTADO
 
 export default function Endereco() {
   const { user, setUser } = useAuth();
   
-
   const [cep, setCep] = useState(user?.cep || "");
   const [rua, setRua] = useState(user?.rua || "");
   const [numero, setNumero] = useState(user?.numero || "");
@@ -15,6 +15,14 @@ export default function Endereco() {
   const [estado, setEstado] = useState(user?.estado || "");
   const [loading, setLoading] = useState(false);
 
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({ title: "", msg: "", type: "success" as "success" | "error" });
+
+  const showModal = (title: string, msg: string, type: "success" | "error" = "success") => {
+    setModalData({ title, msg, type });
+    setModalOpen(true);
+  };
 
   const numeroRef = useRef<HTMLInputElement>(null);
 
@@ -33,15 +41,15 @@ export default function Endereco() {
           setEstado(data.uf);
           numeroRef.current?.focus();
         } else {
-          alert("CEP não encontrado.");
+          showModal("Erro", "CEP não encontrado.", "error");
         }
       } catch (error) {
         console.error("Erro ao buscar CEP:", error);
+        showModal("Erro", "Falha de conexão ao buscar CEP.", "error");
       }
     }
   };
 
-  // Salvar Endereço com Fetch
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -49,22 +57,21 @@ export default function Endereco() {
     const token = localStorage.getItem('@AuthData:token'); 
 
     if (!user?.id) {
-      alert("Usuário não encontrado.");
+      showModal("Erro", "Usuário não encontrado.", "error");
       setLoading(false);
       return;
     }
 
     if (!token) {
-      alert("Token não encontrado. Faça login novamente.");
+      showModal("Erro", "Sessão expirada. Faça login novamente.", "error");
       setLoading(false);
       return;
     }
 
-
     const enderecoData = { cep, rua, numero, complemento, bairro, cidade, estado };
 
     try {
-      const response = await fetch(`/api/usuarios/${user.id}`, {
+      const response = await fetch(`https://petresc.onrender.com/api/usuarios/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -83,11 +90,11 @@ export default function Endereco() {
         ...enderecoData
       });
 
-      alert("Endereço atualizado com sucesso!");
+      showModal("Sucesso", "Endereço atualizado com sucesso!", "success");
 
     } catch (error) {
       console.error("Erro ao salvar:", error);
-      alert("Erro ao atualizar endereço. Tente novamente.");
+      showModal("Erro", "Erro ao atualizar endereço. Tente novamente.", "error");
     } finally {
       setLoading(false);
     }
@@ -95,6 +102,14 @@ export default function Endereco() {
 
   return (
     <div className={styles.formContainer}>
+      <Modal 
+        isOpen={modalOpen} 
+        title={modalData.title} 
+        message={modalData.msg} 
+        type={modalData.type} 
+        onClose={() => setModalOpen(false)} 
+      />
+
       <h1 className={styles.titulo}>Endereço</h1>
 
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -107,41 +122,72 @@ export default function Endereco() {
             maxLength={8} 
             value={cep} 
             onChange={(e) => setCep(e.target.value)}
-            onBlur={buscarCep} // <--- IMPORTANTE: Isso ativa a busca do CEP
+            onBlur={buscarCep} 
             placeholder="00000000"
           />
-
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="rua">Rua</label>
-          <input id="rua" type="text" value={rua} onChange={(e) => setRua(e.target.value)} />
+          <input 
+            id="rua" 
+            type="text" 
+            value={rua} 
+            onChange={(e) => setRua(e.target.value)} 
+          />
         </div>
         
         <div className={styles.formRow}>
           <div className={`${styles.inputGroup} ${styles.rowItem}`}>
             <label htmlFor="numero">Número</label>
-            <input id="numero" type="text" value={numero} onChange={(e) => setNumero(e.target.value)} />
+            <input 
+              id="numero" 
+              type="text" 
+              ref={numeroRef} 
+              value={numero} 
+              onChange={(e) => setNumero(e.target.value)} 
+            />
           </div>
           <div className={`${styles.inputGroup} ${styles.rowItem}`}>
             <label htmlFor="complemento">Complemento (Opcional)</label>
-            <input id="complemento" type="text" value={complemento} onChange={(e) => setComplemento(e.target.value)} />
+            <input 
+              id="complemento" 
+              type="text" 
+              value={complemento} 
+              onChange={(e) => setComplemento(e.target.value)} 
+            />
           </div>
         </div>
 
         <div className={styles.inputGroup}>
           <label htmlFor="bairro">Bairro</label>
-          <input id="bairro" type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} />
+          <input 
+            id="bairro" 
+            type="text" 
+            value={bairro} 
+            onChange={(e) => setBairro(e.target.value)} 
+          />
         </div>
 
         <div className={styles.formRow}>
           <div className={`${styles.inputGroup} ${styles.rowItem}`}>
             <label htmlFor="cidade">Cidade</label>
-            <input id="cidade" type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} />
+            <input 
+              id="cidade" 
+              type="text" 
+              value={cidade} 
+              onChange={(e) => setCidade(e.target.value)} 
+            />
           </div>
           <div className={`${styles.inputGroup} ${styles.rowItem}`}>
             <label htmlFor="estado">Estado (UF)</label>
-            <input id="estado" type="text" maxLength={2} value={estado} onChange={(e) => setEstado(e.target.value)} />
+            <input 
+              id="estado" 
+              type="text" 
+              maxLength={2} 
+              value={estado} 
+              onChange={(e) => setEstado(e.target.value)} 
+            />
           </div>
         </div>
 

@@ -3,63 +3,19 @@ import { Link } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./campanhasAnteriores.module.css";
 import { useAuth } from "../../auth/AuthContext";
+import api from "../../services/api"; // SUA CONFIG DO AXIOS
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaCalendarAlt, FaHandHoldingHeart } from "react-icons/fa";
 
-// --- TIPAGEM ---
+// --- TIPAGEM REAL DO BANCO ---
 type Campanha = {
   id: number;
   titulo: string;
-  dataCriacao: string;
-  status: "Ativa" | "Finalizada" | "Pausada";
-  meta: number;
-  arrecadado: number;
+  createdAt: string; // Vem como string ISO do banco
+  dataLimite: string;
+  metaFinanceira: string; // Decimal vem como string no JSON muitas vezes
+  valorArrecadado: string;
   imagemUrl: string;
-  ongId: string; 
 };
-
-// --- DADOS MOCKADOS ---
-const MOCK_CAMPANHAS: Campanha[] = [
-  {
-    id: 1,
-    titulo: "Reforma do Canil Principal",
-    dataCriacao: "10/01/2025",
-    status: "Ativa",
-    meta: 16000,
-    arrecadado: 8104.64,
-    imagemUrl: "/institutos/institutoCaramelo.png", 
-    ongId: "1", 
-  },
-  {
-    id: 2,
-    titulo: "Campanha de Vacinação V10",
-    dataCriacao: "05/12/2024",
-    status: "Finalizada",
-    meta: 5000,
-    arrecadado: 5200,
-    imagemUrl: "/institutos/ampara.png",
-    ongId: "1",
-  },
-  {
-    id: 3,
-    titulo: "Ração para o Inverno",
-    dataCriacao: "15/02/2025",
-    status: "Ativa",
-    meta: 3000,
-    arrecadado: 450,
-    imagemUrl: "/institutos/suipa.png",
-    ongId: "2", 
-  },
-  {
-    id: 4,
-    titulo: "Mutirão de Castração",
-    dataCriacao: "20/11/2024",
-    status: "Finalizada",
-    meta: 10000,
-    arrecadado: 3000,
-    imagemUrl: "/institutos/patasDadas.png",
-    ongId: "1",
-  },
-];
 
 export default function CampanhasAnteriores() {
   const { user } = useAuth();
@@ -68,25 +24,52 @@ export default function CampanhasAnteriores() {
   const [termoBusca, setTermoBusca] = useState("");
 
   useEffect(() => {
-    setTimeout(() => {
-      // Filtra pelo ID da ONG logada
-      const minhasCampanhas = MOCK_CAMPANHAS.filter(
-        (c) => c.ongId === String(user?.id || "1") 
-      );
-      setCampanhas(minhasCampanhas);
-      setLoading(false);
-    }, 600);
+    window.scrollTo(0, 0);
+  }, []);
+
+  // --- BUSCA DADOS DA API ---
+  useEffect(() => {
+    async function fetchMinhasCampanhas() {
+        if(!user) return;
+        try {
+            setLoading(true);
+            // Chama a rota que criamos no backend
+            const response = await api.get("/campanha/minhas");
+            setCampanhas(response.data);
+        } catch (error) {
+            console.error("Erro ao carregar campanhas:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+    fetchMinhasCampanhas();
   }, [user]);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm("Deseja realmente excluir esta campanha?")) {
-      setCampanhas((prev) => prev.filter((c) => c.id !== id));
+      try {
+          // Se tiver rota de delete no back:
+          // await api.delete(`/campanha/${id}`);
+          
+          // Por enquanto apenas remove visualmente para não quebrar se não tiver rota
+          setCampanhas((prev) => prev.filter((c) => c.id !== id));
+          alert("Campanha removida.");
+      } catch (error) {
+          alert("Erro ao excluir.");
+      }
     }
   };
 
+  // Filtragem local pelo título
   const listaFiltrada = campanhas.filter((c) =>
     c.titulo.toLowerCase().includes(termoBusca.toLowerCase())
   );
+
+  // Helper para formatar moeda
+  const formatMoney = (val: string | number) => {
+      const num = Number(val);
+      return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  };
 
   return (
     <Layout>
@@ -105,7 +88,7 @@ export default function CampanhasAnteriores() {
           </Link>
         </div>
 
-        {/* BARRA DE PESQUISA ESTILIZADA */}
+        {/* BARRA DE PESQUISA */}
         <div className={styles.toolbar}>
           <div className={styles.searchContainer}>
             <FaSearch className={styles.searchIcon} />
@@ -134,8 +117,17 @@ export default function CampanhasAnteriores() {
         ) : (
           <div className={styles.gridCampanhas}>
             {listaFiltrada.map((campanha) => {
-              const progresso = Math.min((campanha.arrecadado / campanha.meta) * 100, 100);
-              const isFinalizada = campanha.status === 'Finalizada';
+              // Cálculos de Status e Progresso
+              const hoje = new Date();
+              const limite = new Date(campanha.dataLimite);
+              const isFinalizada = hoje > limite;
+              
+              const status = isFinalizada ? "Finalizada" : "Ativa";
+              const meta = Number(campanha.metaFinanceira);
+              const arrecadado = Number(campanha.valorArrecadado);
+              
+              // Evita divisão por zero
+              const progresso = meta > 0 ? Math.min((arrecadado / meta) * 100, 100) : 0;
               
               return (
                 <div key={campanha.id} className={`${styles.card} ${isFinalizada ? styles.cardFinalizado : ''}`}>
@@ -143,32 +135,39 @@ export default function CampanhasAnteriores() {
                   {/* Imagem */}
                   <div className={styles.cardMedia}>
                     <img 
-                      src={campanha.imagemUrl} 
+                      src={campanha.imagemUrl || "https://via.placeholder.com/400x200?text=Sem+Imagem"} 
                       alt={campanha.titulo} 
                       className={styles.cardImg}
-                      onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/400x200?text=Campanha")}
+                      onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/400x200?text=Erro+Imagem")}
                     />
                     <div className={styles.overlayGradient}></div>
-                    <span className={`${styles.badge} ${styles[campanha.status.toLowerCase()]}`}>
-                      {campanha.status}
+                    
+                    {/* Badge de Status Dinâmica */}
+                    <span 
+                        className={`${styles.badge}`}
+                        style={{
+                            backgroundColor: isFinalizada ? '#6c757d' : '#28a745'
+                        }}
+                    >
+                      {status}
                     </span>
                   </div>
 
                   {/* Conteúdo */}
                   <div className={styles.cardBody}>
                     <div className={styles.cardDate}>
-                        <FaCalendarAlt size={12} /> {campanha.dataCriacao}
+                        <FaCalendarAlt size={12} /> Criada em: {new Date(campanha.createdAt).toLocaleDateString()}
                     </div>
                     <h3 className={styles.cardTitle}>{campanha.titulo}</h3>
 
-                    {/* Barra de Progresso Bonita */}
+                    {/* Barra de Progresso */}
                     <div className={styles.progressoWrapper}>
                         <div className={styles.progressoLabels}>
                             <span className={styles.labelArrecadado}>
-                                <strong>{campanha.arrecadado.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>
+                                <strong>{formatMoney(arrecadado)}</strong>
                             </span>
                             <span className={styles.labelMeta}>
-                                Meta: {campanha.meta.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                                Meta: {formatMoney(meta)}
                             </span>
                         </div>
                         <div className={styles.barraBg}>
@@ -176,6 +175,7 @@ export default function CampanhasAnteriores() {
                                 className={styles.barraFill} 
                                 style={{ 
                                     width: `${progresso}%`,
+                                    backgroundColor: isFinalizada ? '#999' : '#2D68A6'
                                 }}
                             ></div>
                         </div>

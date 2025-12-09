@@ -10,7 +10,6 @@ import SaibaMais from "./saibaMais";
 
 // Componentes específicos
 import MeusAnimais from "./meusAnimais";
-import OngsProximas from "./ongsProximas";
 import AnimaisCadastrados from "./animaisCadastrados";
 
 export default function Home() {
@@ -89,7 +88,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <OngsProximas />
         </>
       );
     }
@@ -98,10 +96,8 @@ export default function Home() {
       return (
         <>
           <AnimaisCadastrados />
-          {/* BANNER DOIS (ONDE O GATINHO DEVE FICAR) */}
           <section className={styles.bannerDois}>
             
-            {/* IMAGEM DO GATINHO (Movi para cá) */}
             <img 
               src="/banners/banner2.png" 
               alt="Gatinho Curioso" 

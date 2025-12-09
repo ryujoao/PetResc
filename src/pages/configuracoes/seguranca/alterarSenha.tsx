@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../conta/conta.module.css"; 
 import api from "../../../services/api"; 
 import { AxiosError } from "axios";
-
-
 import { IoIosArrowBack } from "react-icons/io";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import Modal from "../../../components/modal";
 
 export default function AlterarSenha() {
   const navigate = useNavigate();
@@ -24,6 +23,22 @@ export default function AlterarSenha() {
     confirmarSenha: false,
   });
 
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    title: "", msg: "", type: "success" as "success" | "error", redirect: "" as string | null
+  });
+
+  const showModal = (title: string, msg: string, type: "success" | "error" = "success", redirect: string | null = null) => {
+    setModalConfig({ title, msg, type, redirect });
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    if (modalConfig.redirect) navigate(modalConfig.redirect);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -35,13 +50,12 @@ export default function AlterarSenha() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validações locais
     if (form.novaSenha !== form.confirmarSenha) {
-      alert("As senhas não coincidem!");
+      showModal("Erro", "As senhas não coincidem!", "error");
       return;
     }
     if (form.novaSenha.length < 6) {
-        alert("A nova senha é muito curta (mínimo 6 dígitos)!");
+        showModal("Senha Curta", "A nova senha deve ter no mínimo 6 caracteres.", "error");
         return;
     }
 
@@ -53,17 +67,17 @@ export default function AlterarSenha() {
         password: form.novaSenha         
       });
 
-      alert("Senha alterada com sucesso!");
-      navigate("/config/seguranca");
+      // Sucesso + Redirecionamento
+      showModal("Sucesso", "Senha alterada com sucesso!", "success", "/config/seguranca");
 
     } catch (err) {
       console.error("Erro ao alterar senha:", err);
 
+      let errorMsg = "Erro de conexão. Tente novamente mais tarde.";
       if (err instanceof AxiosError && err.response && err.response.data) {
-        alert(err.response.data.error || "Erro ao atualizar senha.");
-      } else {
-        alert("Erro de conexão. Tente novamente mais tarde.");
+        errorMsg = err.response.data.error || "Erro ao atualizar senha.";
       }
+      showModal("Erro", errorMsg, "error");
     } finally {
       setLoading(false);
     }
@@ -71,8 +85,14 @@ export default function AlterarSenha() {
 
   return (
     <div className={styles.formContainer}>
+      <Modal 
+        isOpen={modalOpen} 
+        title={modalConfig.title} 
+        message={modalConfig.msg} 
+        type={modalConfig.type} 
+        onClose={handleCloseModal} 
+      />
       
-     
       <div className={styles.headerRow}>
         <Link to="/config/seguranca" className={styles.btnVoltar}>
           <IoIosArrowBack />
@@ -81,7 +101,6 @@ export default function AlterarSenha() {
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        
         
         <div className={styles.inputGroup}>
           <label htmlFor="senhaAtual">Senha atual</label>
@@ -105,7 +124,6 @@ export default function AlterarSenha() {
           </div>
         </div>
 
-        
         <div className={styles.inputGroup}>
           <label htmlFor="novaSenha">Nova senha</label>
           <div className={styles.inputWrapper}>
@@ -129,7 +147,6 @@ export default function AlterarSenha() {
           </div>
         </div>
 
-        
         <div className={styles.inputGroup}>
           <label htmlFor="confirmarSenha">Confirmar nova senha</label>
           <div className={styles.inputWrapper}>
@@ -153,8 +170,8 @@ export default function AlterarSenha() {
         </div>
 
         <div className={styles.buttonContainer}>
-          <button type="submit" className={styles.botaoSalvar}>
-            Salvar Alterações
+          <button type="submit" className={styles.botaoSalvar} disabled={loading}>
+            {loading ? "Salvando..." : "Salvar Alterações"}
           </button>
         </div>
 

@@ -1,0 +1,129 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+/* --- CABEÇALHO --- */
+.cabecalho {
+  margin-bottom: 30px;
+}
+
+.titulo {
+  font-size: 1.8rem;
+  color: #2b6b99;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.subtitulo {
+  font-size: 1.3rem;
+  color: #5a7b94;
+  margin: 0;
+}
+
+/* --- ALERTA --- */
+.areaAlerta {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.textoAlerta {
+  color: #2b6b99;
+  font-size: 1.5rem;
+  
+}
+
+/* --- PAINEL PRINCIPAL (GRID) --- */
+.painelPrincipal {
+  display: flex;
+  justify-content: center;
+  gap: 80px; /* Espaço entre o termômetro e o gráfico */
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+/* --- CARTÃO ESQUERDA: TEMPERATURA --- */
+.cartaoTemperatura {
+  background-color: #f0f8ff; /* Fundo azul bem claro igual da imagem */
+  border-radius: 12px;
+  width: 300px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(230, 240, 255, 0.5);
+}
+
+.iconeTermometroWrapper {
+  font-size: 6rem; /* Tamanho do ícone */
+  color: #2b6b99;
+  margin-bottom: 20px;
+  /* Simula o círculo ao redor se quiser, ou usa o ícone puro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconeTermometro {
+  /* Se quiser adicionar um drop-shadow ou filtro específico */
+  filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+}
+
+.valorTemperatura {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #2b6b99;
+}
+
+/* --- CARTÃO DIREITA: GRÁFICO --- */
+.cartaoGrafico {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.areaGrafico {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+
+.svgGrafico {
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* Permite ver rótulos fora da caixa se houver */
+}
+
+.legendaGrafico {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #2b6b99;
+  padding: 0 10px; /* Alinhar com o eixo do gráfico */
+}
+
+/* --- RODAPÉ --- */
+.rodapeLeitura {
+  color: #2b6b99;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 800px) {
+  .painelPrincipal {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .cartaoGrafico {
+    width: 100%;
+    max-width: 350px;
+  }
+}

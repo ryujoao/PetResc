@@ -1,25 +1,20 @@
-/* Container principal para centralizar e limitar a largura */
+/* Container principal */
 .container {
-    max-width: 1200px; /* Largura máxima do conteúdo */
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
 }
 
-/* ---------------------------------------------------- */
-/* --- 1. SEÇÃO PRINCIPAL (FOTO | INFO | COMENTÁRIO) --- */
-/* ---------------------------------------------------- */
-
 .profileWrapper {
     display: grid;
-    /* 3 colunas: Foto (350px) | Info (flexível) | Comentário (flexível) */
+    /* Foto (350px) | Info (flexível) | Comentário (flexível) */
     grid-template-columns: 350px 1fr 1fr; 
     gap: 30px;
     margin-bottom: 40px;
 }
 
-/* --- COLUNA DA IMAGEM --- */
-
+/* IMAGEM */
 .imagemContainer {
     grid-column: 1 / 2;
     display: flex;
@@ -29,9 +24,9 @@
 .imagem {
     width: 350px;
     height: 350px;
-    border-radius: 15px; /* Bordas arredondadas */
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .imagem img {
@@ -40,8 +35,7 @@
     object-fit: cover;
 }
 
-/* --- COLUNA DE INFORMAÇÕES BÁSICAS --- */
-
+/* INFO BÁSICA */
 .infoContainer {
     grid-column: 2 / 3; 
     display: flex;
@@ -52,14 +46,13 @@
 .nome {
     font-size: 2.8em;
     font-weight: 700;
-    color: #2b6b99; /* Cor principal (Azul PetResc) */
+    color: #2b6b99;
     margin-bottom: 5px;
 }
 
-.status {
+/* STATUS BADGES */
+.statusBadge {
     display: inline-block;
-    background-color: #0F4979;
-    color: white;
     padding: 6px 15px;
     border-radius: 5px;
     font-size: 1em;
@@ -68,8 +61,20 @@
     width: fit-content;
 }
 
+.statusNormal {
+    background-color: #0F4979;
+    color: white;
+}
+
+/* Cor Vermelha para chamar atenção de que está perdido */
+.statusPerdido {
+    background-color: #d32f2f; 
+    color: white;
+    box-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
+}
+
 .dados {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;
 }
@@ -80,11 +85,35 @@
     margin-bottom: 8px;
 }
 
-/* --- COLUNA DE COMENTÁRIO/DESCRIÇÃO --- */
+/* BOX DE AJUDA PARA QUEM VÊ O ANIMAL PERDIDO */
+.boxAjuda {
+    background-color: #ffebee; /* Fundo vermelho bem claro */
+    border: 1px solid #ffcdd2;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
+.boxAjuda strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 4px;
+}
+
+.boxAjuda p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #b71c1c;
+}
+
+/* COMENTÁRIOS */
 .comentarioContainer {
     grid-column: 3 / 4; 
-    background-color: #f7f7f7; /* Fundo cinza claro */
+    background-color: #f7f7f7;
     padding: 30px;
     border-radius: 15px;
     height: fit-content;
@@ -106,10 +135,62 @@
     color: #555;
 }
 
-/* ---------------------------------------------------- */
-/* --- 2. SEÇÃO DE CARACTERÍSTICAS (GRID INFERIOR) --- */
-/* ---------------------------------------------------- */
+.alertBox {
+    margin-top: 20px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 15px;
+    border-radius: 5px;
+}
 
+/* BOTÕES */
+.botaoAdotar {
+    background: #0F4979; 
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botaoAdotar:hover {
+    background-color: #0c3b61;
+}
+
+/* BOTÃO DE REPORTAR (COR DESTAQUE - LARANJA) */
+/* Botão para quem VIU o animal e quer avisar o dono */
+.botaoReportar {
+    background: #ff9800; 
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.botaoReportar:hover {
+    background-color: #f57c00;
+}
+
+/* CARACTERÍSTICAS */
 .divider {
     border: 0;
     height: 1px;
@@ -119,12 +200,8 @@
 
 .caracteristicasGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais */
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
-}
-
-.caracteristicaColuna {
-    padding: 10px 0;
 }
 
 .caracteristicaColuna h3 {
@@ -143,40 +220,29 @@
 .caracteristicaColuna ul li {
     font-size: 1em;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
-.tagsList li {
-    background-color: #e6f7ff; /* Cor de fundo suave para tags */
-    color: #2b6b99;
-    padding: 6px 12px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    display: inline-block;
-    font-size: 0.9em;
-    font-weight: 500;
-    margin-right: 5px;
-}
-
-/* ---------------------------------------------------- */
-/* --- BOTÃO DE AÇÃO --- */
-/* ---------------------------------------------------- */
-
-.botaoAdotar {
-    background: #0F4979; 
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s;
-    width: 100%; /* Ocupa a largura da coluna de informações */
-    margin-top: auto; /* Empurra o botão para baixo na coluna 2 */
-}
-
-.botaoAdotar:hover {
-    background-color: #0F4979;
+/* RESPONSIVIDADE PARA TELAS MENORES */
+@media (max-width: 1024px) {
+    .profileWrapper {
+        grid-template-columns: 1fr; /* Tudo em uma coluna */
+        gap: 20px;
+    }
+    
+    .imagemContainer {
+        grid-column: 1 / -1;
+    }
+    
+    .infoContainer {
+        grid-column: 1 / -1;
+    }
+    
+    .comentarioContainer {
+        grid-column: 1 / -1;
+    }
+    
+    .caracteristicasGrid {
+        grid-template-columns: 1fr 1fr;
+    }
 }

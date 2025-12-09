@@ -5,6 +5,7 @@ import Layout from "../../components/layout";
 
 /** Tipagens */
 type YesNo = "sim" | "nao" | "";
+
 interface FormData {
   nomeCompleto: string;
   cpf: string;
@@ -23,8 +24,8 @@ interface FormData {
   // moradia / animais
   tipoMoradia: string;
   quintal: YesNo;
-  porteAnimal: string;
-  tipoAnimal: string;
+  porteAnimal: string[]; // MUDANÇA: Agora é uma lista de strings
+  tipoAnimal: string[];  // MUDANÇA: Agora é uma lista de strings
 
   // experiencia / condicoes
   outrosAnimais: YesNo;
@@ -40,8 +41,28 @@ interface FormData {
   declaroVerdade: boolean;
 }
 
+// --- TEXTO DO TERMO DE LAR TEMPORÁRIO ---
+const termoTexto = `
+TERMO DE RESPONSABILIDADE - LAR TEMPORÁRIO
+
+1. O VOLUNTÁRIO compromete-se a oferecer abrigo, alimentação de qualidade, água fresca e, principalmente, carinho e atenção ao animal acolhido.
+
+2. SEGURANÇA: O voluntário garante que o animal não terá acesso à rua desacompanhado e que sua residência possui condições seguras (muros altos, telas em apartamentos, portões fechados) para evitar fugas.
+
+3. SAÚDE: Qualquer alteração de saúde ou comportamento do animal deve ser comunicada imediatamente à equipe do PetResc. É proibido administrar medicamentos ou realizar procedimentos sem a autorização prévia da ONG, salvo em casos de emergência com risco de morte iminente.
+
+4. CUSTOS: O acordo sobre custos (ração, areia, medicamentos) deve ser pré-estabelecido. Caso o voluntário tenha concordado em arcar com custos no formulário, este compromisso deve ser honrado.
+
+5. ADOÇÃO: O animal permanece sob a tutela da ONG PetResc até sua adoção definitiva. O Lar Temporário não tem autorização para doar, vender, emprestar ou repassar o animal a terceiros sem o consentimento formal da ONG.
+
+6. DEVOLUÇÃO: Caso o voluntário não possa mais manter o animal por qualquer motivo, deve comunicar a ONG com antecedência mínima de 7 dias para que um novo lar seja encontrado. Jamais, em hipótese alguma, o animal deverá ser abandonado.
+
+Ao marcar "Li e concordo", você aceita as condições acima descritas.
+`;
+
 export default function FormularioLarTemporario() {
   const [sucessoOpen, setSucessoOpen] = useState(false);
+  
   const [formData, setFormData] = useState<FormData>({
     nomeCompleto: "",
     cpf: "",
@@ -56,8 +77,8 @@ export default function FormularioLarTemporario() {
     estado: "",
     tipoMoradia: "",
     quintal: "" as YesNo,
-    porteAnimal: "",
-    tipoAnimal: "",
+    porteAnimal: [], // Inicializa como lista vazia
+    tipoAnimal: [],  // Inicializa como lista vazia
     outrosAnimais: "" as YesNo,
     administraMedicamentos: "" as YesNo,
     levarVeterinario: "" as YesNo,
@@ -68,17 +89,63 @@ export default function FormularioLarTemporario() {
     declaroVerdade: false,
   });
 
+  // Handler genérico para campos simples
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: rawName, value, type, checked } = e.target;
     const name = rawName as keyof FormData;
 
     if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
+      // Cuidado: aqui tratamos apenas os checkboxes booleanos (declarações)
+      // Os checkboxes de array usam a função handleMultiSelect abaixo
+      if (name === "declaroLido" || name === "declaroVerdade") {
+          setFormData((prev) => ({ ...prev, [name]: checked }));
+      }
       return;
     }
 
-    
     setFormData((prev) => ({ ...prev, [name]: value } as FormData));
+  };
+
+  // --- NOVA FUNÇÃO: MÚLTIPLA ESCOLHA ---
+  const handleMultiSelect = (field: "porteAnimal" | "tipoAnimal", value: string) => {
+    setFormData((prev) => {
+      const currentList = prev[field];
+      if (currentList.includes(value)) {
+        // Se já tem, remove
+        return { ...prev, [field]: currentList.filter((item) => item !== value) };
+      } else {
+        // Se não tem, adiciona
+        return { ...prev, [field]: [...currentList, value] };
+      }
+    });
+  };
+
+  // --- FUNÇÃO: BUSCAR CEP ---
+  const buscarCep = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const cep = e.target.value.replace(/\D/g, "");
+
+    if (cep.length !== 8) return;
+
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (data.erro) {
+        alert("CEP não encontrado.");
+        return;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        rua: data.logradouro,
+        bairro: data.bairro,
+        cidade: data.localidade,
+        estado: data.uf,
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      alert("Não foi possível buscar o endereço automaticamente.");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,6 +154,11 @@ export default function FormularioLarTemporario() {
     try {
       if (!formData.periodoDisponibilidade) {
         alert("Informe o período de disponibilidade.");
+        return;
+      }
+
+      if (!formData.declaroLido || !formData.declaroVerdade) {
+        alert("Você precisa aceitar os termos e declarar a veracidade das informações.");
         return;
       }
 
@@ -116,8 +188,9 @@ export default function FormularioLarTemporario() {
         tipoResidencia: formData.tipoMoradia,
         espacoDisponivel: formData.quintal === "sim",
 
-        porteAnimal: formData.porteAnimal,
-        tipoAnimalInteresse: formData.tipoAnimal,
+        // Converte as listas para string separada por vírgula para enviar ao banco
+        porteAnimal: formData.porteAnimal.join(", "),
+        tipoAnimalInteresse: formData.tipoAnimal.join(", "),
 
         possuiAnimais: formData.outrosAnimais === "sim",
         experiencia: formData.administraMedicamentos === "sim",
@@ -172,20 +245,47 @@ export default function FormularioLarTemporario() {
             <h2 className={styles.tituloSecao}>Informações Pessoais</h2>
 
             <label className={styles.label}>Nome Completo</label>
-            <input name="nomeCompleto" className={styles.input} type="text" onChange={handleChange} />
+            <input
+              name="nomeCompleto"
+              className={styles.input}
+              type="text"
+              onChange={handleChange}
+              value={formData.nomeCompleto}
+            />
 
             <div className={styles.row}>
               <div className={styles.col}>
                 <label className={styles.label}>CPF</label>
-                <input name="cpf" className={styles.input} type="text" onChange={handleChange} placeholder="000.000.000-00" />
+                <input
+                  name="cpf"
+                  className={styles.input}
+                  type="text"
+                  onChange={handleChange}
+                  placeholder="000.000.000-00"
+                  value={formData.cpf}
+                />
               </div>
             </div>
 
             <label className={styles.label}>Email</label>
-            <input name="email" className={styles.input} type="email" onChange={handleChange} placeholder="user@gmail.com" />
+            <input
+              name="email"
+              className={styles.input}
+              type="email"
+              onChange={handleChange}
+              placeholder="user@gmail.com"
+              value={formData.email}
+            />
 
             <label className={styles.label}>Telefone</label>
-            <input name="telefone" className={styles.input} type="text" onChange={handleChange} placeholder="(00) 00000-0000" />
+            <input
+              name="telefone"
+              className={styles.input}
+              type="text"
+              onChange={handleChange}
+              placeholder="(00) 00000-0000"
+              value={formData.telefone}
+            />
           </div>
 
           {/* --- ENDEREÇO --- */}
@@ -193,33 +293,77 @@ export default function FormularioLarTemporario() {
             <h2 className={styles.tituloSecao}>Endereço</h2>
 
             <label className={styles.label}>CEP</label>
-            <input name="cep" className={styles.input} type="text" onChange={handleChange} />
+            <input
+              name="cep"
+              className={styles.input}
+              type="text"
+              onChange={handleChange}
+              onBlur={buscarCep} 
+              value={formData.cep}
+            />
 
             <label className={styles.label}>Rua/Avenida</label>
-            <input name="rua" className={styles.input} type="text" onChange={handleChange} />
+            <input
+              name="rua"
+              className={styles.input}
+              type="text"
+              onChange={handleChange}
+              value={formData.rua}
+            />
 
             <div className={styles.row}>
               <div className={styles.col}>
                 <label className={styles.label}>Número</label>
-                <input name="numero" className={styles.input} type="text" onChange={handleChange} />
+                <input
+                  name="numero"
+                  className={styles.input}
+                  type="text"
+                  onChange={handleChange}
+                  value={formData.numero}
+                />
               </div>
               <div className={styles.col}>
                 <label className={styles.label}>Complemento</label>
-                <input name="complemento" className={styles.input} type="text" placeholder="Opcional" onChange={handleChange} />
+                <input
+                  name="complemento"
+                  className={styles.input}
+                  type="text"
+                  placeholder="Opcional"
+                  onChange={handleChange}
+                  value={formData.complemento}
+                />
               </div>
             </div>
 
             <label className={styles.label}>Bairro</label>
-            <input name="bairro" className={styles.input} type="text" onChange={handleChange} />
+            <input
+              name="bairro"
+              className={styles.input}
+              type="text"
+              onChange={handleChange}
+              value={formData.bairro}
+            />
 
             <div className={styles.row}>
               <div className={styles.col}>
                 <label className={styles.label}>Cidade</label>
-                <input name="cidade" className={styles.input} type="text" onChange={handleChange} />
+                <input
+                  name="cidade"
+                  className={styles.input}
+                  type="text"
+                  onChange={handleChange}
+                  value={formData.cidade}
+                />
               </div>
               <div className={styles.col}>
                 <label className={styles.label}>Estado</label>
-                <input name="estado" className={styles.input} type="text" onChange={handleChange} />
+                <input
+                  name="estado"
+                  className={styles.input}
+                  type="text"
+                  onChange={handleChange}
+                  value={formData.estado}
+                />
               </div>
             </div>
           </div>
@@ -254,7 +398,7 @@ export default function FormularioLarTemporario() {
                     name="quintal"
                     value={v}
                     onChange={handleChange}
-                    checked={formData["quintal"] === v}
+                    checked={formData.quintal === v}
                   />
                   <span className={styles.checkmark}></span>
                   {v === "sim" ? "Sim" : "Não"}
@@ -262,16 +406,17 @@ export default function FormularioLarTemporario() {
               ))}
             </div>
 
-            <h3 className={styles.tituloQuestao}>Quais portes aceita?</h3>
+            {/* --- MÚLTIPLA ESCOLHA: PORTES --- */}
+            <h3 className={styles.tituloQuestao}>Quais portes aceita? (Pode marcar vários)</h3>
             <div className={styles.grupoOpcoes}>
               {["pequeno", "medio", "grande"].map((v) => (
                 <label key={v} className={styles.checkboxCustomizado}>
                   <input
-                    type="radio"
+                    type="checkbox" 
                     name="porteAnimal"
                     value={v}
-                    onChange={handleChange}
-                    checked={formData.porteAnimal === v}
+                    onChange={() => handleMultiSelect("porteAnimal", v)}
+                    checked={formData.porteAnimal.includes(v)}
                   />
                   <span className={styles.checkmark}></span>
                   {v}
@@ -279,16 +424,16 @@ export default function FormularioLarTemporario() {
               ))}
             </div>
 
-            <h3 className={styles.tituloQuestao}>Quais animais aceita?</h3>
+            <h3 className={styles.tituloQuestao}>Quais animais aceita? (Pode marcar vários)</h3>
             <div className={styles.grupoOpcoes}>
               {["gato", "cachorro", "todos"].map((v) => (
                 <label key={v} className={styles.checkboxCustomizado}>
                   <input
-                    type="radio"
+                    type="checkbox"  
                     name="tipoAnimal"
                     value={v}
-                    onChange={handleChange}
-                    checked={formData.tipoAnimal === v}
+                    onChange={() => handleMultiSelect("tipoAnimal", v)}
+                    checked={formData.tipoAnimal.includes(v)}
                   />
                   <span className={styles.checkmark}></span>
                   {v}
@@ -333,6 +478,7 @@ export default function FormularioLarTemporario() {
               type="text"
               placeholder="Ex: 15 dias, 1 mês..."
               onChange={handleChange}
+              value={formData.periodoDisponibilidade}
             />
           </div>
 
@@ -341,19 +487,49 @@ export default function FormularioLarTemporario() {
             <h2 className={styles.tituloSecao}>Declarações</h2>
 
             <label className={styles.checkboxCustomizado} style={{ alignItems: "flex-start" }}>
-              <input type="checkbox" name="declaroVerdade" checked={formData.declaroVerdade} onChange={handleChange} />
+              <input
+                type="checkbox"
+                name="declaroVerdade"
+                checked={formData.declaroVerdade}
+                onChange={handleChange}
+              />
               <span className={styles.checkmark} style={{ marginTop: "3px" }}></span>
-              <span className={styles.spanCheckmark}>Declaro que me comprometo a cuidar do animal com responsabilidade.</span>
+              <span className={styles.spanCheckmark}>
+                Declaro que as informações acima são verdadeiras.
+              </span>
             </label>
 
-            <label className={styles.checkboxCustomizado} style={{ marginTop: "1rem" }}>
-              <input type="checkbox" name="declaroLido" checked={formData.declaroLido} onChange={handleChange} />
+            {/* CAIXA DE TEXTO COM O TERMO */}
+            <div style={{
+              margin: '20px 0',
+              padding: '15px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              backgroundColor: '#f9f9f9',
+              height: '200px',
+              overflowY: 'auto',
+              fontSize: '0.9rem',
+              lineHeight: '1.5',
+              whiteSpace: 'pre-wrap' 
+            }}>
+              {termoTexto}
+            </div>
+
+            <label className={styles.checkboxCustomizado}>
+              <input
+                type="checkbox"
+                name="declaroLido"
+                checked={formData.declaroLido}
+                onChange={handleChange}
+              />
               <span className={styles.checkmark}></span>
               <span className={styles.spanCheckmark}>Li e concordo com os termos.</span>
             </label>
           </div>
 
-          <button type="submit" className={styles.botaoEnviar}>Finalizar</button>
+          <button type="submit" className={styles.botaoEnviar}>
+            Finalizar
+          </button>
         </form>
       </div>
 
