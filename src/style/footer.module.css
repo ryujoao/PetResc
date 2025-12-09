@@ -1,4 +1,3 @@
-
 .footer {
   width: 100%;
   background-color: #286699;
@@ -11,8 +10,8 @@
 
 .containerFooter {
   width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto;    
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 0 2rem;
 }
 
@@ -20,6 +19,7 @@
   display: flex;
   justify-content: space-between;
   gap: 40px;
+  flex-wrap: wrap;
 }
 
 .footerCol {
@@ -27,7 +27,6 @@
   min-width: 200px;
   padding: 0 20px;
   border-left: 1px solid #ffffff50;
-  
 }
 
 .footerCol:first-child {
@@ -40,18 +39,15 @@
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 30px;
-  
 }
 
 .footerCol ul {
   list-style: none;
   padding: 0;
-  
 }
 
 .footerCol ul li {
   margin: 10px 0;
-
 }
 
 .footerCol ul li a {
@@ -87,22 +83,11 @@
   font-weight: 500;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-  .rowFooter {
-    flex-direction: column;
-    align-items: center;
-  }
-
+@media (max-width: 992px) {
   .footerCol {
-    width: 100%;
-    text-align: center;
     border-left: none;
-    border-top: 1px solid #ffffff30;
-    padding-top: 20px;
-  }
-
-  .petcoDescricao {
-    text-align: center;
+    padding-left: 0;
+    flex-basis: 45%;
+    margin-bottom: 2rem;
   }
 }

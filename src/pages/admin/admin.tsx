@@ -1,127 +1,175 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./admin.module.css";
 import { useAuth } from "../../auth/AuthContext";
+import api from "../../services/api";
 import { FaPaw } from "react-icons/fa";
 import { PiConfettiFill } from "react-icons/pi";
 
+interface Activity {
+  id: string;
+  tipo: 'USUARIO' | 'ANIMAL' | 'ADOCAO';
+  texto: string;
+  data: string;
+  link: string;
+}
+
 export default function AdminHome() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // Dados Mockados
+  const [stats, setStats] = useState({
+    usuarios: { total: 0 },
+    animais: { total: 0, disponiveis: 0, adotados: 0, encontrados: 0 },
+    pedidos: { pendentes: 0 },
+    financeiro: { totalArrecadado: 0 }
+  });
+
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [resStats, resActivity] = await Promise.all([
+          api.get('/admin/stats'),
+          api.get('/admin/activity')
+        ]);
+
+        if (resStats.data) setStats(resStats.data);
+        if (resActivity.data) setActivities(resActivity.data);
+
+      } catch (error) {
+        console.error("Erro dashboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const disponiveis = Number(stats.animais?.disponiveis) || 0;
+  const pendentes = Number(stats.pedidos?.pendentes) || 0;
+  const encontrados = Number(stats.animais?.encontrados) || 0;
+  const totalSoma = disponiveis + pendentes + encontrados;
+  const divisorGrafico = totalSoma === 0 ? 1 : totalSoma;
+  const calcPercent = (val: number) => Math.round((val / divisorGrafico) * 100);
+
   const petsData = [
-    { label: "65%", val: 65, color: "#2f80ed", name: "Disponíveis" }, // Azul
-    { label: "20%", val: 20, color: "#6fcf97", name: "Aguardando" }, // Verde
-    { label: "15%", val: 15, color: "#bb6bd9", name: "Em tratamento" }, // Roxo
+    { label: `${calcPercent(disponiveis)}%`, val: calcPercent(disponiveis), color: "#2f80ed", name: "Disponíveis" },
+    { label: `${calcPercent(pendentes)}%`, val: calcPercent(pendentes), color: "#6fcf97", name: "Aguardando Aprovação" },
+    { label: `${calcPercent(encontrados)}%`, val: calcPercent(encontrados), color: "#bb6bd9", name: "Encontrados (Comunidade)" },
   ];
 
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.linha}>
-          {/* status plataforma */}
+
           <div className={styles.cartao}>
-            <h2 className={styles.tituloCartao}>Status da plataforma (hoje)</h2>
-            <div className={styles.iconeCanto}>
-              <PiConfettiFill color="#db3b3b" />
-            </div>
+            <h2 className={styles.tituloCartao}>Status da plataforma</h2>
+            <div className={styles.iconeCanto}><PiConfettiFill color="#db3b3b" /></div>
             <div className={styles.infoPlataforma}>
-              <p>
-                <strong>12</strong> novas solicitações pendentes
-              </p>
-              <p>
-                <strong>R$ 4.580</strong> arrecadados no mês
-              </p>
-              <p className={styles.textoDestaque}>
-                “Amor de Pet” mandou solicitação de adoção
-              </p>
+              {loading ? <p>Carregando...</p> : (
+                <>
+                  <p><strong>{stats.usuarios?.total || 0}</strong> Usuários Cadastrados</p>
+                  <p><strong>{stats.animais?.total || 0}</strong> Animais na Plataforma</p>
+                  <p className={styles.textoDestaque} style={{ marginTop: '15px' }}>
+                    🎉 <strong>{stats.animais?.adotados || 0}</strong> Adoções Concluídas!
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
-          {/* Status dos pets */}
+          {/* CARD 2: STATUS DOS PETS (GRÁFICO REAL) */}
           <div className={`${styles.cartao} ${styles.layoutCartaoPets}`}>
             <div className={styles.flexCrescer}>
-              <h2 className={styles.tituloCartao}>Status dos Pets (450)</h2>
+              <h2 className={styles.tituloCartao}>
+                Status Atual ({totalSoma})
+              </h2>
+
               <div className={styles.legendaContainer}>
                 <div className={styles.legendaItem}>
                   <div className={`${styles.ponto} ${styles.pontoAzul}`}></div>
-                  Disponíveis para Adoção
+                  Disponíveis para Adoção ({disponiveis})
                 </div>
                 <div className={styles.legendaItem}>
                   <div className={`${styles.ponto} ${styles.pontoVerde}`}></div>
-                  Aguardando visita/aprovação
+                  Aguardando Aprovação ({pendentes})
                 </div>
                 <div className={styles.legendaItem}>
                   <div className={`${styles.ponto} ${styles.pontoRoxo}`}></div>
-                  Em tratamento médico
+                  Encontrados ({encontrados})
                 </div>
               </div>
             </div>
 
-            {/* Gráfico de Barras */}
             <div className={styles.graficoContainer}>
-              {petsData.map((d, i) => (
-                <div key={i} className={styles.barraWrapper}>
-                  <div
-                    className={styles.barra}
-                    style={{
-                      height: `${d.val}%`,
-                      backgroundColor: d.color,
-                    }}
-                  />
-                  <span className={styles.barraRotulo}>{d.label}</span>
+              {totalSoma === 0 ? (
+                <div style={{ width: '100%', textAlign: 'center', color: '#999', fontSize: '0.8rem', marginTop: '20px' }}>
+                  Sem dados para gráfico
                 </div>
-              ))}
+              ) : (
+                petsData.map((d, i) => (
+                  <div key={i} className={styles.barraWrapper}>
+                    <div
+                      className={styles.barra}
+                      style={{
+                        height: `${d.val}%`,
+                        backgroundColor: d.color,
+                        minHeight: d.val > 0 ? '4px' : '0'
+                      }}
+                    />
+                    <span className={styles.barraRotulo}>{d.val > 0 ? d.label : ''}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
 
-       
         <div className={styles.linha}>
-          {/* últimas ações */}
+
           <div className={styles.cartao}>
-            <h2 className={styles.tituloCartao}>Últimas ações/doações</h2>
+            <h2 className={styles.tituloCartao}>Últimas atualizações</h2>
+
             <div className={styles.listaAcoes}>
-              <div className={styles.itemAcao}>
-                <span className={styles.textoAcao}>
-                  Nova ONG cadastrada: <strong>Cão Feliz</strong>
-                </span>
-                <div className={styles.botoesAcao}>
-                  <button className={styles.btnAprovar}>Aprovar</button>
-                  <button className={styles.btnRejeitar}>Rejeitar</button>
-                </div>
-              </div>
+              {loading ? (
+                <p>Carregando atividades...</p>
+              ) : activities.length === 0 ? (
+                <p style={{ color: '#888', fontStyle: 'italic' }}>Nenhuma atividade recente.</p>
+              ) : (
+                activities.map((acao) => (
+                  <div key={acao.id} className={styles.itemAcao}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className={styles.textoAcao} dangerouslySetInnerHTML={{
+                        __html: acao.texto.replace(':', ': <strong>').replace('(', '</strong>(')
+                      }} />
+                      <span style={{ fontSize: '0.75rem', color: '#999' }}>
+                        {new Date(acao.data).toLocaleString()}
+                      </span>
+                    </div>
 
-              <div className={styles.itemAcao}>
-                <span className={styles.textoAcao}>
-                  Doação de R$ 500,00 - Método PIX
-                </span>
-                <span className={styles.linkDetalhes}>Ver detalhes</span>
-              </div>
-
-              <div className={styles.itemAcao}>
-                <span className={styles.textoAcao}>
-                  Nova solicit. Adoção: <strong>Pet Max</strong>
-                </span>
-                <span className={styles.linkDetalhes}>Analisar</span>
-              </div>
-
-              <div className={styles.itemAcao}>
-                <span className={styles.textoAcao}>
-                  Doação de R$ 1.500,00 - Método Crédito
-                </span>
-                <span className={styles.linkDetalhes}>Ver detalhes</span>
-              </div>
+                    <div className={styles.botoesAcao}>
+                      <button
+                        className={styles.btnAprovar}
+                        style={{ fontSize: '0.8rem', padding: '4px 10px' }}
+                        onClick={() => navigate(acao.link)}
+                      >
+                        Ver
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
-          {/* Coluna direita */}
           <div className={styles.colunaVertical}>
-            {/* distribuição doações */}
             <div className={styles.cartao}>
-              <h2 className={styles.tituloCartao}>
-                Distribuição de doações (Últimos 30 dias)
-              </h2>
+              <h2 className={styles.tituloCartao}>Distribuição de doações (Exemplo)</h2>
               <div className={styles.donutWrapper}>
                 <div className={styles.donutLegenda}>
                   <div className={styles.legendaItem}>
@@ -130,29 +178,22 @@ export default function AdminHome() {
                   </div>
                   <div className={styles.legendaItem}>
                     <div className={`${styles.ponto} ${styles.pontoCredito}`}></div>
-                    Cartão de Crédito: 25%
-                  </div>
-                  <div className={styles.legendaItem}>
-                    <div className={`${styles.ponto} ${styles.pontoBoleto}`}></div>
-                    Boleto/Outros: 10%
+                    Cartão: 25%
                   </div>
                 </div>
-
                 <div className={styles.graficoDonut}></div>
               </div>
             </div>
 
-            {/* link gerenciamento */}
             <Link to="/admin/pets" className={styles.cartaoGerenciamento}>
               <div>
                 <div className={styles.tituloGerenciar}>Gerenciamento de Pets</div>
-                <div className={styles.linkTextoGerenciar}>
-                  &rarr; Ir para lista completa
-                </div>
+                <div className={styles.linkTextoGerenciar}>&rarr; Ir para lista completa</div>
               </div>
               <FaPaw className={styles.iconePata} />
             </Link>
           </div>
+
         </div>
       </div>
     </Layout>

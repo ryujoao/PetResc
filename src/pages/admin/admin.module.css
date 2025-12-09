@@ -32,12 +32,10 @@
   min-height: 250px;
 }
 
-
 .layoutCartaoPets {
   display: flex;
   gap: 1rem;
 }
-
 
 .flexCrescer {
   flex: 1;
@@ -123,12 +121,24 @@
 }
 
 /* Cores dos pontos */
-.pontoAzul { background-color: #2f80ed; }
-.pontoVerde { background-color: #6fcf97; }
-.pontoRoxo { background-color: #bb6bd9; }
-.pontoPix { background-color: #4a90e2; }
-.pontoCredito { background-color: #9abddf; }
-.pontoBoleto { background-color: #103f6e; }
+.pontoAzul {
+  background-color: #2f80ed;
+}
+.pontoVerde {
+  background-color: #6fcf97;
+}
+.pontoRoxo {
+  background-color: #bb6bd9;
+}
+.pontoPix {
+  background-color: #4a90e2;
+}
+.pontoCredito {
+  background-color: #9abddf;
+}
+.pontoBoleto {
+  background-color: #103f6e;
+}
 
 /* Lista de Ações */
 .listaAcoes {
@@ -157,7 +167,7 @@
 
 /* Botão Aprovar*/
 .btnAprovar {
-  background-color: #28a745; 
+  background-color: #28a745;
   color: #fff;
   border: none;
   padding: 4px 12px;
@@ -169,12 +179,12 @@
 }
 
 .btnAprovar:hover {
-  background-color: #218838; 
+  background-color: #218838;
 }
 
 /* Botão Rejeitar */
 .btnRejeitar {
-  background-color: #dc3545; 
+  background-color: #dc3545;
   color: #fff;
   border: none;
   padding: 4px 12px;

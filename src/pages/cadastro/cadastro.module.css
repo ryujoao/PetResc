@@ -1,5 +1,7 @@
 .pagCadastro {
   display: flex;
+  width: 100%;
+  min-height: 100vh;
 }
 
 .containerForms {
@@ -92,12 +94,13 @@
   font-weight: bold;
   cursor: pointer;
   border: none;
-  max-width: 100%;
-  width: 480px;
   height: 56px;
   background-color: #fff;
   color: #000000;
   border: 1px solid #286699;
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
 }
 
 .botaoRede:hover {
@@ -297,7 +300,7 @@
 
 .esqueciSenhaContainer {
   display: flex;
-  justify-content: flex-end;  
+  justify-content: flex-end;
 }
 
 .esqueciSenhaLink {
@@ -321,14 +324,12 @@
   line-height: 1.5;
 }
 
-
 .otpContainer {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
 
 .otpInput {
   width: 3.5rem;
@@ -350,7 +351,6 @@
   box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
 }
 
-
 .reenviarLink {
   display: block;
   text-align: center;
@@ -370,4 +370,25 @@
   text-decoration: none;
 }
 
+@media (max-width: 900px) {
+  .bannerPadrao,
+  .bannerUsuario,
+  .bannerOng,
+  .bannerLogin {
+    display: none;
+  }
 
+  .containerForms {
+    width: 100%;
+    background: #fff;
+    background-image: none;
+    padding: 2rem 1rem;
+  }
+
+  .logoHeader a {
+    display: block;
+    text-align: left;
+    margin: 0 auto 2rem auto;
+    width: 100%;
+  }
+}

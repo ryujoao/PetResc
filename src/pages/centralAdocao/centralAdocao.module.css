@@ -21,10 +21,10 @@ margin-bottom: 3rem;
 
 .containerFiltrosPets {
 display: flex;
-gap: 7rem; 
+gap: 3rem; 
 align-items: flex-start;
 width: 100%; 
-padding: 0 4rem 4rem 4rem;
+padding: 0 2rem 4rem 2rem;
 }
 
 /* --- ESTILOS DO PAINEL DE FILTROS --- */
@@ -252,4 +252,28 @@ color: #666;
  font-weight: bold;
  color: #0f4979;
  margin-top: 0.25rem !important;
+}
+
+@media (max-width: 900px) {
+  .containerFiltrosPets {
+    flex-direction: column; 
+    gap: 2rem;
+  }
+
+  .filtros {
+    width: 100%; 
+    border-right: none;
+    border-bottom: 1px solid #eee; 
+    padding-right: 0;
+    padding-bottom: 1rem;
+    margin-right: 0;
+    
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 2rem;
+  }
+  
+  .filtroGrupo {
+      min-width: 150px; 
+  }
 }

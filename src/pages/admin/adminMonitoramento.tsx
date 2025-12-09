@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./adminLogs.module.css";
 
@@ -33,26 +34,24 @@ const arduinoData: SensorData[] = [
   },
   {
     id: 3,
-    local: "Depósito de Ração",
+    local: "ONG Patinhas Unidas",
     tipoSensor: "Nível de Temperatura",
     valor: "Muito Abaixo",
-    status: "ALERTA", 
-    ultimaLeitura: "14:45",
+    status: "ALERTA",
+    ultimaLeitura: "13:46",
     mensagem: "Nível de temperatura muito abaixo! Verificar.",
   },
-  
 ];
 
 export default function AdminMonitoramento() {
-  
   const getClasseStatus = (status: string) => {
     switch (status) {
       case "CRITICO":
-        return styles.tipoErro; 
+        return styles.tipoErro;
       case "NORMAL":
-        return styles.tipoSucesso; 
+        return styles.tipoSucesso;
       case "ALERTA":
-        return styles.tipoInfo; 
+        return styles.tipoInfo;
       default:
         return styles.tipoInfo;
     }
@@ -63,7 +62,9 @@ export default function AdminMonitoramento() {
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.cabecalho}>
-          <h1 className={styles.tituloPagina}>Monitoramento de Temperatura - IoT</h1>
+          <h1 className={styles.tituloPagina}>
+            Monitoramento de Temperatura - IoT
+          </h1>
           <h2 className={styles.subtituloPagina}>
             Leituras dos sensores Arduino em tempo real
           </h2>
@@ -72,28 +73,34 @@ export default function AdminMonitoramento() {
         {/* Lista de Sensores (Usando a estrutura visual de Logs) */}
         <div className={styles.listaLogs}>
           {arduinoData.map((sensor) => (
+            
+            
             <div key={sensor.id} className={styles.itemLog}>
               <div
                 className={`${styles.barraLateral} ${getClasseStatus(
                   sensor.status
                 )}`}
               ></div>
+              
 
               {/* Conteúdo */}
               <div className={styles.conteudoLog}>
-                {/* Linha superior: Local e Hora */}
-                <div className={styles.linhaDataHora}>
-                  <span style={{ fontWeight: "bold", color: "#555" }}>
-                    📍 {sensor.local}
-                  </span>
-                  <span>🕒 {sensor.ultimaLeitura}</span>
-                </div>
-
+                
+                  {/* Linha superior: Local e Hora */}
+                  <div className={styles.linhaDataHora}>
+                    <span style={{ fontWeight: "bold", color: "#555" }}>
+                      {sensor.local}
+                    </span>
+                    <span> {sensor.ultimaLeitura}</span>
+                  </div>
+              
                 {/* Linha Principal: Tipo de Sensor e Valor */}
+                <Link to="/admin/monitoramento/ong">
                 <div className={styles.textoPrincipal}>
                   {sensor.tipoSensor}:{" "}
                   <span style={{ fontSize: "1.4rem" }}>{sensor.valor}</span>
                 </div>
+                </Link>
 
                 {/* Detalhes / Mensagem de Status */}
                 <div className={styles.detalhesLog}>

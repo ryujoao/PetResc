@@ -9,6 +9,7 @@ import Modal from "../../components/modal";
 
 interface FichaTecnica {
   vacinado: boolean;
+  vacinas?: string;
   vermifugado: boolean;
   castrado: boolean;
   temperamento: string;
@@ -32,7 +33,7 @@ interface Animal {
   nome: string;
   especie: string;
   raca: string | null;
-  idade: number | null;
+  idade: string | null; // Agora é string para aceitar texto livre
   status: string; 
   porte: string | null;
   sexo: string | null;
@@ -41,8 +42,15 @@ interface Animal {
   corPredominante: string | null;
   createdAt: string;
   accountId: number;
+  
+  // Campos de Resgate
+  data_resgate?: string;
+  local_cidade?: string;
+  local_estado?: string;
+  local_atual?: string;
+  
   account: AccountInfo; 
-  ficha?:  FichaTecnica; 
+  ficha?: FichaTecnica; 
 }
 
 export default function PerfilAnimal() {
@@ -55,7 +63,6 @@ export default function PerfilAnimal() {
   const [pedidoExistente, setPedidoExistente] = useState<any>(null);
   const [isFavorito, setIsFavorito] = useState(false); 
 
-  // --- MODAL ---
   const [modalOpen, setModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({
     title: "", msg: "", type: "success" as "success" | "error", redirect: "" as string | null
@@ -105,15 +112,13 @@ export default function PerfilAnimal() {
   }, [user, animal]);
 
   const handleToggleFavorito = async () => {
-      if (!user) {
-          showModal("Atenção", "Faça login para favoritar.", "error");
-          return;
-      }
+      if (!user) return showModal("Atenção", "Faça login para favoritar.", "error");
       if (!animal) return;
+      
       const novoStatus = !isFavorito;
       setIsFavorito(novoStatus);
       try {
-          novoStatus ? await api.post(`/favoritar/${animal.id}`) : await api.delete(`/favoritar/${animal.id}`);
+          await api.post(`/favoritar/${animal.id}`);
       } catch {
           setIsFavorito(!novoStatus); 
       }
@@ -125,11 +130,8 @@ export default function PerfilAnimal() {
     navigate(`/formulario-adotar?animalId=${animal?.id}`);
   };
 
-  // --- QUEM VIU O ANIMAL CLICA AQUI ---
   const handleReportarAvistamento = () => {
-    if (!animal?.account?.telefone) {
-        return showModal("Contato", `Envie um e-mail para: ${animal?.account.email}`, "success");
-    }
+    if (!animal?.account?.telefone) return showModal("Contato", `Envie um e-mail para: ${animal?.account.email}`, "success");
     const phone = animal.account.telefone.replace(/\D/g, '');
     const mensagem = `Olá! Vi seu anúncio no PetResc sobre o animal "${animal.nome}" que está desaparecido. Tenho informações sobre ele.`;
     window.open(`https://wa.me/55${phone}?text=${encodeURIComponent(mensagem)}`, '_blank');
@@ -142,7 +144,6 @@ export default function PerfilAnimal() {
   };
 
   const renderActionButton = () => {
-      // 1. Pedido já feito
       if (pedidoExistente) {
           return (
             <button className={styles.botaoAdotar} style={{ backgroundColor: '#6c757d' }} onClick={() => navigate('/')}>
@@ -150,7 +151,6 @@ export default function PerfilAnimal() {
             </button>
           );
       }
-      // 2. Adoção
       if (animal?.status === 'DISPONIVEL' || animal?.status === 'LAR_TEMPORARIO') {
           return (
             <button className={styles.botaoAdotar} onClick={handleQueroAdotar}>
@@ -158,7 +158,6 @@ export default function PerfilAnimal() {
             </button>
           );
       }
-      // 3. PERDIDO (Botão para quem VIU avisar o dono)
       if (animal?.status === 'PERDIDO') {
         return (
             <button className={styles.botaoReportar} onClick={handleReportarAvistamento}>
@@ -167,7 +166,6 @@ export default function PerfilAnimal() {
             </button>
         );
       }
-      // 4. Outros
       return (
         <button className={styles.botaoAdotar} style={{ backgroundColor: '#25D366' }} onClick={handleContatoGenerico}>
             <FaWhatsapp size={20} style={{ marginRight: 8 }} /> ENTRAR EM CONTATO
@@ -178,7 +176,6 @@ export default function PerfilAnimal() {
   if (loading) return <Layout><div style={{textAlign: "center", padding: "4rem"}}>Carregando...</div></Layout>;
   if (!animal) return <Layout><div>Animal não encontrado</div></Layout>;
   
-  // --- MAPEAMENTO DE STATUS VISUAL ---
   const statusMap: Record<string, string> = {
       'DISPONIVEL': 'Para Adoção',
       'PERDIDO': 'DESAPARECIDO ⚠️',
@@ -212,18 +209,26 @@ export default function PerfilAnimal() {
                 </button>
             </div>
             
-            {/* BADGE DE STATUS */}
             <span className={`${styles.statusBadge} ${statusClass}`}>
                {statusText}
             </span>
             
             <section className={styles.dados}>
-              <p className={styles.infoLine}><strong>{animal.sexo}</strong> • {animal.idade} anos • {animal.raca || 'SRD'}</p>
+              <p className={styles.infoLine}>
+                  <strong>{animal.sexo}</strong> 
+                  
+                  {/* --- MUDANÇA 1: PONTO NA IDADE --- */}
+                  • {animal.idade ? (isNaN(Number(animal.idade)) ? animal.idade : `${animal.idade} anos`) : 'Idade não inf.'}
+                  
+                  • {animal.raca }
+              </p>
               <p className={styles.infoLine}>Responsável: <strong>{animal.account.nome}</strong></p>
-              <p className={styles.infoLine}>Local: {animal.account.ong?.cidade || "Não informado"}</p>
+              
+              <p className={styles.infoLine}>
+                  Local: {animal.local_cidade ? `${animal.local_cidade}/${animal.local_estado}` : (animal.account.ong?.cidade || "Não informado")}
+              </p>
             </section>
 
-            {/* ALERTA VISUAL PARA QUEM VIU */}
             {animal.status === 'PERDIDO' && (
                 <div className={styles.boxAjuda}>
                     <FaExclamationTriangle size={24} color="#d32f2f" />
@@ -242,21 +247,55 @@ export default function PerfilAnimal() {
           <div className={styles.comentarioContainer}>
             <h2>Sobre o {animal.nome}</h2>
             <p>{animal.descricao || "Sem descrição."}</p>
+            
+            {animal.ficha?.observacoes && (
+                <p style={{marginTop: '10px', fontStyle: 'italic', color: '#555'}}>
+                    Obs: {animal.ficha.observacoes}
+                </p>
+            )}
           </div>
         </div>
 
         <hr className={styles.divider} />
         
         <div className={styles.caracteristicasGrid}>
+             
+             {/* Coluna 1: Básico */}
              <div className={styles.caracteristicaColuna}>
-                <h3>Características</h3>
+                <h3>Perfil</h3>
                 <ul>
                     <li>Espécie: {animal.especie}</li>
                     <li>Raça: {animal.raca || 'Não definida'}</li>
                     <li>Porte: {animal.porte || 'Não informado'}</li>
                     <li>Cor: {animal.corPredominante || 'Não informada'}</li>
+                    {/* --- MUDANÇA 2: REMOVIDO CAMPO TEMPERAMENTO DAQUI --- */}
                 </ul>
              </div>
+
+             {/* Coluna 2: Saúde (Só aparece se tiver ficha) */}
+             {animal.ficha && (
+                 <div className={styles.caracteristicaColuna}>
+                    <h3>Saúde</h3>
+                    <ul>
+                        <li>Castrado: {animal.ficha.castrado ? "Sim" : "Não"}</li>
+                        <li>Vacinado: {animal.ficha.vacinado ? "Sim" : "Não"}</li>
+                        <li>Vermifugado: {animal.ficha.vermifugado ? "Sim" : "Não"}</li>
+                        {animal.ficha.vacinas && <li>Vacinas: {animal.ficha.vacinas}</li>}
+                    </ul>
+                 </div>
+             )}
+
+             {/* Coluna 3: Resgate (Só se tiver dados) */}
+             {(animal.data_resgate || animal.local_atual) && (
+                 <div className={styles.caracteristicaColuna}>
+                    <h3>Resgate</h3>
+                    <ul>
+                        {animal.local_atual && <li>Local Atual: {animal.local_atual.replace('_', ' ')}</li>}
+                        {animal.data_resgate && <li>Data: {new Date(animal.data_resgate).toLocaleDateString()}</li>}
+                    </ul>
+                 </div>
+             )}
+
         </div>
       </main>
     </Layout>

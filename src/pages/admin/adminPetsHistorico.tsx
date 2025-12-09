@@ -1,65 +1,84 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./adminTabelas.module.css";
+import api from "../../services/api";
 import {
   FaArrowLeft,
   FaCalendarAlt,
   FaSearch,
-  FaDownload,
   FaDog,
   FaCat,
+  FaPaw
 } from "react-icons/fa";
 
-// Dados Mockados
-const historyData = [
-  {
-    id: 101,
-    data: "25/10/2025",
-    hora: "14:30",
-    pet: "Luna",
-    especie: "Gato",
-    responsavel: "ONG Abrigo Viver",
-    tipoUser: "ONG",
-  },
-  {
-    id: 102,
-    data: "25/10/2025",
-    hora: "10:15",
-    pet: "Thor",
-    especie: "Cachorro",
-    responsavel: "ONG Cão Feliz",
-    tipoUser: "ONG",
-  },
-  {
-    id: 103,
-    data: "24/10/2025",
-    hora: "18:45",
-    pet: "Paçoca",
-    especie: "Cachorro",
-    responsavel: "Carlos Silva",
-    tipoUser: "USER",
-  },
-  {
-    id: 104,
-    data: "24/10/2025",
-    hora: "09:20",
-    pet: "Mimi",
-    especie: "Gato",
-    responsavel: "Ana Maria",
-    tipoUser: "USER",
-  },
-  {
-    id: 105,
-    data: "23/10/2025",
-    hora: "16:00",
-    pet: "Rex",
-    especie: "Cachorro",
-    responsavel: "Instituto Patas",
-    tipoUser: "ONG",
-  },
-];
+interface HistoricoItem {
+  id: number;
+  nome: string;
+  especie: string;
+  createdAt: string;
+  account: {
+    nome: string;
+    role: string;
+  };
+}
 
 export default function AdminHistoricoPets() {
+  const [historico, setHistorico] = useState<HistoricoItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // Estados dos Filtros
+  const [busca, setBusca] = useState("");
+  const [dataInicio, setDataInicio] = useState("");
+  const [dataFim, setDataFim] = useState("");
+
+  useEffect(() => {
+    async function fetchHistorico() {
+      try {
+        const response = await api.get("/admin/animais");
+        // Garante que é um array antes de setar
+        if (Array.isArray(response.data)) {
+            setHistorico(response.data);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar histórico:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHistorico();
+  }, []);
+
+  // 2. LÓGICA DE FILTRAGEM (Blindada contra Null/Undefined)
+  const itensFiltrados = historico.filter((item) => {
+    // Proteção: Se item for inválido, ignora
+    if (!item) return false;
+
+    const termo = busca.toLowerCase();
+    
+    // Proteção: Garante string vazia se vier null do banco
+    const nomePet = (item.nome || "").toLowerCase();
+    const nomeResp = (item.account?.nome || "").toLowerCase();
+
+    const matchTexto = nomePet.includes(termo) || nomeResp.includes(termo);
+
+    // Filtro de Data
+    let matchData = true;
+    if (dataInicio || dataFim) {
+        if (!item.createdAt) return false; // Se não tiver data, não entra no filtro
+
+        const dataItem = new Date(item.createdAt).setHours(0,0,0,0);
+        const inicio = dataInicio ? new Date(dataInicio).setHours(0,0,0,0) : null;
+        const fim = dataFim ? new Date(dataFim).setHours(0,0,0,0) : null;
+
+        if (inicio && dataItem < inicio) matchData = false;
+        if (fim && dataItem > fim) matchData = false;
+    }
+
+    return matchTexto && matchData;
+  });
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -70,7 +89,7 @@ export default function AdminHistoricoPets() {
               Log de entrada de novos animais na plataforma
             </h2>
           </div>
-          <Link to="/admin/status-pets" className={styles.linkVoltar}>
+          <Link to="/admin" className={styles.linkVoltar}>
             <FaArrowLeft /> 
           </Link>
         </div>
@@ -79,21 +98,33 @@ export default function AdminHistoricoPets() {
         <div className={styles.barraFiltrosHistorico}>
           <div className={styles.grupoFiltro}>
             <label className={styles.rotuloFiltroPequeno}>Data Início</label>
-            <input type="date" className={styles.inputData} />
+            <input 
+                type="date" 
+                className={styles.inputData} 
+                value={dataInicio}
+                onChange={(e) => setDataInicio(e.target.value)}
+            />
           </div>
           <div className={styles.grupoFiltro}>
             <label className={styles.rotuloFiltroPequeno}>Data Fim</label>
-            <input type="date" className={styles.inputData} />
+            <input 
+                type="date" 
+                className={styles.inputData} 
+                value={dataFim}
+                onChange={(e) => setDataFim(e.target.value)}
+            />
           </div>
           <div className={styles.grupoFiltro}>
             <label className={styles.rotuloFiltroPequeno}>
-              Buscar Responsável
+              Buscar Responsável ou Pet
             </label>
             <div className={styles.grupoBusca}>
               <input
                 type="text"
-                placeholder="Nome da ONG ou Pessoa"
+                placeholder="Nome da ONG, Pessoa ou Pet"
                 className={styles.inputData}
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
               />
               <button className={styles.botaoPesquisa}>
                 <FaSearch />
@@ -104,73 +135,107 @@ export default function AdminHistoricoPets() {
 
         {/* Tabela */}
         <div className={styles.containerTabela}>
-          <table className={styles.tabelaUsuarios}>
-            <thead>
-              <tr>
-                <th>Data / Hora</th>
-                <th>Pet</th>
-                <th>Espécie</th>
-                <th>Cadastrado por</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {historyData.map((item) => (
-                <tr key={item.id}>
-                  {/* Coluna Data */}
-                  <td>
-                    <div className={styles.celulaDataHora}>
-                      <FaCalendarAlt color="#999" />
-                      <div>
-                        <div className={styles.textoData}>{item.data}</div>
-                        <div className={styles.textoHora}>{item.hora}</div>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Coluna Pet */}
-                  <td className={styles.colunaNome}>{item.pet}</td>
-
-                  {/* Coluna Espécie */}
-                  <td>
-                    {item.especie === "Cachorro" ? (
-                      <span className={styles.celulaEspecie}>
-                        <FaDog /> Cão
-                      </span>
-                    ) : (
-                      <span className={styles.celulaEspecie}>
-                        <FaCat /> Gato
-                      </span>
-                    )}
-                  </td>
-
-                  {/* Coluna Responsável */}
-                  <td>
-                    {item.responsavel}
-                    <span
-                      className={`${styles.badgeTipoUsuario} ${
-                        item.tipoUser === "ONG"
-                          ? styles.tipoOng
-                          : styles.tipoUser
-                      }`}
-                    >
-                      {item.tipoUser}
-                    </span>
-                  </td>
-
-                  {/* Ações */}
-                  <td>
-                    <Link
-                      to={`/admin/gerenciamento/pets`}
-                      className={styles.linkDetalhes}
-                    >
-                      Ver Cadastro &rarr;
-                    </Link>
-                  </td>
+          {loading ? (
+              <p style={{padding: 20}}>Carregando histórico...</p>
+          ) : (
+            <table className={styles.tabelaUsuarios}>
+                <thead>
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Pet</th>
+                    <th>Espécie</th>
+                    <th>Cadastrado por</th>
+                    <th>Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                {itensFiltrados.length === 0 && (
+                    <tr>
+                        <td colSpan={5} style={{textAlign:'center', padding: 20, color: '#999'}}>
+                            Nenhum registro encontrado.
+                        </td>
+                    </tr>
+                )}
+
+                {itensFiltrados.map((item) => {
+                    // Proteção na Data
+                    const dataString = item.createdAt ? new Date(item.createdAt) : new Date();
+                    const dataFormatada = dataString.toLocaleDateString('pt-BR');
+                    const horaFormatada = dataString.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    // Proteção na Conta
+                    const nomeConta = item.account?.nome || "Desconhecido";
+                    const roleConta = item.account?.role || "PUBLICO";
+                    const tipoUser = roleConta === 'ONG' ? 'ONG' : 'USER';
+                    
+                    // Proteção na Espécie
+                    const especieStr = (item.especie || "").toLowerCase();
+
+                    return (
+                        <tr key={item.id}>
+                        {/* Coluna Data */}
+                        <td>
+                            <div className={styles.celulaDataHora}>
+                            <FaCalendarAlt color="#999" />
+                            <div>
+                                <div className={styles.textoData}>{dataFormatada}</div>
+                                <div className={styles.textoHora}>{horaFormatada}</div>
+                            </div>
+                            </div>
+                        </td>
+
+                        {/* Coluna Pet */}
+                        <td className={styles.colunaNome}>
+                            <strong>{item.nome || "Sem Nome"}</strong>
+                        </td>
+
+                        {/* Coluna Espécie */}
+                        <td>
+                            {especieStr.includes("cachorro") || especieStr.includes("cão") ? (
+                            <span className={styles.celulaEspecie}>
+                                <FaDog /> Cão
+                            </span>
+                            ) : especieStr.includes("gato") ? (
+                            <span className={styles.celulaEspecie}>
+                                <FaCat /> Gato
+                            </span>
+                            ) : (
+                            <span className={styles.celulaEspecie}>
+                                <FaPaw /> {item.especie || "Outro"}
+                            </span>
+                            )}
+                        </td>
+
+                        {/* Coluna Responsável */}
+                        <td>
+                            {nomeConta}
+                            <span
+                            className={`${styles.badgeTipoUsuario} ${
+                                tipoUser === "ONG"
+                                ? styles.tipoOng
+                                : styles.tipoUser
+                            }`}
+                            >
+                            {tipoUser}
+                            </span>
+                        </td>
+
+                        {/* Ações */}
+                        <td>
+                            <button
+                                onClick={() => navigate(`/animal/${item.id}`)}
+                                className={styles.linkDetalhes}
+                                style={{background:'none', border:'none', cursor:'pointer', fontSize:'inherit', fontFamily:'inherit'}}
+                            >
+                            Ver Cadastro &rarr;
+                            </button>
+                        </td>
+                        </tr>
+                    );
+                })}
+                </tbody>
+            </table>
+          )}
         </div>
       </div>
     </Layout>

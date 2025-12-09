@@ -1,182 +1,266 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./adminListas.module.css";
-import { FaArrowLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useState } from "react";
+import { FaArrowLeft, FaChevronDown, FaChevronUp, FaEye, FaMapMarkerAlt } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
 
-// Mock dos Dados
-const petsData = [
-  {
-    id: 1,
-    nome: "Luna (Gato)",
-    dono: "ONG: Abrigo Viver",
-    status: "Em análise",
-    progresso: 75,
-  },
-  {
-    id: 2,
-    nome: "Rex (Cachorro)",
-    dono: "ONG: Patas Unidas",
-    status: "Disponível",
-    progresso: 100,
-  },
-  {
-    id: 3,
-    nome: "Luna (Gato)",
-    dono: "Protetor: Carlos M.",
-    status: "Adotado",
-    progresso: 100,
-  },
-];
+// Interface dos dados que vêm da API
+interface AnimalAdmin {
+  id: number;
+  nome: string;
+  especie: string;
+  status: string;     // Status do banco (DISPONIVEL, ADOTADO...)
+  statusReal: string; // Status calculado (AGUARDANDO...)
+  createdAt: string;
+  account: {
+    nome: string;
+    role: string;
+    cidade?: string;
+    estado?: string;
+  };
+}
 
 export default function AdminGerenciamento() {
-  // Estados para controlar a abertura de cada menu
-  const [statusOpen, setStatusOpen] = useState(true);
-  const [especieOpen, setEspecieOpen] = useState(false);
-  const [porteOpen, setPorteOpen] = useState(false);
-  const [idadeOpen, setIdadeOpen] = useState(false);
-  const [ongOpen, setOngOpen] = useState(false);
-  const [periodoOpen, setPeriodoOpen] = useState(false);
+  const navigate = useNavigate();
+  
+  // Estados de Dados
+  const [pets, setPets] = useState<AnimalAdmin[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Estados de Controle dos Menus (Collapse)
+  const [menusOpen, setMenusOpen] = useState({
+    status: true,
+    especie: false,
+    porte: false, // Nota: Porte não vem na listagem simples atual, precisaria ajustar o backend se for crucial
+    idade: false,
+    ong: false,
+    periodo: false
+  });
+
+  // Estados dos Filtros Selecionados
+  const [filtroStatus, setFiltroStatus] = useState<string>("");
+  const [filtroEspecie, setFiltroEspecie] = useState<string>("");
+  const [filtroOng, setFiltroOng] = useState<string>("");
+
+  // 1. BUSCAR DADOS
+  useEffect(() => {
+    async function fetchPets() {
+      try {
+        const response = await api.get("/admin/animais");
+        setPets(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar animais:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPets();
+  }, []);
+
+  // Toggle do Menu Lateral
+  const toggleMenu = (key: keyof typeof menusOpen) => {
+    setMenusOpen(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Extrair lista única de ONGs para o filtro dinâmico
+  const listaOngs = Array.from(new Set(pets.map(p => p.account.nome))).sort();
+
+  // 2. LÓGICA DE FILTRAGEM
+  const petsFiltrados = pets.filter(pet => {
+    // Filtro Status
+    if (filtroStatus) {
+        const statusNormalizado = pet.statusReal || pet.status;
+        if (filtroStatus === 'Disponível' && statusNormalizado !== 'DISPONIVEL') return false;
+        if (filtroStatus === 'Adotado' && statusNormalizado !== 'ADOTADO') return false;
+        if (filtroStatus === 'Pendente' && statusNormalizado !== 'AGUARDANDO') return false;
+        if (filtroStatus === 'Encontrado' && statusNormalizado !== 'ENCONTRADO') return false;
+    }
+
+    // Filtro Espécie
+    if (filtroEspecie) {
+        if (!pet.especie.toLowerCase().includes(filtroEspecie.toLowerCase())) return false;
+    }
+
+    // Filtro ONG
+    if (filtroOng) {
+        if (pet.account.nome !== filtroOng) return false;
+    }
+
+    return true;
+  });
+
+  // Helper para formatar a data
+  const formatDate = (isoString: string) => {
+      return new Date(isoString).toLocaleDateString('pt-BR');
+  };
 
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.cabecalhoGestao}>
           <div>
-            <h1 className={styles.tituloPagina}>Gerenciamento de Pets</h1>
-            <h2 className={styles.subtituloPagina}>Gerenciamento de animais</h2>
+            <h1 className={styles.tituloPagina}>Gerenciamento Detalhado</h1>
+            <h2 className={styles.subtituloPagina}>Visualize e filtre os animais da plataforma</h2>
           </div>
-          <Link to="/admin/gerenciamento" className={styles.linkVoltar}>
+          <Link to="/admin" className={styles.linkVoltar}>
             <FaArrowLeft />
           </Link>
         </div>
 
         <div className={styles.conteudoGestao}>
           
+          {/* LISTA DE CARTÕES */}
           <div className={styles.listaCartoes}>
-            {petsData.map((pet) => (
-              <div key={pet.id} className={styles.cartaoItemGestao}>
-                <div className={styles.linhaCabecalhoCartao}>
-                  <span className={styles.nomeItem}>{pet.nome}</span>
-                  <span className={styles.statusItem}>Status: {pet.status}</span>
-                </div>
-                
-                <div className={styles.donoPet}>{pet.dono}</div>
-                
-                <div className={styles.linhaProgresso}>
-                  <span className={styles.rotuloProgresso}>Progresso:</span>
-                  <div className={styles.fundoBarraProgresso}>
-                    <div 
-                        className={styles.preenchimentoBarra} 
-                        style={{ width: `${pet.progresso}%` }}
-                    ></div>
-                  </div>
-                  <span className={styles.valorProgresso}>{pet.progresso}%</span>
-                </div>
-              </div>
-            ))}
+            {loading ? <p>Carregando...</p> : petsFiltrados.length === 0 ? (
+                <div style={{padding: 20, color: '#666'}}>Nenhum animal encontrado com esses filtros.</div>
+            ) : (
+                petsFiltrados.map((pet) => {
+                    const statusExibicao = pet.statusReal || pet.status;
+                    
+                    // Definindo cor da barra lateralzinha baseada no status
+                    let statusColor = '#ccc';
+                    if(statusExibicao === 'DISPONIVEL') statusColor = '#2f80ed';
+                    if(statusExibicao === 'ADOTADO') statusColor = '#27ae60';
+                    if(statusExibicao === 'AGUARDANDO') statusColor = '#f2c94c';
+
+                    return (
+                      <div key={pet.id} className={styles.cartaoItemGestao} style={{borderLeft: `4px solid ${statusColor}`}}>
+                        
+                        <div className={styles.linhaCabecalhoCartao}>
+                          <span className={styles.nomeItem}>
+                              {pet.nome} <span style={{fontSize:'0.8rem', fontWeight:'normal'}}>({pet.especie})</span>
+                          </span>
+                          <span 
+                            className={styles.statusItem}
+                            style={{color: statusColor, fontWeight: 'bold'}}
+                          >
+                              {statusExibicao}
+                          </span>
+                        </div>
+                        
+                        <div className={styles.donoPet}>
+                            Responsável: <strong>{pet.account.nome}</strong>
+                            <br/>
+                            <span style={{fontSize:'0.8rem', color:'#666'}}>
+                                <FaMapMarkerAlt size={10}/> {pet.account.cidade || "Local não inf."} - {pet.account.estado || "UF"}
+                            </span>
+                        </div>
+                        
+                        {/* ADAPTAÇÃO: Substituindo Porcentagem por Data e Botão */}
+                        <div className={styles.linhaProgresso} style={{justifyContent: 'space-between', marginTop: '15px'}}>
+                          
+                          <div style={{display:'flex', flexDirection:'column'}}>
+                              <span className={styles.rotuloProgresso} style={{marginBottom: 2}}>Cadastrado em:</span>
+                              <span style={{fontSize: '0.9rem', color: '#333', fontWeight: '500'}}>
+                                  {formatDate(pet.createdAt)}
+                              </span>
+                          </div>
+
+                          <button 
+                            onClick={() => navigate(`/animal/${pet.id}`)}
+                            style={{
+                                background: 'none', border: '1px solid #ccc', borderRadius: '4px', 
+                                padding: '4px 10px', cursor: 'pointer', fontSize: '0.8rem',
+                                display: 'flex', alignItems: 'center', gap: '5px', color: '#555'
+                            }}
+                          >
+                              <FaEye /> Ver Detalhes
+                          </button>
+
+                        </div>
+                      </div>
+                    );
+                })
+            )}
           </div>
 
+          {/* BARRA LATERAL DE FILTROS */}
           <div className={styles.barraLateralFiltros}>
-            <h3 className={styles.tituloFiltro}>Filtros</h3>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <h3 className={styles.tituloFiltro}>Filtros</h3>
+                {(filtroStatus || filtroEspecie || filtroOng) && (
+                    <button 
+                        onClick={() => { setFiltroStatus(""); setFiltroEspecie(""); setFiltroOng(""); }}
+                        style={{border:'none', background:'none', color:'#e74c3c', cursor:'pointer', fontSize:'0.8rem'}}
+                    >
+                        Limpar
+                    </button>
+                )}
+            </div>
             
-            {/* Filtro status */}
+            {/* Filtro Status */}
             <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setStatusOpen(!statusOpen)}>
+                <div className={styles.rotuloFiltro} onClick={() => toggleMenu('status')}>
                     Status
-                    {statusOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+                    {menusOpen.status ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
                 </div>
-                {statusOpen && (
+                {menusOpen.status && (
                     <ul className={styles.listaSubItens}>
-                        <li className={styles.subItem}>Pendente de revisão</li>
-                        <li className={styles.subItem}>Em tratamento</li>
-                        <li className={styles.subItem}>Disponível</li>
-                        <li className={styles.subItem}>Adotado</li>
+                        {['Pendente', 'Disponível', 'Adotado', 'Encontrado'].map(st => (
+                            <li 
+                                key={st} 
+                                className={styles.subItem}
+                                style={{fontWeight: filtroStatus === st ? 'bold' : 'normal', color: filtroStatus === st ? '#2D68A6' : 'inherit', cursor:'pointer'}}
+                                onClick={() => setFiltroStatus(filtroStatus === st ? "" : st)}
+                            >
+                                {st}
+                            </li>
+                        ))}
                     </ul>
                 )}
             </div>
 
-            {/* Filtro espécie */}
+            {/* Filtro Espécie */}
             <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setEspecieOpen(!especieOpen)}>
+                <div className={styles.rotuloFiltro} onClick={() => toggleMenu('especie')}>
                     Espécie
-                    {especieOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+                    {menusOpen.especie ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
                 </div>
-                {especieOpen && (
+                {menusOpen.especie && (
                     <ul className={styles.listaSubItens}>
-                        <li className={styles.subItem}>Cachorro</li>
-                        <li className={styles.subItem}>Gato</li>
-                        <li className={styles.subItem}>Outros</li>
+                        {['Cachorro', 'Gato', 'Outro'].map(esp => (
+                            <li 
+                                key={esp} 
+                                className={styles.subItem}
+                                style={{fontWeight: filtroEspecie === esp ? 'bold' : 'normal', color: filtroEspecie === esp ? '#2D68A6' : 'inherit', cursor:'pointer'}}
+                                onClick={() => setFiltroEspecie(filtroEspecie === esp ? "" : esp)}
+                            >
+                                {esp}
+                            </li>
+                        ))}
                     </ul>
                 )}
             </div>
 
-            {/* Filtro porte */}
+            {/* Filtro ONG (Dinâmico) */}
             <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setPorteOpen(!porteOpen)}>
-                    Porte
-                    {porteOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
+                <div className={styles.rotuloFiltro} onClick={() => toggleMenu('ong')}>
+                    Responsável / ONG
+                    {menusOpen.ong ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
                 </div>
-                {porteOpen && (
+                {menusOpen.ong && (
                     <ul className={styles.listaSubItens}>
-                        <li className={styles.subItem}>Pequeno</li>
-                        <li className={styles.subItem}>Médio</li>
-                        <li className={styles.subItem}>Grande</li>
+                        {listaOngs.map(nome => (
+                            <li 
+                                key={nome} 
+                                className={styles.subItem}
+                                style={{fontWeight: filtroOng === nome ? 'bold' : 'normal', color: filtroOng === nome ? '#2D68A6' : 'inherit', cursor:'pointer'}}
+                                onClick={() => setFiltroOng(filtroOng === nome ? "" : nome)}
+                            >
+                                {nome}
+                            </li>
+                        ))}
                     </ul>
                 )}
             </div>
 
-            {/* Filtro idade */}
-            <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setIdadeOpen(!idadeOpen)}>
-                    Idade
-                    {idadeOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
-                </div>
-                {idadeOpen && (
-                    <div style={{ paddingLeft: '1rem' }}>
-                        <ul className={styles.listaSubItens} style={{ paddingLeft: 0 }}>
-                            <li className={styles.subItem}>Filhote</li>
-                            <li className={styles.subItem}>Adulto</li>
-                        </ul>
-                        <input 
-                            type="text" 
-                            className={styles.inputFiltro} 
-                            placeholder="Anos ou meses"
-                        />
-                    </div>
-                )}
+            {/* Filtros Visuais (Sem lógica ainda, mantidos para layout) */}
+            <div className={styles.grupoFiltro} style={{opacity: 0.5}}>
+                <div className={styles.rotuloFiltro}>Porte (Em breve)</div>
             </div>
-
-            {/* Filtro ong parceira */}
-            <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setOngOpen(!ongOpen)}>
-                    ONG parceira
-                    {ongOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
-                </div>
-                {ongOpen && (
-                    <ul className={styles.listaSubItens}>
-                        <li className={styles.subItem}>ONG Cão Amigo</li>
-                        <li className={styles.subItem}>Instituto Patas Unidas</li>
-                        <li className={styles.subItem}>Abrigo Bons Cães</li>
-                        <li className={styles.subItem}>Abrigo Viver</li>
-                    </ul>
-                )}
-            </div>
-
-            {/* Filtro período */}
-            <div className={styles.grupoFiltro}>
-                <div className={styles.rotuloFiltro} onClick={() => setPeriodoOpen(!periodoOpen)}>
-                    Periodo de cadastro
-                    {periodoOpen ? <FaChevronUp size={12}/> : <FaChevronDown size={12}/>}
-                </div>
-                {periodoOpen && (
-                    <ul className={styles.listaSubItens}>
-                        <li className={styles.subItem}>Hoje</li>
-                        <li className={styles.subItem}>Últimos 7 dias</li>
-                        <li className={styles.subItem}>Últimos 30 dias</li>
-                        <li className={styles.subItem}>Todos</li>
-                    </ul>
-                )}
+            <div className={styles.grupoFiltro} style={{opacity: 0.5}}>
+                <div className={styles.rotuloFiltro}>Idade (Em breve)</div>
             </div>
             
           </div>

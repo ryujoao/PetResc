@@ -1,4 +1,4 @@
-import styles from "../style/estatisticas.module.css";
+import styles from "./estatisticas.module.css";
 export default function Estatisticas() {
   return (
     <>

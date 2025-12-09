@@ -186,6 +186,11 @@
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 1.5rem;
+  position: sticky;
+  top: 110px; 
+  align-self: flex-start; 
+  max-height: calc(100vh - 130px); 
+  overflow-y: auto; 
 }
 
 .tituloFiltro {

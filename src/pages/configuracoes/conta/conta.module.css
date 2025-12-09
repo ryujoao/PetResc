@@ -227,25 +227,25 @@
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
   .gridForm {
-    grid-template-columns: 1fr; /* Coluna única em telas pequenas */
+    grid-template-columns: 1fr; 
     gap: 1.5rem;
   }
 
   .buttonContainer {
-    justify-content: center; /* Centraliza o botão no mobile */
+    justify-content: center; 
   }
   
   .botaoSalvar {
-     width: 100%; /* Botão ocupa largura total no mobile */
-     align-self: center; /* Centraliza no mobile */
+     width: 100%; 
+     align-self: center; 
   }
 
   .formRow {
-    flex-direction: column; /* Empilha em telas pequenas */
+    flex-direction: column; 
     gap: 1.5rem;
   }
   
   .rowItemShort {
-    flex: 1; /* Ocupa 100% no mobile */
+    flex: 1; 
   }
 }

@@ -48,10 +48,15 @@ body {
 .catImage {
   position: absolute;
   bottom: 0;
-  left: 2%; /* Posiciona na ESQUERDA, já que o texto está na direita */
-  width: 1800px; /* Tamanho padrão */
+  left: 2%;
+
+  /* MUDANÇA: De 1800px para relativo. 
+     Isso impede que ele engula a tela em monitores 1920px */
+  width: 50vw;
+  max-width: 900px; /* Trava num tamanho máximo seguro */
+
   height: auto;
-  z-index: 1; /* Fica na frente do fundo */
+  z-index: 1;
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -125,7 +130,7 @@ body {
   margin-right: 2vw;
   font-size: 1.2rem;
   min-height: 350px;
-  z-index: 2; /* Garante que fique acima se o gato encostar */
+  z-index: 10; /* Garante que fique acima se o gato encostar */
   position: relative;
 }
 
@@ -180,25 +185,59 @@ body {
 
 /* --- MEDIA QUERIES (Ajustes para Notebooks) --- */
 
-@media (max-width: 1835px) { .homeTitulo { margin-left: 13rem; } }
-@media (max-width: 1653px) { .homeTitulo { margin-left: 10rem; } }
+
+@media (max-width: 1835px) {
+  .homeTitulo {
+    margin-left: 13rem;
+  }
+}
+@media (max-width: 1653px) {
+  .homeTitulo {
+    margin-left: 10rem;
+  }
+}
 
 /* Notebooks Grandes (1600px) */
 @media (max-width: 1600px) {
-  .catImage { width: 400px; } /* Reduz levemente */
-  .homeTitulo { margin-left: 8rem; }
+  .catImage {
+    width: 400px;
+  } /* Reduz levemente */
+  .homeTitulo {
+    margin-left: 8rem;
+  }
 }
 
-@media (max-width: 1560px) { .homeTitulo { margin-left: 7rem; } }
-@media (max-width: 1443px) { .homeTitulo { margin-left: 5rem; } }
+@media (max-width: 1560px) {
+  .homeTitulo {
+    margin-left: 7rem;
+  }
+}
+@media (max-width: 1443px) {
+  .homeTitulo {
+    margin-left: 5rem;
+  }
+
+  .bannerDois {
+    padding-right: 1vw;
+    padding-left: 15vw;
+  }
+}
 
 /* Notebooks Padrão (1374px) */
-@media (max-width: 1374px) { 
-  .homeTitulo { margin-left: 3rem; }
-  .catImage { width: 350px; } /* Reduz para não invadir o texto */
+@media (max-width: 1374px) {
+  .homeTitulo {
+    margin-left: 3rem;
+  }
+  .catImage {
+    width: 350px;
+  } 
 }
 
-@media (max-width: 1300px) { .homeTitulo { margin-left: 1.5rem; } }
+@media (max-width: 1300px) {
+  .homeTitulo {
+    margin-left: 1.5rem;
+  }
+}
 
 /* Mobile e Tablets */
 @media (max-width: 900px) {
@@ -208,38 +247,43 @@ body {
     text-align: center;
   }
 
-  .homeTitulo {
-    margin-left: 0;
-    margin-top: 0;
-    max-width: 90%;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .catImage {
-    /* No mobile, esconde ou ajusta posição para não atrapalhar o texto */
-    width: 250px; 
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -20px;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
   .bannerDois {
     padding-right: 0;
     justify-content: center;
   }
 
-  .paginaDoar {
-    margin-right: 0;
-    width: 95%;
-    padding: 2rem 1rem;
-  }
-  
+
   .paginaDoar p {
     padding: 0 1rem;
     text-align: center;
   }
+
+  .paginaDoar {
+    margin-right: 0;
+    width: 90%;      
+    min-width: auto; 
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box; 
+  }
+  
+  
+  .catImage {
+    width: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 0;
+    opacity: 0.2; 
+  }
+ 
+  .homeTitulo {
+    margin-left: 0;
+    margin-top: 9rem; 
+    padding: 0 1rem;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
 }

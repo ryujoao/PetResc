@@ -74,3 +74,34 @@
   margin-bottom: 1rem;
   padding: 0 2rem 0 0;
 }
+
+@media (max-width: 900px) {
+  .containerNossaMissao {
+    flex-direction: column-reverse; 
+    gap: 0;
+    padding: 3rem 1rem;
+  }
+
+  .imgAnimais {
+    padding: 0;
+    justify-content: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .cachorro, .gato {
+    width: 45%; 
+    height: auto;
+    aspect-ratio: 2/3; 
+    margin: 0; 
+  }
+
+  .tituloNossaMissao {
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .tituloNossaMissao p {
+    padding: 0;
+  }
+}

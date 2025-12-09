@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 // Componentes principais da home
-import Estatisticas from "../estatisticas";
+import Estatisticas from "./estatisticas";
 import NossaMissao from "./nossaMissao";
 import SaibaMais from "./saibaMais";
 

@@ -18,7 +18,7 @@ export default function Sucesso({ isOpen, onClose, mensagem }: Props) {
     <div className={styles.overlay} onClick={handleOverlayClick}>
       <div className={styles.modal}>
         <span className={styles.sairPopUp} onClick={onClose}>
-          ×
+          x
         </span>
         <h2 className={styles.titulo}>
             {mensagem ? "Sucesso!" : "Formulário enviado"}

@@ -36,7 +36,7 @@
   margin-bottom: 0.5rem;
   margin-top: 0;
   color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Sombra para leitura na imagem */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
 }
 
 .subtitulo {
@@ -81,7 +81,7 @@
   padding: 1rem;
   border-radius: 12px;
   border: none;
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #333;
   background-color: rgba(255, 255, 255, 0.95); 
   outline: none;
@@ -96,7 +96,7 @@
 
 .helperText {
   color: #eee;
-  font-size: 0.85rem;
+  font-size: 1.3rem;
   margin-top: 0.2rem;
   font-weight: 500;
 }
@@ -143,7 +143,7 @@
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   margin-top: 1rem;
   width: 100%;
   transition: transform 0.1s, box-shadow 0.1s;
@@ -172,12 +172,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Garante que fique por cima de tudo */
-  backdrop-filter: blur(4px); /* Desfoque bonito no fundo */
+  z-index: 9999; 
+  backdrop-filter: blur(4px); 
   animation: fadeIn 0.3s ease;
 }
 
@@ -197,7 +197,7 @@
   font-size: 2rem;
   color: #286699;
   margin: 1rem 0 0.5rem 0;
-  font-family: "More Sugar", sans-serif; /* Ou sua fonte padrão */
+  font-family: "More Sugar", sans-serif; 
 }
 
 .modalContent p {

@@ -7,10 +7,10 @@
   /* Permite que os itens quebrem linha se a tela for menor */
   flex-wrap: wrap; 
   
-  /* Adiciona um respiro nas laterais e em cima/baixo */
+  
   padding: 4rem 2rem; 
   
-  gap: 13rem; /* Mantido o gap original para telas gigantes */
+  gap: 13rem; 
   background-color: transparent;
 }
 
@@ -21,15 +21,14 @@
   
   /* Flexibilidade do card */
   width: 20%; 
-  min-width: 300px; /* Garante que não fique muito espremido */
-  max-width: 400px; /* Garante que não fique gigante ao quebrar linha */
+  min-width: 300px; 
+  max-width: 400px; 
   
   color: black;
   padding: 2rem;
   position: relative;
   padding-top: 4rem;
   
-  /* Garante espaçamento vertical se houver quebra de linha */
   margin-bottom: 1rem; 
 }
 
@@ -85,18 +84,18 @@
 /* Para Laptops menores (ex: 1366px, 1440px) */
 @media (max-width: 1500px) {
   .containerSaibaMais {
-    gap: 6rem; /* Reduz o gap drasticamente */
+    gap: 6rem; 
   }
 }
 
 /* Para Tablets ou telas menores (ex: 1024px e abaixo) */
 @media (max-width: 1100px) {
   .containerSaibaMais {
-    gap: 3rem; /* Gap ainda menor */
+    gap: 3rem; 
   }
   
   .card {
-    width: 45%; /* Os cards passam a ocupar mais espaço e podem ficar 2 por linha ou 1 por linha */
+    width: 45%; 
     min-width: 280px;
   }
 }

@@ -1,6 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./adminDetalhes.module.css";
+import api from "../../services/api";
 import {
   FaArrowLeft,
   FaTrash,
@@ -11,21 +13,55 @@ import {
   FaIdCard,
 } from "react-icons/fa";
 
-// Dados Mockados
-const ongData = {
-  id: 1,
-  nome: "ONG Vira Lata é Dez",
-  status: "Ativa",
-  petsAtivos: "Cerca de 920 animais",
-  adocaoMedia: "30 a 40 animais por mês",
-  cnpj: "05.551.027/0001-96",
-  email: "ongviralataedez@gmail.com",
-  endereco: "Rua Manuel Velasco, 90, Vila Leopoldina - SP",
-  logoUrl: "https://placehold.co/200x200/2c6893/ffffff?text=VL10",
-};
+interface OngDetalhes {
+  id: number;
+  nome: string;
+  email: string;
+  cnpj: string;
+  endereco: string;
+  totalAnimais: number;
+  // Adicionei campos opcionais caso venham ou não
+  status?: string; 
+  adocaoMedia?: string; 
+  logoUrl?: string;
+}
 
-export default function AdminDetalheOng() {
+export default function AdminOngsDetalhes() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [ong, setOng] = useState<OngDetalhes | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchDetalhes() {
+      try {
+        const response = await api.get(`/admin/ongs/${id}`);
+        setOng(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar ONG", error);
+        navigate("/admin/ongs");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDetalhes();
+  }, [id, navigate]);
+
+  const handleDelete = async () => {
+    if (!ong) return;
+    if (window.confirm(`Tem certeza que deseja excluir a ONG "${ong.nome}" definitivamente?`)) {
+        try {
+            await api.delete(`/admin/usuarios/${ong.id}`);
+            alert("ONG excluída com sucesso.");
+            navigate("/admin/ongs");
+        } catch (error) {
+            alert("Erro ao excluir.");
+        }
+    }
+  };
+
+  if (loading) return <Layout><div style={{padding:40}}>Carregando...</div></Layout>;
+  if (!ong) return <Layout><div style={{padding:40}}>ONG não encontrada.</div></Layout>;
 
   return (
     <Layout>
@@ -41,56 +77,54 @@ export default function AdminDetalheOng() {
           </Link>
         </div>
 
-        
         <div className={styles.cartaoDetalhes}>
           
           <div className={styles.colunaInfoDetalhes}>
             
-            
             <div className={styles.cabecalhoNomeOng}>
               <h2 className={styles.nomeOng}>
-                {ongData.nome}
-                <span className={styles.statusDetalhe}>{ongData.status}</span>
+                {ong.nome}
+                <span className={styles.statusDetalhe}>Ativa</span>
               </h2>
             </div>
 
             <div className={styles.linhaDetalhe}>
               <span className={styles.rotuloDetalhe}>Pets ativos:</span>
-              <span className={styles.valorDetalhe}>{ongData.petsAtivos}</span>
+              <span className={styles.valorDetalhe}>{ong.totalAnimais} animais cadastrados</span>
             </div>
 
             <div className={styles.linhaDetalhe}>
               <span className={styles.rotuloDetalhe}>Adoção Média:</span>
-              <span className={styles.valorDetalhe}>{ongData.adocaoMedia}</span>
+              <span className={styles.valorDetalhe}>Dados insuficientes</span>
             </div>
 
             <div className={styles.linhaDetalhe}>
               <span className={styles.rotuloDetalhe}>
                 <FaIdCard className={styles.iconeTexto} /> CNPJ:
               </span>
-              <span className={styles.valorDetalhe}>{ongData.cnpj}</span>
+              <span className={styles.valorDetalhe}>{ong.cnpj}</span>
             </div>
 
             <div className={styles.linhaDetalhe}>
               <span className={styles.rotuloDetalhe}>
                 <FaEnvelope className={styles.iconeTexto} /> Email:
               </span>
-              <span className={styles.valorDetalhe}>{ongData.email}</span>
+              <span className={styles.valorDetalhe}>{ong.email}</span>
             </div>
 
             <div className={styles.linhaDetalhe}>
               <span className={styles.rotuloDetalhe}>
                 <FaMapMarkerAlt className={styles.iconeTexto} /> Endereço:
               </span>
-              <span className={styles.valorDetalhe}>{ongData.endereco}</span>
+              <span className={styles.valorDetalhe}>{ong.endereco}</span>
             </div>
           </div>
 
-          {/* Logo */}
+          {/* Logo (Placeholder se não tiver) */}
           <div className={styles.containerLogoOng}>
             <img
-              src={ongData.logoUrl}
-              alt={`Logo ${ongData.nome}`}
+              src={ong.logoUrl || "https://placehold.co/200x200/2c6893/ffffff?text=ONG"}
+              alt={`Logo ${ong.nome}`}
               className={styles.imgLogoOng}
             />
           </div>
@@ -102,21 +136,21 @@ export default function AdminDetalheOng() {
         <div className={styles.acoesDetalhes}>
           
           <Link
-            to="/admin/ongs/:id/pets"
+            to={`/admin/ongs/${ong.id}/pets`} // Link corrigido
             className={`${styles.botaoAcaoGrande} ${styles.btnAzul}`}
           >
             <FaPaw /> Gerenciar Pets desta ONG
           </Link>
 
-          
-          <button className={`${styles.botaoAcaoGrande} ${styles.btnAmarelo}`}>
+          {/* Botão Bloquear (Mantido visualmente mas desativado ou com alert) */}
+          <button className={`${styles.botaoAcaoGrande} ${styles.btnAmarelo}`} onClick={() => alert("Funcionalidade de bloqueio em breve.")}>
             <FaBan /> Bloquear ONG Temporariamente
           </button>
 
-         
+          {/* Botão Excluir (Funcional) */}
           <button
             className={`${styles.botaoAcaoGrande} ${styles.btnVermelho}`}
-            onClick={() => alert("Tem certeza que deseja excluir esta ONG?")}
+            onClick={handleDelete}
           >
             <FaTrash /> Excluir ONG Definitivamente
           </button>

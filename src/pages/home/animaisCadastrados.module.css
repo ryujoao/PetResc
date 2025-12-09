@@ -2,16 +2,20 @@
   background: #fff;
   min-height: 70vh;
   display: flex;
-  flex-wrap: wrap; /* Permite que os blocos quebrem linha */
+  flex-wrap: wrap; 
   gap: 2rem;
-  padding: 0 2rem 4rem 2rem;
-  justify-content: space-between; 
+  padding: 4rem 2rem 4rem 2rem;
+
+  justify-content: center; 
   width: 100%;
+  box-sizing: border-box
 }
 
 /* Cada um dos 4 Blocos */
 .containerSection {
-  width: 48%; /* Ocupa quase metade da tela (2 por linha) */
+  flex: 1 1 450px; 
+  max-width: 800px;
+  width: 48%;
   background-color: #F0F9FF;
   display: flex;
   flex-direction: column;
@@ -44,7 +48,7 @@
   gap: 1rem;
   max-height: 400px;
   overflow-y: auto;
-  padding-right: 5px; /* Espaço para scrollbar */
+  padding-right: 5px; 
   font-size: 1.3rem;
 }
 
@@ -64,8 +68,9 @@
   gap: 1rem; 
   background-color: #fff;
   border-radius: 12px;
-  width: 95%;
-  padding: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
   position: relative;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   border: 1px solid #e0e0e0;
@@ -88,6 +93,7 @@
 
 .infoCard {
   flex: 1;
+  min-width: 0;
 }
 
 .cardNome h1 {
@@ -95,6 +101,9 @@
   margin-bottom: 0.2rem;
   color: #286699;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .descricaoCard {
@@ -154,14 +163,20 @@
   cursor: default;
 }
 
-/* Responsividade Mobile */
+@media (max-width: 1200px) {
+  .containerSection {
+    flex: 1 1 100%; 
+    width: 100%; 
+  }
+}
+
 @media (max-width: 900px) {
   .containerPrincipal {
     padding: 1rem;
   }
   
   .containerSection {
-    width: 100%; /* No mobile fica um embaixo do outro */
+    width: 100%; 
     margin-bottom: 1rem;
   }
 }

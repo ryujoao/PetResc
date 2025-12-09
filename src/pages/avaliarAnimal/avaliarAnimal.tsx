@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout";
-import styles from "./AvaliarAnimal.module.css";
+import styles from "./avaliarAnimal.module.css";
 // import api from "../../services/api"; // Comentado para o Mock
 import { useAuth } from "../../auth/AuthContext";
 import Modal from "../../components/modal";

@@ -8,19 +8,17 @@
   align-items: center;
   /* justify-content: center; removido para o topo não ficar descendo */
   min-height: 100vh;
-  width: 100%; /* GARANTE LARGURA TOTAL */
-  
+  width: 100%;
   background: url("/public/banners/banner4.png") no-repeat top center;
   background-size: cover;
-  
-  /* Mantém o hack do menu transparente, mas ajustado */
-  margin-top: -9rem; 
-  padding: 11rem 2rem 4rem 2rem; /* Padding inferior maior */
-  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+
+  margin-top: -9rem;
+  padding: 11rem 2rem 4rem 2rem;
+  box-sizing: border-box;
 }
 
 .tituloDoar {
-  font-size: 3rem; /* Fonte maior para preencher melhor */
+  font-size: 3rem;
   color: #fff;
   margin-bottom: 1rem;
   text-align: center;
@@ -34,7 +32,7 @@
   font-weight: normal;
   margin-bottom: 4rem;
   text-align: center;
-  width: 90%; /* Usa mais espaço horizontal */
+  width: 90%;
   max-width: 1000px;
   line-height: 1.6;
 }
@@ -44,18 +42,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2.5rem; /* Espaço maior entre cards */
+  gap: 2.5rem;
   width: 100%;
-  max-width: 1400px; /* Permite que os cards se espalhem mais */
+  max-width: 1400px;
   margin-top: 1rem;
 }
 
 .card {
   background: #94b9d8;
   border-radius: 12px;
-  width: 240px; /* Cards um pouco mais largos */
+  width: 240px;
   height: 360px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra mais marcada */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
   transition: transform 0.3s ease;
   padding-bottom: 1rem;
@@ -90,7 +88,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* GARANTE O FUNDO CINZA DE PONTA A PONTA */
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -99,7 +97,6 @@
   color: #000;
   margin-bottom: 2.5rem;
   align-self: flex-start;
-  /* Centraliza o título em relação ao conteúdo interno */
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
@@ -112,15 +109,17 @@
   flex-wrap: wrap;
   gap: 2.5rem;
   margin-bottom: 5rem;
-  justify-content: center; /* Centraliza os cards na tela */
+  justify-content: center;
   width: 100%;
-  max-width: 1300px; /* Limite para não ficar esticado demais em telas 4k */
+  max-width: 1300px;
 }
 
 .instituicoes {
   background-color: #fff;
   border-radius: 12px;
-  width: 550px; /* Card mais largo */
+  flex: 1;
+  min-width: 300px;
+  max-width: 550px;
   padding: 2rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   text-align: left;
@@ -179,12 +178,12 @@ progress {
 
 /* --- SEÇÃO SUPERIOR (AZUL) --- */
 .ongTopSection {
-  background-color: #2c6491; 
+  background-color: #2c6491;
   padding: 8rem 2rem 6rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Garante largura total */
+  width: 100%;
 }
 
 /* GRID MOSAICO */
@@ -208,7 +207,7 @@ progress {
   height: 220px;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tallImg {
@@ -227,7 +226,7 @@ progress {
   justify-content: center;
   text-align: center;
   color: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-height: 160px;
 }
 
@@ -250,7 +249,7 @@ progress {
   padding: 3rem 1rem 0 1rem;
   display: flex;
   justify-content: center;
-  width: 100%; /* Garante largura total */
+  width: 100%;
   overflow: hidden;
   min-height: auto;
   align-items: flex-end;
@@ -333,29 +332,100 @@ progress {
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 1200px) {
   /* Ong */
-  .mosaicGrid { grid-template-columns: repeat(2, 1fr); }
-  .centerDogImg { height: 450px; }
-  .bottomSide { flex: 0 0 280px; font-size: 1.2rem; padding-bottom: 150px; }
-  .textLeft { margin-right: -20px; }
-  .textRight { margin-left: -20px; }
-  
+  .mosaicGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .centerDogImg {
+    height: 450px;
+  }
+  .bottomSide {
+    flex: 0 0 280px;
+    font-size: 1.2rem;
+    padding-bottom: 150px;
+  }
+  .textLeft {
+    margin-right: -20px;
+  }
+  .textRight {
+    margin-left: -20px;
+  }
+
   /* User */
-  .pagDoar { padding-top: 10rem; }
+  .pagDoar {
+    padding-top: 10rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .bottomContent {
+    gap: 0;
+  }
+
+  .textLeft {
+    margin-right: -50px; 
+  }
+
+  .textRight {
+    margin-left: -50px; 
+  }
+
+  .centerDogImg {
+    height: 400px; 
+  }
+
+  .bottomSide {
+    font-size: 1.4rem; 
+  }
 }
 
 @media (max-width: 900px) {
   /* User */
-  .pagDoar { padding: 8rem 1rem 2rem 1rem; }
-  .cardContainer { flex-direction: column; align-items: center; }
-  .instituicoes { width: 100%; }
-  
+  .pagDoar {
+    padding: 8rem 1rem 2rem 1rem;
+  }
+  .cardContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .instituicoes {
+    width: 100%;
+  }
+
   /* Ong */
-  .mosaicGrid { grid-template-columns: 1fr; }
-  .ongBottomSection { padding: 3rem 1rem 2rem 1rem; }
-  .bottomContent { flex-direction: column; align-items: center; gap: 3rem; }
-  .bottomSide { order: unset; flex: auto; width: 100%; max-width: 450px; padding-bottom: 0; margin: 0; font-size: 1.2rem; }
-  .textLeft, .textRight { margin: 0; }
-  .centerDogContainer { order: -1; width: 100%; }
-  .centerDogImg { height: auto; width: 80%; max-width: 380px; }
-  .ongTopSection { padding-top: 9rem; }
+  .mosaicGrid {
+    grid-template-columns: 1fr;
+  }
+  .ongBottomSection {
+    padding: 3rem 1rem 2rem 1rem;
+  }
+  .bottomContent {
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+  .bottomSide {
+    order: unset;
+    flex: auto;
+    width: 100%;
+    max-width: 450px;
+    padding-bottom: 0;
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  .textLeft,
+  .textRight {
+    margin: 0;
+  }
+  .centerDogContainer {
+    order: -1;
+    width: 100%;
+  }
+  .centerDogImg {
+    height: auto;
+    width: 80%;
+    max-width: 380px;
+  }
+  .ongTopSection {
+    padding-top: 9rem;
+  }
 }

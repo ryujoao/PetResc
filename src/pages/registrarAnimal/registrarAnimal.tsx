@@ -282,13 +282,16 @@ const RegistrarAnimalUsuario = () => {
             </select>
           </div>
 
-          <div className={styles.campoForm}>
+           <div className={styles.campoForm}>
             <label className={styles.label}>Idade</label>
-            <select className={styles.barraInfos} required value={idade} onChange={(e) => setIdade(e.target.value)}>
-              <option value="" disabled>Selecione</option>
-              {OPCOES_IDADE.map(opt => <option key={opt} value={opt}>{formatOption(opt)}</option>)}
-            </select>
-          </div>
+            <input 
+             className={styles.barraInfos} 
+             type="text" 
+             placeholder="Ex: 2 anos, 5 meses, Adulto..." 
+             value={idade} 
+             onChange={(e) => setIdade(e.target.value)}
+             required/>
+            </div>
 
           <button type="submit" className={styles.botao} disabled={loadingEnvio}>
             {loadingEnvio ? "Enviando..." : "Enviar Formulário"}
@@ -642,7 +645,7 @@ const RegistrarAnimalOng = () => {
                 <option key={opt.valor} value={opt.valor}>{opt.label}</option>
               ))}
             </select>
-            <small style={{display:'block', marginTop:'5px', color:'#666'}}>
+            <small style={{display:'block', marginTop:'5px', color:'#666', fontSize:'1.2rem', fontWeight:'700'}}>
                 * Selecione "Precisa de Lar Temporário" para que ele apareça na coluna de Lar Temporário no painel.
             </small>
           </div>
@@ -686,13 +689,10 @@ const RegistrarAnimalOng = () => {
             <input className={styles.barraInfos} type="text" value={raca} onChange={(e) => setRaca(e.target.value)} />
           </div>
 
-          <div className={styles.campoForm}>
-            <label className={styles.label}>Idade Aproximada</label>
-            <select className={styles.barraInfos} value={idadeAprox} onChange={(e) => setIdadeAprox(e.target.value)}>
-              <option value="" disabled>Selecione</option>
-              {OPCOES_IDADE.map(opt => <option key={opt} value={opt}>{formatOption(opt)}</option>)}
-            </select>
-          </div>
+             <div className={styles.campoForm}>
+                <label className={styles.label}>Idade Aproximada</label>
+                <input  type="text"  className={styles.barraInfos}  value={idadeAprox}  onChange={(e) => setIdadeAprox(e.target.value)} placeholder="Ex: 2 anos, 5 meses, Adulto..." />
+             </div>
 
           <div className={styles.campoForm}>
             <label className={styles.label}>Data Resgate</label>

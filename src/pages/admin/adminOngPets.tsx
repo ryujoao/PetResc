@@ -1,45 +1,41 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../components/layout";
 import styles from "./adminListas.module.css";
+import api from "../../services/api";
 import { FaArrowLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useState } from "react";
 
-// Dados Mockados
-const petsOngData = [
-  {
-    id: 101,
-    nome: "Bob (Cachorro)",
-    status: "Disponível",
-    progresso: 100,
-    dataCadastro: "10/10/2025",
-  },
-  {
-    id: 102,
-    nome: "Mel (Gato)",
-    status: "Em tratamento",
-    progresso: 40,
-    dataCadastro: "15/10/2025",
-  },
-  {
-    id: 103,
-    nome: "Thor (Cachorro)",
-    status: "Pendente",
-    progresso: 10,
-    dataCadastro: "20/10/2025",
-  },
-  {
-    id: 104,
-    nome: "Lola (Gato)",
-    status: "Adotado",
-    progresso: 100,
-    dataCadastro: "05/09/2025",
-  },
-];
+interface PetOng {
+  id: number;
+  nome: string;
+  especie: string;
+  status: string; // Status do banco
+  statusReal: string; // Status calculado
+  createdAt: string;
+}
 
 export default function AdminGerenciarPetsOng() {
   const { id } = useParams();
+  const [pets, setPets] = useState<PetOng[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Estados visuais dos filtros
   const [statusOpen, setStatusOpen] = useState(true);
   const [especieOpen, setEspecieOpen] = useState(false);
+
+  useEffect(() => {
+    async function fetchPets() {
+      try {
+        const response = await api.get(`/admin/ongs/${id}/pets`);
+        setPets(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar pets da ONG", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPets();
+  }, [id]);
 
   return (
     <Layout>
@@ -47,7 +43,7 @@ export default function AdminGerenciarPetsOng() {
         <div className={styles.cabecalhoGestao}>
           <div>
             <h1 className={styles.tituloPagina}>
-              Pets da ONG: Vira Lata é Dez
+              Pets da ONG (ID #{id})
             </h1>
             <h2 className={styles.subtituloPagina}>
               Gerenciamento exclusivo desta instituição
@@ -60,37 +56,51 @@ export default function AdminGerenciarPetsOng() {
 
         <div className={styles.conteudoGestao}>
           <div className={styles.listaCartoes}>
-            {petsOngData.map((pet) => (
-              <div key={pet.id} className={styles.cartaoItemGestao}>
-                <div className={styles.linhaCabecalhoCartao}>
-                  <span className={styles.nomeItem}>{pet.nome}</span>
-                  <span className={styles.statusItem}>
-                    Status: {pet.status}
-                  </span>
-                </div>
+            {loading ? <p>Carregando...</p> : pets.length === 0 ? (
+                <p style={{padding: 20}}>Nenhum pet encontrado.</p>
+            ) : (
+                pets.map((pet) => {
+                    // Adaptando visualmente os status do banco para o design
+                    const statusText = pet.statusReal === 'AGUARDANDO' ? 'Pendente' : 
+                                       pet.statusReal === 'DISPONIVEL' ? 'Disponível' : 
+                                       pet.statusReal === 'ADOTADO' ? 'Adotado' : pet.statusReal;
 
-                <div className={styles.donoPet}>
-                  Responsável: <strong>ONG Vira Lata é Dez</strong>
-                  <br />
-                  <span className={styles.dataCadastro}>
-                    Cadastrado em: {pet.dataCadastro}
-                  </span>
-                </div>
+                    return (
+                      <div key={pet.id} className={styles.cartaoItemGestao}>
+                        <div className={styles.linhaCabecalhoCartao}>
+                          <span className={styles.nomeItem}>
+                              {pet.nome} <span style={{fontSize:'0.8rem', fontWeight:'normal'}}>({pet.especie})</span>
+                          </span>
+                          <span className={styles.statusItem}>
+                            Status: {statusText}
+                          </span>
+                        </div>
 
-                <div className={styles.linhaProgresso}>
-                  <span className={styles.rotuloProgresso}>Progresso:</span>
-                  <div className={styles.fundoBarraProgresso}>
-                    <div
-                      className={styles.preenchimentoBarra}
-                      style={{ width: `${pet.progresso}%` }}
-                    ></div>
-                  </div>
-                  <span className={styles.valorProgresso}>
-                    {pet.progresso}%
-                  </span>
-                </div>
-              </div>
-            ))}
+                        <div className={styles.donoPet}>
+                          Responsável: <strong>ONG Parceira</strong>
+                          <br />
+                          <span className={styles.dataCadastro}>
+                            Cadastrado em: {new Date(pet.createdAt).toLocaleDateString('pt-BR')}
+                          </span>
+                        </div>
+
+                        {/* MANTIDO O DESIGN DA BARRA DE PROGRESSO (Mesmo sem dado real) */}
+                        <div className={styles.linhaProgresso}>
+                          <span className={styles.rotuloProgresso}>Progresso:</span>
+                          <div className={styles.fundoBarraProgresso}>
+                            <div
+                              className={styles.preenchimentoBarra}
+                              style={{ width: `100%`, backgroundColor: statusText === 'Adotado' ? '#27ae60' : '#2f80ed' }}
+                            ></div>
+                          </div>
+                          <span className={styles.valorProgresso}>
+                            100%
+                          </span>
+                        </div>
+                      </div>
+                    );
+                })
+            )}
           </div>
 
           <div className={styles.barraLateralFiltros}>
@@ -140,7 +150,7 @@ export default function AdminGerenciarPetsOng() {
               )}
             </div>
 
-            {/* Outros */}
+            {/* Outros (Mantidos para visual) */}
             {["Porte", "Idade", "Periodo de cadastro"].map((f) => (
               <div key={f} className={styles.grupoFiltro}>
                 <div className={styles.rotuloFiltro}>

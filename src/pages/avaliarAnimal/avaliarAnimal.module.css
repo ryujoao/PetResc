@@ -75,7 +75,7 @@
     font-size: 0.9rem;
     cursor: pointer;
     width: fit-content;
-    margin-bottom: auto; /* Empurra o código para o final */
+    margin-bottom: auto; 
 }
 
 .codigo {
@@ -93,7 +93,7 @@
 
 .divider {
     height: 2px;
-    background-color: #e0e0e0; /* Linha cinza separadora */
+    background-color: #e0e0e0; 
     margin-bottom: 30px;
     width: 100%;
 }
@@ -135,12 +135,12 @@
 /* Tags (Fundo Azul Claro) */
 .tagsContainer {
     display: flex;
-    flex-direction: column; /* Tags uma embaixo da outra como na imagem */
+    flex-direction: column; 
     gap: 10px;
 }
 
 .tag {
-    background-color: #eff8fc; /* Azul bem clarinho */
+    background-color: #eff8fc; 
     color: #000;
     padding: 10px 15px;
     border-radius: 6px;
@@ -177,12 +177,12 @@
 }
 
 .btnAceitar {
-    background-color: #1f5077; /* Azul Escuro */
+    background-color: #1f5077; 
     color: white;
 }
 
 .btnNegar {
-    background-color: #334e68; /* Azul Acinzentado / Escuro */
+    background-color: #334e68; 
     color: white;
 }
 
@@ -198,12 +198,12 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+    background-color: rgba(0, 0, 0, 0.6); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Garante que fique acima de tudo */
-    backdrop-filter: blur(2px); /* Efeito de desfoque no fundo */
+    z-index: 1000; 
+    backdrop-filter: blur(2px); 
 }
 
 .modalContent {
@@ -254,7 +254,7 @@
 .btnConfirmDanger {
     padding: 0.6rem 1.2rem;
     border: none;
-    background-color: #dc3545; /* Vermelho alerta */
+    background-color: #dc3545; 
     color: white;
     border-radius: 6px;
     cursor: pointer;
@@ -280,7 +280,7 @@
     }
     
     .detailsGrid {
-        grid-template-columns: 1fr 1fr; /* 2 colunas em tablets */
+        grid-template-columns: 1fr 1fr;
     }
     
     .imageWrapper {
@@ -302,6 +302,6 @@
 
 @media (max-width: 600px) {
     .detailsGrid {
-        grid-template-columns: 1fr; /* 1 coluna em celular */
+        grid-template-columns: 1fr; 
     }
 }

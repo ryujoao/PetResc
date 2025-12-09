@@ -4,7 +4,7 @@
   background: #fff;
   color: #0f4979;
   box-sizing: border-box;
-  display: flex; 
+  display: flex;
   flex-direction: column;
 }
 
@@ -14,7 +14,7 @@
 
 @media (max-width: 600px) {
   .barraProgresso {
-    margin-top: 6rem; 
+    margin-top: 6rem;
   }
 }
 
@@ -24,20 +24,22 @@
   margin: 0 auto;
   padding: 0 1rem;
 }
+
 .progressoLinha {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 26px;
+  left: 5%; 
+  right: 5%;
+  top: 30px; 
   height: 6px;
   background: #e6eef6;
   border-radius: 6px;
   z-index: 1;
 }
+
 .progressoPreenchido {
   position: absolute;
-  left: 0;
-  top: 26px;
+  left: 5%; 
+  top: 30px;
   height: 6px;
   background: linear-gradient(90deg, #2b6b99, #4b9ad1);
   border-radius: 6px;
@@ -51,7 +53,6 @@
   justify-content: space-between;
   position: relative;
   z-index: 3;
-  gap: 8px;
   overflow-x: auto;
   padding-bottom: 8px;
   padding-top: 5px;
@@ -69,9 +70,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 140px;
+  width: 100%;
+  min-width: 60px;
   color: #9fb6cf;
   transition: color 200ms;
+  position: relative;
 }
 .iconWrap {
   background: #f3f8fc;
@@ -84,10 +87,12 @@
   color: #9fb6cf;
   transition: all 200ms;
   margin-bottom: 8px;
+  box-sizing: content-box;
 }
 .stepTitle {
   font-size: 1.1rem;
   text-align: center;
+  word-wrap: break-word;
 }
 
 .active {
@@ -108,13 +113,12 @@
 
 /* conteudo */
 .conteudo {
-  width: 100%; 
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
   box-sizing: border-box;
   min-height: 600px;
-  
 }
 
 .titulo {
@@ -129,7 +133,6 @@
   color: #000;
   margin-bottom: 1.25rem;
   font-size: clamp(1.05rem, 2.4vw, 1.6rem);
-  
 }
 
 .form {
@@ -139,8 +142,7 @@
   flex-direction: column;
   gap: 1rem;
   min-height: 300px;
-  flex-grow: 1; 
-  
+  flex-grow: 1;
 }
 
 .stepSection {
@@ -160,9 +162,10 @@
   display: flex;
   gap: 2rem;
   width: 100%;
+  flex-wrap: wrap;
 }
 .twoColumns > * {
-  flex: 1 
+  flex: 1;
 }
 
 .label {
@@ -189,7 +192,7 @@
 .input:hover {
   transform: translateY(-3px); /* O pulinho */
   /* Sombra suave azulada para combinar com o tema */
-  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1); 
+  box-shadow: 0 4px 8px rgba(40, 102, 153, 0.1);
 }
 
 .inputFinal {
@@ -249,7 +252,7 @@
   font-size: 1.6rem; /* MESMO TAMANHO do .termoText */
   width: 100%;
   display: block;
-  font-weight: 500; 
+  font-weight: 500;
 }
 
 .termoStrong {
@@ -270,7 +273,7 @@
 /* Checkbox corrigido */
 .checkboxCustomizado {
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   font-size: 1.3rem;
@@ -325,13 +328,13 @@
   flex-wrap: wrap;
 }
 
-
 .botoesVoltar,
 .botoesAvancar {
   width: auto;
   min-width: 160px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .botoesVoltar:hover {
   background-color: #f9f9f9;
@@ -451,8 +454,6 @@
   margin-bottom: 2rem;
   width: 100%;
 }
-
-
 
 .finalTitle {
   font-size: clamp(2rem, 4vw, 3rem);
@@ -587,10 +588,19 @@
   text-align: right;
   word-break: break-word; /* Quebra palavras longas (ex: email) */
   flex-grow: 1; /* Ocupa o espaço restante */
-  
 }
 
-/* Ajuste para mobile: label em cima, valor embaixo */
+@media (max-width: 768px) {
+  .twoColumns {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .inputFinal {
+    width: 100%;
+  }
+}
+
 @media (max-width: 560px) {
   .reviewItem {
     flex-direction: column;

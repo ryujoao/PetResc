@@ -66,9 +66,22 @@ export default function Cadastro() {
   };
 
   const proximaEtapa = (e: React.FormEvent) => {
-    e.preventDefault();
-    setEtapa(etapa + 1);
-  };
+  e.preventDefault();
+
+  if (etapa === 3) {
+    if (dados.senha.length < 6) {
+      setModalInfo({
+        title: "Senha muito curta",
+        msg: "A senha deve ter pelo menos 6 caracteres.",
+        type: "error"
+      });
+      setModalOpen(true);
+      return;
+    }
+  }
+
+  setEtapa(etapa + 1);
+ };
 
   const etapaAnterior = () => {
     setEtapa(etapa - 1);
@@ -82,6 +95,12 @@ export default function Cadastro() {
       setModalOpen(true);
       return;
     }
+
+    if (dados.senha.length < 6) {
+    setModalInfo({ title: "Senha muito curta", msg: "A senha deve ter pelo menos 6 caracteres.", type: "error" });
+    setModalOpen(true);
+    return;
+  }
 
     if (dados.senha !== dados.confirmarSenha) {
       setModalInfo({ title: "Erro", msg: "As senhas não coincidem!", type: "error" });
@@ -139,15 +158,17 @@ export default function Cadastro() {
     }
 
     try {
+      // ✅ CORRETO: Usa a URL dinâmica e envia os dados
       await api.post(url, payload);
       
-      // SUCESSO! Abre o modal
       setModalInfo({ title: "Sucesso!", msg: "Cadastro realizado com sucesso! Faça login para continuar.", type: "success" });
       setModalOpen(true);
 
-    } catch (error) {
+    } catch (error: any) { // Adicionei tipagem any ou trate o erro
       console.error(error);
-      setModalInfo({ title: "Erro", msg: "Erro ao cadastrar. Verifique os dados.", type: "error" });
+      // Tenta pegar a mensagem de erro do backend, se houver
+      const msgErro = error.response?.data?.error || "Erro ao cadastrar. Verifique os dados.";
+      setModalInfo({ title: "Erro", msg: msgErro, type: "error" });
       setModalOpen(true);
     } finally {
       setIsLoading(false);
