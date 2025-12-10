@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 declare global {
   interface Window {
@@ -10,54 +10,84 @@ declare global {
 
 export default function VLibras() {
   useEffect(() => {
-    const scriptId = 'vlibras-script';
-    
-    // Remove script anterior se existir
-    const oldScript = document.getElementById(scriptId);
-    if (oldScript) oldScript.remove();
-    
-    const script = document.createElement('script');
+    const rootId = "vlibras-root";
+    let root = document.getElementById(rootId);
+    if (!root) {
+      root = document.createElement("div");
+      root.id = rootId;
+      root.setAttribute("vw", "true");
+      root.className = "enabled vlibras-root";
+      document.body.appendChild(root);
+    } else {
+      root.setAttribute("vw", "true");
+      root.classList.add("enabled", "vlibras-root");
+    }
+
+    // botão/fallback visível para debug (será removido quando o widget iniciar)
+    const fbId = "vlibras-fallback";
+    let fallback = document.getElementById(fbId) as HTMLButtonElement | null;
+    if (!fallback) {
+      fallback = document.createElement("button");
+      fallback.id = fbId;
+      fallback.textContent = "VLibras (teste)";
+      Object.assign(fallback.style, {
+        position: "fixed",
+        right: "16px",
+        bottom: "16px",
+        zIndex: "2147483647",
+        padding: "10px 14px",
+        background: "#2b6b99",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+      } as CSSStyleDeclaration);
+      fallback.title = "Fallback VLibras — será removido quando o widget iniciar";
+      document.body.appendChild(fallback);
+    }
+
+    const scriptId = "vlibras-script";
+    const existing = document.getElementById(scriptId);
+    if (existing) existing.remove();
+
+    const script = document.createElement("script");
     script.id = scriptId;
-    script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+    script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
     script.async = true;
-    
-    script.onload = () => {
-      console.log('VLibras script carregado');
-      
-      // Aguarda a inicialização do objeto global
-      const tryInitialize = () => {
-        if (window.VLibras?.Widget) {
-          console.log('Inicializando VLibras Widget...');
-          try {
-            new window.VLibras.Widget('https://vlibras.gov.br/app');
-            console.log('VLibras Widget criado com sucesso!');
-          } catch (error) {
-            console.error('Erro ao criar VLibras Widget:', error);
-          }
-        } else {
-          console.warn('Aguardando VLibras.Widget...');
-          setTimeout(tryInitialize, 500);
+
+    let attempts = 0;
+    const tryInit = () => {
+      attempts += 1;
+      if ((window as any).VLibras?.Widget) {
+        try {
+          new (window as any).VLibras.Widget("https://vlibras.gov.br/app");
+          // removemos o fallback se o widget subiu
+          const fb = document.getElementById(fbId);
+          if (fb && fb.parentElement) fb.parentElement.removeChild(fb);
+          console.info("VLibras inicializado");
+        } catch (err) {
+          console.error("Erro ao inicializar VLibras:", err);
         }
-      };
-      
-      tryInitialize();
+      } else if (attempts < 20) {
+        setTimeout(tryInit, 400);
+      } else {
+        console.warn("VLibras não inicializou após várias tentativas");
+      }
     };
-    
-    script.onerror = () => {
-      console.error('Erro ao carregar o script VLibras.');
-    };
-    
+
+    script.onload = () => tryInit();
+    script.onerror = () => console.error("Erro ao carregar o script VLibras.");
+
     document.body.appendChild(script);
-    
+
     return () => {
-      const script = document.getElementById(scriptId);
-      if (script) script.remove();
+      const s = document.getElementById(scriptId);
+      if (s) s.remove();
+      // não removemos elementos do widget injetados pelo plugin aqui
+      const fb = document.getElementById(fbId);
+      if (fb && fb.parentElement) fb.parentElement.removeChild(fb);
     };
   }, []);
 
-  return (
-    <div id="vlibras" data-vw="true">
-      <div className="vlibras"></div>
-    </div>
-  );
+  return null;
 }

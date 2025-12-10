@@ -2,15 +2,24 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./cadastro.module.css";
 import api from "../../services/api";
-import Modal from "../../components/modal"; // <--- IMPORTAR MODAL
+import Modal from "../../components/modal";
 
 export default function Cadastro() {
   const navigate = useNavigate();
 
+  // comprimentos exatos exigidos (em dígitos)
+  const CPF_DIGITS = 11;
+  const CNPJ_DIGITS = 14;
+  const PHONE_DIGITS = 11;
+
+  // comprimentos com máscara (para maxLength nos inputs)
+  const CPF_MASKED_LENGTH = 14; // 000.000.000-00
+  const CNPJ_MASKED_LENGTH = 18; // 00.000.000/0000-00
+  const PHONE_MASKED_LENGTH = 15; // (00) 00000-0000
+
   const [etapa, setEtapa] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Estados do Modal
   const [modalOpen, setModalOpen] = useState(false);
   const [modalInfo, setModalInfo] = useState({ title: "", msg: "", type: "success" as "success" | "error" });
 
@@ -34,12 +43,65 @@ export default function Cadastro() {
     estado: ""
   });
 
+  // utilitário para manter apenas dígitos
+  const onlyDigits = (v: string) => v.replace(/\D/g, "");
+
+  // formatadores
+  const formatCPF = (digits: string) => {
+    const d = digits.slice(0, CPF_DIGITS);
+    if (d.length <= 3) return d;
+    if (d.length <= 6) return `${d.slice(0,3)}.${d.slice(3)}`;
+    if (d.length <= 9) return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6)}`;
+    return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9,11)}`;
+  };
+
+  const formatCNPJ = (digits: string) => {
+    const d = digits.slice(0, CNPJ_DIGITS);
+    if (d.length <= 2) return d;
+    if (d.length <= 5) return `${d.slice(0,2)}.${d.slice(2)}`;
+    if (d.length <= 8) return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5)}`;
+    if (d.length <= 12) return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5,8)}/${d.slice(8)}`;
+    return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5,8)}/${d.slice(8,12)}-${d.slice(12,14)}`;
+  };
+
+  const formatPhone = (digits: string) => {
+    const d = digits.slice(0, PHONE_DIGITS);
+    if (d.length <= 2) return `(${d}`;
+    if (d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+    if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+    return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7,11)}`; // para 11 dígitos
+  };
+
+  // manipula campos que devem aceitar apenas dígitos e aplicar máscara
+  const handleDigitsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, maxDigits?: number) => {
+    const name = e.target.name;
+    const rawDigits = onlyDigits(e.target.value);
+    const digits = maxDigits ? rawDigits.slice(0, maxDigits) : rawDigits;
+
+    let formatted = digits;
+    if (name === "cpf") formatted = formatCPF(digits);
+    else if (name === "cnpj") formatted = formatCNPJ(digits);
+    else if (name === "telefone") formatted = formatPhone(digits);
+    else if (name === "cep") formatted = digits; // cep sem máscara aqui (8 dígitos)
+
+    setDados(prev => ({ ...prev, [name]: formatted }));
+  };
+
+  // manipulador geral delegando para campos numéricos quando aplicável
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setDados({ ...dados, [e.target.name]: e.target.value });
+    const name = e.target.name;
+    if (name === "cpf") return handleDigitsChange(e, CPF_DIGITS);
+    if (name === "cnpj") return handleDigitsChange(e, CNPJ_DIGITS);
+    if (name === "telefone") return handleDigitsChange(e, PHONE_DIGITS);
+    if (name === "cep") {
+      // cep pode conter apenas dígitos até 8
+      return handleDigitsChange(e, 8);
+    }
+    setDados({ ...dados, [name]: e.target.value });
   };
 
   const buscarCep = async (e: React.FocusEvent<HTMLInputElement>) => {
-    const cep = e.target.value.replace(/\D/g, ''); 
+    const cep = onlyDigits(e.target.value);
     if (cep.length !== 8) return;
 
     try {
@@ -66,22 +128,41 @@ export default function Cadastro() {
   };
 
   const proximaEtapa = (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (etapa === 3) {
-    if (dados.senha.length < 6) {
-      setModalInfo({
-        title: "Senha muito curta",
-        msg: "A senha deve ter pelo menos 6 caracteres.",
-        type: "error"
-      });
-      setModalOpen(true);
-      return;
+    // validações por etapa para garantir tamanho exato (em dígitos)
+    if (etapa === 2) {
+      if (onlyDigits(dados.cpf).length !== CPF_DIGITS) {
+        setModalInfo({ title: "CPF inválido", msg: `CPF deve ter exatamente ${CPF_DIGITS} dígitos.`, type: "error" });
+        setModalOpen(true);
+        return;
+      }
+      if (dados.tipo === "ONG" && onlyDigits(dados.cnpj).length !== CNPJ_DIGITS) {
+        setModalInfo({ title: "CNPJ inválido", msg: `CNPJ deve ter exatamente ${CNPJ_DIGITS} dígitos.`, type: "error" });
+        setModalOpen(true);
+        return;
+      }
     }
-  }
 
-  setEtapa(etapa + 1);
- };
+    if (etapa === 3) {
+      if (onlyDigits(dados.telefone).length !== PHONE_DIGITS) {
+        setModalInfo({ title: "Telefone inválido", msg: `Telefone deve ter exatamente ${PHONE_DIGITS} dígitos.`, type: "error" });
+        setModalOpen(true);
+        return;
+      }
+      if (dados.senha.length < 6) {
+        setModalInfo({
+          title: "Senha muito curta",
+          msg: "A senha deve ter pelo menos 6 caracteres.",
+          type: "error"
+        });
+        setModalOpen(true);
+        return;
+      }
+    }
+
+    setEtapa(etapa + 1);
+  };
 
   const etapaAnterior = () => {
     setEtapa(etapa - 1);
@@ -96,11 +177,29 @@ export default function Cadastro() {
       return;
     }
 
+    if (onlyDigits(dados.cpf).length !== CPF_DIGITS) {
+      setModalInfo({ title: "CPF inválido", msg: `CPF deve ter exatamente ${CPF_DIGITS} dígitos.`, type: "error" });
+      setModalOpen(true);
+      return;
+    }
+
+    if (dados.tipo === "ONG" && onlyDigits(dados.cnpj).length !== CNPJ_DIGITS) {
+      setModalInfo({ title: "CNPJ inválido", msg: `CNPJ deve ter exatamente ${CNPJ_DIGITS} dígitos.`, type: "error" });
+      setModalOpen(true);
+      return;
+    }
+
+    if (onlyDigits(dados.telefone).length !== PHONE_DIGITS) {
+      setModalInfo({ title: "Telefone inválido", msg: `Telefone deve ter exatamente ${PHONE_DIGITS} dígitos.`, type: "error" });
+      setModalOpen(true);
+      return;
+    }
+
     if (dados.senha.length < 6) {
-    setModalInfo({ title: "Senha muito curta", msg: "A senha deve ter pelo menos 6 caracteres.", type: "error" });
-    setModalOpen(true);
-    return;
-  }
+      setModalInfo({ title: "Senha muito curta", msg: "A senha deve ter pelo menos 6 caracteres.", type: "error" });
+      setModalOpen(true);
+      return;
+    }
 
     if (dados.senha !== dados.confirmarSenha) {
       setModalInfo({ title: "Erro", msg: "As senhas não coincidem!", type: "error" });
@@ -113,16 +212,21 @@ export default function Cadastro() {
     let url = "";
     let payload: any = {};
 
+    // Ao enviar, enviar apenas dígitos para cpf/cnpj/telefone (backend normalmente espera isso)
+    const cpfDigits = onlyDigits(dados.cpf);
+    const cnpjDigits = onlyDigits(dados.cnpj);
+    const phoneDigits = onlyDigits(dados.telefone);
+
     if (dados.tipo === "ONG") {
       url = "/auth/register-ong";
       payload = {
         name: dados.nome,
-        cpf: dados.cpf,
+        cpf: cpfDigits,
         nomeOng: dados.nomeOng,
-        cnpj: dados.cnpj,
+        cnpj: cnpjDigits,
         descricao: dados.descricao,
         email: dados.email,
-        telefone: dados.telefone,
+        telefone: phoneDigits,
         password: dados.senha,
         cep: dados.cep,
         rua: dados.rua,
@@ -136,9 +240,9 @@ export default function Cadastro() {
       url = "/auth/register";
       payload = {
        nome: dados.nome,
-       cpf: dados.cpf,
+       cpf: cpfDigits,
        email: dados.email,
-       telefone: dados.telefone,
+       telefone: phoneDigits,
        password: dados.senha,
        cep: dados.cep,
        rua: dados.rua,
@@ -158,15 +262,13 @@ export default function Cadastro() {
     }
 
     try {
-      // CORRETO: Usa a URL dinâmica e envia os dados
       await api.post(url, payload);
-      
+
       setModalInfo({ title: "Sucesso!", msg: "Cadastro realizado com sucesso! Faça login para continuar.", type: "success" });
       setModalOpen(true);
 
-    } catch (error: any) { // Adicionei tipagem any ou trate o erro
+    } catch (error: any) {
       console.error(error);
-      // Tenta pegar a mensagem de erro do backend, se houver
       const msgErro = error.response?.data?.error || "Erro ao cadastrar. Verifique os dados.";
       setModalInfo({ title: "Erro", msg: msgErro, type: "error" });
       setModalOpen(true);
@@ -177,7 +279,6 @@ export default function Cadastro() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    // Se for sucesso, redireciona para login
     if (modalInfo.type === "success") {
         navigate("/login");
     }
@@ -192,12 +293,12 @@ export default function Cadastro() {
   return (
     <div className={styles.pagCadastro}>
       {/* MODAL COMPONENT */}
-      <Modal 
-        isOpen={modalOpen} 
-        title={modalInfo.title} 
-        message={modalInfo.msg} 
+      <Modal
+        isOpen={modalOpen}
+        title={modalInfo.title}
+        message={modalInfo.msg}
         type={modalInfo.type}
-        onClose={handleCloseModal} 
+        onClose={handleCloseModal}
       />
 
       <div className={styles.containerForms}>
@@ -243,18 +344,45 @@ export default function Cadastro() {
                 <label className={styles.grupoInput}>Nome Completo</label>
                 <input className={styles.inputLogin} name="nome" value={dados.nome} onChange={handleChange} placeholder="Digite seu nome completo" required />
                 <label className={styles.grupoInput}>CPF</label>
-                <input className={styles.inputLogin} name="cpf" value={dados.cpf} onChange={handleChange} placeholder="000.000.000-00" required />
+                <input
+                  className={styles.inputLogin}
+                  name="cpf"
+                  value={dados.cpf}
+                  onChange={handleChange}
+                  placeholder="000.000.000-00"
+                  required
+                  maxLength={CPF_MASKED_LENGTH}
+                  inputMode="numeric"
+                />
               </>
             ) : (
               <>
                 <label className={styles.grupoInput}>Nome do Responsável</label>
                 <input className={styles.inputLogin} name="nome" value={dados.nome} onChange={handleChange} placeholder="Digite o nome do responsável" required />
                 <label className={styles.grupoInput}>CPF do Responsável</label>
-                <input className={styles.inputLogin} name="cpf" value={dados.cpf} onChange={handleChange} placeholder="000.000.000-00" required />
+                <input
+                  className={styles.inputLogin}
+                  name="cpf"
+                  value={dados.cpf}
+                  onChange={handleChange}
+                  placeholder="000.000.000-00"
+                  required
+                  maxLength={CPF_MASKED_LENGTH}
+                  inputMode="numeric"
+                />
                 <label className={styles.grupoInput}>Nome da ONG</label>
                 <input className={styles.inputLogin} name="nomeOng" value={dados.nomeOng} onChange={handleChange} placeholder="Digite o nome da ONG" required />
                 <label className={styles.grupoInput}>CNPJ</label>
-                <input className={styles.inputLogin} name="cnpj" value={dados.cnpj} onChange={handleChange} placeholder="00.000.000/0001-00" required />
+                <input
+                  className={styles.inputLogin}
+                  name="cnpj"
+                  value={dados.cnpj}
+                  onChange={handleChange}
+                  placeholder="00.000.000/0000-00"
+                  required
+                  maxLength={CNPJ_MASKED_LENGTH}
+                  inputMode="numeric"
+                />
                 <label className={styles.grupoInput}>Descrição</label>
                 <textarea className={styles.inputLogin} name="descricao" value={dados.descricao} onChange={handleChange} placeholder="Fale um pouco sobre a missão da ONG..." />
               </>
@@ -273,7 +401,16 @@ export default function Cadastro() {
             <h1 className={styles.titulo}>Segurança</h1>
             <p className={styles.subTitulo}>Defina sua senha de acesso</p>
             <label className={styles.grupoInput}>Telefone</label>
-            <input className={styles.inputLogin} name="telefone" value={dados.telefone} onChange={handleChange} placeholder="(11) 99999-9999" required />
+            <input
+              className={styles.inputLogin}
+              name="telefone"
+              value={dados.telefone}
+              onChange={handleChange}
+              placeholder="(11) 99999-9999"
+              required
+              maxLength={PHONE_MASKED_LENGTH}
+              inputMode="numeric"
+            />
             <label className={styles.grupoInput}>Senha</label>
             <input className={styles.inputLogin} type="password" name="senha" value={dados.senha} onChange={handleChange} placeholder="Digite sua senha" required />
             <label className={styles.grupoInput}>Confirmar Senha</label>
@@ -297,8 +434,10 @@ export default function Cadastro() {
               value={dados.cep}
               onChange={handleChange}
               onBlur={buscarCep}
-              placeholder="00000-000"
+              placeholder="00000000"
               required
+              maxLength={8}
+              inputMode="numeric"
             />
 
             <label className={styles.grupoInput}>Rua</label>

@@ -1,14 +1,14 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 #root {
-  width: 100%; 
-  min-height: 100vh; 
+  width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
-  font-weight: 600; 
+  font-weight: 600;
 }
 
 ul, ol {
@@ -29,9 +29,29 @@ select, input, textarea {
   font-weight: 500;
 }
 
+/* Estilos do VLibras/override para garantir visibilidade */
+.vlibras,
+.vlibras-root,
+[vw],
+[vw="true"],
+.enabled,
+.vlibras-plugin,
+.vw-access-button,
+div[class*="vlibras"],
+div[class*="vw"] {
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+  top: auto !important;
+  z-index: 2147483647 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ajuste antigo preservado (se ainda quiser usar) */
 .vlibras {
-  z-index: 2147483647 !important; /* Valor máximo de z-index */
-  position: fixed !important;     /* Garante que fique fixo na tela */
   right: 0;
-  top: 50%;                       /* Tenta centralizar verticalmente */
+  top: 50%;
 }
