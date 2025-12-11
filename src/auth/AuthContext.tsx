@@ -25,6 +25,7 @@ interface User {
   cidade?: string;
   estado?: string;
   telefone?: string;
+  photoURL?: string;
 }
 
 interface AuthContextType {
