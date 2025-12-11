@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { useState, useEffect } from "react";
 import Layout from "../../components/layout";
 
-const API_BASE_URL = "https://petresc.onrender.com";
+// const API_BASE_URL = "https://petresc.onrender.com"; // Comentado para não usar a API real
 
 // =========================================================
 // TIPAGEM DA CAMPANHA (Banco)
@@ -24,9 +24,53 @@ interface Campanha {
   };
 }
 
-// =========================================================
-// TIPAGEM - Estatísticas da ONG
-// =========================================================
+// --- DADOS MOCKADOS PARA SIMULAR A RESPOSTA DA API ---
+const mockCampanhasApi: Campanha[] = [
+  {
+    id: 101,
+    titulo: "Alimentação e Resgate na Grande SP",
+    descricao: "Foco em áreas rurais para resgate de animais em situação de risco.",
+    metaFinanceira: 15000,
+    valorArrecadado: 3800.5,
+    imagemUrl: "/institutos/ampara.png",
+    dataLimite: "2026-03-30T00:00:00.000Z",
+    ong: {
+      nome: "Instituto Ampara Animal",
+      email: "contato@ampara.com",
+      telefone: "11999998888",
+    },
+  },
+  {
+    id: 102,
+    titulo: "Reforma do Canil Principal",
+    descricao: "Necessidade de troca de telhado e piso para garantir higiene e segurança.",
+    metaFinanceira: 25000,
+    valorArrecadado: 12000,
+    imagemUrl: "/institutos/default.png", // Imagem padrão
+    dataLimite: "2026-01-15T00:00:00.000Z",
+    ong: {
+      nome: "Ajudantes do Patas",
+      email: "contato@ajudantes.com",
+      telefone: "21999997777",
+    },
+  },
+  {
+    id: 103,
+    titulo: "Medicamentos de Alto Custo",
+    descricao: "Campanha para custear tratamentos complexos de animais com doenças crônicas.",
+    metaFinanceira: 5000,
+    valorArrecadado: 4900,
+    imagemUrl: "/institutos/patasDadas.png",
+    dataLimite: "2025-12-31T00:00:00.000Z",
+    ong: {
+      nome: "Patas Dadas",
+      email: "contato@patasdadas.com",
+      telefone: "51999996666",
+    },
+  },
+];
+
+// --- TIPAGEM ESTATÍSTICAS ONG ---
 interface OngStats {
   totalCampanhas: number;
   totalDoadores: number;
@@ -53,21 +97,24 @@ const DoarUsuarioView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCampanhas = async () => {
+    const fetchCampanhasMock = async () => {
+      console.log("Simulando busca de campanhas da API...");
       try {
-        const response = await fetch(`${API_BASE_URL}/api/campanha`);
-        if (response.ok) {
-          const data = await response.json();
-          setCampanhasReais(data);
-        }
+        // Simula o tempo de latência da API
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        
+        // Retorna os dados mockados
+        setCampanhasReais(mockCampanhasApi);
+
       } catch (error) {
-        console.error("Erro ao buscar campanhas:", error);
+        console.error("Erro ao buscar campanhas mockadas:", error);
+        // Em caso de falha (embora improvável com mock), seta array vazio
+        setCampanhasReais([]);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchCampanhas();
+    fetchCampanhasMock(); // Usa a função mockada
   }, []);
 
   return (
@@ -115,22 +162,24 @@ const DoarUsuarioView = () => {
 
       {/* ===================== Instituições ===================== */}
       <div className={styles.pagInstituicoes}>
-        {/* MAIS POPULARES */}
+        {/* SEÇÃO 1: MAIS POPULARES - IDs MOCKADOS Corrigidos*/}
         <h1 className={styles.tituloInstituicoes}>Mais Populares</h1>
 
         <div className={styles.cardInstituicoes}>
           {[
             {
-              id: "caramelo",
+              // ID alterado de 'caramelo' para 'instituto-caramelo' para bater com o mock do institutos.tsx
+              id: "instituto-caramelo", 
               nome: "Instituto Caramelo",
               endereco:
                 "Rua José Felix de Oliveira, 1234 - Granja Viana, Cotia - SP",
               imagem: "/institutos/institutoCaramelo.png",
-              arrecadado: 8104.64,
+              arrecadado: 8304.64, // Valor ajustado
               meta: 16000,
             },
             {
-              id: "5",
+              // ID alterado de '5' para 'suipa' para bater com o mock do institutos.tsx
+              id: "suipa", 
               nome: "SUIPA",
               endereco:
                 "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
@@ -141,7 +190,8 @@ const DoarUsuarioView = () => {
           ].map((inst, index) => (
             <Link
               key={index}
-              to={`/instituto/${inst.id}`}
+              // CORREÇÃO: Usando /institutos/ (plural)
+              to={`/institutos/${inst.id}`} 
               className={styles.instituicoes}
             >
               <img src={inst.imagem} className={styles.imgInstituicoes} />
@@ -164,7 +214,7 @@ const DoarUsuarioView = () => {
           ))}
         </div>
 
-        {/* NOVAS CAMPANHAS */}
+        {/* SEÇÃO 2: NOVAS CAMPANHAS (Agora usando o mockCampanhasApi) */}
         <h1 className={styles.tituloInstituicoes}>Novas Campanhas</h1>
 
         {loading ? (
@@ -172,6 +222,7 @@ const DoarUsuarioView = () => {
         ) : (
           <div className={styles.cardInstituicoes}>
             {campanhasReais.length > 0 ? (
+              // EXIBE DADOS MOCKADOS (campanhasReais)
               campanhasReais.map((campanha) => {
                 const meta = Number(campanha.metaFinanceira);
                 const arrecadado = Number(campanha.valorArrecadado);
@@ -183,7 +234,8 @@ const DoarUsuarioView = () => {
                 return (
                   <Link
                     key={campanha.id}
-                    to={`/instituto/${campanha.id}`}
+                    // CORREÇÃO: Usando /institutos/ (plural)
+                    to={`/institutos/${campanha.id}`} 
                     className={styles.instituicoes}
                   >
                     <img
@@ -219,51 +271,53 @@ const DoarUsuarioView = () => {
                 );
               })
             ) : (
-              <>
-                {[
-                  {
-                    id: "ampara",
-                    nome: "Instituto Ampara Animal",
-                    endereco:
-                      "Rua José Felix de Oliveira, 1234 - Granja Viana, Cotia - SP",
-                    imagem: "/institutos/ampara.png",
-                    arrecadado: 4500,
-                    meta: 10000,
-                  },
-                  {
-                    id: "patasdadas",
-                    nome: "Patas Dadas",
-                    endereco:
-                      "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
-                    imagem: "/institutos/patasDadas.png",
-                    arrecadado: 8104.64,
-                    meta: 16000,
-                  },
-                ].map((inst, index) => (
-                  <Link
-                    key={index}
-                    to={`/instituto/${inst.id}`}
-                    className={styles.instituicoes}
-                  >
-                    <img src={inst.imagem} className={styles.imgInstituicoes} />
-                    <h2 className={styles.nomeInstituicoes}>{inst.nome}</h2>
-
-                    <div className={styles.enderecoInstituicoes}>
-                      <div className={styles.iconLocal}></div>
-                      {inst.endereco}
-                    </div>
-
-                    <progress value={inst.arrecadado} max={inst.meta}></progress>
-
-                    <p className={styles.valorInstituicoes}>
-                      R$
-                      {inst.arrecadado.toLocaleString("pt-BR")} / R$
-                      {inst.meta.toLocaleString("pt-BR")} (
-                      {Math.round((inst.arrecadado / inst.meta) * 100)}%)
-                    </p>
-                  </Link>
-                ))}
-              </>
+              // FALLBACK (Se o mockCampanhasApi falhar por algum motivo, exibe o fallback)
+              [
+                {
+                  // ID alterado de 'ampara' para 'ampara-animal' para bater com o mock do institutos.tsx
+                  id: "ampara-animal", 
+                  nome: "Instituto Ampara Animal",
+                  endereco:
+                    "Rua José Felix de Oliveira, 1234 - Granja Viana, Cotia - SP",
+                  imagem: "/institutos/ampara.png",
+                  arrecadado: 4500,
+                  meta: 10000,
+                },
+                {
+                   // ID alterado de 'patasdadas' para 'patas-dadas' para bater com o mock do institutos.tsx
+                  id: "patas-dadas", 
+                  nome: "Patas Dadas",
+                  endereco:
+                    "Av. Dom Hélder Câmara, 1801 - Benfica, Rio de Janeiro - RJ",
+                  imagem: "/institutos/patasDadas.png",
+                  arrecadado: 8104.64,
+                  meta: 16000,
+                },
+              ].map((inst, index) => (
+                <Link
+                  key={index}
+                  // CORREÇÃO: Usando /institutos/ (plural)
+                  to={`/institutos/${inst.id}`} 
+                  className={styles.instituicoes}
+                >
+                  <img
+                    src={inst.imagem}
+                    alt={inst.nome}
+                    className={styles.imgInstituicoes}
+                  />
+                  <h2 className={styles.nomeInstituicoes}>{inst.nome}</h2>
+                  <div className={styles.enderecoInstituicoes}>
+                    <div className={styles.iconLocal}></div>
+                    {inst.endereco}
+                  </div>
+                  <progress value={inst.arrecadado} max={inst.meta}></progress>
+                  <p className={styles.valorInstituicoes}>
+                    R$ {inst.arrecadado.toLocaleString("pt-BR")} / R${" "}
+                    {inst.meta.toLocaleString("pt-BR")} (
+                    {Math.round((inst.arrecadado / inst.meta) * 100)}%)
+                  </p>
+                </Link>
+              ))
             )}
           </div>
         )}

@@ -20,7 +20,7 @@ const arduinoData: SensorData[] = [
     tipoSensor: "Nível de Temperatura",
     valor: "22°C",
     status: "NORMAL",
-    ultimaLeitura: "Há 2 min",
+    ultimaLeitura: "11:17",
     mensagem: "Temperatura ideal para os animais.",
   },
   {
@@ -29,7 +29,7 @@ const arduinoData: SensorData[] = [
     tipoSensor: "Umidade do Ar",
     valor: "88%",
     status: "CRITICO",
-    ultimaLeitura: "Agora",
+    ultimaLeitura: "11:17",
     mensagem: "Umidade muito alta! Risco de proliferação de fungos.",
   },
   {
@@ -38,7 +38,7 @@ const arduinoData: SensorData[] = [
     tipoSensor: "Nível de Temperatura",
     valor: "Muito Abaixo",
     status: "ALERTA",
-    ultimaLeitura: "13:46",
+    ultimaLeitura: "11:17",
     mensagem: "Nível de temperatura muito abaixo! Verificar.",
   },
 ];

@@ -2,6 +2,7 @@ import Nav from "./navbar";
 import Footer from "./footer"; 
 import styles from "../style/layout.module.css";
 
+
 interface LayoutProps {
   children: React.ReactNode; // conteúdo da página
 }

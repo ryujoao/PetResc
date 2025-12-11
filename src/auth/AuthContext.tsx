@@ -31,17 +31,7 @@ interface User {
   estado?: string;
 
   telefone?: string;
-
-  ong?: {
-    id: number;
-    nome: string; // <--- O nome que você quer!
-    cnpj: string;
-    // Adicione outros campos da tabela ONG aqui se precisar, mas o nome é o principal
-  };
-  
-  // O publico e admin também vêm aninhados, se for o caso
-  publico?: any;
-  admin?: any;
+  photoURL?: string;
 }
 
 
