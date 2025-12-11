@@ -27,7 +27,7 @@ export default function AdminOngTemperatura() {
               {/* Ícone estilizado ou SVG */}
               <FaThermometerHalf className={styles.iconeTermometro} />
             </div>
-            <div className={styles.valorTemperatura}>12.4°C</div>
+            <div className={styles.valorTemperatura}>20.1°C</div>
           </div>
 
           {/* LADO DIREITO: GRÁFICO DE LINHA (SVG PURO) */}
@@ -64,7 +64,7 @@ export default function AdminOngTemperatura() {
 
         {/* --- RODAPÉ --- */}
         <div className={styles.rodapeLeitura}>
-          Última leitura: 13:46:20
+          Última leitura: 11:17:20
         </div>
 
       </div>

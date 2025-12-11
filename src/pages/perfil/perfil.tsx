@@ -6,6 +6,7 @@ import { useAuth } from "../../auth/AuthContext";
 import api from "../../services/api";
 import { TbSettingsFilled } from "react-icons/tb";
 import { BsFillPersonFill, BsHeart, BsHeartFill, BsPlus } from "react-icons/bs";
+import { useRef } from "react";
 
 // Tipagem
 interface Pet {
@@ -264,6 +265,25 @@ export default function Perfil() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  // Controle de upload do avatar
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // Ao clicar no avatar
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
+  };
+
+  // Quando seleciona arquivo
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [meusPets, setMeusPets] = useState<Pet[]>([]);
   const [outrosSalvos, setOutrosSalvos] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
@@ -288,18 +308,11 @@ export default function Perfil() {
       try {
         const resMeus = await api.get("/animais/gerenciar/lista");
 
-        // --- AQUI ESTÁ A LÓGICA QUE VOCÊ TINHA E EU RESTAUREI ---
-        // Se o animal vier sem status ou dados específicos do banco,
-        // geramos dados fictícios para que o Design funcione (Abas Adotados/Registrados)
         const meusFormatados = resMeus.data.map((p: any, index: number) => {
-          // Se o backend já mandar o status certo, usamos. Se não, usamos o mock.
           let statusFinal = p.status;
 
-          // Lógica MOCK para distribuir nas abas (se o banco estiver tudo igual)
-          // Metade vira "Adotado", Metade vira "Disponível"
           if (!statusFinal || statusFinal === "DISPONIVEL") {
-            if (index % 2 !== 0)
-              statusFinal = "Adotado"; // Mock para popular a aba
+            if (index % 2 !== 0) statusFinal = "Adotado";
             else statusFinal = "Disponível";
           }
 
@@ -307,8 +320,8 @@ export default function Perfil() {
             ...p,
             favorito: false,
             status: statusFinal,
-            codigo: index % 2 === 0 ? "AD." : "FI.", // Mock visual
-            dataAdocao: statusFinal === "Adotado" ? "10/10/2025" : null, // Mock visual
+            codigo: index % 2 === 0 ? "AD." : "FI.",
+            dataAdocao: statusFinal === "Adotado" ? "10/10/2025" : null,
           };
         });
 
@@ -359,7 +372,6 @@ export default function Perfil() {
     }
   };
 
-  // --- FILTRO DAS ABAS (USANDO OS DADOS MOCKADOS/REAIS) ---
   const getDisplayedPets = () => {
     if (!isOng) {
       return activeView === "todos" ? meusPets : outrosSalvos;
@@ -368,7 +380,6 @@ export default function Perfil() {
     // Lógica da ONG
     switch (activeView) {
       case "adotados":
-        // Filtra pelo status (seja real do banco ou o mockado acima)
         return meusPets.filter(
           (p) => p.status === "Adotado" || p.status === "ADOTADO"
         );
@@ -422,10 +433,31 @@ export default function Perfil() {
           </Link>
         </div>
 
-        <div className={styles.avatar}>
-          <div className={styles.avatarLabel}>
-            <BsFillPersonFill className={styles.avatarIcon} />
-          </div>
+        <div
+          className={styles.avatar}
+          onClick={handleAvatarClick}
+          style={{ cursor: "pointer" }}
+        >
+          {preview || user?.photoURL ? (
+            <img
+              src={preview || user.photoURL}
+              alt="Foto de perfil"
+              className={styles.avatarImage}
+            />
+          ) : (
+            <div className={styles.avatarLabel}>
+              <BsFillPersonFill className={styles.avatarIcon} />
+            </div>
+          )}
+
+          {/* Input real, totalmente invisível */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
         </div>
 
         <UserInfo

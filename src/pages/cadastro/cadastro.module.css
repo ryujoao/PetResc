@@ -392,3 +392,32 @@
     width: 100%;
   }
 }
+
+.inputSenhaContainer {
+    position: relative;
+    width: 100%; 
+    margin-bottom: 10px; 
+}
+
+.inputSenhaContainer .inputLogin {
+    margin-bottom: 0; 
+}
+
+.eyeButton {
+    position: absolute;
+    right: 15px; 
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #4CAF50; /* Cor padrão, ajuste conforme a sua paleta */
+    font-size: 1.2rem;
+    z-index: 10; 
+    transition: color 0.2s;
+}
+
+.eyeButton:hover {
+    color: #388E3C; /* Cor de hover */
+}

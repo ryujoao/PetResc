@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import VLibras from "./components/vLibras";
+
 
 // --- IMPORTS DE PROTEÇÃO ---
 import AdminRoute from "./auth/adminRoute";
@@ -55,7 +55,6 @@ import AdminOngTemperatura from "./pages/admin/adminOngTemperatura";
 function App() {
   return (
     <>
-      <VLibras />
 
       <Routes>
         {/* ROTAS PÚBLICAS */}

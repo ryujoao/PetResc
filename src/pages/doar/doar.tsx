@@ -93,7 +93,8 @@ const DoarUsuarioView = () => {
         <div className={styles.cardInstituicoes}>
           {[
             {
-              id: "caramelo",
+              // ID alterado de 'caramelo' para 'instituto-caramelo' para bater com o mock do institutos.tsx
+              id: "instituto-caramelo", 
               nome: "Instituto Caramelo",
               endereco:
                 "Rua José Felix de Oliveira, 1234 – Granja Viana, Cotia – SP",
@@ -113,7 +114,8 @@ const DoarUsuarioView = () => {
           ].map((inst, index) => (
             <Link
               key={index}
-              to={`/instituto/${inst.id}`}
+              // CORREÇÃO: Usando /institutos/ (plural)
+              to={`/institutos/${inst.id}`} 
               className={styles.instituicoes}
             >
               <img

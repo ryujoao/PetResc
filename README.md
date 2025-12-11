@@ -10,6 +10,20 @@ O sistema permite que ONGs gerenciem seus animais e que usuários comuns se cand
 
 ---
 
+## 🤖 Diferencial: Descrições com IA
+
+O projeto utiliza a API do **Google Gemini** para auxiliar no cadastro de animais.
+O objetivo é resolver a dificuldade que muitos usuários têm em criar textos atraentes para adoção.
+
+**Como funciona:**
+
+1. O utilizador insere as características técnicas (espécie, cor, temperamento).
+2. O sistema envia um prompt estruturado para a IA.
+3. A IA retorna uma narrativa emocionante em primeira pessoa.
+4. O resultado é pré-preenchido no campo de descrição, agilizando o cadastro e aumentando o apelo emocional do perfil do animal.
+
+---
+
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -26,14 +40,15 @@ As seguintes ferramentas foram usadas na construção do projeto:
 ## 🚀 Como executar o projeto
 
 ### Pré-requisitos
+
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/).
 Além disso é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/).
 
 ### Acessando o site
+
 É possível acessar o site pelo link:
 (https://pet-resc.vercel.app/)
-
 
 ### 🎲 Rodando a Aplicação
 
@@ -49,3 +64,4 @@ $ npm install
 $ npm i react-icons
 
 # O servidor iniciará na porta:5173 - acesse <http://localhost:5173>
+```
