@@ -59,9 +59,6 @@ useEffect(() => {
     try {
       const params = new URLSearchParams();
       
-      //  REMOVIDO: params.append("status", "DISPONIVEL");
-      //  AGORA: Não enviamos status fixo. 
-      // O Backend (já configurado) vai entender que "sem status" = trazer TUDO (Disponível + Encontrado).
 
       if (filtroEspecie) params.append("especie", filtroEspecie);
       if (filtroPorte) params.append("porte", filtroPorte);
@@ -70,7 +67,7 @@ useEffect(() => {
       // Se houver filtro de idade ou cor no futuro, adicione aqui
       // if (filtroIdade) params.append("idade", filtroIdade);
 
-      const response = await fetch(`https://petresc.onrender.com/api/animais?${params.toString()}`);
+      const response = await fetch(`https://petresc.onrender.com/api/feed?${params.toString()}`);
       
       if (!response.ok) {
         throw new Error("Erro ao buscar animais.");
