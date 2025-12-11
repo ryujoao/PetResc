@@ -32,7 +32,18 @@ interface User {
 
   telefone?: string;
   photoURL?: string;
+
+  ong?: {
+    id: number;
+    nome: string; 
+    cnpj: string;
+   
+  };
+  
+  publico?: any;
+  admin?: any;
 }
+
 
 
 // =========================================================

@@ -24,7 +24,7 @@ export default function Nav() {
       : user?.nome || (isAdmin ? "Administrador" : "Visitante");
 
   return (
-    <>
+    <>  
       <Denuncie isOpen={showModal} onClose={() => setShowModal(false)} />
       <div className={`${styles.topBar} topBar`}></div>
       <div className={`${styles.navbar} navbar`}>
